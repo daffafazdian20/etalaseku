@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Site Settings &amp; Dynamic Controls - EtalaseKu</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#FF2E63",
+            "primary-hover": "#E11D48",
+            "background-light": "#F8FAFC",
+            "background-dark": "#0B1120",
+            sidebar: "#0F172A",
+            surface: "#FFFFFF",
+            "surface-dark": "#1E293B",
+            accent: "#2563EB",
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            mono: ["'JetBrains Mono'", "monospace"],
+          },
+          borderRadius: {
+            DEFAULT: "0.75rem",
+            'xl': '1rem',
+            '2xl': '1.25rem',
+            '3xl': '1.75rem',
+          },
+          boxShadow: {
+            'soft': '0 8px 30px rgba(15, 23, 42, 0.05)',
+            'glow-primary': '0 10px 25px -3px rgba(255, 46, 99, 0.35)',
+          }
+        },
+      },
+    };
+  </script>
+<style>
+    .material-symbols-rounded {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+    }
+    .material-symbols-rounded-outline {
+      font-family: 'Material Symbols Rounded';
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+    }::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-sans text-slate-800 dark:text-slate-100 min-h-screen flex antialiased transition-colors duration-200">
+<aside class="w-72 bg-sidebar flex-shrink-0 flex flex-col justify-between border-r border-slate-800 min-h-screen z-30 select-none">
+<div class="p-6">
+<div class="flex items-center gap-3.5 mb-8">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-rose-400 flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-rose-900/30">
+          E
+        </div>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="text-white font-bold tracking-tight text-lg leading-tight">EtalaseKu</h1>
+<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-rose-400 border border-slate-700">OPS HUB</span>
+</div>
+<span class="inline-block mt-0.5 text-xs text-slate-400 font-medium tracking-wide">Admin SuperAdmin</span>
+</div>
+</div>
+<nav class="space-y-1.5">
+<a class="flex items-center gap-3 px-3.5 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all font-medium text-sm group" href="#">
+<span class="material-symbols-rounded-outline text-xl group-hover:scale-110 transition-transform">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all font-medium text-sm group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-rounded-outline text-xl group-hover:scale-110 transition-transform">receipt_long</span>
+<span>Orders &amp; Verification</span>
+</div>
+<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded-full font-semibold">5 Pending</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all font-medium text-sm group" href="#">
+<span class="material-symbols-rounded-outline text-xl group-hover:scale-110 transition-transform">auto_stories</span>
+<span>Products &amp; Curriculum</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all font-medium text-sm group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-rounded-outline text-xl group-hover:scale-110 transition-transform">group_add</span>
+<span>Leads &amp; Waitlist</span>
+</div>
+<span class="bg-primary/20 text-rose-300 border border-primary/30 text-xs px-2 py-0.5 rounded-full font-semibold">12 New</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all font-medium text-sm group" href="#">
+<span class="material-symbols-rounded-outline text-xl group-hover:scale-110 transition-transform">star_rate</span>
+<span>Member Showcase</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all font-medium text-sm group" href="#">
+<span class="material-symbols-rounded-outline text-xl group-hover:scale-110 transition-transform">reviews</span>
+<span>Testimonials</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-3 rounded-xl bg-primary text-white font-semibold text-sm shadow-glow-primary transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-rounded text-xl">tune</span>
+<span>Site Settings</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+</a>
+</nav>
+</div>
+<div class="p-6 border-t border-slate-800 space-y-4">
+<div class="p-3.5 bg-slate-900/80 rounded-2xl border border-slate-800">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-400">GAS Sync Engine</span>
+<span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Live Connected
+          </span>
+</div>
+<p class="text-xs text-slate-400 font-mono">tb_pengaturan_situs: v2.4</p>
+<div class="w-full bg-slate-800 h-1.5 rounded-full mt-2.5 overflow-hidden">
+<div class="bg-emerald-400 h-full w-4/5 rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-md bg-slate-800 text-[11px] font-semibold text-slate-400 font-mono">Pro Academy v2.4</span>
+</div>
+<button class="text-slate-400 hover:text-rose-400 text-sm flex items-center gap-1.5 p-1.5 rounded-lg hover:bg-slate-800 transition-colors" title="Logout SuperAdmin">
+<span class="material-symbols-rounded text-lg">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<header class="sticky top-0 z-20 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/80 dark:border-slate-800 px-8 py-4 transition-colors">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<nav class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">
+<span>EtalaseKu</span>
+<span class="text-slate-400">/</span>
+<span>Operasional &amp; Admin</span>
+<span class="text-slate-400">/</span>
+<span class="text-slate-900 dark:text-white font-semibold">Site Settings &amp; Dynamic Controls</span>
+</nav>
+<div class="flex items-center gap-2.5">
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Pengaturan Situs &amp; Kontrol Dinamis</h2>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+<span>Sheets tb_pengaturan_situs Synced (Auto-Update v4)</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm">
+<span class="material-symbols-rounded text-base text-slate-500 dark:text-slate-400">sync</span>
+<span>Tarik Nilai Terkini</span>
+</button>
+<button class="px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold transition-all">
+            Reset ke Default
+          </button>
+<button class="bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide shadow-glow-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2">
+<span class="material-symbols-rounded text-base">cloud_upload</span>
+<span>Simpan Perubahan ke Sheets 💾</span>
+</button>
+<div class="h-7 w-[1px] bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<div class="flex items-center gap-2.5 pl-1">
+<div class="relative">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-primary text-white font-bold flex items-center justify-center text-sm shadow-sm ring-2 ring-white dark:ring-slate-800">
+                BK
+              </div>
+<span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
+</div>
+<div class="hidden xl:block text-left">
+<p class="text-xs font-bold text-slate-900 dark:text-slate-100 leading-tight">Budi Kusuma</p>
+<span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Head of Operations</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="p-8 space-y-7 max-w-7xl w-full mx-auto">
+<div class="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/40 border border-emerald-500/30 text-emerald-800 dark:text-emerald-200 text-xs backdrop-blur-sm shadow-soft">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse"></span>
+<span class="font-bold">Live Status:</span>
+<span>Perubahan Berhasil Disimpan ke Sheets! Baris pada <strong>tb_pengaturan_situs</strong> telah tersinkronisasi (Latency: 1.2s).</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono">28 Okt 2026, 17:15:22 WIB</span>
+<button class="hover:text-emerald-950 dark:hover:text-white text-base">✕</button>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-gradient-to-r from-rose-500/10 via-amber-500/5 to-transparent border border-rose-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-rounded">admin_panel_settings</span>
+</div>
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white text-sm">Dynamic Frontend Control Hub</h3>
+<p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+              Pengaturan di halaman ini langsung mengontrol konten publik Landing Page, Modal Checkout, dan Logika Kuota Batch tanpa perlu mengubah baris kode apapun di Google Apps Script.
+            </p>
+</div>
+</div>
+<a class="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary-hover hover:underline flex-shrink-0 bg-white dark:bg-slate-800 px-3.5 py-2 rounded-xl border border-rose-200 dark:border-rose-900/50 shadow-sm" href="#">
+<span>Lihat Tampilan Publik</span>
+<span class="material-symbols-rounded text-sm">arrow_outward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-7">
+<div class="bg-surface dark:bg-surface-dark rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-soft p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-rose-500/10 dark:bg-rose-500/20 text-primary flex items-center justify-center">
+<span class="material-symbols-rounded">campaign</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white text-sm">Dynamic Announcement Bar &amp; Promo Banner</h4>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">tb_pengaturan_situs: announcement_bar_*</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[3px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+<span class="ml-2 text-xs font-bold text-primary">ON</span>
+</label>
+</div>
+<div class="mt-5 space-y-4">
+<div>
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Teks Banner Promo Berjalan
+                </label>
+<div class="relative">
+<input class="w-full text-xs font-medium rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 px-3.5 py-2.5 focus:border-primary focus:ring-primary shadow-sm" type="text" value="🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!"/>
+<span class="absolute right-3 top-2.5 text-xs text-slate-400 font-mono">68 chars</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
+                  Pilihan Aksen Warna Banner
+                </label>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 border-primary bg-rose-50/50 dark:bg-rose-950/20 text-xs font-bold text-slate-900 dark:text-white" type="button">
+<span class="w-3.5 h-3.5 rounded-full bg-[#FF2E63]"></span>
+<span>Warm Pink (#FF2E63)</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-xs text-slate-600 dark:text-slate-400 font-medium" type="button">
+<span class="w-3.5 h-3.5 rounded-full bg-[#F97316]"></span>
+<span>Sunset Coral</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-xs text-slate-600 dark:text-slate-400 font-medium" type="button">
+<span class="w-3.5 h-3.5 rounded-full bg-[#8B5CF6]"></span>
+<span>Lavender</span>
+</button>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80">
+<span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Live Header Preview</span>
+<div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner bg-slate-100 dark:bg-slate-950">
+<div class="bg-primary text-white text-[11px] font-semibold py-1.5 px-3 flex items-center justify-between">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-rounded text-sm animate-bounce">local_fire_department</span>
+<span class="truncate">🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!</span>
+</div>
+<div class="flex items-center gap-1 font-mono text-[10px] bg-black/20 px-2 py-0.5 rounded ml-2 flex-shrink-0">
+<span>02d : 14h : 29m</span>
+</div>
+</div>
+<div class="p-2.5 bg-white dark:bg-slate-900 flex items-center justify-between text-xs text-slate-500">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded bg-primary text-white text-[9px] font-bold flex items-center justify-center">E</div>
+<span class="font-bold text-slate-800 dark:text-slate-200">EtalaseKu Store</span>
+</div>
+<div class="flex items-center gap-3 text-[11px]">
+<span>Katalog</span>
+<span>Silabus</span>
+<span class="text-primary font-bold">Daftar Sekarang</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-3 text-xs text-slate-400 border-t border-slate-100 dark:border-slate-800/80">
+<span>Otomatis refresh cache browser pengunjung</span>
+<span class="text-emerald-500 font-semibold">● Status: Siap Tayang</span>
+</div>
+</div>
+<div class="bg-surface dark:bg-surface-dark rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-soft p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+<span class="material-symbols-rounded">support_agent</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white text-sm">WhatsApp Gateway &amp; Customer Support</h4>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">tb_pengaturan_situs: wa_cs_*</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Fonnte Connected
+              </span>
+</div>
+<div class="mt-5 space-y-4">
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Nomor WhatsApp CS Resmi (E.164 Format)
+                  </label>
+<span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Online &amp; Terverifikasi Fonnte API</span>
+</div>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-rounded text-lg">call</span>
+</span>
+<input class="w-full text-xs font-mono font-medium rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 pl-10 pr-3.5 py-2.5 focus:border-primary focus:ring-primary shadow-sm" type="text" value="+62 812-3456-7890"/>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Pesan Pembuka Floating Widget
+                  </label>
+<span class="text-[10px] text-slate-400 font-mono">Dukungan tag dinamis: {nama_produk}</span>
+</div>
+<textarea class="w-full text-xs font-medium rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 p-3 focus:border-primary focus:ring-primary shadow-sm leading-relaxed" rows="3">Halo Admin EtalaseKu 👋 Saya sedang melihat {nama_produk} dan ingin konsultasi mengenai materi kelas serta ketersediaan kuota batch. Boleh dibantu?</textarea>
+</div>
+<div class="space-y-2.5 pt-2">
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<span class="material-symbols-rounded text-slate-500 text-lg">chat_bubble</span>
+<span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Aktifkan Floating WhatsApp Widget di Toko Publik</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<span class="material-symbols-rounded text-slate-500 text-lg">send_and_archive</span>
+<span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Auto-Trigger WhatsApp Webhook saat Pembayaran Lunas</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-3 text-xs text-slate-400 border-t border-slate-100 dark:border-slate-800/80">
+<span>Server Webhook Gateway: <span class="font-mono text-slate-600 dark:text-slate-300">https://api.fonnte.com/v1</span></span>
+<span class="text-emerald-500 font-semibold">● Kuota Pesan: 4,820/5,000</span>
+</div>
+</div>
+<div class="bg-surface dark:bg-surface-dark rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-soft p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+<span class="material-symbols-rounded">rocket_launch</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white text-sm">Status Pendaftaran Global &amp; Komunitas Member</h4>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">tb_pengaturan_situs: status_batch_*</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
+                BUKA / OPEN
+              </span>
+</div>
+<div class="mt-5 space-y-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Status Pendaftaran Global
+                  </label>
+<select class="w-full text-xs font-semibold rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 px-3.5 py-2.5 focus:border-primary focus:ring-primary shadow-sm">
+<option selected="">🟢 Buka (Semua tombol aktif)</option>
+<option>🔴 Ditutup (Ganti ke Form Waiting List)</option>
+<option>🟡 Segera Hadir (Coming Soon Teaser)</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Batch Aktif Global
+                  </label>
+<select class="w-full text-xs font-semibold rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 px-3.5 py-2.5 focus:border-primary focus:ring-primary shadow-sm">
+<option selected="">Batch 3 (Aktif Berjalan)</option>
+<option>Batch 4 (Early Bird Pre-order)</option>
+<option>Batch Khusus Fast-Track</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Tautan Undangan Komunitas Telegram (Disematkan ke Kuitansi)
+                </label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-sky-500">
+<span class="material-symbols-rounded text-lg">near_me</span>
+</span>
+<input class="w-full text-xs font-mono font-medium rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 pl-10 pr-3.5 py-2.5 focus:border-primary focus:ring-primary shadow-sm" type="text" value="https://t.me/+EtalaseKuVIP_MemberHub"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Tautan Grup Diskusi WhatsApp
+                  </label>
+<input class="w-full text-xs font-mono font-medium rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 px-3.5 py-2.5 focus:border-primary focus:ring-primary shadow-sm truncate" type="text" value="https://chat.whatsapp.com/EtalaseKuDiscussionBatch3"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Batas Maksimum Kuota Per Batch
+                  </label>
+<div class="relative">
+<input class="w-full text-xs font-bold rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 px-3.5 py-2.5 focus:border-primary focus:ring-primary shadow-sm" type="number" value="50"/>
+<span class="absolute right-3.5 top-2.5 text-xs text-slate-400 font-medium">Siswa / Batch</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-3 text-xs text-slate-400 border-t border-slate-100 dark:border-slate-800/80">
+<span>Siswa Terdaftar Batch 3: <strong class="text-slate-700 dark:text-slate-200">38 / 50</strong></span>
+<span class="text-amber-500 font-semibold">Tersisa 12 Slot Kursi</span>
+</div>
+</div>
+<div class="bg-surface dark:bg-surface-dark rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-soft p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+<span class="material-symbols-rounded">account_balance_wallet</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white text-sm">Rekening &amp; Instruksi Pembayaran Checkout</h4>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">tb_pengaturan_situs: rekening_pembayaran</p>
+</div>
+</div>
+<button class="text-xs font-bold text-primary hover:text-primary-hover flex items-center gap-1">
+<span class="material-symbols-rounded text-sm">add_circle</span> Tambah Bank
+              </button>
+</div>
+<div class="mt-4 space-y-3">
+<div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-7 rounded bg-blue-700 text-white font-black text-[11px] flex items-center justify-center tracking-tighter">
+                    BCA
+                  </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono font-bold text-slate-900 dark:text-white">123-456-7890</span>
+<span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold">Aktif</span>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">a.n. PT EtalaseKu Digital Nusantara</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Salin"><span class="material-symbols-rounded text-base">content_copy</span></button>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Edit"><span class="material-symbols-rounded text-base">edit</span></button>
+</div>
+</div>
+<div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-7 rounded bg-amber-600 text-white font-black text-[10px] flex items-center justify-center tracking-tighter">
+                    MANDIRI
+                  </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono font-bold text-slate-900 dark:text-white">137-00-1928374-1</span>
+<span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold">Aktif</span>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">a.n. PT EtalaseKu Digital Nusantara</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Salin"><span class="material-symbols-rounded text-base">content_copy</span></button>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Edit"><span class="material-symbols-rounded text-base">edit</span></button>
+</div>
+</div>
+<div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-7 rounded bg-slate-800 text-rose-400 font-black text-[11px] flex items-center justify-center tracking-tighter border border-slate-700">
+                    QRIS
+                  </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono font-bold text-slate-900 dark:text-white">NMID: ID1029384756</span>
+<span class="text-[10px] px-1.5 py-0.2 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold">Auto-Generate</span>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">Interoperable QRIS Dinamis per Tagihan</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Salin"><span class="material-symbols-rounded text-base">content_copy</span></button>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Edit"><span class="material-symbols-rounded text-base">edit</span></button>
+</div>
+</div>
+<div class="pt-1">
+<label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Catatan Tambahan Instruksi Transfer di Invoice
+                </label>
+<textarea class="w-full text-xs font-medium rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 p-2.5 focus:border-primary focus:ring-primary shadow-sm" rows="2">Mohon transfer tepat hingga 3 digit terakhir untuk verifikasi otomatis robot Apps Script. Bukti transfer wajib diunggah dalam format JPG/PNG maksimal 5MB.</textarea>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-3 text-xs text-slate-400 border-t border-slate-100 dark:border-slate-800/80">
+<span>Kode Unik Verifikasi: <strong class="text-slate-700 dark:text-slate-200">Aktif (1 - 999)</strong></span>
+<span class="text-emerald-500 font-semibold">● Integrasi Verifikasi Otomatis</span>
+</div>
+</div>
+</div>
+<div class="bg-surface dark:bg-surface-dark rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-soft p-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800/80">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-rounded">shield_person</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white text-sm">Log Audit &amp; Keamanan Kunci Rahasia GAS (Google Apps Script)</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">Pengamanan kredensial Script Properties dan rekam jejak perubahan pengaturan toko.</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-slate-500 dark:text-slate-400">Latency: <strong class="text-emerald-600 dark:text-emerald-400 font-mono">42ms</strong></span>
+<button class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all flex items-center gap-1.5">
+<span class="material-symbols-rounded text-base text-emerald-500">wifi_protected_setup</span>
+<span>Uji Koneksi Sheets API v4</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+<div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">GAS Authorization Secret Token</span>
+<div class="flex items-center justify-between mt-2">
+<span class="font-mono text-sm tracking-widest text-slate-700 dark:text-slate-300 font-bold">••••••••••••••••••••3a9f</span>
+<button class="text-xs text-primary font-bold hover:underline">Reveal</button>
+</div>
+<p class="text-[11px] text-slate-400 mt-2">Tersimpan aman di Script Properties `ETALASE_API_KEY`</p>
+</div>
+<div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Riwayat Perubahan Terakhir</span>
+<div class="flex items-center gap-2 mt-2">
+<div class="w-6 h-6 rounded-md bg-indigo-500 text-white text-[10px] font-bold flex items-center justify-center">BK</div>
+<span class="text-xs font-bold text-slate-800 dark:text-slate-200">Admin SuperAdmin (Budi Kusuma)</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-2 font-mono">28 Okt 2026, 17:15 WIB (IP: 182.253.xx.xx)</p>
+</div>
+<div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Database Spreadsheet ID</span>
+<div class="flex items-center justify-between mt-2">
+<span class="font-mono text-xs text-slate-700 dark:text-slate-300 truncate">1BxiMVs0XRA5nFMdZ...</span>
+<a class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center gap-0.5" href="#">
+<span class="material-symbols-rounded text-sm">open_in_new</span>
+</a>
+</div>
+<p class="text-[11px] text-emerald-600 dark:text-emerald-400 mt-2 flex items-center gap-1 font-semibold">
+<span class="material-symbols-rounded text-xs">verified</span> Tab: 'tb_pengaturan_situs'
+            </p>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto px-8 py-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2">
+<p>© 2026 PT EtalaseKu Digital Nusantara. Hak Cipta Dilindungi Undang-Undang.</p>
+<div class="flex items-center gap-4">
+<span>Google Apps Script Runtime V8</span>
+<span>•</span>
+<span>Dokumentasi API</span>
+<span>•</span>
+<span class="text-emerald-500 font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Status Sistem Normal
+        </span>
+</div>
+</footer>
+</div>
+
+</body></html>

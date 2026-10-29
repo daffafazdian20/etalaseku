@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin &amp; Mentor Authentication - EtalaseKu Hub</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-container": "#e51152",
+            "primary-fixed-dim": "#ffb2ba",
+            "on-tertiary-fixed": "#1c1a25",
+            "background": "#fbf9f5",
+            "surface-card": "#FFFFFF",
+            "inverse-on-surface": "#f2f0ed",
+            "on-primary-container": "#fffbff",
+            "primary": "#b9003f",
+            "on-error-container": "#93000a",
+            "midnight-indigo": "#1E1B4B",
+            "primary-fixed": "#ffd9dc",
+            "secondary-container": "#dae2fd",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary": "#5d5a67",
+            "on-primary-fixed": "#400010",
+            "on-primary": "#ffffff",
+            "surface-container": "#efeeea",
+            "outline-variant": "#e5bdc0",
+            "secondary-fixed": "#dae2fd",
+            "tertiary-fixed-dim": "#c9c4d3",
+            "secondary": "#565e74",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#e6e0f0",
+            "surface-container-low": "#f5f3ef",
+            "surface-container-high": "#eae8e4",
+            "secondary-fixed-dim": "#bec6e0",
+            "outline": "#906e71",
+            "pastel-lavender": "#F3EDFD",
+            "error-container": "#ffdad6",
+            "text-muted": "#64748B",
+            "on-secondary-container": "#5c647a",
+            "inverse-primary": "#ffb2ba",
+            "on-surface": "#1b1c1a",
+            "on-tertiary-fixed-variant": "#484552",
+            "on-primary-fixed-variant": "#910030",
+            "surface-variant": "#e4e2de",
+            "surface-tint": "#bd0041",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "surface-dim": "#dbdad6",
+            "pastel-pink": "#FDEEF1",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface-container-highest": "#e4e2de",
+            "surface-bright": "#fbf9f5",
+            "on-background": "#1b1c1a",
+            "surface": "#fbf9f5",
+            "pastel-mint": "#E8F8F5",
+            "inverse-surface": "#30312e",
+            "on-tertiary-container": "#fffbff",
+            "cta-hover": "#E11D48",
+            "error": "#ba1a1a",
+            "on-surface-variant": "#5c3f42",
+            "tertiary-container": "#767380"
+          },
+          fontFamily: {
+            "sans": ["Plus Jakarta Sans", "Inter", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          },
+          boxShadow: {
+            "card-subtle": "0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03)",
+            "elevated": "0 20px 30px -10px rgba(185, 0, 63, 0.08)"
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .pin-box:focus {
+      border-color: #b9003f;
+      box-shadow: 0 0 0 3px rgba(185, 0, 63, 0.15);
+      outline: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FFFDF9] text-on-surface font-sans selection:bg-pastel-pink selection:text-primary relative overflow-x-hidden flex flex-col justify-between">
+<!-- Background Decorative Pastel Ornaments -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-pastel-pink blur-3xl opacity-70"></div>
+<div class="absolute top-1/3 -right-24 w-80 h-80 rounded-full bg-pastel-lavender blur-3xl opacity-60"></div>
+<div class="absolute -bottom-24 left-1/4 w-96 h-96 rounded-full bg-pastel-mint blur-3xl opacity-60"></div>
+<!-- Soft Decorative Floating Geometry / Sparkle stars -->
+<svg class="absolute top-16 right-20 w-8 h-8 text-primary opacity-25 animate-pulse" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"></path>
+</svg>
+<svg class="absolute bottom-32 left-16 w-6 h-6 text-tertiary-container opacity-20" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"></path>
+</svg>
+<div class="absolute top-1/4 left-12 w-4 h-4 rounded-full bg-primary-fixed-dim opacity-50"></div>
+<div class="absolute bottom-1/4 right-16 w-6 h-6 rounded-full bg-secondary-container opacity-40"></div>
+</div>
+<!-- Minimal Focused View Header (The Hierarchy of Focus Exception for Login screen) -->
+<header class="relative z-10 w-full px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
+<a class="inline-flex items-center gap-2 text-sm font-semibold text-secondary hover:text-midnight-indigo transition-colors py-1.5 px-3 rounded-full hover:bg-surface-container-low" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Katalog Publik EtalaseKu</span>
+</a>
+<div class="flex items-center gap-2 bg-surface-card border border-[#E2E8F0] px-3 py-1 rounded-full shadow-sm text-xs font-medium text-secondary">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      GAS Cluster: <span class="font-mono text-on-surface">ap-southeast-3</span>
+</div>
+</header>
+<!-- Main Centered Focused Card -->
+<main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-8">
+<div class="w-full max-w-[450px]">
+<!-- Card Container -->
+<div class="bg-surface-card rounded-[20px] border border-[#E2E8F0] shadow-card-subtle p-7 md:p-8 backdrop-blur-sm relative">
+<!-- App Squircle Emblem Header -->
+<div class="flex flex-col items-center text-center">
+<div class="relative w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0F172A] to-[#1E293B] p-0.5 shadow-md mb-4 flex items-center justify-center">
+<div class="w-full h-full bg-[#0F172A] rounded-[14px] flex items-center justify-center relative overflow-hidden">
+<!-- Glow accent in corner -->
+<div class="absolute top-0 right-0 w-6 h-6 bg-[#FF2E63] blur-sm opacity-90 rounded-full"></div>
+<svg class="w-7 h-7 text-[#FF2E63] relative z-10" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+<h2 class="text-[24px] font-bold tracking-tight text-[#0F172A] mb-1.5 leading-snug">
+            Portal Admin &amp; Mentor
+          </h2>
+<p class="text-[14px] text-text-muted leading-relaxed max-w-[340px] mb-4">
+            Masuk untuk mengelola transaksi, kurikulum modul, dan analitik penjualan EtalaseKu.
+          </p>
+<!-- Security Status Pill -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#DCFCE7] border border-[#86EFAC] text-[#166534] text-xs font-semibold tracking-wide mb-6 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-[#16a34a] shrink-0"></span>
+<span>Sesi Server GAS Terenkripsi SHA-256</span>
+</div>
+</div>
+<!-- Environment Selector -->
+<div class="mb-6">
+<div class="flex h-10 w-full items-center justify-center rounded-full bg-[#F1F5F9] p-1 border border-slate-200">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-full px-3 has-[:checked]:bg-surface-card has-[:checked]:shadow-sm has-[:checked]:text-[#0F172A] text-slate-500 text-xs font-bold transition-all">
+<span class="truncate flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                Produksi (GAS Live)
+              </span>
+<input checked="" class="invisible w-0" name="environment_mode" type="radio" value="prod"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-full px-3 has-[:checked]:bg-surface-card has-[:checked]:shadow-sm has-[:checked]:text-[#0F172A] text-slate-500 text-xs font-medium transition-all">
+<span class="truncate flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                Staging Workspace
+              </span>
+<input class="invisible w-0" name="environment_mode" type="radio" value="staging"/>
+</label>
+</div>
+</div>
+<!-- Form Controls -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Segmented PIN / Token Container -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="text-xs font-bold text-[#0F172A] tracking-wider uppercase flex items-center gap-1.5">
+                PIN Akses Admin / Security Secret Token <span class="text-primary">*</span>
+<span class="material-symbols-outlined text-[15px] text-slate-400 cursor-help" title="Gunakan 6 digit PIN otoritas atau App Secret Token dari deployment GAS Anda">info</span>
+</label>
+<button class="text-[11px] font-semibold text-primary hover:underline" id="toggle-input-mode" type="button">
+                Mode Token Bebas
+              </button>
+</div>
+<!-- 6-Digit Segmented PIN Representation -->
+<div class="grid grid-cols-6 gap-2 mb-2" id="pin-boxes-container">
+<input class="pin-box text-center font-mono text-xl font-bold h-12 rounded-xl bg-surface-container-low border border-slate-200 text-[#0F172A] focus:bg-white transition-all shadow-inner" inputmode="numeric" maxlength="1" type="password" value="8"/>
+<input class="pin-box text-center font-mono text-xl font-bold h-12 rounded-xl bg-surface-container-low border border-slate-200 text-[#0F172A] focus:bg-white transition-all shadow-inner" inputmode="numeric" maxlength="1" type="password" value="4"/>
+<input class="pin-box text-center font-mono text-xl font-bold h-12 rounded-xl bg-surface-container-low border border-slate-200 text-[#0F172A] focus:bg-white transition-all shadow-inner" inputmode="numeric" maxlength="1" type="password" value="2"/>
+<input class="pin-box text-center font-mono text-xl font-bold h-12 rounded-xl bg-surface-container-low border border-slate-200 text-[#0F172A] focus:bg-white transition-all shadow-inner" inputmode="numeric" maxlength="1" placeholder="•" type="password"/>
+<input class="pin-box text-center font-mono text-xl font-bold h-12 rounded-xl bg-surface-container-low border border-slate-200 text-[#0F172A] focus:bg-white transition-all shadow-inner" inputmode="numeric" maxlength="1" placeholder="•" type="password"/>
+<input class="pin-box text-center font-mono text-xl font-bold h-12 rounded-xl bg-surface-container-low border border-slate-200 text-[#0F172A] focus:bg-white transition-all shadow-inner" inputmode="numeric" maxlength="1" placeholder="•" type="password"/>
+</div>
+<!-- Alternative standard Secret Token Input with Eye Toggle (Hidden by default, toggleable) -->
+<div class="hidden relative" id="token-input-wrapper">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[18px]">key</span>
+</div>
+<input class="w-full pl-10 pr-10 py-3 rounded-xl bg-surface-container-low border border-slate-200 text-sm font-mono text-[#0F172A] placeholder:text-slate-400 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" id="secret-token-input" placeholder="gas_sec_••••••••••••••••" type="password" value="gas_sec_84293817f90e"/>
+<button class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none" id="toggle-visibility-btn" type="button">
+<span class="material-symbols-outlined text-[18px]" id="visibility-icon">visibility</span>
+</button>
+</div>
+<p class="text-[11px] text-slate-400 mt-1 flex items-center justify-between">
+<span>Format: 6 Angka Mentor PIN atau GAS Secret Key</span>
+<span class="font-mono text-emerald-600 font-medium">Valid hash format</span>
+</p>
+</div>
+<!-- Checkbox & Recovery Options -->
+<div class="flex items-center justify-between text-xs pt-1">
+<label class="flex items-center gap-2 cursor-pointer text-slate-600 hover:text-slate-900 select-none">
+<input checked="" class="rounded border-slate-300 text-[#0F172A] focus:ring-slate-400 size-4" type="checkbox"/>
+<span>Ingat perangkat ini (7 hari)</span>
+</label>
+<a class="font-semibold text-primary hover:text-cta-hover transition-colors" href="#">
+              Lupa PIN?
+            </a>
+</div>
+<!-- Primary Submit CTA -->
+<button class="w-full h-12 bg-[#0F172A] hover:bg-[#1E293B] text-white font-semibold rounded-full flex items-center justify-center gap-2 shadow-lg shadow-slate-900/10 active:scale-[0.99] transition-all duration-150" type="submit">
+<span>Otentikasi &amp; Masuk Dashboard</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</form>
+<!-- Recovery / SuperAdmin Support Note -->
+<div class="mt-4 pt-4 border-t border-slate-100 text-center">
+<p class="text-xs text-text-muted">
+            Kendala akses level SuperAdmin? 
+            <a class="font-semibold text-[#0F172A] hover:text-primary transition-colors underline decoration-slate-300" href="https://t.me" target="_blank">
+              Hubungi SuperAdmin via Telegram
+            </a>
+</p>
+</div>
+<!-- Footer Trust Badge -->
+<div class="mt-5 pt-3 bg-surface-container-low/70 rounded-xl p-3 border border-slate-100 flex flex-col items-center gap-1.5 text-center">
+<div class="flex items-center gap-1.5 text-[11px] font-medium text-slate-600">
+<span class="material-symbols-outlined text-[14px] text-slate-500">lock</span>
+<span>Dilindungi oleh Google Apps Script Script Properties &amp; Session Token</span>
+</div>
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-white border border-slate-200 text-[10px] font-mono text-slate-500 font-semibold shadow-2xs">
+            v2.4 Pro • Zero-Cost Cloud Infrastructure
+          </span>
+</div>
+</div>
+<!-- Bottom Return Anchor -->
+<div class="text-center mt-6">
+<a class="inline-flex items-center gap-1.5 text-xs font-semibold text-text-muted hover:text-primary transition-colors py-1" href="#">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+<span>Kembali ke Katalog Publik EtalaseKu</span>
+</a>
+</div>
+</div>
+</main>
+<!-- Footprint Info -->
+<footer class="relative z-10 w-full py-4 text-center text-xs text-slate-400">
+    © 2025 EtalaseKu Hub &amp; Academy. Terintegrasi langsung dengan ekosistem Google Workspace &amp; Midtrans.
+  </footer>
+<!-- Simple Interaction Script for PIN Box Jump & Reveal Mode -->
+<script>
+    // Segmented PIN Box Auto-focus behavior
+    const pinBoxes = document.querySelectorAll('.pin-box');
+    pinBoxes.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        if (e.target.value.length >= 1 && index < pinBoxes.length - 1) {
+          pinBoxes[index + 1].focus();
+        }
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          pinBoxes[index - 1].focus();
+        }
+      });
+    });
+
+    // Toggle Input Mode between 6-digit PIN and standard Secret String
+    const toggleModeBtn = document.getElementById('toggle-input-mode');
+    const pinContainer = document.getElementById('pin-boxes-container');
+    const tokenWrapper = document.getElementById('token-input-wrapper');
+    let isTokenMode = false;
+
+    toggleModeBtn.addEventListener('click', () => {
+      isTokenMode = !isTokenMode;
+      if (isTokenMode) {
+        pinContainer.classList.add('hidden');
+        tokenWrapper.classList.remove('hidden');
+        toggleModeBtn.textContent = 'Mode 6-Digit PIN';
+      } else {
+        pinContainer.classList.remove('hidden');
+        tokenWrapper.classList.add('hidden');
+        toggleModeBtn.textContent = 'Mode Token Bebas';
+      }
+    });
+
+    // Toggle Password Visibility
+    const visibilityBtn = document.getElementById('toggle-visibility-btn');
+    const secretInput = document.getElementById('secret-token-input');
+    const visibilityIcon = document.getElementById('visibility-icon');
+
+    visibilityBtn.addEventListener('click', () => {
+      const isPassword = secretInput.type === 'password';
+      secretInput.type = isPassword ? 'text' : 'password';
+      visibilityIcon.textContent = isPassword ? 'visibility_off' : 'visibility';
+    });
+  </script>
+</body></html>

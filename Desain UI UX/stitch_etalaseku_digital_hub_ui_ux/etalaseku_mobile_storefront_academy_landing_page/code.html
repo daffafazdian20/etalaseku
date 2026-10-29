@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EtalaseKu - Master Digital Skills &amp; Digital Products</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-fixed-variant": "#484552",
+            "surface-container-high": "#eae8e4",
+            "on-tertiary-container": "#fffbff",
+            "pastel-lavender": "#F3EDFD",
+            "secondary-fixed-dim": "#bec6e0",
+            "error": "#ba1a1a",
+            "on-primary": "#ffffff",
+            "text-muted": "#64748B",
+            "background": "#fbf9f5",
+            "outline": "#906e71",
+            "surface-container-highest": "#e4e2de",
+            "inverse-surface": "#30312e",
+            "surface-container": "#efeeea",
+            "secondary-container": "#dae2fd",
+            "on-tertiary-fixed": "#1c1a25",
+            "secondary": "#565e74",
+            "primary-fixed": "#ffd9dc",
+            "on-secondary-fixed": "#131b2e",
+            "surface-tint": "#bd0041",
+            "on-primary-fixed-variant": "#910030",
+            "on-error": "#ffffff",
+            "surface-bright": "#fbf9f5",
+            "tertiary-fixed": "#e6e0f0",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#dbdad6",
+            "primary-container": "#e51152",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#c9c4d3",
+            "error-container": "#ffdad6",
+            "on-background": "#1b1c1a",
+            "tertiary-container": "#767380",
+            "cta-hover": "#E11D48",
+            "on-secondary-fixed-variant": "#3f465c",
+            "pastel-pink": "#FDEEF1",
+            "surface-card": "#FFFFFF",
+            "secondary-fixed": "#dae2fd",
+            "tertiary": "#5d5a67",
+            "outline-variant": "#e5bdc0",
+            "on-error-container": "#93000a",
+            "inverse-primary": "#ffb2ba",
+            "surface-container-low": "#f5f3ef",
+            "on-surface": "#1b1c1a",
+            "on-secondary-container": "#5c647a",
+            "primary-fixed-dim": "#ffb2ba",
+            "on-primary-fixed": "#400010",
+            "on-primary-container": "#fffbff",
+            "on-tertiary": "#ffffff",
+            "pastel-mint": "#E8F8F5",
+            "surface-variant": "#e4e2de",
+            "surface": "#fbf9f5",
+            "primary": "#b9003f",
+            "on-surface-variant": "#5c3f42",
+            "midnight-indigo": "#1E1B4B",
+            "inverse-on-surface": "#f2f0ed"
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "display-hero": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased pb-28">
+<!-- Shared Component: ActionPanel Anchor Shell -->
+<div class="relative flex h-auto w-full flex-col bg-[#fcf8f9] group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+<div class="p-4 @container">
+<div class="flex flex-1 flex-col items-start justify-between gap-4 rounded-xl border border-[#eacdd4] bg-[#fcf8f9] p-5 @[480px]:flex-row @[480px]:items-center">
+<div class="flex flex-col gap-1">
+<p class="text-[#1d0c10] text-base font-bold leading-tight">🔥 DISKON 50% - Batch 3 Tersisa 8 Kursi!</p>
+<p class="text-[#a1455c] text-base font-normal leading-normal">Klaim potongan spesial hari ini</p>
+</div>
+<a class="text-sm font-bold leading-normal tracking-[0.015em] flex gap-2 text-[#1d0c10]" href="#">
+          Klaim
+          <div class="text-[#1d0c10]" data-icon="ArrowRight" data-size="20px" data-weight="regular">
+<svg fill="currentColor" height="20px" viewbox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+<path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+</svg>
+</div>
+</a>
+</div>
+</div>
+<div class="flex items-center bg-[#fcf8f9] p-4 pb-2 justify-between">
+<div class="text-[#1d0c10] flex size-12 shrink-0 items-center" data-icon="List" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path>
+</svg>
+</div>
+<h2 class="text-[#1d0c10] text-lg font-bold leading-tight tracking-[-0.015em] flex-1">EtalaseKu •</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 bg-transparent text-[#1d0c10] gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<div class="text-[#1d0c10]" data-icon="MusicNotesSimple" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M212.92,25.69a8,8,0,0,0-6.86-1.45l-128,32A8,8,0,0,0,72,64V174.08A36,36,0,1,0,88,204V70.25l112-28v99.83A36,36,0,1,0,216,172V32A8,8,0,0,0,212.92,25.69ZM52,224a20,20,0,1,1,20-20A20,20,0,0,1,52,224Zm128-32a20,20,0,1,1,20-20A20,20,0,0,1,180,192Z"></path>
+</svg>
+</div>
+</button>
+</div>
+</div>
+<p class="text-[#a1455c] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">👋 Hi, Digital Creator</p>
+<h2 class="text-[#1d0c10] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
+      Master Digital Skills &amp; Sell Digital Products that People Love
+    </h2>
+<p class="text-[#1d0c10] text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
+      Akses 45+ video modul, template bisnis siap pakai, dan sistem otomatisasi pengiriman instan via Google Workspace.
+    </p>
+<div class="h-5 bg-[#fcf8f9]"></div>
+</div>
+<!-- Primary Mobile Hero Container -->
+<main class="w-full max-w-md mx-auto px-4">
+<!-- Hero CTA Buttons -->
+<div class="flex flex-col gap-3 pt-2 pb-6">
+<a class="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-primary hover:bg-cta-hover text-on-primary font-headline-sm text-base shadow-sm transition-all duration-200" href="#katalog">
+<span>Jelajahi Katalog Produk</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</a>
+<a class="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-full border border-midnight-indigo text-midnight-indigo font-label-lg text-sm bg-surface-card hover:bg-surface-container transition-all" href="#member">
+<span>Akses Ruang Belajar</span>
+<span class="material-symbols-outlined text-sm">key</span>
+</a>
+</div>
+<!-- 2.5D Tech Illustration Card -->
+<div class="relative bg-surface-card rounded-lg border border-outline-variant p-4 shadow-sm overflow-hidden mb-6">
+<div class="absolute -top-10 -right-10 w-28 h-28 bg-pastel-pink rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -bottom-10 -left-10 w-28 h-28 bg-pastel-lavender rounded-full blur-2xl pointer-events-none"></div>
+<div class="relative rounded border border-surface-container bg-surface-container-low overflow-hidden">
+<img class="w-full h-44 object-cover" data-alt="A clean modern 2.5D isometric mockup showcasing a sleek laptop displaying dashboard analytics and a smartphone showing digital courses against a warm light-mode workspace with soft pink accents and clean shadows. The atmosphere is optimistic and tech-savvy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQuFI0xIqZ6WzORUXQmoVCKsrCCKY8cTYgTT6-S4H18fEU2AbDcehQ4hR5hJAGK45KdPG-8UrkF6M4xU7Dioj6nRIw9H4TJk7ux8gi9UWt4Dlw6roiIPK8azUACEAxK1HuAgFra2uWEbS_KedQIOhNKEjuWiEMVCdAk20jDf6xYD_N66IW6ZEcsAhb8E8b6RX610B5OvbamP2SH_xgb990QymVf6nJce3jjJKFS936"/>
+<div class="p-3 bg-surface-card flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="inline-flex size-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs font-headline-sm text-on-surface">Auto-Delivery System Live</span>
+</div>
+<span class="text-[11px] font-semibold text-text-muted bg-surface-container px-2 py-0.5 rounded-full">v3.2 Active</span>
+</div>
+</div>
+<!-- Google Workspace chips bar -->
+<div class="mt-3 pt-3 border-t border-outline-variant flex items-center justify-between text-xs text-secondary">
+<span class="font-label-sm uppercase tracking-wider text-[10px] text-text-muted">Instant Stack:</span>
+<div class="flex items-center gap-1.5 flex-wrap justify-end">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-full text-[11px] font-medium text-midnight-indigo">
+<span class="material-symbols-outlined text-[13px] text-primary">add_to_drive</span> Drive
+          </span>
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-full text-[11px] font-medium text-midnight-indigo">
+<span class="material-symbols-outlined text-[13px] text-primary">table_chart</span> Sheets
+          </span>
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-full text-[11px] font-medium text-midnight-indigo">
+<span class="material-symbols-outlined text-[13px] text-primary">mail</span> Gmail
+          </span>
+</div>
+</div>
+</div>
+<!-- 2x2 Metric Counters -->
+<section class="grid grid-cols-2 gap-3 mb-8">
+<div class="bg-surface-card border border-outline-variant rounded-DEFAULT p-3.5 flex flex-col justify-between shadow-xs">
+<div class="size-8 rounded-full bg-pastel-pink flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary text-lg">group</span>
+</div>
+<div>
+<div class="font-headline-sm text-lg text-on-surface">1.200+</div>
+<div class="text-xs text-text-muted">Member Aktif</div>
+</div>
+</div>
+<div class="bg-surface-card border border-outline-variant rounded-DEFAULT p-3.5 flex flex-col justify-between shadow-xs">
+<div class="size-8 rounded-full bg-pastel-mint flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-secondary text-lg">folder_open</span>
+</div>
+<div>
+<div class="font-headline-sm text-lg text-on-surface">45+</div>
+<div class="text-xs text-text-muted">Modul &amp; Template</div>
+</div>
+</div>
+<div class="bg-surface-card border border-outline-variant rounded-DEFAULT p-3.5 flex flex-col justify-between shadow-xs">
+<div class="size-8 rounded-full bg-pastel-lavender flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary text-lg">sentiment_satisfied</span>
+</div>
+<div>
+<div class="font-headline-sm text-lg text-on-surface">98%</div>
+<div class="text-xs text-text-muted">Tingkat Kepuasan</div>
+</div>
+</div>
+<div class="bg-surface-card border border-outline-variant rounded-DEFAULT p-3.5 flex flex-col justify-between shadow-xs">
+<div class="size-8 rounded-full bg-primary-fixed flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-on-primary-fixed text-lg">bolt</span>
+</div>
+<div>
+<div class="font-headline-sm text-lg text-on-surface">&lt; 10 Detik</div>
+<div class="text-xs text-text-muted">Instant Delivery</div>
+</div>
+</div>
+</section>
+<!-- Categories Section -->
+<section class="mb-9">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h3 class="font-headline-sm text-base text-midnight-indigo">Layanan &amp; Pilihan Belajar</h3>
+<p class="text-xs text-text-muted">Pilih format akselerasi yang sesuai kebutuhanmu</p>
+</div>
+<span class="material-symbols-outlined text-primary text-base">category</span>
+</div>
+<!-- Horizontal Scrollable Cards -->
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 snap-x snap-mandatory -mx-4 px-4">
+<div class="min-w-[210px] snap-center bg-surface-card border border-outline-variant rounded-DEFAULT p-4 flex flex-col justify-between">
+<div>
+<div class="size-9 rounded-full bg-pastel-pink text-primary flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-lg">play_circle</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary bg-pastel-pink px-2 py-0.5 rounded-full">Video On-Demand</span>
+<h4 class="font-headline-sm text-sm text-midnight-indigo mt-2">E-Course Praktis</h4>
+<p class="text-xs text-text-muted mt-1">Belajar step-by-step kurikulum terstruktur dan studi kasus nyata.</p>
+</div>
+<div class="pt-3 mt-3 border-t border-surface-container flex items-center justify-between text-xs font-semibold text-primary">
+<span>Lihat Materi</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+</div>
+</div>
+<div class="min-w-[210px] snap-center bg-surface-card border border-outline-variant rounded-DEFAULT p-4 flex flex-col justify-between">
+<div>
+<div class="size-9 rounded-full bg-pastel-lavender text-midnight-indigo flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-lg">dashboard_customize</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-midnight-indigo bg-pastel-lavender px-2 py-0.5 rounded-full">Ready-To-Use</span>
+<h4 class="font-headline-sm text-sm text-midnight-indigo mt-2">Template Bisnis</h4>
+<p class="text-xs text-text-muted mt-1">Notion OS, Sheets dashboard, dan SOP bisnis langsung pakai.</p>
+</div>
+<div class="pt-3 mt-3 border-t border-surface-container flex items-center justify-between text-xs font-semibold text-primary">
+<span>Eksplor Template</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+</div>
+</div>
+<div class="min-w-[210px] snap-center bg-surface-card border border-outline-variant rounded-DEFAULT p-4 flex flex-col justify-between">
+<div>
+<div class="size-9 rounded-full bg-pastel-mint text-secondary flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-lg">code_blocks</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-secondary bg-pastel-mint px-2 py-0.5 rounded-full">Developer Kit</span>
+<h4 class="font-headline-sm text-sm text-midnight-indigo mt-2">Source Code &amp; Web App</h4>
+<p class="text-xs text-text-muted mt-1">Google Apps Script boilerplates dan fullstack micro-apps.</p>
+</div>
+<div class="pt-3 mt-3 border-t border-surface-container flex items-center justify-between text-xs font-semibold text-primary">
+<span>Lihat Codebase</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+</div>
+</div>
+<div class="min-w-[210px] snap-center bg-surface-card border border-outline-variant rounded-DEFAULT p-4 flex flex-col justify-between">
+<div>
+<div class="size-9 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-lg">diversity_3</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-on-primary-fixed bg-primary-fixed px-2 py-0.5 rounded-full">1-on-1 &amp; Group</span>
+<h4 class="font-headline-sm text-sm text-midnight-indigo mt-2">Mentoring &amp; Bundling</h4>
+<p class="text-xs text-text-muted mt-1">Pendampingan live QnA bulanan dan private community chat.</p>
+</div>
+<div class="pt-3 mt-3 border-t border-surface-container flex items-center justify-between text-xs font-semibold text-primary">
+<span>Daftar Sesi</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Selected Products Feed -->
+<section class="mb-10" id="katalog">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-sm text-base text-midnight-indigo">Produk Unggulan Pilihan</h3>
+<span class="text-xs font-semibold text-primary">Semua Katalog</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Product 1: Urgent Batch 3 -->
+<article class="bg-surface-card border-2 border-primary rounded-DEFAULT p-4 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl">
+            Sisa 8 Kursi
+          </div>
+<div class="mb-2">
+<span class="text-[11px] font-semibold text-primary bg-pastel-pink px-2 py-0.5 rounded-full inline-block mb-1">Interactive Bootcamp</span>
+<h4 class="font-headline-sm text-base text-midnight-indigo">GAS Pro Web App Masterclass</h4>
+<p class="text-xs text-text-muted mt-1">Kuasai Google Apps Script dari dasar hingga membangun Web App SaaS siap jual dalam 14 hari.</p>
+</div>
+<div class="space-y-1.5 my-3 text-xs text-on-surface">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">check_circle</span>
+<span>18 Jam Rekaman Video + 4 Sesi Live Zoom</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">check_circle</span>
+<span>Akses Source Code Boilerplate Full Stack</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">check_circle</span>
+<span>Sertifikat Digital &amp; Akses Komunitas Seumur Hidup</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant flex items-end justify-between mb-3">
+<div>
+<span class="text-[11px] text-text-muted line-through">Rp 249.000</span>
+<div class="font-headline-sm text-xl text-primary font-bold">Rp 99.000</div>
+</div>
+<span class="text-[10px] text-secondary font-medium">Sekali bayar</span>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-primary hover:bg-cta-hover text-on-primary font-label-lg text-sm shadow-xs transition-colors">
+<span>Daftar Sekarang</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+</article>
+<!-- Product 2: Instant Download Notion OS -->
+<article class="bg-surface-card border border-outline-variant rounded-DEFAULT p-4 shadow-sm">
+<div class="flex items-start justify-between mb-2">
+<span class="text-[11px] font-semibold text-secondary bg-surface-container px-2 py-0.5 rounded-full">Instant Download</span>
+<span class="text-xs font-bold text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span> 4.9 (180+)
+            </span>
+</div>
+<h4 class="font-headline-sm text-base text-midnight-indigo">Digital Agency Notion OS &amp; Sheets CRM</h4>
+<p class="text-xs text-text-muted mt-1">Sistem manajemen klien, pipeline sales, dan dashboard keuangan otomatis terintegrasi spreadsheet.</p>
+<div class="space-y-1.5 my-3 text-xs text-on-surface">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+<span>Template Notion siap duplikasi 1-klik</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+<span>Formula Google Sheets pelacak invoice otomatis</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant flex items-end justify-between mb-3">
+<div>
+<span class="text-[11px] text-text-muted line-through">Rp 199.000</span>
+<div class="font-headline-sm text-xl text-midnight-indigo font-bold">Rp 79.000</div>
+</div>
+<span class="text-[11px] text-text-muted">Akses instan di email</span>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-surface-container-high hover:bg-surface-variant text-midnight-indigo font-label-lg text-sm border border-outline-variant transition-colors">
+<span class="material-symbols-outlined text-base">download</span>
+<span>Beli Instan</span>
+</button>
+</article>
+<!-- Product 3: Priority Waitlist -->
+<article class="bg-surface-card border border-outline-variant rounded-DEFAULT p-4 shadow-sm opacity-90">
+<div class="flex items-start justify-between mb-2">
+<span class="text-[11px] font-semibold text-error bg-pastel-pink px-2 py-0.5 rounded-full">Batch 2 Ditutup • Kuota Penuh</span>
+<span class="text-xs text-text-muted">Next: Batch 3</span>
+</div>
+<h4 class="font-headline-sm text-base text-midnight-indigo">Fullstack Automation Bootcamp</h4>
+<p class="text-xs text-text-muted mt-1">Bangun micro-SaaS berbasis no-code &amp; low-code dengan ekosistem Google Workspace &amp; Stripe.</p>
+<div class="pt-3 border-t border-outline-variant flex items-end justify-between mb-3 mt-3">
+<div>
+<span class="text-[11px] text-text-muted">Investasi Pelatihan</span>
+<div class="font-headline-sm text-lg text-midnight-indigo font-bold">Rp 499.000</div>
+</div>
+<span class="text-[11px] text-primary font-medium">Buka Bulan Depan</span>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-full border border-midnight-indigo text-midnight-indigo bg-surface-card hover:bg-surface-container font-label-md text-sm transition-colors">
+<span class="material-symbols-outlined text-base">hourglass_top</span>
+<span>Masuk Priority Waitlist</span>
+</button>
+</article>
+</div>
+</section>
+<!-- Showcase Member Karya -->
+<section class="mb-10">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h3 class="font-headline-sm text-base text-midnight-indigo">Karya Nyata Para Member</h3>
+<p class="text-xs text-text-muted">Produk yang dibuat &amp; diluncurkan oleh lulusan</p>
+</div>
+<span class="material-symbols-outlined text-primary text-base">workspace_premium</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Mockup Card 1 -->
+<div class="bg-surface-card border border-outline-variant rounded-DEFAULT p-3.5 shadow-xs">
+<div class="rounded overflow-hidden mb-3 border border-surface-container">
+<img class="w-full h-36 object-cover" data-alt="A refined digital user interface of a Lawfirm CRM dashboard showcasing client intake metrics, automated forms, and clean card components in a soft light mode interface with pastel rose accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo1eZxNDCwkLpXXGtjgMeVzR_IE5kbJRL2y7iFO0wEOZwtD8BGWBLoy-HgA4dAelzzpyjbKFfPS5pEdL-rG9W3vP_APAz1NzmQOhoqCo1YGVK_K2NB10eWeTJxPhU0iTaqGW1MJ4vogSPcQz8KanV18oIr9dOWwHLRiM3SD6Gd0S4nBa_e-00lg-VXBpFqTyQb85mJhv3CIv1qK4LswpKA0LfmddhzoRsMWpok-BPZ"/>
+</div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-[10px] font-bold text-primary bg-pastel-pink px-2 py-0.5 rounded-full uppercase">Sistem Legal Automasi</span>
+<h4 class="font-headline-sm text-sm text-midnight-indigo mt-1">Lawfirm CRM &amp; Client Intake</h4>
+<p class="text-xs text-text-muted">Oleh Aditya Pratama • Berhasil kelola 2.450+ intake berkas</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-sm">open_in_new</span>
+</div>
+</div>
+<!-- Mockup Card 2 -->
+<div class="bg-surface-card border border-outline-variant rounded-DEFAULT p-3.5 shadow-xs">
+<div class="rounded overflow-hidden mb-3 border border-surface-container">
+<img class="w-full h-36 object-cover" data-alt="An elegant invoice generator interface with automated spreadsheet calculations, real-time client ledger status, and pink primary action tags built for creative freelance studios in modern light mode." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8jIl6U7rrwPgyJmb9_KxGhpWevg4qZGOeeOguu7aVyFFvfAdlZ683YsTGsBVfC5-XjU0Bg4JPY2vHRlnqui2hfX87xl727AqXONG_Ff7ZGnOY-PCaTcJHHBQPmqfisfPZh7R7NghtWnTdkxQrTszCbir00L4RwW5KwD7nM93cEJDqkJaNTCBrpKh8LZwCKwvGQyoYA6utPRxcLXXfPsksPcv4LPKc1Cpt6xSjvHT8"/>
+</div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-[10px] font-bold text-secondary bg-pastel-mint px-2 py-0.5 rounded-full uppercase">10x Lebih Cepat</span>
+<h4 class="font-headline-sm text-sm text-midnight-indigo mt-1">E-Commerce Auto-Invoicing Engine</h4>
+<p class="text-xs text-text-muted">Oleh Sarah Melinda • Pengiriman invoice instan via WhatsApp API</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-sm">open_in_new</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial Slider / Card -->
+<section class="mb-10">
+<div class="bg-pastel-lavender/60 border border-secondary-container rounded-DEFAULT p-4">
+<div class="flex items-center gap-1 text-primary mb-2">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-midnight-indigo ml-1">5.0 / 5.0</span>
+</div>
+<p class="text-xs text-midnight-indigo leading-relaxed italic mb-3">
+          "Modulnya super to-the-point! Dalam 3 hari saya berhasil bikin form registrasi member yang otomatis kirim materi Google Drive ke email pembeli tanpa biaya langganan bulanan mahal."
+        </p>
+<div class="flex items-center gap-2.5">
+<img class="size-9 rounded-full object-cover border border-outline-variant" data-alt="A professional cheerful portrait avatar of an Indonesian female tech creator smiling in a modern studio environment with soft natural light and subtle pastel background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxs8cSRHOrKRKKbEnRAOQspVHTYLzJvvL0n8KXz-JjWY3AYUSf-madq4opnbet7u9JVqtjQ3ydU5lPnjhQuQo4odD31cbC_KU5_0mr98vL4k7pCzjG2Vda2fcSacKmKD-rWNw_VR4bRnf3fUeaWV5uGn3HxY6F1okOyYrdVOv0yM0IOy7nqCtCdasWQJoYIBA-HjuQmuh1h1ElSQBx0TzFdVxaDebbOIhuaFs_3XNN"/>
+<div>
+<div class="text-xs font-headline-sm text-midnight-indigo flex items-center gap-1">
+              Rian Firmansyah
+              <span class="material-symbols-outlined text-xs text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="text-[11px] text-text-muted">Founder, FreelanceCraft Studio</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pre-Footer High-Five Card -->
+<section class="mb-8">
+<div class="bg-pastel-pink border border-outline-variant rounded-DEFAULT p-5 text-center relative overflow-hidden">
+<div class="size-12 rounded-full bg-surface-card mx-auto flex items-center justify-center text-primary shadow-xs mb-3">
+<span class="material-symbols-outlined text-2xl">front_hand</span>
+</div>
+<h3 class="font-headline-sm text-base text-midnight-indigo">Punya Ide Produk Digital?</h3>
+<p class="text-xs text-text-muted mt-1 mb-4">Mari bangun bersama komunitas 1.200+ kreator aktif di EtalaseKu.</p>
+<a class="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full bg-primary hover:bg-cta-hover text-on-primary font-headline-sm text-xs shadow-xs transition-colors" href="#katalog">
+<span>Mulai Belajar Hari Ini</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- Compact Footer -->
+<footer class="pt-4 border-t border-outline-variant text-center pb-6">
+<div class="flex items-center justify-center gap-1 font-headline-sm text-sm text-midnight-indigo mb-2">
+<span>EtalaseKu</span>
+<span class="size-1.5 rounded-full bg-primary inline-block"></span>
+<span class="text-text-muted font-normal text-xs ml-1">Digital Hub &amp; Academy</span>
+</div>
+<p class="text-[11px] text-text-muted max-w-xs mx-auto mb-3">
+        Platform edukasi dan template otomasi ekosistem Google Workspace untuk kreator digital Indonesia.
+      </p>
+<div class="flex justify-center gap-4 text-xs text-secondary font-medium mb-3">
+<a class="hover:text-primary" href="#">Syarat &amp; Ketentuan</a>
+<a class="hover:text-primary" href="#">Kebijakan Privasi</a>
+<a class="hover:text-primary" href="#">Bantuan</a>
+</div>
+<p class="text-[10px] text-text-muted">© 2025 EtalaseKu. All rights reserved.</p>
+</footer>
+</main>
+<!-- Persistent Floating/Sticky Bottom Bar -->
+<aside class="fixed bottom-0 left-0 right-0 z-50 bg-surface-card/95 backdrop-blur-md border-t border-outline-variant px-4 py-3 shadow-lg">
+<div class="max-w-md mx-auto flex items-center gap-2.5">
+<a class="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full border border-midnight-indigo text-midnight-indigo font-label-md text-xs bg-surface-card hover:bg-surface-container transition-colors" href="https://wa.me/">
+<span class="material-symbols-outlined text-sm text-midnight-indigo">chat</span>
+<span>Chat CS</span>
+</a>
+<a class="flex-[2] flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-full bg-primary hover:bg-cta-hover text-on-primary font-headline-sm text-xs shadow-sm transition-colors" href="#katalog">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+<span>Beli Sekarang / Akses</span>
+</a>
+</div>
+</aside>
+</body></html>

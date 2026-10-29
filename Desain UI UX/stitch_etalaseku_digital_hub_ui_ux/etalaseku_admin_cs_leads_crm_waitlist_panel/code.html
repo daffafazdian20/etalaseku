@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EtalaseKu - Admin &amp; CS Leads CRM / Waitlist Panel</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed-variant": "#484552",
+            "cta-hover": "#E11D48",
+            "on-tertiary-container": "#fffbff",
+            "inverse-on-surface": "#f2f0ed",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#767380",
+            "secondary-fixed": "#dae2fd",
+            "outline": "#906e71",
+            "surface-dim": "#dbdad6",
+            "on-surface-variant": "#5c3f42",
+            "outline-variant": "#e5bdc0",
+            "pastel-mint": "#E8F8F5",
+            "pastel-pink": "#FDEEF1",
+            "surface-container-lowest": "#ffffff",
+            "surface-container": "#efeeea",
+            "tertiary-fixed-dim": "#c9c4d3",
+            "secondary": "#565e74",
+            "surface-container-highest": "#e4e2de",
+            "on-surface": "#1b1c1a",
+            "pastel-lavender": "#F3EDFD",
+            "surface-bright": "#fbf9f5",
+            "surface-variant": "#e4e2de",
+            "on-secondary-fixed": "#131b2e",
+            "error": "#ba1a1a",
+            "secondary-container": "#dae2fd",
+            "inverse-surface": "#30312e",
+            "tertiary-fixed": "#e6e0f0",
+            "error-container": "#ffdad6",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary": "#b9003f",
+            "on-secondary": "#ffffff",
+            "text-muted": "#64748B",
+            "on-secondary-container": "#5c647a",
+            "on-primary-fixed-variant": "#910030",
+            "on-primary-fixed": "#400010",
+            "on-background": "#1b1c1a",
+            "on-tertiary": "#ffffff",
+            "surface-container-high": "#eae8e4",
+            "surface": "#fbf9f5",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface-tint": "#bd0041",
+            "surface-container-low": "#f5f3ef",
+            "on-tertiary-fixed": "#1c1a25",
+            "on-primary-container": "#fffbff",
+            "primary-fixed": "#ffd9dc",
+            "background": "#fbf9f5",
+            "on-primary": "#ffffff",
+            "tertiary": "#5d5a67",
+            "primary-fixed-dim": "#ffb2ba",
+            "inverse-primary": "#ffb2ba",
+            "primary-container": "#e51152",
+            "on-error": "#ffffff",
+            "midnight-indigo": "#1E1B4B",
+            "surface-card": "#FFFFFF"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-md": "1rem",
+            "space-2xl": "4rem",
+            "margin": "2rem",
+            "gutter": "1.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          }
+        },
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col md:flex-row">
+<!-- Left Sidebar (web_dashboard standard shell) -->
+<aside class="w-full md:w-64 bg-midnight-indigo text-inverse-on-surface flex flex-col shrink-0 border-r border-outline/20">
+<!-- Brand Logo Area -->
+<div class="p-space-lg flex items-center justify-between border-b border-outline/20">
+<div class="flex items-center gap-2">
+<div class="w-9 h-9 rounded-DEFAULT bg-primary-container flex items-center justify-center text-on-primary font-headline-sm shadow-md">
+          E
+        </div>
+<div>
+<span class="font-headline-sm text-surface-card text-lg tracking-tight block">EtalaseKu</span>
+<span class="text-xs text-secondary-fixed block tracking-wide uppercase font-semibold">Academy &amp; Hub</span>
+</div>
+</div>
+<span class="text-xs px-2 py-0.5 rounded-full bg-primary/30 text-primary-fixed border border-primary/40 font-medium">CS CRM</span>
+</div>
+<!-- Navigation List -->
+<nav class="p-space-md flex-1 space-y-1 overflow-y-auto">
+<div class="text-[11px] font-bold uppercase tracking-wider text-secondary-fixed-dim px-3 py-2">Navigasi Utama</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-inverse-on-surface/80 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="text-sm font-medium">Ringkasan Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-inverse-on-surface/80 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">school</span>
+<span class="text-sm font-medium">Batch &amp; Kelas Academy</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-inverse-on-surface/80 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">inventory_2</span>
+<span class="text-sm font-medium">Produk Digital &amp; Template</span>
+</a>
+<!-- Active Menu: Leads & Waitlist -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-DEFAULT bg-primary-container/20 text-surface-card border border-primary-container/40 shadow-sm transition-all group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-primary-container group-hover:scale-110 transition-transform">contact_phone</span>
+<span class="text-sm font-semibold tracking-wide">Leads &amp; Waitlist</span>
+</div>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-primary-container text-on-primary shadow-sm animate-pulse">12 Baru</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-inverse-on-surface/80 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">payments</span>
+<span class="text-sm font-medium">Transaksi &amp; Faktur</span>
+</a>
+<div class="text-[11px] font-bold uppercase tracking-wider text-secondary-fixed-dim px-3 pt-5 pb-2">Integrasi Otomatis</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-inverse-on-surface/80 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">table_chart</span>
+<span class="text-sm font-medium">Sync Google Sheets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-inverse-on-surface/80 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">forum</span>
+<span class="text-sm font-medium">Kanal WhatsApp CS</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-inverse-on-surface/80 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="text-sm font-medium">Pengaturan CRM</span>
+</a>
+</nav>
+<!-- Sidebar Bottom User & Status -->
+<div class="p-space-md border-t border-outline/20 bg-midnight-indigo/50">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-primary font-bold flex items-center justify-center text-sm border border-primary/20">
+          CS
+        </div>
+<div class="min-w-0 flex-1">
+<p class="text-xs font-semibold text-surface-card truncate">Admin CS Sarah</p>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-[11px] text-secondary-fixed">Online di WhatsApp Hub</span>
+</div>
+</div>
+<button class="p-1 rounded text-inverse-on-surface/60 hover:text-white hover:bg-white/10" title="Keluar">
+<span class="material-symbols-outlined text-lg">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<!-- Top Bar with Breadcrumb and Actions -->
+<header class="bg-surface-card border-b border-surface-container-highest px-space-lg py-3 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
+<div class="flex items-center gap-3 flex-wrap">
+<div class="flex items-center gap-1.5 text-xs text-text-muted font-medium">
+<span>EtalaseKu</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Operasional &amp; CS</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-on-surface font-semibold">Leads CRM &amp; Antrean Waitlist</span>
+</div>
+<span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-pastel-mint border border-emerald-200 text-[11px] font-medium text-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+          Sheets <code class="font-mono text-emerald-900 font-bold">tb_leads_crm</code> Synced (Auto-Trigger Active)
+        </span>
+</div>
+<div class="flex items-center gap-2.5">
+<button class="flex items-center gap-1.5 px-3 py-2 rounded-DEFAULT bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-on-surface text-xs font-semibold transition shadow-xs">
+<span class="material-symbols-outlined text-sm text-secondary">sync</span>
+<span>Tarik Leads Baru</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 rounded-DEFAULT bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-on-surface text-xs font-semibold transition shadow-xs">
+<span class="material-symbols-outlined text-sm text-secondary">file_download</span>
+<span>Export CSV / Kontak CS</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-DEFAULT bg-primary-container hover:bg-cta-hover text-on-primary text-xs font-bold transition shadow-md shadow-primary-container/20">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>+ Tambah Lead Manual</span>
+</button>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="p-space-lg space-y-space-lg flex-1">
+<!-- Top KPI Summary Cards (4 Floating Cards) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1: Total Prospek Aktif -->
+<div class="bg-surface-card p-4 rounded-DEFAULT border border-surface-container-highest shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">Total Prospek Aktif</span>
+<h2 class="text-2xl font-bold font-headline-sm text-on-surface mt-1">48 Leads</h2>
+</div>
+<div class="w-10 h-10 rounded-DEFAULT bg-pastel-pink text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">groups</span>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-surface-container flex items-center justify-between text-xs">
+<span class="text-emerald-700 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span> +14 minggu ini
+            </span>
+<span class="text-text-muted">Rate Closing: <strong class="text-on-surface">68%</strong></span>
+</div>
+</div>
+<!-- Card 2: Antrean Waitlist Batch 4 -->
+<div class="bg-surface-card p-4 rounded-DEFAULT border border-surface-container-highest shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">Waitlist Batch 4</span>
+<h2 class="text-2xl font-bold font-headline-sm text-on-surface mt-1">14 Calon Member</h2>
+</div>
+<div class="w-10 h-10 rounded-DEFAULT bg-pastel-lavender text-midnight-indigo flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">hourglass_top</span>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-surface-container flex items-center justify-between text-xs">
+<span class="text-on-surface font-medium truncate">GAS Pro &amp; Fullstack Automation</span>
+<span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 font-bold text-[10px]">Quota Ready</span>
+</div>
+</div>
+<!-- Card 3: Butuh Follow-Up Hari Ini -->
+<div class="bg-surface-card p-4 rounded-DEFAULT border border-amber-200 bg-amber-50/20 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-semibold uppercase tracking-wider text-amber-900">Butuh Follow-Up Hari Ini</span>
+<h2 class="text-2xl font-bold font-headline-sm text-amber-950 mt-1">8 Kontak</h2>
+</div>
+<div class="w-10 h-10 rounded-DEFAULT bg-amber-100 text-amber-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">notifications_active</span>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-amber-200/60 flex items-center justify-between text-xs">
+<span class="px-2 py-0.5 rounded-full bg-amber-200/80 text-amber-900 font-bold text-[11px] flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span> Prioritas Tinggi &lt; 2 Jam
+            </span>
+<span class="text-amber-800 font-medium text-[11px]">4 Segera Kadaluarsa</span>
+</div>
+</div>
+<!-- Card 4: Estimasi Potensi Closing -->
+<div class="bg-surface-card p-4 rounded-DEFAULT border border-surface-container-highest shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">Potensi Omset Closing</span>
+<h2 class="text-2xl font-bold font-headline-sm text-primary mt-1">Rp 3.860.000</h2>
+</div>
+<div class="w-10 h-10 rounded-DEFAULT bg-pastel-mint text-emerald-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">attach_money</span>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-surface-container flex items-center justify-between text-xs">
+<span class="text-text-muted text-[11px] truncate">Berdasarkan total keranjang minat</span>
+<span class="text-emerald-700 font-bold text-[11px]">+Rp 750k Hari Ini</span>
+</div>
+</div>
+</section>
+<!-- Main Layout: Table Area (Left 8 Cols) + CS Quick WhatsApp Drawer/Panel (Right 4 Cols) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Table & Filter Section (col-span-8) -->
+<div class="lg:col-span-8 space-y-4">
+<!-- Tab Navigation with Badges -->
+<div class="bg-surface-card p-1.5 rounded-DEFAULT border border-surface-container-highest shadow-xs flex items-center gap-1 overflow-x-auto">
+<button class="px-3.5 py-2 rounded-lg bg-primary-container text-on-primary font-label-md text-xs flex items-center gap-2 whitespace-nowrap shadow-xs font-semibold">
+<span>Semua Leads</span>
+<span class="bg-white/20 text-white px-1.5 py-0.5 rounded-full text-[10px]">48</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container-low font-label-md text-xs flex items-center gap-2 whitespace-nowrap transition">
+<span>Konsultasi Produk</span>
+<span class="bg-surface-container-high text-secondary px-1.5 py-0.5 rounded-full text-[10px]">36</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container-low font-label-md text-xs flex items-center gap-2 whitespace-nowrap transition">
+<span>Waitlist Batch Penuh</span>
+<span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full text-[10px] font-bold">12</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container-low font-label-md text-xs flex items-center gap-2 whitespace-nowrap transition">
+<span>Berhasil Closing</span>
+<span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full text-[10px] font-bold">28</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container-low font-label-md text-xs flex items-center gap-2 whitespace-nowrap transition">
+<span>Arsip / Batal</span>
+<span class="bg-surface-container-high text-secondary px-1.5 py-0.5 rounded-full text-[10px]">6</span>
+</button>
+</div>
+<!-- Toolbar: Search & Filter Grid -->
+<div class="bg-surface-card p-3 rounded-DEFAULT border border-surface-container-highest shadow-xs space-y-3">
+<div class="flex flex-col md:flex-row items-center gap-2.5">
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-secondary text-sm">search</span>
+<input class="w-full pl-9 pr-3 py-2 text-xs rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:border-primary-container focus:ring-1 focus:ring-primary-container transition" placeholder="Cari nama prospek, no WhatsApp, atau nama produk..." type="text" value="Dimas Setiawan"/>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto">
+<select class="text-xs py-2 px-3 rounded-DEFAULT border border-outline-variant bg-surface-container-lowest text-on-surface font-medium focus:border-primary-container focus:ring-primary-container">
+<option>Produk: Semua Produk</option>
+<option selected="">GAS Pro Masterclass</option>
+<option>Notion Ultimate Freelancer OS</option>
+<option>Fullstack Automation Bundle</option>
+</select>
+<select class="text-xs py-2 px-3 rounded-DEFAULT border border-outline-variant bg-surface-container-lowest text-on-surface font-medium focus:border-primary-container focus:ring-primary-container">
+<option>Status: Semua Status</option>
+<option>🔥 Lead Baru</option>
+<option>💬 Sudah Di-chat CS</option>
+<option>⏳ Tunggu Transfer</option>
+<option>✅ Siap Closing</option>
+</select>
+<select class="text-xs py-2 px-3 rounded-DEFAULT border border-outline-variant bg-surface-container-lowest text-on-surface font-medium focus:border-primary-container focus:ring-primary-container hidden xl:block">
+<option>Sumber: Semua (Modal, WA, Abandoned)</option>
+<option>Waitlist Modal Batch</option>
+<option>Floating WA Widget</option>
+<option>Checkout Abandoned</option>
+</select>
+<button class="p-2 border border-outline-variant rounded-DEFAULT bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container-low transition" title="Sort Terbaru">
+<span class="material-symbols-outlined text-sm">sort</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Leads Table Card -->
+<div class="bg-surface-card rounded-DEFAULT border border-surface-container-highest shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs border-collapse">
+<thead>
+<tr class="bg-surface-container-low/70 border-b border-surface-container-highest text-secondary uppercase font-label-sm tracking-wider text-[11px]">
+<th class="py-3 px-3.5">ID Lead &amp; Waktu</th>
+<th class="py-3 px-3.5">Calon Pembeli &amp; Kontak</th>
+<th class="py-3 px-3.5">Produk Minat &amp; Tipe</th>
+<th class="py-3 px-3.5">Potensi</th>
+<th class="py-3 px-3.5">Status Follow-Up</th>
+<th class="py-3 px-3.5">Catatan CS</th>
+<th class="py-3 px-3.5 text-right">Quick Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-highest">
+<!-- Row 1: Selected / Highlighted Lead -->
+<tr class="bg-pastel-pink/40 hover:bg-pastel-pink/60 transition group border-l-4 border-primary-container">
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-mono font-bold text-on-surface">LED-20261028-091</div>
+<div class="text-[11px] text-text-muted mt-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 10 menit lalu
+                      </div>
+<span class="inline-block mt-1 text-[10px] px-1.5 py-0.2 rounded bg-white text-secondary border border-outline-variant/60 font-mono">Modal Batch</span>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary font-bold flex items-center justify-center text-xs shrink-0 shadow-xs">
+                          DS
+                        </div>
+<div>
+<div class="font-bold text-on-surface text-sm flex items-center gap-1.5">
+                            Dimas Setiawan
+                            <span class="material-symbols-outlined text-[14px] text-primary" title="Terpilih di Asisten WA">check_circle</span>
+</div>
+<div class="text-[11px] font-mono text-emerald-700 flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px]">chat</span>
+                            +62 813-8890-1234
+                          </div>
+<div class="text-[10px] text-text-muted">dimas.tech@gmail.com</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="font-semibold text-on-surface">GAS Pro Web App Masterclass</div>
+<div class="mt-1 flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold border border-amber-200">
+                          Waitlist Batch 4
+                        </span>
+<span class="px-2 py-0.5 rounded-full bg-pastel-mint text-emerald-800 text-[10px] font-medium border border-emerald-200">
+                          Prioritas VIP
+                        </span>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-bold text-primary text-xs">Rp 750.000</div>
+<span class="text-[10px] text-text-muted">Paket Pro + Mentoring</span>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-container text-on-primary text-[11px] font-bold shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> 🔥 Lead Baru
+                      </span>
+</td>
+<td class="py-3 px-3.5 align-top max-w-[190px]">
+<p class="text-xs text-on-surface line-clamp-2">Tanya ketersediaan slot batch 4, minta diingatkan saat buka pendaftaran.</p>
+<button class="text-[10px] text-primary hover:underline font-semibold mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]">edit</span> Edit Catatan
+                      </button>
+</td>
+<td class="py-3 px-3.5 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1 shadow-sm transition">
+<span class="material-symbols-outlined text-sm">send</span>
+<span>Chat WA</span>
+</button>
+<button class="p-1.5 rounded-DEFAULT hover:bg-surface-container-high text-secondary" title="Menu Opsi">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/50 transition group">
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-mono font-bold text-on-surface">LED-20261028-089</div>
+<div class="text-[11px] text-text-muted mt-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 32 menit lalu
+                      </div>
+<span class="inline-block mt-1 text-[10px] px-1.5 py-0.2 rounded bg-surface-container-high text-secondary font-mono">WA Widget</span>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-xs shrink-0">
+                          RM
+                        </div>
+<div>
+<div class="font-bold text-on-surface text-sm">Rina Marlina</div>
+<div class="text-[11px] font-mono text-emerald-700 flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px]">chat</span>
+                            +62 821-4455-7890
+                          </div>
+<div class="text-[10px] text-text-muted">rina.marlina@agency.id</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="font-semibold text-on-surface">Notion Ultimate Freelancer OS</div>
+<div class="mt-1 flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[10px] font-bold border border-cyan-200">
+                          Tanya Kurikulum
+                        </span>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-bold text-on-surface text-xs">Rp 149.000</div>
+<span class="text-[10px] text-text-muted">Single Template</span>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-[11px] font-semibold border border-blue-200">
+                        💬 Sudah Di-chat CS
+                      </span>
+</td>
+<td class="py-3 px-3.5 align-top max-w-[190px]">
+<p class="text-xs text-on-surface line-clamp-2">Menanyakan apakah kompatibel dengan akun Notion Free. Sudah dikirim info komparasi.</p>
+<button class="text-[10px] text-text-muted hover:text-primary font-semibold mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]">edit</span> Edit
+                      </button>
+</td>
+<td class="py-3 px-3.5 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1.5 rounded-DEFAULT bg-surface-container-lowest hover:bg-emerald-50 border border-emerald-300 text-emerald-800 font-semibold text-xs flex items-center gap-1 shadow-xs transition">
+<span class="material-symbols-outlined text-sm text-emerald-600">forum</span>
+<span>Buka WA</span>
+</button>
+<button class="p-1.5 rounded-DEFAULT hover:bg-surface-container-high text-secondary" title="Menu Opsi">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/50 transition group">
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-mono font-bold text-on-surface">LED-20261028-084</div>
+<div class="text-[11px] text-text-muted mt-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 1.5 jam lalu
+                      </div>
+<span class="inline-block mt-1 text-[10px] px-1.5 py-0.2 rounded bg-surface-container-high text-secondary font-mono">Abandoned Cart</span>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-amber-600 text-white font-bold flex items-center justify-center text-xs shrink-0">
+                          FP
+                        </div>
+<div>
+<div class="font-bold text-on-surface text-sm">Farhan Pratama</div>
+<div class="text-[11px] font-mono text-emerald-700 flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px]">chat</span>
+                            +62 857-1920-3341
+                          </div>
+<div class="text-[10px] text-text-muted">farhan.dev@yahoo.com</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="font-semibold text-on-surface">Fullstack GAS Automation Bundle</div>
+<div class="mt-1 flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-bold border border-purple-200">
+                          Bantuan Transfer BCA
+                        </span>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-bold text-on-surface text-xs">Rp 499.000</div>
+<span class="text-[10px] text-amber-700 font-semibold">Kupon DISKON30 terpasang</span>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-300">
+                        ⏳ Tunggu Transfer
+                      </span>
+</td>
+<td class="py-3 px-3.5 align-top max-w-[190px]">
+<p class="text-xs text-on-surface line-clamp-2">Minta nomor rekening manual BCA karena QRIS limit harian.</p>
+<button class="text-[10px] text-text-muted hover:text-primary font-semibold mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]">edit</span> Edit
+                      </button>
+</td>
+<td class="py-3 px-3.5 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1 shadow-sm transition">
+<span class="material-symbols-outlined text-sm">send</span>
+<span>Chat WA</span>
+</button>
+<button class="p-1.5 rounded-DEFAULT hover:bg-surface-container-high text-secondary" title="Menu Opsi">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/50 transition group">
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-mono font-bold text-on-surface">LED-20261028-077</div>
+<div class="text-[11px] text-text-muted mt-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 3 jam lalu
+                      </div>
+<span class="inline-block mt-1 text-[10px] px-1.5 py-0.2 rounded bg-surface-container-high text-secondary font-mono">Modal Batch</span>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs shrink-0">
+                          NU
+                        </div>
+<div>
+<div class="font-bold text-on-surface text-sm">Nadia Utami</div>
+<div class="text-[11px] font-mono text-emerald-700 flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px]">chat</span>
+                            +62 812-9988-2101
+                          </div>
+<div class="text-[10px] text-text-muted">nadia.design@studio.co</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="font-semibold text-on-surface">GAS Pro Web App Masterclass</div>
+<div class="mt-1 flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold border border-amber-200">
+                          Waitlist Batch 4
+                        </span>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-bold text-on-surface text-xs">Rp 750.000</div>
+<span class="text-[10px] text-text-muted">Standard Seat</span>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-300">
+                        ✅ Siap Closing
+                      </span>
+</td>
+<td class="py-3 px-3.5 align-top max-w-[190px]">
+<p class="text-xs text-on-surface line-clamp-2">Sudah konfirmasi siap daftar saat invoice batch 4 digenerate. Kirim link private.</p>
+<button class="text-[10px] text-text-muted hover:text-primary font-semibold mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]">edit</span> Edit
+                      </button>
+</td>
+<td class="py-3 px-3.5 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1.5 rounded-DEFAULT bg-surface-container-lowest hover:bg-emerald-50 border border-emerald-300 text-emerald-800 font-semibold text-xs flex items-center gap-1 shadow-xs transition">
+<span class="material-symbols-outlined text-sm text-emerald-600">link</span>
+<span>Kirim Invoice</span>
+</button>
+<button class="p-1.5 rounded-DEFAULT hover:bg-surface-container-high text-secondary" title="Menu Opsi">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-low/50 transition group">
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-mono font-bold text-on-surface">LED-20261028-062</div>
+<div class="text-[11px] text-text-muted mt-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 5 jam lalu
+                      </div>
+<span class="inline-block mt-1 text-[10px] px-1.5 py-0.2 rounded bg-surface-container-high text-secondary font-mono">WA Widget</span>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-xs shrink-0">
+                          BK
+                        </div>
+<div>
+<div class="font-bold text-on-surface text-sm">Bayu Kusuma</div>
+<div class="text-[11px] font-mono text-emerald-700 flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px]">chat</span>
+                            +62 878-1122-8900
+                          </div>
+<div class="text-[10px] text-text-muted">bayu.kusuma@corp.co.id</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top">
+<div class="font-semibold text-on-surface">Starter GAS Invoice Automation</div>
+<div class="mt-1 flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded-full bg-pastel-lavender text-purple-800 text-[10px] font-bold border border-purple-200">
+                          Tanya Lisensi Tim
+                        </span>
+</div>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<div class="font-bold text-on-surface text-xs">Rp 99.000</div>
+<span class="text-[10px] text-text-muted">Lisensi 1 User</span>
+</td>
+<td class="py-3 px-3.5 align-top whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-[11px] font-semibold border border-blue-200">
+                        💬 Sudah Di-chat CS
+                      </span>
+</td>
+<td class="py-3 px-3.5 align-top max-w-[190px]">
+<p class="text-xs text-on-surface line-clamp-2">Minat upgrade ke multi-user enterprise license. Sudah dikirim pricelist khusus.</p>
+<button class="text-[10px] text-text-muted hover:text-primary font-semibold mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[11px]">edit</span> Edit
+                      </button>
+</td>
+<td class="py-3 px-3.5 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1.5 rounded-DEFAULT bg-surface-container-lowest hover:bg-emerald-50 border border-emerald-300 text-emerald-800 font-semibold text-xs flex items-center gap-1 shadow-xs transition">
+<span class="material-symbols-outlined text-sm text-emerald-600">forum</span>
+<span>Buka WA</span>
+</button>
+<button class="p-1.5 rounded-DEFAULT hover:bg-surface-container-high text-secondary" title="Menu Opsi">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination & Quick Summary -->
+<div class="p-3 bg-surface-container-lowest border-t border-surface-container-highest flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-text-muted">
+<div class="flex items-center gap-2">
+<span>Menampilkan <strong class="text-on-surface">5</strong> dari <strong class="text-on-surface">48</strong> prospek terdata</span>
+<span class="hidden sm:inline text-surface-container-highest">•</span>
+<span class="hidden sm:inline">Halaman 1 dari 10</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-2.5 py-1 rounded border border-outline-variant text-secondary hover:text-on-surface hover:bg-surface-container-low transition disabled:opacity-40" disabled="">Sebelumnya</button>
+<button class="px-2.5 py-1 rounded bg-primary-container text-on-primary font-bold">1</button>
+<button class="px-2.5 py-1 rounded border border-outline-variant hover:bg-surface-container-low text-on-surface transition">2</button>
+<button class="px-2.5 py-1 rounded border border-outline-variant hover:bg-surface-container-low text-on-surface transition">3</button>
+<span class="px-1">...</span>
+<button class="px-2.5 py-1 rounded border border-outline-variant hover:bg-surface-container-low text-on-surface transition">10</button>
+<button class="px-2.5 py-1 rounded border border-outline-variant text-on-surface hover:bg-surface-container-low transition">Berikutnya</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side Panel (col-span-4): Quick WhatsApp Follow-Up Assistant & Notes Modal Shell -->
+<div class="lg:col-span-4 space-y-4">
+<div class="bg-surface-card rounded-DEFAULT border-2 border-primary-container/30 shadow-md p-4 space-y-4 sticky top-20">
+<!-- Panel Header -->
+<div class="flex items-start justify-between pb-3 border-b border-surface-container-highest">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                  WA
+                </div>
+<div>
+<h3 class="font-headline-sm text-sm text-on-surface font-bold">Quick WhatsApp Assistant</h3>
+<p class="text-[11px] text-text-muted">Follow-Up Prospek Terpilih</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-200">
+                1-Click Ready
+              </span>
+</div>
+<!-- Lead Target Identity Card -->
+<div class="p-3 rounded-DEFAULT bg-pastel-pink/50 border border-primary/20 space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-semibold text-primary uppercase tracking-wider">Target Calon Member</span>
+<span class="font-mono text-[10px] text-primary/80">LED-20261028-091</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-bold text-sm text-on-surface">Dimas Setiawan</h4>
+<a class="text-xs text-emerald-700 font-mono font-bold flex items-center gap-1 hover:underline" href="https://wa.me/6281388901234" target="_blank">
+<span>+62 813-8890-1234</span>
+<span class="material-symbols-outlined text-xs">open_in_new</span>
+</a>
+</div>
+<div class="text-right">
+<span class="text-xs font-bold text-primary block">Rp 750.000</span>
+<span class="text-[10px] text-text-muted">GAS Pro Batch 4</span>
+</div>
+</div>
+</div>
+<!-- Quick Template Selector -->
+<div>
+<label class="block text-xs font-bold text-on-surface mb-2 flex items-center justify-between">
+<span>Pilih Template Pesan CS:</span>
+<span class="text-[11px] text-primary hover:underline cursor-pointer font-medium">+ Kelola Template</span>
+</label>
+<div class="space-y-1.5">
+<button class="w-full text-left p-2 rounded-DEFAULT bg-pastel-mint border border-emerald-300 text-xs text-emerald-950 font-semibold flex items-center justify-between shadow-xs">
+<span class="truncate">🔥 1. Notifikasi Kuota Batch 4 Buka</span>
+<span class="material-symbols-outlined text-sm text-emerald-700 shrink-0">check_circle</span>
+</button>
+<button class="w-full text-left p-2 rounded-DEFAULT bg-surface-container-low hover:bg-surface-container border border-surface-container-highest text-xs text-secondary font-medium flex items-center justify-between transition">
+<span class="truncate">💬 2. Bantuan Konsultasi Kurikulum</span>
+<span class="material-symbols-outlined text-sm text-secondary-fixed-dim shrink-0">radio_button_unchecked</span>
+</button>
+<button class="w-full text-left p-2 rounded-DEFAULT bg-surface-container-low hover:bg-surface-container border border-surface-container-highest text-xs text-secondary font-medium flex items-center justify-between transition">
+<span class="truncate">🏷️ 3. Penawaran Kupon Diskon Spesial</span>
+<span class="material-symbols-outlined text-sm text-secondary-fixed-dim shrink-0">radio_button_unchecked</span>
+</button>
+</div>
+</div>
+<!-- Message Preview Editor -->
+<div>
+<div class="flex items-center justify-between mb-1">
+<label class="text-xs font-bold text-on-surface">Preview Pesan Terformat:</label>
+<span class="text-[10px] text-text-muted">Variabel: {nama}, {produk}, {link}</span>
+</div>
+<textarea class="w-full p-2.5 text-xs rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:border-primary-container focus:ring-1 focus:ring-primary-container font-mono leading-relaxed resize-none text-on-surface" rows="6">Halo Kak Dimas 👋 Terima kasih sudah mendaftar waitlist GAS Pro Web App Masterclass Batch 4 di EtalaseKu.
+
+Kabar gembira! Kuota pendaftaran resmi dibuka untuk 15 orang pertama dengan harga Early Bird. 
+
+Silakan amankan kursi Kak Dimas melalui tautan prioritas berikut:
+https://etalaseku.com/checkout/gas-pro-b4?ref=waitlist-ds
+
+Ada pertanyaan terkait kurikulum atau jadwal live session Kak?</textarea>
+</div>
+<!-- Direct Action Button: Open WA Web -->
+<button class="w-full py-2.5 px-4 rounded-DEFAULT bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition transform active:scale-95">
+<span class="material-symbols-outlined text-base">send</span>
+<span>Buka WhatsApp Web &amp; Kirim Otomatis 🚀</span>
+</button>
+<!-- Internal CS Notes & Activity History -->
+<div class="pt-3 border-t border-surface-container-highest space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-on-surface">Riwayat &amp; Catatan Internal:</span>
+<span class="text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded text-secondary font-mono">2 Entri</span>
+</div>
+<div class="space-y-2 max-h-36 overflow-y-auto pr-1">
+<div class="p-2 rounded bg-surface-container-low border border-surface-container-highest text-[11px] space-y-1">
+<div class="flex items-center justify-between text-text-muted text-[10px]">
+<span class="font-semibold text-on-surface">CS Sarah</span>
+<span>28 Okt, 16:40</span>
+</div>
+<p class="text-on-surface">Calon member tanya apakah ada rekaman jika berhalangan hadir saat live session. Dijawab: Ada akses selamanya di classroom.</p>
+</div>
+<div class="p-2 rounded bg-surface-container-low border border-surface-container-highest text-[11px] space-y-1">
+<div class="flex items-center justify-between text-text-muted text-[10px]">
+<span class="font-semibold text-on-surface">System Webhook</span>
+<span>28 Okt, 16:32</span>
+</div>
+<p class="text-on-surface">Lead submit form Waitlist Modal Batch 4 dari landing page academy.</p>
+</div>
+</div>
+<!-- Quick Append Note -->
+<div class="flex gap-1.5 pt-1">
+<input class="flex-1 text-xs py-1.5 px-2.5 rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:border-primary-container focus:ring-primary-container" placeholder="Tambah catatan cepat..." type="text"/>
+<button class="px-2.5 py-1.5 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-DEFAULT text-xs font-bold">
+                  Simpan
+                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom System Status & Sync Bar -->
+<footer class="p-3 bg-surface-card rounded-DEFAULT border border-surface-container-highest shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+<div class="flex items-center gap-2 text-text-muted">
+<span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+<span>Status CRM: <strong class="text-on-surface">Terintegrasi 100%</strong> dengan Google Apps Script Webhook. Nomor WhatsApp terformat otomatis E.164 (+62).</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-text-muted font-mono text-[11px]">Last Sync: 10 detik lalu</span>
+<button class="text-primary hover:underline font-bold text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">history</span> Log Webhook
+          </button>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

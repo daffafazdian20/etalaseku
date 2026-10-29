@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Product &amp; Curriculum Management - EtalaseKu Hub</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:ital,wght@0,500;0,600;0,700;0,800;1,600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#fbf9f5",
+            "tertiary-container": "#767380",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#f5f3ef",
+            "error": "#ba1a1a",
+            "midnight-indigo": "#1E1B4B",
+            "on-tertiary": "#ffffff",
+            "on-surface": "#1b1c1a",
+            "surface-container-lowest": "#ffffff",
+            "on-error-container": "#93000a",
+            "on-background": "#1b1c1a",
+            "on-secondary-fixed": "#131b2e",
+            "pastel-mint": "#E8F8F5",
+            "error-container": "#ffdad6",
+            "primary-fixed-dim": "#ffb2ba",
+            "on-primary-fixed-variant": "#910030",
+            "tertiary-fixed-dim": "#c9c4d3",
+            "on-error": "#ffffff",
+            "secondary-fixed-dim": "#bec6e0",
+            "inverse-on-surface": "#f2f0ed",
+            "inverse-primary": "#ffb2ba",
+            "on-secondary-container": "#5c647a",
+            "on-secondary": "#ffffff",
+            "secondary": "#565e74",
+            "on-tertiary-fixed": "#1c1a25",
+            "cta-hover": "#E11D48",
+            "surface-container": "#efeeea",
+            "on-primary-container": "#fffbff",
+            "primary-container": "#e51152",
+            "on-primary-fixed": "#400010",
+            "surface": "#fbf9f5",
+            "tertiary": "#5d5a67",
+            "surface-tint": "#bd0041",
+            "pastel-pink": "#FDEEF1",
+            "tertiary-fixed": "#e6e0f0",
+            "surface-bright": "#fbf9f5",
+            "on-secondary-fixed-variant": "#3f465c",
+            "inverse-surface": "#30312e",
+            "on-tertiary-fixed-variant": "#484552",
+            "on-tertiary-container": "#fffbff",
+            "surface-card": "#FFFFFF",
+            "secondary-fixed": "#dae2fd",
+            "text-muted": "#64748B",
+            "primary-fixed": "#ffd9dc",
+            "on-surface-variant": "#5c3f42",
+            "secondary-container": "#dae2fd",
+            "surface-dim": "#dbdad6",
+            "pastel-lavender": "#F3EDFD",
+            "primary": "#b9003f",
+            "outline-variant": "#e5bdc0",
+            "surface-container-high": "#eae8e4",
+            "outline": "#906e71",
+            "surface-variant": "#e4e2de",
+            "surface-container-highest": "#e4e2de"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-2xl": "4rem",
+            "gutter-mobile": "1rem",
+            "margin-mobile": "1.25rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #fbf9f5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #e4e2de;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #c9c4d3;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- Top Main Application Shell Structure -->
+<div class="flex h-screen w-full overflow-hidden bg-background">
+<!-- Immutable Dark Admin SideNavBar -->
+<aside class="w-64 bg-midnight-indigo flex-shrink-0 flex flex-col justify-between p-4 border-r border-slate-800 text-slate-300 select-none z-30">
+<div class="flex flex-col gap-6">
+<!-- Brand Profile -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="size-10 rounded-full bg-cover bg-center border border-pink-500/30 flex-shrink-0 shadow-sm" data-alt="A modern professional female creator in high-key aesthetic portrait lighting, wearing a stylish blazer in an elegant creative office studio with soft pastel neon backlight" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDN1ec_1tnXzuq2vEX91_GkauwySC-hLq8rD8d9eCZoBDQE2XB61Vrmw9koJuluXtfsrLazw7QQ1s4Pqr9zblB4IFbkPkloJeiyhgcuqZZdXfzurMSJFMC5IKLocYi53lwBafkrVvlY-fzTk8GLUaxmuaZFXeCJOXc6k1dujYBJZIBYjK0MDyEg0AltYmhcJ52ajN86s8HCOwV4pMfEJiF3NUXRTER42YV0hUklIpZN');"></div>
+<div class="flex flex-col overflow-hidden">
+<h1 class="text-white text-base font-headline-sm font-bold truncate tracking-tight">EtalaseKu Hub</h1>
+<p class="text-pink-400 text-xs font-medium tracking-wide">Admin SuperOps • v4.2</p>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="flex flex-col gap-1.5">
+<!-- Item: Dashboard Ringkasan -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800/60 hover:text-white transition-all text-slate-300" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard Ringkasan</span>
+</a>
+<!-- Item: Pesanan & Transaksi -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800/60 hover:text-white transition-all text-slate-300" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="text-sm font-medium">Pesanan &amp; Transaksi</span>
+</a>
+<!-- Item: Katalog & Kurikulum (Active State with Hot Pink Accent) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-primary-container to-primary text-white font-semibold shadow-md shadow-primary-container/20" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="text-sm tracking-tight">Katalog &amp; Kurikulum</span>
+</a>
+<!-- Item: Ruang Belajar Siswa -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800/60 hover:text-white transition-all text-slate-300" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="text-sm font-medium">Ruang Belajar Siswa</span>
+</a>
+<!-- Item: Pengaturan Akun & API -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800/60 hover:text-white transition-all text-slate-300" href="#">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span class="text-sm font-medium">Pengaturan Akun &amp; API</span>
+</a>
+<!-- Item: Integrasi Sheets -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800/60 hover:text-white transition-all text-slate-300" href="#">
+<span class="material-symbols-outlined text-[20px]">link</span>
+<div class="flex items-center justify-between w-full">
+<span class="text-sm font-medium">Integrasi Sheets</span>
+<span class="size-2 rounded-full bg-emerald-400"></span>
+</div>
+</a>
+</nav>
+</div>
+<!-- Bottom Nav Section -->
+<div class="flex flex-col gap-4 pt-4 border-t border-slate-800/80">
+<button class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-full h-11 px-4 bg-primary hover:bg-cta-hover text-white text-sm font-bold shadow-lg shadow-primary/25 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="truncate">+ Tambah Produk</span>
+</button>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:text-white text-slate-400 hover:bg-slate-800/40 text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span>Bantuan &amp; Dokumentasi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:text-rose-400 text-slate-400 hover:bg-slate-800/40 text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span>Keluar</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Area -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background">
+<!-- Top Header Navigation & Meta -->
+<header class="bg-surface-card border-b border-surface-container px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 flex-shrink-0 z-20">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-xs font-medium text-text-muted">
+<span class="text-on-surface-variant font-semibold">EtalaseKu</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface-variant">Admin Operations</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-bold text-primary">Products &amp; Curriculum Management</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<!-- Google Sheets Sync Status Pill -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-pastel-mint border border-emerald-200/60 text-xs font-semibold text-emerald-800">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+</span>
+<span>Sheets <span class="font-mono text-[11px] font-bold">tb_produk</span> &amp; <span class="font-mono text-[11px] font-bold">tb_materi_kursus</span> Synced (v4 API)</span>
+</div>
+<!-- Add Product Button -->
+<button class="flex items-center gap-2 cursor-pointer rounded-full h-9 px-4 bg-primary hover:bg-cta-hover text-white text-xs font-bold shadow-md shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>+ Tambah Produk Baru</span>
+</button>
+</div>
+</header>
+<!-- Category Navigation Tabs -->
+<div class="bg-surface-card border-b border-surface-container px-6 flex-shrink-0">
+<div class="flex items-center gap-8">
+<button class="relative flex items-center gap-2 py-3.5 border-b-[3px] border-primary text-primary font-bold text-sm tracking-tight">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span>Katalog Produk &amp; Paket (6)</span>
+</button>
+<button class="relative flex items-center gap-2 py-3.5 border-b-[3px] border-transparent text-secondary hover:text-on-surface font-semibold text-sm transition-colors">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+<span>Kurikulum &amp; Modul Kursus (45)</span>
+<span class="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-surface-container text-secondary font-medium">45 Modul</span>
+</button>
+<button class="relative flex items-center gap-2 py-3.5 border-b-[3px] border-transparent text-secondary hover:text-on-surface font-semibold text-sm transition-colors">
+<span class="material-symbols-outlined text-[20px]">cloud_sync</span>
+<span>Aset Materi Google Drive</span>
+</button>
+</div>
+</div>
+<!-- Main Dual Split Workspace (Table 65% + Drawer 35%) -->
+<main class="flex-1 flex overflow-hidden">
+<!-- Left Section: Interactive Products Data Table (65%) -->
+<section class="w-[65%] flex flex-col border-r border-surface-container bg-surface-bright overflow-hidden">
+<!-- Toolbar & Search -->
+<div class="p-4 border-b border-surface-container bg-surface-card flex flex-col gap-3">
+<div class="flex items-center justify-between gap-3">
+<!-- Search bar -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-surface-container rounded-xl text-xs text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Cari produk digital, kategori, atau ID (cth: PRD-001)..." type="text"/>
+</div>
+<!-- Filter Kategori -->
+<div class="flex items-center gap-2">
+<select class="py-2 pl-3 pr-8 bg-surface-container-low border border-surface-container rounded-xl text-xs font-medium text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20">
+<option>Semua Kategori</option>
+<option>E-Course Praktis</option>
+<option>Template Bisnis</option>
+<option>Source Code &amp; Web App</option>
+<option>Mentoring Eksklusif</option>
+</select>
+<!-- Filter Status -->
+<select class="py-2 pl-3 pr-8 bg-surface-container-low border border-surface-container rounded-xl text-xs font-medium text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20">
+<option>Semua Status</option>
+<option>Published</option>
+<option>Draft</option>
+</select>
+</div>
+</div>
+<!-- Stats Bar Pill -->
+<div class="flex items-center justify-between text-xs text-secondary px-1">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-semibold text-on-surface">Total 6 Produk Aktif</span>
+<span>•</span>
+<span class="text-secondary">184 Total Penjualan Bulan Ini</span>
+</div>
+<span class="text-[11px] text-text-muted">Klik produk untuk membuka Curriculum Builder</span>
+</div>
+</div>
+<!-- Products Table -->
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left border-collapse text-xs">
+<thead class="bg-surface-container-low text-secondary sticky top-0 uppercase tracking-wider font-semibold border-b border-surface-container z-10">
+<tr>
+<th class="py-3 px-4">Produk &amp; Kategori</th>
+<th class="py-3 px-3">Harga</th>
+<th class="py-3 px-3">Batch / Kuota</th>
+<th class="py-3 px-3">Kurikulum</th>
+<th class="py-3 px-3 text-center">Status</th>
+<th class="py-3 px-4 text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- ROW 1 (Selected / Highlighted GAS Pro Web App Masterclass) -->
+<tr class="bg-pastel-pink/40 hover:bg-pastel-pink/60 transition-colors border-l-4 border-l-primary">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="size-11 rounded-xl bg-midnight-indigo flex items-center justify-center text-primary-fixed flex-shrink-0 shadow-sm border border-pink-200">
+<span class="material-symbols-outlined text-[24px]">terminal</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-sm text-on-surface">GAS Pro Web App Masterclass</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-secondary-container font-semibold">PRD-001</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 rounded-full bg-pastel-lavender text-purple-800 text-[10px] font-bold">E-Course Praktis</span>
+<span class="text-[11px] text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">edit_note</span> Mengedit Kurikulum
+                          </span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-on-surface">Rp 99.000</div>
+<div class="line-through text-text-muted text-[11px]">Rp 249.000</div>
+</td>
+<td class="py-3.5 px-3 min-w-[130px]">
+<div class="flex items-center justify-between text-[11px] mb-1 font-medium">
+<span class="font-bold text-on-surface">Batch 3</span>
+<span class="text-primary font-bold">Sisa 8 Kursi</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 84%"></div>
+</div>
+<div class="text-[10px] text-text-muted mt-0.5">42 / 50 Terisi</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">11 Modul</div>
+<div class="text-text-muted text-[11px]">4 Jam Video • 6 PDF</div>
+</td>
+<td class="py-3.5 px-3 text-center">
+<!-- Toggle Switch ON -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+<div class="text-[10px] font-semibold text-emerald-700 mt-0.5">Published</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-all text-xs font-bold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[15px]">menu_book</span>
+<span>Kurikulum</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 2: Digital Agency Notion OS Workspace -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="size-11 rounded-xl bg-pastel-pink flex items-center justify-center text-primary flex-shrink-0 border border-pink-200">
+<span class="material-symbols-outlined text-[24px]">space_dashboard</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-sm text-on-surface">Digital Agency Notion OS Workspace</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-secondary-container font-semibold">PRD-002</span>
+</div>
+<div class="mt-1">
+<span class="px-2 py-0.5 rounded-full bg-pastel-pink text-pink-900 text-[10px] font-bold">Template Bisnis</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-on-surface">Rp 79.000</div>
+<div class="line-through text-text-muted text-[11px]">Rp 199.000</div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 text-emerald-700 font-semibold text-[11px] bg-pastel-mint px-2 py-0.5 rounded-md">
+<span class="material-symbols-outlined text-[13px]">bolt</span> Akses Instan
+                    </span>
+<div class="text-[10px] text-text-muted mt-0.5">Unlimited Download</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">4 Database Templates</div>
+<div class="text-text-muted text-[11px]">1 Video Setup Guide</div>
+</td>
+<td class="py-3.5 px-3 text-center">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+<div class="text-[10px] font-semibold text-emerald-700 mt-0.5">Published</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg border border-surface-container hover:border-secondary text-secondary hover:text-on-surface transition-all text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">folder_open</span>
+<span>Aset Drive</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 3: Fullstack Automation Source Code Bundle -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="size-11 rounded-xl bg-pastel-mint flex items-center justify-center text-teal-800 flex-shrink-0 border border-teal-200">
+<span class="material-symbols-outlined text-[24px]">data_object</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-sm text-on-surface">Fullstack Automation Source Code Bundle</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-secondary-container font-semibold">PRD-003</span>
+</div>
+<div class="mt-1">
+<span class="px-2 py-0.5 rounded-full bg-pastel-mint text-emerald-900 text-[10px] font-bold">Source Code &amp; Web App</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-on-surface">Rp 149.000</div>
+<div class="line-through text-text-muted text-[11px]">Rp 399.000</div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 text-amber-800 font-bold text-[11px] bg-amber-100 px-2 py-0.5 rounded-md">
+                      Batch 2 Penuh
+                    </span>
+<div class="text-[10px] text-amber-700 font-medium mt-0.5">Waitlist 14 Calon</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">8 Repositories</div>
+<div class="text-text-muted text-[11px]">12 Walkthrough Videos</div>
+</td>
+<td class="py-3.5 px-3 text-center">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+<div class="text-[10px] font-semibold text-emerald-700 mt-0.5">Published</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg border border-surface-container hover:border-secondary text-secondary hover:text-on-surface transition-all text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">menu_book</span>
+<span>Kurikulum</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 4: Canva Creator Passive Income Blueprint v2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="size-11 rounded-xl bg-amber-50 flex items-center justify-center text-amber-700 flex-shrink-0 border border-amber-200">
+<span class="material-symbols-outlined text-[24px]">palette</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-sm text-on-surface">Canva Creator Passive Income Blueprint v2</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-secondary-container font-semibold">PRD-004</span>
+</div>
+<div class="mt-1">
+<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold">E-Book &amp; Template</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-on-surface">Rp 79.000</div>
+<div class="line-through text-text-muted text-[11px]">Rp 149.000</div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 text-emerald-700 font-semibold text-[11px] bg-pastel-mint px-2 py-0.5 rounded-md">
+                      Akses Instan
+                    </span>
+<div class="text-[10px] text-text-muted mt-0.5">Google Drive Sync</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">1 E-Book PDF</div>
+<div class="text-text-muted text-[11px]">50+ Template Canva</div>
+</td>
+<td class="py-3.5 px-3 text-center">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+<div class="text-[10px] font-semibold text-emerald-700 mt-0.5">Published</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg border border-surface-container hover:border-secondary text-secondary hover:text-on-surface transition-all text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">folder_open</span>
+<span>Aset</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 5: 1-on-1 VIP Mentoring & Code Audit -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="size-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-700 flex-shrink-0 border border-blue-200">
+<span class="material-symbols-outlined text-[24px]">support_agent</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-sm text-on-surface">1-on-1 VIP Mentoring &amp; Code Audit</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-secondary-container font-semibold">PRD-005</span>
+</div>
+<div class="mt-1">
+<span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-900 text-[10px] font-bold">Mentoring Eksklusif</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-on-surface">Rp 750.000</div>
+<div class="line-through text-text-muted text-[11px]">Rp 1.200.000</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="text-[11px] font-bold text-rose-700">3 / 5 Kursi</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mt-1">
+<div class="bg-rose-500 h-full rounded-full" style="width: 60%"></div>
+</div>
+<div class="text-[10px] text-text-muted mt-0.5">Sisa 2 Kuota</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">4 Sesi Live Zoom</div>
+<div class="text-text-muted text-[11px]">VIP Telegram Group</div>
+</td>
+<td class="py-3.5 px-3 text-center">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+<div class="text-[10px] font-semibold text-emerald-700 mt-0.5">Published</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg border border-surface-container hover:border-secondary text-secondary hover:text-on-surface transition-all text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">event</span>
+<span>Jadwal</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 6: AI Workflow Builder with Apps Script & Gemini (DRAFT) -->
+<tr class="hover:bg-surface-container-low transition-colors opacity-85">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="size-11 rounded-xl bg-surface-container flex items-center justify-center text-secondary flex-shrink-0 border border-surface-container-high">
+<span class="material-symbols-outlined text-[24px]">smart_toy</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-sm text-on-surface">AI Workflow Builder with Apps Script &amp; Gemini</span>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-secondary-container font-semibold">PRD-006</span>
+</div>
+<div class="mt-1">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-secondary text-[10px] font-bold">E-Course Praktis</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-on-surface">Rp 129.000</div>
+<div class="text-text-muted text-[11px]">Normal</div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 text-slate-600 font-medium text-[11px] bg-slate-100 px-2 py-0.5 rounded-md">
+                      Batch 1 (Mendatang)
+                    </span>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-secondary">3 Modul (Draft)</div>
+<div class="text-text-muted text-[11px]">Dalam Penyusunan</div>
+</td>
+<td class="py-3.5 px-3 text-center">
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+</label>
+<div class="text-[10px] font-semibold text-text-muted mt-0.5">Draft</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg border border-surface-container hover:border-secondary text-secondary hover:text-on-surface transition-all text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">menu_book</span>
+<span>Kurikulum</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Bottom Status Footer Bar -->
+<div class="p-3 bg-surface-container-low border-t border-surface-container flex items-center justify-between text-[11px] text-text-muted">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">sync</span>
+<span>Data tersinkronisasi otomatis via Google Sheets Apps Script Webhook API.</span>
+</div>
+<div class="flex items-center gap-3">
+<span>Halaman 1 dari 1</span>
+<button class="text-primary font-bold hover:underline">Ekspor CSV</button>
+</div>
+</div>
+</section>
+<!-- Right Section: Slide-over "Curriculum Builder Drawer" (35%) -->
+<aside class="w-[35%] flex flex-col bg-surface-card border-l border-surface-container shadow-xl overflow-hidden z-10">
+<!-- Drawer Header -->
+<div class="p-4 border-b border-surface-container bg-pastel-pink/30 flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase tracking-wider">Drawer Mode</span>
+<span class="font-mono text-xs font-semibold text-primary">PRD-001</span>
+</div>
+<h2 class="font-headline-sm text-base font-bold text-on-surface mt-1 leading-snug">Kurikulum Builder: GAS Pro Web App Masterclass</h2>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 text-secondary hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors" title="Perluas Layar">
+<span class="material-symbols-outlined text-[18px]">open_in_full</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-rose-600 hover:bg-surface-container rounded-lg transition-colors" title="Tutup Drawer">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Stats & Quick Add Module Button -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2 text-xs text-secondary font-medium">
+<span class="material-symbols-outlined text-[16px] text-primary">video_library</span>
+<span>Total 11 Modul • Estimasi 4.5 Jam</span>
+</div>
+<button class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary hover:bg-cta-hover text-white text-xs font-bold shadow-sm shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>+ Tambah Modul Baru</span>
+</button>
+</div>
+</div>
+<!-- Drawer Body: Draggable / Accordion Module Hierarchy & Quick Edit Form -->
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<!-- SECTION 1: Fondasi & Arsitektur -->
+<div class="rounded-xl border border-surface-container bg-surface-bright overflow-hidden">
+<div class="px-3.5 py-2.5 bg-surface-container-low flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">folder</span>
+<span class="text-xs font-bold text-on-surface">Seksi 1: Fondasi &amp; Arsitektur Google Apps Script</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-semibold text-secondary">3 Modul</span>
+<span class="material-symbols-outlined text-secondary text-[18px]">expand_more</span>
+</div>
+</div>
+<!-- Module Items -->
+<div class="divide-y divide-surface-container">
+<!-- 1.1 -->
+<div class="p-2.5 flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary cursor-grab text-[16px]">drag_indicator</span>
+<span class="material-symbols-outlined text-rose-500 text-[16px]">smart_display</span>
+<div class="truncate">
+<p class="text-xs font-medium text-on-surface truncate">01. Setup V8 Runtime &amp; Local IDE</p>
+<p class="text-[10px] text-text-muted">Video Unlisted YouTube • 12 mnt</p>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[15px]">edit</span></button>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[15px]">visibility</span></button>
+</div>
+</div>
+<!-- 1.2 -->
+<div class="p-2.5 flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary cursor-grab text-[16px]">drag_indicator</span>
+<span class="material-symbols-outlined text-rose-500 text-[16px]">smart_display</span>
+<div class="truncate">
+<p class="text-xs font-medium text-on-surface truncate">02. HTML Service &amp; Client-Server Templating</p>
+<p class="text-[10px] text-text-muted">Video Unlisted • 18 mnt</p>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[15px]">edit</span></button>
+</div>
+</div>
+<!-- 1.3 -->
+<div class="p-2.5 flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary cursor-grab text-[16px]">drag_indicator</span>
+<span class="material-symbols-outlined text-rose-500 text-[16px]">smart_display</span>
+<div class="truncate">
+<p class="text-xs font-medium text-on-surface truncate">03. Deployment Web App Versioning</p>
+<p class="text-[10px] text-text-muted">Video Unlisted • 15 mnt</p>
+</div>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[15px]">edit</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 2: Sheets Database & CacheService (Expanded / Active state) -->
+<div class="rounded-xl border-2 border-primary/40 bg-surface-card overflow-hidden shadow-sm">
+<div class="px-3.5 py-2.5 bg-pastel-pink/50 flex items-center justify-between cursor-pointer border-b border-primary/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">folder_open</span>
+<span class="text-xs font-bold text-on-surface">Seksi 2: Sheets Database &amp; CacheService</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-bold text-primary">4 Modul</span>
+<span class="material-symbols-outlined text-primary text-[18px]">expand_less</span>
+</div>
+</div>
+<!-- Module Items -->
+<div class="divide-y divide-surface-container">
+<!-- 2.1 -->
+<div class="p-2.5 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-slate-400 cursor-grab text-[16px]">drag_indicator</span>
+<span class="material-symbols-outlined text-rose-500 text-[16px]">smart_display</span>
+<div class="truncate">
+<p class="text-xs font-medium text-on-surface truncate">01. Operasi CRUD Spreadsheet Teroptimasi</p>
+<p class="text-[10px] text-text-muted">Video • 22 mnt</p>
+</div>
+</div>
+<button class="p-1 text-secondary hover:text-primary"><span class="material-symbols-outlined text-[15px]">edit</span></button>
+</div>
+<!-- 2.2 -->
+<div class="p-2.5 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-slate-400 cursor-grab text-[16px]">drag_indicator</span>
+<span class="material-symbols-outlined text-rose-500 text-[16px]">smart_display</span>
+<div class="truncate">
+<p class="text-xs font-medium text-on-surface truncate">02. Optimasi Latensi dengan CacheService</p>
+<p class="text-[10px] text-text-muted">Video • 16 mnt</p>
+</div>
+</div>
+<button class="p-1 text-secondary hover:text-primary"><span class="material-symbols-outlined text-[15px]">edit</span></button>
+</div>
+<!-- 2.3 (Sedang Dipilih / Active Editing Target) -->
+<div class="p-2.5 bg-pastel-pink border-l-4 border-l-primary flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-primary cursor-grab text-[16px]">drag_indicator</span>
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<div class="truncate">
+<div class="flex items-center gap-1.5">
+<p class="text-xs font-bold text-primary truncate">03. Membangun UI SPA Responsif Tailwind CSS</p>
+<span class="text-[9px] bg-primary text-white font-bold px-1.5 py-0.2 rounded">Editing</span>
+</div>
+<p class="text-[10px] text-primary/80 font-medium">Video • 18 mnt + Starter ZIP</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+</div>
+<!-- 2.4 -->
+<div class="p-2.5 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-slate-400 cursor-grab text-[16px]">drag_indicator</span>
+<span class="material-symbols-outlined text-rose-500 text-[16px]">smart_display</span>
+<div class="truncate">
+<p class="text-xs font-medium text-on-surface truncate">04. Integrasi LockService Menghindari Race Condition</p>
+<p class="text-[10px] text-text-muted">Video • 20 mnt</p>
+</div>
+</div>
+<button class="p-1 text-secondary hover:text-primary"><span class="material-symbols-outlined text-[15px]">edit</span></button>
+</div>
+</div>
+</div>
+<!-- INLINE EDITING CARD FORM (Quick Add / Edit Materi Form) -->
+<div class="bg-surface-bright border border-surface-container rounded-2xl p-4 shadow-md">
+<div class="flex items-center justify-between border-b border-surface-container pb-2.5 mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">edit_document</span>
+<h3 class="text-xs font-bold text-on-surface uppercase tracking-wide">Form Tambah / Edit Materi</h3>
+</div>
+<span class="text-[10px] font-mono bg-surface-container px-2 py-0.5 rounded text-secondary font-medium">ID: MAT-023</span>
+</div>
+<div class="space-y-3 text-xs">
+<!-- Input: Judul Materi -->
+<div>
+<label class="block font-semibold text-on-surface mb-1">Judul Materi</label>
+<input class="w-full px-3 py-2 bg-surface-card border border-surface-container rounded-xl text-xs font-medium text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" type="text" value="03. Membangun UI SPA Responsif Tailwind CSS"/>
+</div>
+<!-- Input: Tipe Konten & Durasi Grid -->
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="block font-semibold text-on-surface mb-1">Tipe Konten</label>
+<select class="w-full px-2.5 py-2 bg-surface-card border border-surface-container rounded-xl text-xs font-medium text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20">
+<option selected="">YouTube Unlisted Video</option>
+<option>PDF Google Drive</option>
+<option>Source Code ZIP</option>
+<option>Teks / Markdown</option>
+</select>
+</div>
+<div>
+<label class="block font-semibold text-on-surface mb-1">Durasi</label>
+<input class="w-full px-3 py-2 bg-surface-card border border-surface-container rounded-xl text-xs font-medium text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" type="text" value="18 Menit"/>
+</div>
+</div>
+<!-- Input: URL Video -->
+<div>
+<label class="block font-semibold text-on-surface mb-1">URL Sumber Konten</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-rose-500 text-[16px]">link</span>
+<input class="w-full pl-8 pr-3 py-2 bg-surface-card border border-surface-container rounded-xl text-xs font-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" type="text" value="https://youtu.be/unlisted_gas_tailwind_v3"/>
+</div>
+</div>
+<!-- Google Drive Attachment Picker -->
+<div>
+<label class="block font-semibold text-on-surface mb-1">Google Drive Attachment</label>
+<div class="flex items-center gap-2">
+<div class="flex-1 flex items-center gap-2 px-3 py-2 bg-surface-container-low border border-surface-container rounded-xl text-xs text-on-surface font-mono truncate">
+<span class="material-symbols-outlined text-[16px] text-amber-500">folder_zip</span>
+<span class="truncate">Starter_Template_Tailwind_GAS.zip</span>
+</div>
+<button class="px-3 py-2 rounded-xl bg-pastel-lavender hover:bg-purple-100 text-purple-900 font-bold text-xs flex items-center gap-1 border border-purple-200 transition-colors flex-shrink-0">
+<span class="material-symbols-outlined text-[15px]">drive_folder_upload</span>
+<span>Pilih Drive</span>
+</button>
+</div>
+</div>
+<!-- Checkbox -->
+<div class="pt-1">
+<label class="flex items-start gap-2 cursor-pointer">
+<input checked="" class="mt-0.5 rounded text-primary focus:ring-primary h-4 w-4 border-surface-container" type="checkbox"/>
+<span class="text-[11px] text-on-surface font-medium leading-tight">Wajib diselesaikan siswa sebelum membuka modul berikutnya (Prasyarat sekuensial)</span>
+</label>
+</div>
+<!-- Form Action Buttons -->
+<div class="pt-2 flex items-center justify-end gap-2 border-t border-surface-container">
+<button class="px-3 py-1.5 rounded-xl border border-surface-container text-secondary hover:text-on-surface text-xs font-semibold" type="button">
+                    Batal
+                  </button>
+<button class="px-4 py-2 rounded-xl bg-midnight-indigo hover:bg-slate-900 text-white text-xs font-bold flex items-center gap-1.5 shadow-md transition-all" type="button">
+<span class="material-symbols-outlined text-[15px]">save</span>
+<span>Simpan Materi ke Sheets</span>
+</button>
+</div>
+</div>
+</div>
+<!-- SECTION 3: Otomasi Penjualan & WhatsApp Gateway -->
+<div class="rounded-xl border border-surface-container bg-surface-bright overflow-hidden">
+<div class="px-3.5 py-2.5 bg-surface-container-low flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">folder</span>
+<span class="text-xs font-bold text-on-surface">Seksi 3: Otomasi Penjualan &amp; WhatsApp Gateway</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-semibold text-secondary">4 Modul</span>
+<span class="material-symbols-outlined text-secondary text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Drawer Footer Note -->
+<div class="p-3 bg-surface-container-low border-t border-surface-container flex items-start gap-2 text-[11px] text-text-muted leading-relaxed">
+<span class="material-symbols-outlined text-primary text-[16px] flex-shrink-0 mt-0.5">info</span>
+<p>Perubahan struktur kurikulum otomatis tersinkronisasi ke <span class="font-mono text-on-surface font-semibold">tb_materi_kursus</span> di Google Sheets dan seketika tampil di Ruang Belajar Siswa (Screen 06).</p>
+</div>
+</aside>
+</main>
+</div>
+</div>
+</body></html>

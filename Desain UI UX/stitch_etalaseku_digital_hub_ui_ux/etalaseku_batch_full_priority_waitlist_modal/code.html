@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Screen 04: Batch Full / Waitlist Modal - EtalaseKu Digital Hub</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#ffb2ba",
+            "secondary-container": "#dae2fd",
+            "tertiary-fixed": "#e6e0f0",
+            "surface-container-highest": "#e4e2de",
+            "on-primary-container": "#fffbff",
+            "secondary-fixed": "#dae2fd",
+            "cta-hover": "#E11D48",
+            "tertiary-fixed-dim": "#c9c4d3",
+            "primary-fixed": "#ffd9dc",
+            "surface-bright": "#fbf9f5",
+            "primary": "#b9003f",
+            "on-secondary": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#1c1a25",
+            "on-error-container": "#93000a",
+            "outline-variant": "#e5bdc0",
+            "on-tertiary-fixed-variant": "#484552",
+            "pastel-lavender": "#F3EDFD",
+            "inverse-on-surface": "#f2f0ed",
+            "on-primary-fixed": "#400010",
+            "outline": "#906e71",
+            "pastel-pink": "#FDEEF1",
+            "text-muted": "#64748B",
+            "tertiary": "#5d5a67",
+            "surface-container-low": "#f5f3ef",
+            "secondary": "#565e74",
+            "surface-container-high": "#eae8e4",
+            "surface-tint": "#bd0041",
+            "background": "#fbf9f5",
+            "on-error": "#ffffff",
+            "surface": "#fbf9f5",
+            "on-background": "#1b1c1a",
+            "surface-variant": "#e4e2de",
+            "surface-container-lowest": "#ffffff",
+            "surface-card": "#FFFFFF",
+            "on-secondary-fixed": "#131b2e",
+            "pastel-mint": "#E8F8F5",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-tertiary-container": "#fffbff",
+            "inverse-primary": "#ffb2ba",
+            "inverse-surface": "#30312e",
+            "secondary-fixed-dim": "#bec6e0",
+            "on-secondary-container": "#5c647a",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "midnight-indigo": "#1E1B4B",
+            "primary-container": "#e51152",
+            "surface-dim": "#dbdad6",
+            "on-primary-fixed-variant": "#910030",
+            "tertiary-container": "#767380",
+            "on-surface-variant": "#5c3f42",
+            "on-primary": "#ffffff",
+            "surface-container": "#efeeea",
+            "on-surface": "#1b1c1a"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "display-hero-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "label-md": ["Plus Jakarta Sans"]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased relative min-h-screen overflow-x-hidden font-['Inter']">
+<!-- Background Landing Page Mockup (Simulating darkened blurred context) -->
+<div class="fixed inset-0 pointer-events-none select-none filter blur-[6px] opacity-40 scale-105 transform">
+<div class="max-w-6xl mx-auto px-6 py-12">
+<header class="flex items-center justify-between pb-8 border-b border-surface-container-highest">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary text-on-primary flex items-center justify-center font-bold text-xl font-['Plus_Jakarta_Sans']">E</div>
+<span class="text-xl font-bold tracking-tight text-on-surface font-['Plus_Jakarta_Sans']">EtalaseKu Academy</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="h-9 px-4 rounded-full bg-surface-container flex items-center text-sm font-medium">Katalog Program</span>
+<span class="h-9 px-4 rounded-full bg-primary text-on-primary flex items-center text-sm font-medium">Member Portal</span>
+</div>
+</header>
+<div class="py-16 text-center max-w-3xl mx-auto">
+<span class="inline-block px-4 py-1.5 rounded-full bg-pastel-pink text-primary text-xs font-bold tracking-wide uppercase mb-4">Batch Full Alert</span>
+<h1 class="text-4xl font-extrabold text-on-surface mb-6 font-['Plus_Jakarta_Sans']">Bangun Full-Stack Web App dengan Google Apps Script &amp; Tailwind</h1>
+<p class="text-base text-text-muted mb-8 leading-relaxed">Belajar membuat sistem web internal modular, otomasi database Sheets, dan integrasi WhatsApp API tanpa biaya server bulanan.</p>
+<div class="grid grid-cols-3 gap-6 text-left max-w-2xl mx-auto">
+<div class="p-5 bg-surface-container-lowest rounded-2xl border border-surface-container-highest shadow-sm">
+<span class="text-2xl font-bold text-primary">50/50</span>
+<p class="text-xs text-text-muted mt-1">Kuota Batch 3 Terisi Penuh</p>
+</div>
+<div class="p-5 bg-surface-container-lowest rounded-2xl border border-surface-container-highest shadow-sm">
+<span class="text-2xl font-bold text-on-surface">15 Nov</span>
+<p class="text-xs text-text-muted mt-1">Estimasi Batch 4 Dibuka</p>
+</div>
+<div class="p-5 bg-surface-container-lowest rounded-2xl border border-surface-container-highest shadow-sm">
+<span class="text-2xl font-bold text-on-surface">Rp 399k</span>
+<p class="text-xs text-text-muted mt-1">Kunci Early Bird Prioritas</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Backdrop Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-[#0F172A]/65 backdrop-blur-md transition-all duration-300" id="modalBackdrop">
+<!-- Modal Card Container (Width 520px, Pure White, Radius 24px) -->
+<div class="relative w-full max-w-[520px] bg-surface-card rounded-[24px] border border-[#F1F5F9] shadow-[0_20px_40px_-10px_rgba(15,23,42,0.25)] p-6 sm:p-8 my-auto transform transition-all duration-300">
+<!-- Close Button (Top Right) -->
+<button aria-label="Tutup modal antrean" class="absolute top-5 right-5 sm:top-6 sm:right-6 w-9 h-9 rounded-full flex items-center justify-center text-text-muted hover:text-on-surface hover:bg-[#F1F5F9] transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" id="closeModalBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<!-- Section 1 & 2: Urgency Badges & Modal Header -->
+<div class="pr-8">
+<!-- Badges Row -->
+<div class="flex items-center gap-2 flex-wrap mb-3.5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FEE2E2] text-[#991B1B] border border-[#FCA5A5] tracking-tight">
+<span>🔥</span>
+<span>BATCH 3 KUOTA PENUH (50/50)</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#FEF9C3] text-[#854D0E] border border-amber-200">
+<span>⏳</span>
+<span>Waiting List Dibuka</span>
+</span>
+</div>
+<!-- Main Title -->
+<h2 class="text-[22px] sm:text-[24px] font-bold text-[#0F172A] leading-tight font-['Plus_Jakarta_Sans'] tracking-tight mb-2">
+          Gabung Antrean Prioritas Batch 4 🚀
+        </h2>
+<!-- Subtitle -->
+<p class="text-[13px] sm:text-[14px] text-text-muted leading-relaxed font-normal">
+          Seluruh kuota Batch 3 telah terisi penuh. Daftarkan diri Anda sekarang untuk mengunci harga early bird dan mendapatkan akses awal 24 jam sebelum dibuka untuk umum!
+        </p>
+</div>
+<!-- Section 3: Product Context Box (Read-Only Summary) -->
+<div class="mt-5 p-3.5 sm:p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-[16px] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-pastel-pink text-primary flex items-center justify-center shrink-0 border border-outline-variant/40 shadow-xs">
+<span class="material-symbols-outlined text-[24px]">school</span>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-[#0F172A] font-['Plus_Jakarta_Sans'] line-clamp-1">
+              GAS Pro Web App Masterclass
+            </h4>
+<span class="inline-block text-[11px] font-medium text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full mt-0.5">
+              E-Course Praktis &amp; Source Code
+            </span>
+</div>
+</div>
+<div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-surface-container-highest shrink-0">
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-[#991B1B] bg-[#FEE2E2]/80 px-2 py-0.5 rounded-md">
+<span class="material-symbols-outlined text-[13px]">lock</span>
+            Kuota Habis
+          </span>
+<span class="text-[11px] text-text-muted mt-1 font-medium">
+            Estimasi Batch 4: 15 Nov 2026
+          </span>
+</div>
+</div>
+<!-- Section 4: Waitlist Registration Form (tb_leads_crm) -->
+<form class="mt-5 space-y-3.5" id="waitlistForm" onsubmit="event.preventDefault(); handleWaitlistSubmit();">
+<!-- Input: Nama Lengkap -->
+<div>
+<label class="block text-xs font-semibold text-[#0F172A] mb-1 font-['Plus_Jakarta_Sans']" for="fullName">
+            Nama Lengkap <span class="text-error">*</span>
+</label>
+<div class="relative rounded-xl shadow-xs">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text-muted">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<input class="w-full pl-10 pr-3.5 py-2.5 text-sm text-[#0F172A] bg-surface-card border border-[#CBD5E1] rounded-xl placeholder:text-text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" id="fullName" name="full_name" placeholder="Budi Santoso" required="" type="text"/>
+</div>
+</div>
+<!-- Input: Nomor WhatsApp Aktif -->
+<div>
+<label class="block text-xs font-semibold text-[#0F172A] mb-1 font-['Plus_Jakarta_Sans']" for="whatsapp">
+            Nomor WhatsApp Aktif <span class="text-error">*</span>
+</label>
+<div class="relative flex rounded-xl shadow-xs">
+<span class="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-[#CBD5E1] bg-surface-container-low text-text-muted font-medium text-xs select-none">
+<span class="material-symbols-outlined text-[16px] mr-1 text-[#078859]">chat</span>
+              +62
+            </span>
+<input class="w-full px-3 py-2.5 text-sm text-[#0F172A] bg-surface-card border border-[#CBD5E1] rounded-r-xl placeholder:text-text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" id="whatsapp" name="whatsapp" placeholder="812-3456-7890" required="" type="tel"/>
+</div>
+<p class="text-[11px] text-text-muted mt-1 leading-normal flex items-start gap-1">
+<span class="material-symbols-outlined text-[13px] text-primary shrink-0 mt-0.5">info</span>
+<span>Notifikasi pembukaan slot dan link rahasia early bird akan dikirimkan otomatis via WhatsApp Bot.</span>
+</p>
+</div>
+<!-- Input: Alamat Email Aktif -->
+<div>
+<label class="block text-xs font-semibold text-[#0F172A] mb-1 font-['Plus_Jakarta_Sans']" for="email">
+            Alamat Email Aktif <span class="text-error">*</span>
+</label>
+<div class="relative rounded-xl shadow-xs">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text-muted">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</div>
+<input class="w-full pl-10 pr-3.5 py-2.5 text-sm text-[#0F172A] bg-surface-card border border-[#CBD5E1] rounded-xl placeholder:text-text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" id="email" name="email" placeholder="budi.santoso@gmail.com" required="" type="email"/>
+</div>
+</div>
+<!-- Fast-track slot Checkbox -->
+<div class="pt-1">
+<label class="flex items-start gap-2.5 cursor-pointer select-none group">
+<input checked="" class="mt-0.5 h-4 w-4 rounded border-outline-variant text-primary focus:ring-primary focus:ring-offset-0 transition cursor-pointer" id="fastTrack" name="fast_track" type="checkbox"/>
+<span class="text-xs text-[#0F172A] font-medium leading-snug group-hover:text-primary transition-colors">
+              Beri tahu saya jika ada peserta Batch 3 yang membatalkan pesanan <span class="inline-block text-[11px] font-bold text-primary bg-pastel-pink px-1.5 py-0.2 rounded font-['Plus_Jakarta_Sans']">(Fast-track slot)</span>
+</span>
+</label>
+</div>
+<!-- Section 5: Submit Button & Position Counter -->
+<div class="pt-2 space-y-3">
+<button class="w-full py-3.5 px-6 rounded-full bg-[#0F172A] hover:bg-[#1E293B] active:scale-[0.99] text-white font-bold text-sm tracking-wide font-['Plus_Jakarta_Sans'] shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group" id="submitWaitlistBtn" type="submit">
+<span>Daftar Antrean Prioritas Batch 4</span>
+<span class="text-base group-hover:translate-x-0.5 transition-transform">⏳</span>
+</button>
+<!-- Real-time Position Counter Box -->
+<div class="p-3 bg-[#F0FDF4] border border-[#DCFCE7] rounded-[14px] flex items-center gap-2.5 text-xs text-[#166534]">
+<span class="relative flex h-2.5 w-2.5 shrink-0">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#16A34A]"></span>
+</span>
+<p class="font-medium leading-tight">
+              Sudah ada <strong class="font-bold text-[#14532D]">38 orang</strong> di daftar tunggu. Estimasi posisi antrean Anda: <span class="inline-block font-extrabold px-1.5 py-0.5 bg-white text-[#15803D] rounded border border-[#BBF7D0]">#39</span>
+</p>
+</div>
+<!-- Trust & Privacy Note -->
+<div class="text-center pt-1">
+<p class="text-[11px] text-text-muted flex items-center justify-center gap-1 leading-normal">
+<span class="material-symbols-outlined text-[13px] text-text-muted">verified_user</span>
+<span>Bebas biaya pendaftaran. Kami tidak akan mengirimkan spam. Data tersimpan aman di Google Workspace CRM.</span>
+</p>
+</div>
+</div>
+</form>
+<!-- Feedback Success Toast (Hidden by default, triggered by JS) -->
+<div class="hidden absolute inset-0 bg-surface-card rounded-[24px] p-8 flex flex-col items-center justify-center text-center z-10" id="successNotice">
+<div class="w-16 h-16 rounded-full bg-[#DCFCE7] text-[#16A34A] flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-pastel-pink text-primary mb-2">Pendaftaran Berhasil!</span>
+<h3 class="text-xl font-bold text-[#0F172A] font-['Plus_Jakarta_Sans'] mb-2">Posisi Antrean #39 Terkunci</h3>
+<p class="text-xs text-text-muted max-w-sm mb-6 leading-relaxed">
+          Kami telah mengirim pesan konfirmasi ke nomor WhatsApp Anda. Informasi pembukaan Batch 4 dan kupon diskon 24 jam akan langsung Anda terima.
+        </p>
+<button class="px-6 py-2.5 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white text-xs font-bold font-['Plus_Jakarta_Sans']" onclick="resetWaitlistModal()" type="button">
+          Selesai &amp; Tutup
+        </button>
+</div>
+</div>
+</div>
+<script>
+    // Handle Interactive Waitlist Submit
+    function handleWaitlistSubmit() {
+      const btn = document.getElementById('submitWaitlistBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span><span>Mendaftarkan...</span>`;
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        document.getElementById('successNotice').classList.remove('hidden');
+      }, 700);
+    }
+
+    function resetWaitlistModal() {
+      document.getElementById('successNotice').classList.add('hidden');
+      document.getElementById('waitlistForm').reset();
+    }
+
+    // Modal dismiss demo
+    const closeBtn = document.getElementById('closeModalBtn');
+    const backdrop = document.getElementById('modalBackdrop');
+
+    closeBtn.addEventListener('click', () => {
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+    });
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+      }
+    });
+  </script>
+</body></html>
