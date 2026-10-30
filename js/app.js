@@ -1,5 +1,43 @@
 
 // ============================================================================
+// LIVE PREVIEW SCREENSHOT BUKTI TRANSFER CHECKOUT (OVO, LIVIN MANDIRI, BCA MOBILE, QRIS)
+// ============================================================================
+async function handleOrderProofFileChange(input) {
+  if (!input || !input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const container = document.getElementById('order-proof-preview-container');
+  const imgEl = document.getElementById('order-proof-preview-img');
+  const nameEl = document.getElementById('order-proof-filename');
+  const sizeEl = document.getElementById('order-proof-filesize');
+  const dropzone = document.getElementById('order-proof-dropzone');
+  const titleEl = document.getElementById('order-proof-label-title');
+
+  if (nameEl) nameEl.textContent = file.name;
+  if (sizeEl) sizeEl.textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+  try {
+    const dataUrl = await compressAndReadImage(file, 900, 0.82);
+    if (imgEl) imgEl.src = dataUrl;
+    if (container) container.style.display = 'block';
+    if (dropzone) {
+      dropzone.style.borderColor = '#10B981';
+      dropzone.style.background = '#F0FDF4';
+    }
+    if (titleEl) titleEl.textContent = '✓ ' + file.name;
+    showToast('✓ Bukti transfer berhasil dipilih! Siap diverifikasi.', 'success', 2500);
+  } catch (err) {
+    console.error('Error reading proof preview:', err);
+    try {
+      const fallbackUrl = await readFileAsBase64(file);
+      if (imgEl) imgEl.src = fallbackUrl;
+      if (container) container.style.display = 'block';
+    } catch(e) {}
+  }
+}
+window.handleOrderProofFileChange = handleOrderProofFileChange;
+
+
+// ============================================================================
 // DEFAULT ORDERS & MERGED LOCAL STORAGE ENGINE
 // ============================================================================
 const DEFAULT_RECENT_ORDERS = [
@@ -4086,6 +4124,9 @@ function openProofModal(orderId) {
         <button type="button" class="shimmer-btn" style="padding:10px 20px; font-size:13px; font-weight:700;" onclick="verifyOrderAdmin('${order.ID_Order}', 'Lunas'); closeAllModals();">
           🚀 Verifikasi Lunas Sekarang
         </button>
+        <a href="${proofSrc}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:10px 16px; font-size:13px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+          🔍 Buka Gambar Penuh (Tab Baru)
+        </a>
         <button type="button" class="btn-secondary" style="padding:10px 18px; font-size:13px;" onclick="closeAllModals()">
           Tutup
         </button>
