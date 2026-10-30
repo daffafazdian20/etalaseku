@@ -1779,10 +1779,10 @@ function renderFullOrdersTable(orders) {
       <td style="font-weight:700;">${o.ID_Order}</td>
       <td style="color:#64748B; font-size:12px;">${o.Tanggal_Waktu || '-'}</td>
       <td><strong>${o.Nama_Pembeli}</strong><br><small style="color:#64748B;">${o.No_WhatsApp} • ${o.Email || ''}</small></td>
-      <td>${o.ID_Produk}</td>
-      <td style="font-weight:800;">Rp ${Number(o.Total_Bayar).toLocaleString('id-ID')}</td>
+      <td><strong style="color:var(--deep-navy);">${o.productName || o.Nama_Produk || o.Produk || o.ID_Produk || 'Digital Agency Notion OS'}</strong></td>
+      <td style="font-weight:800; color:var(--deep-navy);">Rp ${Number(o.Total_Bayar).toLocaleString('id-ID')}</td>
       <td>
-        ${o.Bukti_Transfer_URL ? `<a href="${o.Bukti_Transfer_URL}" target="_blank" style="color:#FF2E63; font-weight:700;">Buka Bukti ↗</a>` : '<span style="color:#94A3B8;">-</span>'}
+        ${o.Bukti_Transfer_URL ? `<button type="button" class="btn-secondary" style="padding:4px 10px; font-size:11.5px; font-weight:700; color:#FF2E63; border-color:#FF2E63; border-radius:8px; cursor:pointer;" onclick="openProofModal('${o.ID_Order}')">📸 Lihat Bukti</button>` : '<span style="color:#94A3B8; font-size:11.5px;">-</span>'}
       </td>
       <td>
         <span class="pill-badge ${o.Status_Bayar === 'Lunas' ? 'green' : (o.Status_Bayar === 'Ditolak' ? 'red' : 'yellow')}">${o.Status_Bayar}</span>
@@ -1792,7 +1792,8 @@ function renderFullOrdersTable(orders) {
           <button class="shimmer-btn" style="padding:6px 12px; font-size:11px;" onclick="verifyOrderAdmin('${o.ID_Order}', 'Lunas')">Verifikasi Lunas 🚀</button>
         ` : `<div style="display:inline-flex; align-items:center; gap:6px;">
             <span style="color:#10B981; font-weight:700; font-size:12px;">✓ Lunas</span>
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px; color:#059669; border-color:#6EE7B7;" onclick="openReceiptSuccessModal('${o.ID_Order}')" title="Lihat Struk Kuitansi">🧾 Struk</button>
+            <button class="btn-secondary" style="padding:4px 8px; font-size:11px; color:#059669; border-color:#6EE7B7; border-radius:6px; cursor:pointer;" onclick="openReceiptSuccessModal('${o.ID_Order}')" title="Lihat Struk Kuitansi">🧾 Struk</button>
+            <button class="shimmer-btn" style="padding:4px 8px; font-size:11px; background:#10B981; border-radius:6px; cursor:pointer;" onclick="STATE.activeReceiptOrder = getMergedOrdersList().find(x => (x.ID_Order === '${o.ID_Order}' || x.orderId === '${o.ID_Order}')); sendReceiptToStudentWhatsApp();" title="Kirim Struk ke WhatsApp Siswa">💬 WA Siswa</button>
           </div>`}
       </td>
     </tr>
@@ -3133,6 +3134,20 @@ function handleRedeemAccessCodeForm(e) {
     code = 'ORD-' + code;
   }
 
+  // Cek status Order ID di daftar pesanan
+  const orders = getMergedOrdersList();
+  const matchedOrder = orders.find(o => 
+    (o.ID_Order === code || o.orderId === code) || 
+    ((o.Email || o.email || '').toLowerCase() === email && (o.Status_Bayar === 'Lunas' || o.Status === 'Lunas'))
+  );
+
+  if (matchedOrder) {
+    if (matchedOrder.Status_Bayar !== 'Lunas' && matchedOrder.Status !== 'Lunas' && matchedOrder.status !== 'Lunas') {
+      showToast('⏳ Order ID / Kode ini masih Menunggu Verifikasi Super Admin & Admin di CRM. Mohon tunggu proses verifikasi lunas!', 'warning', 5000);
+      return;
+    }
+  }
+
   // Simpan sesi dan riwayat perangkat
   localStorage.setItem('etalaseku_member_order_id', code);
   localStorage.setItem('etalaseku_member_email', email);
@@ -3227,18 +3242,36 @@ function handleMemberEmailLogin(e) {
     return;
   }
 
-  // Simpan riwayat perangkat
+  // Cek database pesanan lokal dan backend
+  const orders = getMergedOrdersList();
+  const matchingOrders = orders.filter(o => 
+    (o.Email || o.email || '').toLowerCase() === email || 
+    (o.Nama_Pembeli || o.nama || '').toLowerCase() === email
+  );
+
+  // Jika belum ada riwayat order sama sekali
+  if (matchingOrders.length === 0) {
+    showToast('❌ Email Anda belum terdaftar dalam sistem pemesanan. Silakan lakukan checkout terlebih dahulu!', 'error', 4500);
+    return;
+  }
+
+  // Cek apakah ada order yang sudah LUNAS diverifikasi Super Admin & Admin
+  const verifiedOrder = matchingOrders.find(o => (o.Status_Bayar === 'Lunas' || o.Status === 'Lunas' || o.status === 'Lunas'));
+  
+  if (!verifiedOrder) {
+    // Masih menunggu verifikasi Super Admin & Admin!
+    showToast('⏳ Akses Belum Dibuka: Pesanan Anda sedang Menunggu Verifikasi oleh Super Admin & Admin di sistem CRM. Akses materi belajar akan aktif otomatis setelah bukti transfer diverifikasi LUNAS!', 'warning', 6000);
+    return;
+  }
+
+  // SUDAH LUNAS: Berikan akses instan
+  const orderId = verifiedOrder.ID_Order || verifiedOrder.orderId;
   saveRememberedEmail(email);
-
-  // Cari apakah ada Order ID terverifikasi yang cocok dengan email ini
-  const recentOrders = (ADMIN_STATE.data && ADMIN_STATE.data.recentOrders) || [];
-  const foundOrder = recentOrders.find(o => (o.Email || '').toLowerCase() === email);
-  const orderId = foundOrder ? foundOrder.ID_Order : (localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261028-211630-4012');
-
   localStorage.setItem('etalaseku_member_email', email);
   localStorage.setItem('etalaseku_member_order_id', orderId);
 
   closeAllModals();
+  showToast('🎉 Selamat Datang! Akses Ruang Belajar Terverifikasi Lunas.', 'success', 3000);
   updateMemberClassroomNavbar(orderId, email);
   openClassroomDashboard(orderId, email);
 }
@@ -4124,9 +4157,9 @@ function openProofModal(orderId) {
         <button type="button" class="shimmer-btn" style="padding:10px 20px; font-size:13px; font-weight:700;" onclick="verifyOrderAdmin('${order.ID_Order}', 'Lunas'); closeAllModals();">
           🚀 Verifikasi Lunas Sekarang
         </button>
-        <a href="${proofSrc}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:10px 16px; font-size:13px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <button type="button" class="btn-secondary" style="padding:10px 16px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;" onclick="openProofImageInNewWindow('${order.ID_Order}')">
           🔍 Buka Gambar Penuh (Tab Baru)
-        </a>
+        </button>
         <button type="button" class="btn-secondary" style="padding:10px 18px; font-size:13px;" onclick="closeAllModals()">
           Tutup
         </button>
@@ -4146,6 +4179,27 @@ function openProofModal(orderId) {
   if (modal) modal.classList.add('active');
 }
 window.openProofModal = openProofModal;
+
+function openProofImageInNewWindow(orderId) {
+  const orders = getMergedOrdersList();
+  const order = orders.find(o => (o.ID_Order === orderId || o.orderId === orderId));
+  let proofSrc = order ? (order.Bukti_Transfer_URL || order.fileBase64 || '') : '';
+  if (!proofSrc || proofSrc.startsWith('Gagal upload') || proofSrc.length < 10) {
+    proofSrc = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80';
+  } else {
+    proofSrc = formatImageUrl(proofSrc);
+  }
+  const w = window.open('', '_blank');
+  if (w) {
+    const oId = order ? (order.ID_Order || '') : '';
+    const oName = order ? (order.Nama_Pembeli || order.nama || '') : '';
+    const oTotal = order ? Number(order.Total_Bayar || order.total || 0).toLocaleString('id-ID') : '0';
+    w.document.write(`<!DOCTYPE html><html><head><title>Bukti Transfer - ${oId}</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{margin:0;padding:24px;background:#0B0F19;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#fff;}img{max-width:95vw;max-height:85vh;object-fit:contain;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.6);border:2px solid #334155;}.meta{margin-top:16px;text-align:center;font-size:13px;color:#94A3B8;}.title{font-size:15px;font-weight:700;color:#F8FAFC;margin-bottom:4px;}</style></head><body><img src="${proofSrc}" alt="Bukti Transfer"><div class="meta"><div class="title">Bukti Transfer: ${oName} &bull; Rp ${oTotal}</div><div>Order ID: ${oId} &bull; EtalaseKu CRM Verified</div></div></body></html>`);
+    w.document.close();
+  }
+}
+window.openProofImageInNewWindow = openProofImageInNewWindow;
+
 
 
 // ============================================================================
