@@ -391,73 +391,126 @@ const DEFAULT_PAYMENT_CHANNELS = {
   }
 };
 
-// Default Classroom Learning Modules (Materi Pembelajaran Member Area)
+// Default Classroom Learning Modules (Materi Pembelajaran Member Area - Foto 2 Reference)
 const DEFAULT_MODULES = [
   {
     ID_Materi: 'MOD-01',
     ID_Produk: 'PRD-001',
-    Judul_Modul: 'Modul 01: Arsitektur GAS Pro Headless & Google Sheets REST API',
+    Judul_Modul: 'METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL...',
     Urutan: 1,
-    Tipe_Konten: 'Video HD & PDF',
-    URL_Konten: 'https://drive.google.com/drive/folders/1etalaseku_modul_01_demo',
-    Durasi_Menit: 28,
+    Tipe_Badge: 'KELAS',
+    Kategori: 'Kelas',
+    Tipe_Konten: 'Video HD & Code',
+    Episode: 6,
+    Materi_Count: 27,
+    URL_Konten: 'https://drive.google.com',
+    Durasi_Menit: 65,
     Status: 'Publish',
-    Deskripsi: 'Memahami cara kerja decoupled frontend modern dengan Google Apps Script tanpa hosting bulanan.'
+    Thumbnail_URL: './assets/modules/thumb-metode3.jpg',
+    Button_Text: '▶ Buka Ruang Belajar',
+    Deskripsi: 'dari cara Paling Sederhana menjadi Profesional'
   },
   {
     ID_Materi: 'MOD-02',
-    ID_Produk: 'PRD-001',
-    Judul_Modul: 'Modul 02: Setup Endpoint doGet & doPost JSON Bebas Masalah CORS',
+    ID_Produk: 'PRD-002',
+    Judul_Modul: 'Kumpulan PRD (GRATIS)',
     Urutan: 2,
-    Tipe_Konten: 'Video HD & Code',
-    URL_Konten: 'https://drive.google.com/drive/folders/1etalaseku_modul_02_demo',
-    Durasi_Menit: 42,
+    Tipe_Badge: 'DOKUMEN',
+    Kategori: 'Dokumen',
+    Tipe_Konten: 'PDF & Template',
+    Episode: 1,
+    Materi_Count: 10,
+    URL_Konten: 'https://drive.google.com',
+    Durasi_Menit: 20,
     Status: 'Publish',
-    Deskripsi: 'Teknik output text/plain;charset=utf-8 untuk bypass preflight OPTIONS CORS secara sempurna.'
+    Thumbnail_URL: './assets/modules/thumb-prd.jpg',
+    Button_Text: '📂 Akses Produk',
+    Deskripsi: 'Silahkan Download PRD yang dibutuhkan sebagai Referensi'
   },
   {
     ID_Materi: 'MOD-03',
     ID_Produk: 'PRD-001',
-    Judul_Modul: 'Modul 03: Desain UI/UX SPA Interaktif, Animasi Kupu-Kupu 3D & Shimmer',
+    Judul_Modul: 'Kumpulan Video Cara Revisi & Upgrade',
     Urutan: 3,
-    Tipe_Konten: 'Video HD & CSS',
-    URL_Konten: 'https://drive.google.com/drive/folders/1etalaseku_modul_03_demo',
+    Tipe_Badge: 'KELAS',
+    Kategori: 'Kelas',
+    Tipe_Konten: 'Video HD & Tips',
+    Episode: 2,
+    Materi_Count: 8,
+    URL_Konten: 'https://drive.google.com',
     Durasi_Menit: 35,
     Status: 'Publish',
-    Deskripsi: 'Membangun antarmuka kelas dunia dengan mikro-interaksi, 3D flip card, dan sparkle glow.'
+    Thumbnail_URL: './assets/modules/thumb-revisi.jpg',
+    Button_Text: '▶ Buka Ruang Belajar',
+    Deskripsi: 'Kumpulan Video Cara Revisi & Upgrade biar Aman dan Tidak...'
   },
   {
     ID_Materi: 'MOD-04',
     ID_Produk: 'PRD-001',
-    Judul_Modul: 'Modul 04: Otomatisasi WhatsApp Gateway Fonnte & Auto-Kuitansi HMAC',
+    Judul_Modul: 'METODE 1 | BASIC - Belajar GAS sangat Mudah...',
     Urutan: 4,
-    Tipe_Konten: 'Video HD & Script',
-    URL_Konten: 'https://drive.google.com/drive/folders/1etalaseku_modul_04_demo',
+    Tipe_Badge: 'KELAS',
+    Kategori: 'Kelas',
+    Tipe_Konten: 'Video HD & Latihan',
+    Episode: 4,
+    Materi_Count: 7,
+    URL_Konten: 'https://drive.google.com',
     Durasi_Menit: 45,
     Status: 'Publish',
-    Deskripsi: 'Kirim notifikasi instan ke WhatsApp pembeli saat transfer diverifikasi oleh Admin.'
+    Thumbnail_URL: './assets/modules/thumb-basic.jpg',
+    Button_Text: '▶ Buka Ruang Belajar',
+    Deskripsi: 'Pelajari dasar-dasar Google Apps Script dari nol hingga mahir.'
   },
   {
     ID_Materi: 'MOD-05',
-    ID_Produk: 'PRD-001',
-    Judul_Modul: 'Modul 05: Manajemen Cicilan Siswa (Termin) & Pengingat 1-Klik WA',
+    ID_Produk: 'PRD-003',
+    Judul_Modul: 'Masterclass: Social Influence in Workplace',
     Urutan: 5,
-    Tipe_Konten: 'Video HD & Template',
-    URL_Konten: 'https://drive.google.com/drive/folders/1etalaseku_modul_05_demo',
-    Durasi_Menit: 30,
+    Tipe_Badge: 'KELAS',
+    Kategori: 'Kelas',
+    Tipe_Konten: 'Video HD & E-Book',
+    Episode: 6,
+    Materi_Count: 18,
+    URL_Konten: 'https://drive.google.com',
+    Durasi_Menit: 90,
     Status: 'Publish',
-    Deskripsi: 'Menerbitkan tagihan bertahap dan mengirim pengingat WhatsApp otomatis sebelum jatuh tempo.'
+    Thumbnail_URL: './social-influence-banner.jpg',
+    Button_Text: '▶ Buka Ruang Belajar',
+    Deskripsi: 'Strategi esensial membangun pengaruh positif tanpa bergantung pada hierarki (Kredibilitas, Komunikasi, Koneksi).'
   },
   {
     ID_Materi: 'MOD-06',
-    ID_Produk: 'PRD-001',
-    Judul_Modul: 'Modul 06: Deployment GitHub Pages & Custom Domain Vercel Bebas Biaya',
+    ID_Produk: 'PRD-004',
+    Judul_Modul: 'Digital Agency Notion OS & CRM Terpadu',
     Urutan: 6,
-    Tipe_Konten: 'Video HD & Panduan',
-    URL_Konten: 'https://drive.google.com/drive/folders/1etalaseku_modul_06_demo',
-    Durasi_Menit: 25,
+    Tipe_Badge: 'APLIKASI',
+    Kategori: 'Aplikasi',
+    Tipe_Konten: 'Template Notion & Guide',
+    Episode: 1,
+    Materi_Count: 15,
+    URL_Konten: 'https://notion.so',
+    Durasi_Menit: 30,
     Status: 'Publish',
-    Deskripsi: 'Langkah mempublikasikan web app ke internet gratis selamanya dengan SSL otomatis.'
+    Thumbnail_URL: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80',
+    Button_Text: '📂 Akses Produk',
+    Deskripsi: 'Template Notion terlengkap untuk manajemen klien agency, pipeline penjualan, dan invoice otomatis terpusat.'
+  },
+  {
+    ID_Materi: 'MOD-07',
+    ID_Produk: 'PRD-001',
+    Judul_Modul: 'GAS Pro Web App Masterclass 🎓',
+    Urutan: 7,
+    Tipe_Badge: 'KELAS',
+    Kategori: 'Kelas',
+    Tipe_Konten: 'Video HD & Code',
+    Episode: 8,
+    Materi_Count: 32,
+    URL_Konten: 'https://drive.google.com',
+    Durasi_Menit: 180,
+    Status: 'Publish',
+    Thumbnail_URL: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+    Button_Text: '▶ Buka Ruang Belajar',
+    Deskripsi: 'Bangun web app skala industri dengan Google Apps Script, Google Sheets, & Tailwind CSS tanpa server eksternal.'
   }
 ];
 
@@ -493,7 +546,10 @@ const STATE = {
   modules: (function() {
     try {
       const stored = localStorage.getItem('etalaseku_modules');
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && parsed.length > 0 && parsed[0].Thumbnail_URL) return parsed;
+      }
     } catch(e) {}
     return DEFAULT_MODULES;
   })(),
@@ -1395,7 +1451,7 @@ function showSuccessModal(orderId, nama, whatsapp, email, productName, amountToP
 function openClassroomFromSuccessModal() {
   closeAllModals();
   openClassroomDashboard();
-  showToast('🎓 Selamat datang di Ruang Belajar Member Siswa!', 'success', 3000);
+  showToast('🎓 Selamat datang di Ruang BelajarKu!', 'success', 3000);
 }
 window.openClassroomFromSuccessModal = openClassroomFromSuccessModal;
 
@@ -2600,7 +2656,7 @@ async function verifyOrderAdmin(orderId, status = 'Lunas') {
         const prodName = ord.productName || ord.Produk || 'Kelas Digital EtalaseKu';
         if (destEmail) {
           const mailSubject = encodeURIComponent(`Verifikasi Lunas & Akses Kelas - Order ID: ${orderId}`);
-          const mailBody = encodeURIComponent(`Halo ${destName},\n\nPembayaran Anda untuk ${prodName} telah BERHASIL DIVERIFIKASI LUNAS oleh Super Admin & Admin EtalaseKu.\n\nDetail Akses Anda:\n• Order ID Resmi: ${orderId}\n• Email Terdaftar: ${destEmail}\n• Buka Ruang Belajar Siswa: ${window.location.origin}\n\nMasukkan Email atau Order ID Anda pada menu Member Area untuk mulai belajar.\n\nSalam hangat,\nSuper Admin & Tim EtalaseKu Hub`);
+          const mailBody = encodeURIComponent(`Halo ${destName},\n\nPembayaran Anda untuk ${prodName} telah BERHASIL DIVERIFIKASI LUNAS oleh Super Admin & Admin EtalaseKu.\n\nDetail Akses Anda:\n• Order ID Resmi: ${orderId}\n• Email Terdaftar: ${destEmail}\n• Buka Ruang BelajarKu: ${window.location.origin}\n\nMasukkan Email atau Order ID Anda pada menu Member Area untuk mulai belajar.\n\nSalam hangat,\nSuper Admin & Tim EtalaseKu Hub`);
           window.open(`mailto:${destEmail}?subject=${mailSubject}&body=${mailBody}`, '_blank');
         }
       }
@@ -3453,7 +3509,7 @@ function handleMemberEmailLogin(e) {
   localStorage.setItem('etalaseku_member_order_id', orderId);
 
   closeAllModals();
-  showToast('🎉 Selamat Datang! Akses Ruang Belajar Terverifikasi Lunas.', 'success', 3000);
+  showToast('🎉 Selamat Datang! Akses Ruang BelajarKu Lunas.', 'success', 3000);
   updateMemberClassroomNavbar(orderId, email);
   openClassroomDashboard(orderId, email);
 }
@@ -3539,7 +3595,7 @@ function handleClassroomLogout() {
   closeClassroomDashboard();
   closeAllModals();
   updateMemberClassroomNavbar(null, null);
-  showToast('Anda telah keluar dari Ruang Belajar Member Siswa 🎓', 'logout');
+  showToast('Anda telah keluar dari Ruang BelajarKu 🎓', 'logout');
 }
 
 function updateMemberClassroomNavbar(orderId, email) {
@@ -3595,13 +3651,19 @@ function renderClassroomPortalModules(query, filterTag) {
     modules = modules.filter(m => 
       (m.Judul_Modul && m.Judul_Modul.toLowerCase().includes(q)) ||
       (m.Deskripsi && m.Deskripsi.toLowerCase().includes(q)) ||
-      (m.Tipe_Konten && m.Tipe_Konten.toLowerCase().includes(q))
+      (m.Tipe_Konten && m.Tipe_Konten.toLowerCase().includes(q)) ||
+      (m.Kategori && m.Kategori.toLowerCase().includes(q)) ||
+      (m.Tipe_Badge && m.Tipe_Badge.toLowerCase().includes(q))
     );
   }
 
   if (filterTag && filterTag !== 'ALL') {
     const t = filterTag.toLowerCase();
-    modules = modules.filter(m => (m.Tipe_Konten && m.Tipe_Konten.toLowerCase().includes(t)));
+    modules = modules.filter(m => 
+      (m.Tipe_Badge && m.Tipe_Badge.toLowerCase() === t) ||
+      (m.Kategori && m.Kategori.toLowerCase() === t) ||
+      (m.Tipe_Konten && m.Tipe_Konten.toLowerCase().includes(t))
+    );
   }
 
   const statCount = document.getElementById('cls-stat-modules-count');
@@ -3609,47 +3671,59 @@ function renderClassroomPortalModules(query, filterTag) {
 
   if (modules.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center; padding:40px; background:#FFFFFF; border:1px dashed #CBD5E1; border-radius:18px; color:#64748B;">
-        <div style="font-size:32px; margin-bottom:8px;">🔍</div>
-        <p style="font-weight:700; font-size:15px; margin:0 0 6px;">Tidak ada modul yang cocok dengan pencarian.</p>
-        <p style="font-size:12px; margin:0;">Coba gunakan kata kunci lain seperti "GAS", "REST API", atau klik filter "Semua".</p>
+      <div style="grid-column: 1 / -1; text-align:center; padding:50px 20px; background:#FFFFFF; border:1.5px dashed #CBD5E1; border-radius:20px; color:#64748B;">
+        <div style="font-size:36px; margin-bottom:10px;">🔍</div>
+        <p style="font-weight:800; font-size:16px; margin:0 0 6px; color:#0F172A;">Tidak ada modul atau kelas yang cocok.</p>
+        <p style="font-size:13px; margin:0;">Coba gunakan kata kunci pencarian lain atau pilih filter "Semua".</p>
       </div>
     `;
     return;
   }
 
   container.innerHTML = modules.map((m, idx) => {
-    const durasi = m.Durasi_Menit ? `${m.Durasi_Menit} Menit` : 'Video Tutorial';
-    const tipe = m.Tipe_Konten || 'Video HD & Code';
+    const tipeBadge = m.Tipe_Badge || (m.Kategori ? m.Kategori.toUpperCase() : 'KELAS');
+    const badgeTypeClass = (tipeBadge === 'DOKUMEN' ? 'type-dokumen' : (tipeBadge === 'APLIKASI' ? 'type-aplikasi' : 'type-kelas'));
+    const kategori = m.Kategori || (tipeBadge === 'DOKUMEN' ? 'Dokumen' : (tipeBadge === 'APLIKASI' ? 'Aplikasi' : 'Kelas'));
+    const catPillClass = (kategori.toLowerCase() === 'dokumen' ? 'cat-dokumen' : (kategori.toLowerCase() === 'aplikasi' ? 'cat-aplikasi' : ''));
+    
+    const bannerUrl = m.Thumbnail_URL || m.Foto_URL || './assets/modules/thumb-metode3.jpg';
+    const isDoc = tipeBadge === 'DOKUMEN' || tipeBadge === 'APLIKASI';
+    const btnText = m.Button_Text || (isDoc ? '📂 Akses Produk' : '▶ Buka Ruang Belajar');
     const url = m.URL_Konten || 'https://drive.google.com';
-    const urutan = m.Urutan || (idx + 1);
+
+    let metaText = '';
+    if (m.Episode && m.Materi_Count) {
+      metaText = `<span>🎬 ${m.Episode} episode</span> <span>•</span> <span>📚 ${m.Materi_Count} materi</span>`;
+    } else if (m.Materi_Count) {
+      metaText = `<span>📚 ${m.Materi_Count} materi</span>`;
+    } else if (m.Durasi_Menit) {
+      metaText = `<span>⏱️ ${m.Durasi_Menit} Menit</span>`;
+    } else {
+      metaText = `<span>🎬 Full Akses</span> <span>•</span> <span>📚 Materi Lengkap</span>`;
+    }
 
     return `
-      <div class="classroom-module-card">
-        <div style="flex:1;">
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
-            <span style="font-size:11px; font-weight:800; background:#FFF1F4; color:var(--coral-pink); padding:4px 10px; border-radius:8px;">MODUL ${urutan < 10 ? '0' + urutan : urutan}</span>
-            <span class="pill-badge purple" style="font-size:11px;">${tipe}</span>
-            <span style="font-size:12px; color:#64748B; font-weight:600; display:flex; align-items:center; gap:4px;">⏱️ ${durasi}</span>
-          </div>
-          <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 8px; line-height:1.3;">
-            ${m.Judul_Modul}
-          </h3>
-          <p style="font-size:13px; color:#64748B; margin:0 0 12px; line-height:1.5;">
-            ${m.Deskripsi || 'Pelajari langkah-demi-langkah materi praktis ini.'}
-          </p>
-          <div style="display:flex; align-items:center; gap:16px;">
-            <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:#64748B; cursor:pointer;">
-              <input type="checkbox" onchange="this.parentElement.style.color = this.checked ? '#10B981' : '#64748B'">
-              <span>Tandai selesai dipelajari</span>
-            </label>
+      <div class="rb-card">
+        <div class="rb-thumb-wrap">
+          <img src="${bannerUrl}" alt="${escapeHtml(m.Judul_Modul)}" class="rb-thumb-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-metode3.jpg';">
+          <div class="rb-badge-left ${badgeTypeClass}">${tipeBadge}</div>
+          <div class="rb-badge-right">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Dimiliki</span>
           </div>
         </div>
-        <div style="flex-shrink:0;">
-          <a href="${url}" target="_blank" rel="noopener noreferrer" class="shimmer-btn" style="padding:12px 22px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; border-radius:12px; box-shadow:0 4px 14px rgba(255,46,99,0.25);">
-            <span>▶️ Buka Video & Source Code</span>
-            <span>↗</span>
-          </a>
+        <div class="rb-card-content">
+          <div class="rb-cat-pill ${catPillClass}">${kategori}</div>
+          <h3 class="rb-card-title" title="${escapeHtml(m.Judul_Modul)}">${m.Judul_Modul}</h3>
+          <p class="rb-card-desc">${m.Deskripsi || 'Akses modul dan materi lengkap seumur hidup.'}</p>
+          <div class="rb-card-meta">
+            ${metaText}
+          </div>
+          <div class="rb-card-action">
+            <a href="${url}" target="_blank" rel="noopener noreferrer" class="rb-btn-action ${isDoc ? 'rb-btn-doc' : ''}">
+              ${btnText}
+            </a>
+          </div>
         </div>
       </div>
     `;
@@ -3660,8 +3734,18 @@ function filterClassroomPortalModules(query) {
   renderClassroomPortalModules(query, 'ALL');
 }
 
-function filterClassroomByTag(tag) {
-  renderClassroomPortalModules('', tag);
+function filterClassroomByTag(tag, btnElement) {
+  if (btnElement) {
+    const parent = btnElement.parentElement;
+    if (parent) {
+      const pills = parent.querySelectorAll('.rb-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+  }
+  const searchInput = document.getElementById('cls-portal-search-input');
+  const query = searchInput ? searchInput.value : '';
+  renderClassroomPortalModules(query, tag);
 }
 
 // Fallback untuk modal lama
@@ -4573,7 +4657,7 @@ function sendReceiptToStudentWhatsApp() {
     `• Nama Lengkap: *${order.Nama_Pembeli || order.nama}*\n` +
     `• Email Terdaftar: *${order.Email || order.email}*\n` +
     `• Nomor WhatsApp: *${order.No_WhatsApp || order.whatsapp}*\n\n` +
-    `🎓 *Akses Ruang Belajar Siswa:*\n` +
+    `🎓 *Akses Ruang BelajarKu:*\n` +
     `Kunjungi: https://etalaseku-gules.vercel.app\n` +
     `Masukkan Email atau Order ID Anda pada tombol *Member Area* untuk mulai belajar.\n\n` +
     `Terima kasih atas kepercayaannya!\n` +
