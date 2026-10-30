@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261031-05">
+  <link rel="stylesheet" href="css/style.css?v=20261031-06">
 </head>
 <body>
 
@@ -2688,27 +2688,183 @@
     </div>
   </div>
 
-  <!-- ========================================================================
-       MODAL TAMBAH / EDIT MODUL CLASSROOM (tb_materi_kursus)
+    <!-- ========================================================================
+       MODAL TAMBAH / EDIT MODUL CLASSROOM LENGKAP DENGAN KURIKULUM & DOKUMEN
        ======================================================================== -->
   <div class="modal-overlay" id="modal-module-form">
-    <div class="modal-card" style="max-width:580px;">
-      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
-      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;" id="module-form-modal-title">Tambah Modul Materi Baru 🎓</h3>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Modul akan otomatis tampil di Member Area siswa yang telah diverifikasi.</p>
+    <div class="modal-card crm-module-editor-dialog">
+      <!-- Fixed Modal Header -->
+      <div class="crm-meditor-header">
+        <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+        <h3 style="font-size:19px; font-weight:800; color:var(--deep-navy); margin:0 0 3px;" id="module-form-modal-title">Edit Modul Pembelajaran &amp; Konten Siswa ✏️</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin:0;">Atur kurikulum video kelas atau berkas paket dokumen yang otomatis terhubung ke Ruang BelajarKu.</p>
+      </div>
       
-      <form onsubmit="saveClassroomModuleForm(event, false)">
-        <input type="hidden" id="mod-form-id">
-        <div style="display:grid; grid-template-columns:3fr 1fr; gap:12px; margin-bottom:12px;">
-          <div>
-            <label class="form-label" style="font-size:11px;">Judul Modul / Materi *</label>
-            <input type="text" id="mod-form-title" required class="form-input" placeholder="Contoh: Modul 01: Dasar Google Apps Script">
+      <!-- Scrollable Modal Form Body -->
+      <form onsubmit="saveClassroomModuleForm(event, false)" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+        <div class="crm-meditor-body">
+          <input type="hidden" id="mod-form-id">
+          <input type="hidden" id="mod-editor-selected-type" value="course">
+
+          <!-- Type Switcher Pill -->
+          <div class="mod-type-switcher">
+            <button type="button" class="mod-type-pill active" id="btn-mod-type-course" onclick="switchModuleEditorType('course')">
+              🎓 Modul Kelas Video (Buka Ruang Belajar)
+            </button>
+            <button type="button" class="mod-type-pill" id="btn-mod-type-doc" onclick="switchModuleEditorType('document')">
+              📁 Paket Dokumen &amp; PRD (Akses Produk)
+            </button>
           </div>
-          <div>
-            <label class="form-label" style="font-size:11px;">Urutan</label>
-            <input type="number" id="mod-form-order" required class="form-input" value="1" min="1">
+
+          <!-- Section 1: Data Modul Pokok -->
+          <div class="crm-editor-section">
+            <div class="crm-editor-sec-title">
+              <span>📌 Informasi Utama Modul</span>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:3fr 1fr; gap:12px; margin-bottom:12px;">
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Judul Modul / Kursus / Produk *</label>
+                <input type="text" id="mod-form-title" required class="form-input" placeholder="Contoh: METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL">
+              </div>
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Nomor Urut</label>
+                <input type="number" id="mod-form-order" required class="form-input" value="1" min="1">
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Kategori / Badge</label>
+                <select id="mod-form-badge" class="form-input">
+                  <option value="Kelas">Kelas</option>
+                  <option value="Dokumen">Dokumen</option>
+                  <option value="Aplikasi">Aplikasi</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Durasi / Keterangan Singkat</label>
+                <input type="text" id="mod-form-duration" class="form-input" placeholder="misal: 65 Menit atau 10 Berkas">
+              </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label class="form-label" style="font-size:11px; font-weight:700;">URL Banner / Thumbnail Foto Modul</label>
+              <input type="text" id="mod-form-banner" class="form-input" placeholder="https://... atau ./assets/modules/thumb-metode3.jpg">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-size:11px; font-weight:700;">Deskripsi Singkat Modul</label>
+              <input type="text" id="mod-form-desc" class="form-input" placeholder="Ringkasan penjelasan modul yang muncul pada kartu katalog">
+            </div>
+          </div>
+
+          <!-- Section 2: Khusus KELAS VIDEO (Foto 1 - Buka Ruang Belajar) -->
+          <div id="crm-sec-course-editor" class="crm-editor-section">
+            <div class="crm-editor-sec-title">
+              <span>🎬 Kurikulum Video &amp; Komunitas Kelas</span>
+            </div>
+
+            <!-- WhatsApp Group Settings -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Nama Grup WhatsApp</label>
+                <input type="text" id="mod-form-wa-name" class="form-input" placeholder="Khusus peserta METODE 3...">
+              </div>
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Tautan Link WhatsApp Group</label>
+                <input type="url" id="mod-form-wa-link" class="form-input" placeholder="https://chat.whatsapp.com/... atau https://wa.me/...">
+              </div>
+            </div>
+
+            <!-- Ringkasan Kelas (Tab Summary) -->
+            <div style="margin-bottom:14px;">
+              <label class="form-label" style="font-size:11px; font-weight:700;">Ringkasan Kelas (Muncul di Tab Ringkasan Kelas)</label>
+              <textarea id="mod-form-summary-text" class="form-input" rows="3" placeholder="Tuliskan rangkuman materi dan poin pembelajaran kelas ini..."></textarea>
+            </div>
+
+            <!-- Episodes List Builder -->
+            <div style="margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <label class="form-label" style="font-size:12px; font-weight:800; color:#1E1B4B; margin:0;">
+                  Daftar Episode Pembelajaran (<span id="mod-form-ep-count">0</span> Episode)
+                </label>
+                <button type="button" class="btn-add-item-crm" onclick="addEpisodeRowToForm()">
+                  + Tambah Episode Baru
+                </button>
+              </div>
+              <div id="mod-episodes-container">
+                <!-- Dynamic episode items -->
+              </div>
+            </div>
+
+            <!-- Materials & Files Builder -->
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <label class="form-label" style="font-size:12px; font-weight:800; color:#1E1B4B; margin:0;">
+                  Materi Unduhan &amp; Source Code (<span id="mod-form-mat-count">0</span> File)
+                </label>
+                <button type="button" class="btn-add-item-crm" onclick="addMaterialRowToForm()">
+                  + Tambah File Unduhan
+                </button>
+              </div>
+              <div id="mod-materials-container">
+                <!-- Dynamic material items -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Khusus PAKET DOKUMEN (Foto 2 - Akses Produk) -->
+          <div id="crm-sec-doc-editor" class="crm-editor-section" style="display:none;">
+            <div class="crm-editor-sec-title">
+              <span>📄 Paket Dokumen &amp; 10 Berkas PRD</span>
+            </div>
+
+            <!-- Info Paket -->
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:14px;">
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Total Berkas Tambahan</label>
+                <input type="text" id="mod-doc-pkg-files" class="form-input" placeholder="misal: 10 berkas">
+              </div>
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Format Material</label>
+                <input type="text" id="mod-doc-pkg-format" class="form-input" placeholder="misal: 10 tautan / Dokumen">
+              </div>
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Subjudul Petunjuk</label>
+                <input type="text" id="mod-doc-subtitle" class="form-input" placeholder="Silahkan Download PRD yang dibutuhkan...">
+              </div>
+            </div>
+
+            <!-- Document Items Builder -->
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <label class="form-label" style="font-size:12px; font-weight:800; color:#1E1B4B; margin:0;">
+                  Daftar Berkas Dokumen PRD (<span id="mod-form-doc-count">0</span> Dokumen)
+                </label>
+                <button type="button" class="btn-add-item-crm" onclick="addDocumentRowToForm()">
+                  + Tambah Dokumen PRD
+                </button>
+              </div>
+              <div id="mod-documents-container">
+                <!-- Dynamic document items -->
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Sticky Footer Modal with Renamed Action Button -->
+        <div class="crm-meditor-footer">
+          <button type="submit" id="btn-save-module-modal" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px; font-weight:800;">
+            Simpan &amp; Hubungkan ke Dashboard Ruang Belajar &amp; Akses Produk 🚀
+          </button>
+          <div style="text-align:center; font-size:11.5px; color:#64748B;">
+            ✨ Perubahan otomatis tersinkronisasi dan langsung tampil pada Dashboard Member Siswa.
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
         <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
           <div>
             <label class="form-label" style="font-size:11px;">Kategori Kursus</label>
@@ -2994,8 +3150,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261031-05"></script>
-  <script src="js/app.js?v=20261031-05"></script>
+  <script src="js/config.js?v=20261031-06"></script>
+  <script src="js/app.js?v=20261031-06"></script>
 
   <!-- Modal Reader & Salin Dokumen PRD -->
   <div class="modal-overlay" id="modal-doc-reader">

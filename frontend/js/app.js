@@ -3829,13 +3829,226 @@ function toggleInlineModuleForm() {
   box.style.display = (box.style.display === 'none' || !box.style.display) ? 'block' : 'none';
 }
 
+
+// ============================================================================
+// DYNAMIC COURSE & DOCUMENT STORAGE SYNC (CONNECTED TO CRM & RUANG BELAJARKU)
+// ============================================================================
+
+function getActiveCourseEpisodesMap() {
+  try {
+    const saved = localStorage.getItem('etalaseku_course_episodes_map');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return Object.assign({}, COURSE_EPISODES_MAP, parsed);
+    }
+  } catch (e) {
+    console.warn('Error reading etalaseku_course_episodes_map:', e);
+  }
+  return COURSE_EPISODES_MAP;
+}
+
+function getActiveDocumentFilesMap() {
+  try {
+    const saved = localStorage.getItem('etalaseku_document_files_map');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return Object.assign({}, DOCUMENT_FILES_MAP, parsed);
+    }
+  } catch (e) {
+    console.warn('Error reading etalaseku_document_files_map:', e);
+  }
+  return DOCUMENT_FILES_MAP;
+}
+
+function switchModuleEditorType(type) {
+  const btnCourse = document.getElementById('btn-mod-type-course');
+  const btnDoc = document.getElementById('btn-mod-type-doc');
+  const secCourse = document.getElementById('crm-sec-course-editor');
+  const secDoc = document.getElementById('crm-sec-doc-editor');
+  const selectedTypeInput = document.getElementById('mod-editor-selected-type');
+  const badgeSelect = document.getElementById('mod-form-badge');
+
+  if (selectedTypeInput) selectedTypeInput.value = type;
+
+  if (type === 'document') {
+    if (btnCourse) btnCourse.classList.remove('active');
+    if (btnDoc) btnDoc.classList.add('active');
+    if (secCourse) secCourse.style.display = 'none';
+    if (secDoc) secDoc.style.display = 'block';
+    if (badgeSelect) badgeSelect.value = 'Dokumen';
+  } else {
+    if (btnDoc) btnDoc.classList.remove('active');
+    if (btnCourse) btnCourse.classList.add('active');
+    if (secDoc) secDoc.style.display = 'none';
+    if (secCourse) secCourse.style.display = 'block';
+    if (badgeSelect) badgeSelect.value = 'Kelas';
+  }
+}
+
+function addEpisodeRowToForm(epData) {
+  const container = document.getElementById('mod-episodes-container');
+  if (!container) return;
+  const data = epData || {};
+  const index = container.children.length + 1;
+  const title = data.title || ('Step ' + index + ' - Materi Baru');
+  const duration = data.duration || '10:00';
+  const url = data.url || data.videoEmbedUrl || '';
+  const summary = data.summary || '';
+
+  const div = document.createElement('div');
+  div.className = 'crm-row-builder-item';
+  div.innerHTML = `
+    <button type="button" class="crm-row-del-btn" onclick="this.closest('.crm-row-builder-item').remove(); updateFormCounters();" title="Hapus Episode">&times;</button>
+    <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
+      <div>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Judul Episode *</label>
+        <input type="text" class="form-input ep-item-title" required value="${escapeHtml(title)}" placeholder="Contoh: Step 1 - Setup Github + Repo">
+      </div>
+      <div>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Durasi</label>
+        <input type="text" class="form-input ep-item-duration" value="${escapeHtml(duration)}" placeholder="07:40">
+      </div>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label class="form-label" style="font-size:10.5px; font-weight:700;">URL Video YouTube / Google Drive</label>
+      <input type="text" class="form-input ep-item-url" value="${escapeHtml(url)}" placeholder="https://youtube.com/embed/... atau https://drive.google.com/...">
+    </div>
+    <div>
+      <label class="form-label" style="font-size:10.5px; font-weight:700;">Ringkasan Singkat Episode</label>
+      <input type="text" class="form-input ep-item-summary" value="${escapeHtml(summary)}" placeholder="Penjelasan ringkas materi episode ini">
+    </div>
+  `;
+  container.appendChild(div);
+  updateFormCounters();
+}
+
+function addMaterialRowToForm(matData) {
+  const container = document.getElementById('mod-materials-container');
+  if (!container) return;
+  const data = matData || {};
+  const name = data.name || '';
+  const type = data.type || 'Source Code';
+  const url = data.url || '';
+
+  const div = document.createElement('div');
+  div.className = 'crm-row-builder-item';
+  div.innerHTML = `
+    <button type="button" class="crm-row-del-btn" onclick="this.closest('.crm-row-builder-item').remove(); updateFormCounters();" title="Hapus Berkas">&times;</button>
+    <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
+      <div>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Nama Berkas / File *</label>
+        <input type="text" class="form-input mat-item-name" required value="${escapeHtml(name)}" placeholder="Contoh: Snippet Script CORS">
+      </div>
+      <div>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Tipe File</label>
+        <input type="text" class="form-input mat-item-type" value="${escapeHtml(type)}" placeholder="JavaScript Code / PDF / Zip">
+      </div>
+    </div>
+    <div>
+      <label class="form-label" style="font-size:10.5px; font-weight:700;">Link Download / Drive URL</label>
+      <input type="text" class="form-input mat-item-url" value="${escapeHtml(url)}" placeholder="https://drive.google.com/... atau https://github.com/...">
+    </div>
+  `;
+  container.appendChild(div);
+  updateFormCounters();
+}
+
+function addDocumentRowToForm(docData) {
+  const container = document.getElementById('mod-documents-container');
+  if (!container) return;
+  const data = docData || {};
+  const index = container.children.length + 1;
+  const name = data.name || ('PRD Model ' + index);
+  const filename = data.filename || ('PRD_' + index + '.md');
+  const size = data.size || '0.01 MB';
+  const url = data.url || 'https://drive.google.com';
+  const content = data.content || ('# PRD: ' + name + '\n\n## 1. Ringkasan Eksekutif\nDokumen spesifikasi produk dan rancangan teknis.\n\n## 2. Fitur Utama\n- Arsitektur sistem Google Apps Script\n- Skema database Google Sheets\n- Endpoint REST API tanpa hosting bulanan.');
+
+  const div = document.createElement('div');
+  div.className = 'crm-row-builder-item';
+  div.innerHTML = `
+    <button type="button" class="crm-row-del-btn" onclick="this.closest('.crm-row-builder-item').remove(); updateFormCounters();" title="Hapus Dokumen">&times;</button>
+    <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
+      <div>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Judul Dokumen PRD *</label>
+        <input type="text" class="form-input doc-item-name" required value="${escapeHtml(name)}" placeholder="Contoh: E-TOKO Mini Commerce">
+      </div>
+      <div>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Nama File</label>
+        <input type="text" class="form-input doc-item-filename" value="${escapeHtml(filename)}" placeholder="PRD_Toko.md">
+      </div>
+      <div>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Ukuran</label>
+        <input type="text" class="form-input doc-item-size" value="${escapeHtml(size)}" placeholder="0.01 MB">
+      </div>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label class="form-label" style="font-size:10.5px; font-weight:700;">Tautan Unduh File / Drive</label>
+      <input type="text" class="form-input doc-item-url" value="${escapeHtml(url)}" placeholder="https://drive.google.com/...">
+    </div>
+    <div>
+      <label class="form-label" style="font-size:10.5px; font-weight:700;">Isi Teks PRD / Markdown (Untuk Fitur Lihat &amp; Salin 1-Klik)</label>
+      <textarea class="form-input doc-item-content" rows="3" placeholder="Teks lengkap PRD format markdown...">${escapeHtml(content)}</textarea>
+    </div>
+  `;
+  container.appendChild(div);
+  updateFormCounters();
+}
+
+function updateFormCounters() {
+  const epCount = document.getElementById('mod-form-ep-count');
+  const epBox = document.getElementById('mod-episodes-container');
+  if (epCount && epBox) epCount.textContent = epBox.children.length;
+
+  const matCount = document.getElementById('mod-form-mat-count');
+  const matBox = document.getElementById('mod-materials-container');
+  if (matCount && matBox) matCount.textContent = matBox.children.length;
+
+  const docCount = document.getElementById('mod-form-doc-count');
+  const docBox = document.getElementById('mod-documents-container');
+  if (docCount && docBox) docCount.textContent = docBox.children.length;
+}
+
 function openAddModuleModal() {
-  document.getElementById('module-form-modal-title').textContent = 'Tambah Modul Materi Baru 🎓';
+  const titleEl = document.getElementById('module-form-modal-title');
+  if (titleEl) titleEl.textContent = 'Tambah Modul Materi Baru 🎓';
+
+  const btnSave = document.getElementById('btn-save-module-modal');
+  if (btnSave) btnSave.textContent = 'Simpan & Hubungkan ke Dashboard Ruang Belajar & Akses Produk 🚀';
+
   document.getElementById('mod-form-id').value = '';
   document.getElementById('mod-form-title').value = '';
   document.getElementById('mod-form-order').value = ((STATE.modules || DEFAULT_MODULES).length + 1);
-  document.getElementById('mod-form-url').value = '';
+  document.getElementById('mod-form-badge').value = 'Kelas';
+  document.getElementById('mod-form-duration').value = '30 Menit';
+  document.getElementById('mod-form-banner').value = './assets/modules/thumb-metode3.jpg';
   document.getElementById('mod-form-desc').value = '';
+
+  // Reset course fields
+  document.getElementById('mod-form-wa-name').value = 'Grup Diskusi Siswa';
+  document.getElementById('mod-form-wa-link').value = 'https://chat.whatsapp.com/';
+  document.getElementById('mod-form-summary-text').value = 'Ringkasan materi pembelajaran dan penjelasan modul lengkap.';
+
+  // Reset doc fields
+  document.getElementById('mod-doc-pkg-files').value = '10 berkas';
+  document.getElementById('mod-doc-pkg-format').value = '10 Dokumen';
+  document.getElementById('mod-doc-subtitle').value = 'Silahkan Download PRD yang dibutuhkan sebagai Referensi';
+
+  // Clear builders
+  const epBox = document.getElementById('mod-episodes-container');
+  if (epBox) epBox.innerHTML = '';
+  const matBox = document.getElementById('mod-materials-container');
+  if (matBox) matBox.innerHTML = '';
+  const docBox = document.getElementById('mod-documents-container');
+  if (docBox) docBox.innerHTML = '';
+
+  // Add sample rows
+  addEpisodeRowToForm({ title: 'Step 1 - Pengenalan Modul', duration: '08:20', summary: 'Pengantar materi dan sasaran kompetensi.' });
+  addEpisodeRowToForm({ title: 'Step 2 - Praktek Coding & Implementasi', duration: '15:40', summary: 'Hands-on koding langkah demi langkah.' });
+  addMaterialRowToForm({ name: 'Starter Kit Source Code (Zip)', type: 'GitHub Zip', url: 'https://drive.google.com' });
+  addDocumentRowToForm({ name: 'PRD Model Aplikasi', filename: 'PRD_Aplikasi.md', size: '0.02 MB', url: 'https://drive.google.com' });
+
+  switchModuleEditorType('course');
   document.getElementById('modal-module-form').classList.add('active');
 }
 
@@ -3844,102 +4057,271 @@ function openEditModuleModal(id) {
   const mod = modules.find(m => m.ID_Materi === id);
   if (!mod) return;
 
-  document.getElementById('module-form-modal-title').textContent = 'Edit Modul Pembelajaran ✏️';
+  const titleEl = document.getElementById('module-form-modal-title');
+  if (titleEl) titleEl.textContent = 'Edit Modul Pembelajaran & Konten Siswa ✏️';
+
+  const btnSave = document.getElementById('btn-save-module-modal');
+  if (btnSave) btnSave.textContent = 'Simpan & Hubungkan ke Dashboard Ruang Belajar & Akses Produk 🚀';
+
   document.getElementById('mod-form-id').value = mod.ID_Materi;
   document.getElementById('mod-form-title').value = mod.Judul_Modul || '';
   document.getElementById('mod-form-order').value = mod.Urutan || 1;
-  document.getElementById('mod-form-product').value = mod.ID_Produk || 'PRD-001';
-  document.getElementById('mod-form-type').value = mod.Tipe_Konten || 'Video HD & Code';
-  document.getElementById('mod-form-duration').value = mod.Durasi_Menit || 30;
-  document.getElementById('mod-form-url').value = mod.URL_Konten || '';
+  document.getElementById('mod-form-duration').value = mod.Durasi_Menit ? (mod.Durasi_Menit + ' Menit') : (mod.Durasi || '30 Menit');
+  document.getElementById('mod-form-banner').value = mod.Thumbnail_URL || mod.Foto_URL || '';
   document.getElementById('mod-form-desc').value = mod.Deskripsi || '';
 
+  const isDoc = (mod.Tipe_Badge === 'DOKUMEN' || mod.Tipe_Badge === 'APLIKASI' || (mod.Kategori && mod.Kategori.toLowerCase() === 'dokumen'));
+  document.getElementById('mod-form-badge').value = isDoc ? 'Dokumen' : 'Kelas';
+
+  // Load Course Data
+  const courseMap = getActiveCourseEpisodesMap();
+  const courseData = courseMap[id] || courseMap['MOD-01'];
+
+  document.getElementById('mod-form-wa-name').value = (courseData && courseData.waGroupTitle) ? courseData.waGroupTitle : ('Khusus peserta ' + (mod.Judul_Modul || ''));
+  document.getElementById('mod-form-wa-link').value = (courseData && courseData.waGroupLink) ? courseData.waGroupLink : 'https://chat.whatsapp.com/';
+  document.getElementById('mod-form-summary-text').value = (courseData && courseData.summary) ? courseData.summary : (mod.Deskripsi || '');
+
+  // Populate episodes
+  const epBox = document.getElementById('mod-episodes-container');
+  if (epBox) {
+    epBox.innerHTML = '';
+    const episodes = (courseData && courseData.episodes && courseData.episodes.length > 0) ? courseData.episodes : [
+      { title: 'Step 1 - Setup & Persiapan', duration: '07:40', summary: 'Instalasi dan persiapan lingkungan kerja.' }
+    ];
+    episodes.forEach(ep => addEpisodeRowToForm(ep));
+  }
+
+  // Populate materials
+  const matBox = document.getElementById('mod-materials-container');
+  if (matBox) {
+    matBox.innerHTML = '';
+    const materials = (courseData && courseData.materials && courseData.materials.length > 0) ? courseData.materials : [
+      { name: 'Snippet Script & Dokumen', type: 'JavaScript Code', url: 'https://drive.google.com' }
+    ];
+    materials.forEach(mat => addMaterialRowToForm(mat));
+  }
+
+  // Load Document Data
+  const docMap = getActiveDocumentFilesMap();
+  const docData = docMap[id] || docMap['MOD-02'];
+
+  document.getElementById('mod-doc-pkg-files').value = (docData && docData.totalFiles) ? (docData.totalFiles + ' berkas') : '10 berkas';
+  document.getElementById('mod-doc-pkg-format').value = (docData && docData.totalLinks) ? (docData.totalLinks + ' tautan') : '10 Dokumen';
+  document.getElementById('mod-doc-subtitle').value = (docData && docData.subtitle) ? docData.subtitle : (mod.Deskripsi || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
+
+  // Populate documents
+  const docContainer = document.getElementById('mod-documents-container');
+  if (docContainer) {
+    docContainer.innerHTML = '';
+    const docFiles = (docData && docData.files && docData.files.length > 0) ? docData.files : [
+      { name: 'E-TOKO Mini', filename: 'PRD-E-TOKO.md', size: '0.01 MB', url: 'https://drive.google.com', content: '# PRD E-Toko' }
+    ];
+    docFiles.forEach(df => addDocumentRowToForm(df));
+  }
+
+  switchModuleEditorType(isDoc ? 'document' : 'course');
   document.getElementById('modal-module-form').classList.add('active');
 }
 
 async function saveClassroomModuleForm(e, isInline) {
   e.preventDefault();
-  
-  let id, title, order, product, type, duration, url, desc;
-  
+
   if (isInline) {
-    id = '';
-    title = document.getElementById('inline-mod-title').value;
-    order = Number(document.getElementById('inline-mod-order').value || 1);
-    product = document.getElementById('inline-mod-product').value;
-    type = document.getElementById('inline-mod-type').value;
-    duration = Number(document.getElementById('inline-mod-duration').value || 30);
-    url = document.getElementById('inline-mod-url').value;
-    desc = document.getElementById('inline-mod-desc').value;
-  } else {
-    id = document.getElementById('mod-form-id').value;
-    title = document.getElementById('mod-form-title').value;
-    order = Number(document.getElementById('mod-form-order').value || 1);
-    product = document.getElementById('mod-form-product').value;
-    type = document.getElementById('mod-form-type').value;
-    duration = Number(document.getElementById('mod-form-duration').value || 30);
-    url = document.getElementById('mod-form-url').value;
-    desc = document.getElementById('mod-form-desc').value;
+    const inlineId = 'MOD-' + Date.now().toString().slice(-4);
+    const inlineTitle = document.getElementById('inline-mod-title').value;
+    const inlineOrder = Number(document.getElementById('inline-mod-order').value || 1);
+    const inlineType = document.getElementById('inline-mod-type').value;
+    const inlineDuration = Number(document.getElementById('inline-mod-duration').value || 30);
+    const inlineUrl = document.getElementById('inline-mod-url').value;
+    const inlineDesc = document.getElementById('inline-mod-desc').value;
+
+    const newMod = {
+      ID_Materi: inlineId,
+      ID_Produk: 'PRD-001',
+      Judul_Modul: inlineTitle,
+      Urutan: inlineOrder,
+      Tipe_Konten: inlineType,
+      URL_Konten: inlineUrl,
+      Durasi_Menit: inlineDuration,
+      Status: 'Publish',
+      Deskripsi: inlineDesc
+    };
+    if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
+    STATE.modules.push(newMod);
+    STATE.modules.sort((a, b) => (Number(a.Urutan) || 0) - (Number(b.Urutan) || 0));
+    localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
+    renderClassroomModulesAdmin();
+    renderClassroomPortalModules('', 'ALL');
+    const inlineBox = document.getElementById('inline-module-form-box');
+    if (inlineBox) inlineBox.style.display = 'none';
+    showToast('Modul berhasil disimpan ke database!', 'info');
+    return;
   }
 
-  const payload = {
-    id: id || ('MOD-' + Date.now().toString().slice(-4)),
-    title: title,
-    order: order,
-    product: product,
-    type: type,
-    duration: duration,
-    url: url,
-    desc: desc,
-    status: 'Publish'
-  };
+  const id = document.getElementById('mod-form-id').value || ('MOD-' + Date.now().toString().slice(-4));
+  const title = document.getElementById('mod-form-title').value;
+  const order = Number(document.getElementById('mod-form-order').value || 1);
+  const badgeType = document.getElementById('mod-form-badge').value;
+  const durationText = document.getElementById('mod-form-duration').value || '30 Menit';
+  const durationNum = parseInt(durationText) || 30;
+  const bannerUrl = document.getElementById('mod-form-banner').value || './assets/modules/thumb-metode3.jpg';
+  const desc = document.getElementById('mod-form-desc').value || '';
+  const editorType = document.getElementById('mod-editor-selected-type').value;
 
-  if (!STATE.modules) {
-    STATE.modules = [...DEFAULT_MODULES];
-  }
+  const isDoc = (editorType === 'document' || badgeType.toLowerCase() === 'dokumen' || badgeType.toLowerCase() === 'aplikasi');
 
-  const existingIdx = STATE.modules.findIndex(m => m.ID_Materi === payload.id);
+  // Format module record for STATE.modules
   const formattedModule = {
-    ID_Materi: payload.id,
-    ID_Produk: payload.product,
-    Judul_Modul: payload.title,
-    Urutan: payload.order,
-    Tipe_Konten: payload.type,
-    URL_Konten: payload.url,
-    Durasi_Menit: payload.duration,
-    Status: payload.status,
-    Deskripsi: payload.desc
+    ID_Materi: id,
+    ID_Produk: 'PRD-001',
+    Judul_Modul: title,
+    Urutan: order,
+    Tipe_Badge: isDoc ? (badgeType.toUpperCase() === 'APLIKASI' ? 'APLIKASI' : 'DOKUMEN') : 'KELAS',
+    Kategori: isDoc ? (badgeType === 'Aplikasi' ? 'Aplikasi' : 'Dokumen') : 'Kelas',
+    Tipe_Konten: isDoc ? 'Dokumen & Template' : 'Video HD & Code',
+    URL_Konten: 'https://drive.google.com',
+    Durasi_Menit: durationNum,
+    Status: 'Publish',
+    Deskripsi: desc,
+    Thumbnail_URL: bannerUrl,
+    Foto_URL: bannerUrl
   };
 
+  // Process Course Curriculum & Episodes
+  if (!isDoc) {
+    const epContainer = document.getElementById('mod-episodes-container');
+    const epRows = epContainer ? Array.from(epContainer.querySelectorAll('.crm-row-builder-item')) : [];
+    const episodes = epRows.map((row, idx) => {
+      const epTitle = (row.querySelector('.ep-item-title') ? row.querySelector('.ep-item-title').value : '') || ('Step ' + (idx + 1));
+      const epDur = (row.querySelector('.ep-item-duration') ? row.querySelector('.ep-item-duration').value : '') || '10:00';
+      const epUrl = (row.querySelector('.ep-item-url') ? row.querySelector('.ep-item-url').value : '') || '';
+      const epSum = (row.querySelector('.ep-item-summary') ? row.querySelector('.ep-item-summary').value : '') || '';
+      return {
+        title: epTitle,
+        duration: epDur,
+        summary: epSum,
+        videoEmbedUrl: epUrl,
+        posterTag: epTitle
+      };
+    });
+
+    const matContainer = document.getElementById('mod-materials-container');
+    const matRows = matContainer ? Array.from(matContainer.querySelectorAll('.crm-row-builder-item')) : [];
+    const materials = matRows.map(row => {
+      const matName = (row.querySelector('.mat-item-name') ? row.querySelector('.mat-item-name').value : '') || 'Aset Modul';
+      const matType = (row.querySelector('.mat-item-type') ? row.querySelector('.mat-item-type').value : '') || 'Source Code';
+      const matUrl = (row.querySelector('.mat-item-url') ? row.querySelector('.mat-item-url').value : '') || 'https://drive.google.com';
+      return {
+        name: matName,
+        type: matType,
+        url: matUrl
+      };
+    });
+
+    const waName = document.getElementById('mod-form-wa-name').value || ('Khusus peserta ' + title);
+    const waLink = document.getElementById('mod-form-wa-link').value || 'https://chat.whatsapp.com/';
+    const summaryText = document.getElementById('mod-form-summary-text').value || desc;
+
+    formattedModule.Episode = episodes.length;
+    formattedModule.Materi_Count = materials.length;
+
+    const courseObj = {
+      title: title,
+      shortTitle: title.length > 45 ? (title.slice(0, 42) + '...') : title,
+      poster: bannerUrl,
+      materialsCount: materials.length,
+      summary: summaryText,
+      waGroupTitle: waName,
+      waGroupLink: waLink,
+      episodes: episodes.length > 0 ? episodes : [
+        { title: 'Step 1 - Pengenalan Kelas', duration: '08:00', summary: summaryText }
+      ],
+      materials: materials
+    };
+
+    const courseMap = getActiveCourseEpisodesMap();
+    courseMap[id] = courseObj;
+    COURSE_EPISODES_MAP[id] = courseObj;
+    localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(courseMap));
+  } else {
+    // Process Documents & PRD
+    const docContainer = document.getElementById('mod-documents-container');
+    const docRows = docContainer ? Array.from(docContainer.querySelectorAll('.crm-row-builder-item')) : [];
+    const docFiles = docRows.map(row => {
+      const dName = (row.querySelector('.doc-item-name') ? row.querySelector('.doc-item-name').value : '') || 'Dokumen PRD';
+      const dFilename = (row.querySelector('.doc-item-filename') ? row.querySelector('.doc-item-filename').value : '') || 'PRD.md';
+      const dSize = (row.querySelector('.doc-item-size') ? row.querySelector('.doc-item-size').value : '') || '0.01 MB';
+      const dUrl = (row.querySelector('.doc-item-url') ? row.querySelector('.doc-item-url').value : '') || 'https://drive.google.com';
+      const dContent = (row.querySelector('.doc-item-content') ? row.querySelector('.doc-item-content').value : '') || ('# ' + dName);
+      return {
+        name: dName,
+        filename: dFilename,
+        size: dSize,
+        url: dUrl,
+        content: dContent
+      };
+    });
+
+    const pkgFiles = document.getElementById('mod-doc-pkg-files').value || (docFiles.length + ' berkas');
+    const pkgFormat = document.getElementById('mod-doc-pkg-format').value || (docFiles.length + ' Dokumen');
+    const subTitle = document.getElementById('mod-doc-subtitle').value || desc;
+
+    formattedModule.Episode = 1;
+    formattedModule.Materi_Count = docFiles.length;
+
+    const docObj = {
+      title: title,
+      subtitle: subTitle,
+      banner: bannerUrl,
+      totalFiles: docFiles.length,
+      totalLinks: 0,
+      pkgFilesText: pkgFiles,
+      pkgFormatText: pkgFormat,
+      files: docFiles
+    };
+
+    const docMap = getActiveDocumentFilesMap();
+    docMap[id] = docObj;
+    DOCUMENT_FILES_MAP[id] = docObj;
+    localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+  }
+
+  // Update STATE.modules
+  if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
+  const existingIdx = STATE.modules.findIndex(m => m.ID_Materi === id);
   if (existingIdx >= 0) {
     STATE.modules[existingIdx] = formattedModule;
   } else {
     STATE.modules.push(formattedModule);
   }
 
-  // Urutkan berdasarkan nomor urut modul
   STATE.modules.sort((a, b) => (Number(a.Urutan) || 0) - (Number(b.Urutan) || 0));
   localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
 
-  // Sync ke GAS jika terhubung
+  // Sync non-blocking ke GAS jika backend tersedia
   if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
     fetch(APP_CONFIG.GAS_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'saveClassroomModule', token: STATE.adminToken, data: payload })
-    }).catch(err => console.warn('Gagal sync modul ke GAS:', err));
+      body: JSON.stringify({ action: 'saveClassroomModule', token: STATE.adminToken, data: formattedModule })
+    }).catch(err => console.warn('Sync modul ke GAS:', err));
   }
 
   renderClassroomModulesAdmin();
-  closeAllModals();
-  if (isInline) {
-    const inlineBox = document.getElementById('inline-module-form-box');
-    if (inlineBox) inlineBox.style.display = 'none';
+  renderClassroomPortalModules('', 'ALL');
+
+  // If this module is currently opened in classroom, update the view live
+  if (activeCourseData && activeCourseData.id === id) {
+    openCourseClassroomView(id);
+  } else if (activeDocData && activeDocData.id === id) {
+    openDocumentPackageView(id);
   }
-  showToast('Modul pembelajaran berhasil disimpan dan langsung tersedia di Member Area siswa!', 'info');
+
+  closeAllModals();
+  showToast('Modul berhasil diperbarui! Perubahan langsung aktif di Dashboard Ruang Belajar & Akses Produk 🚀', 'info');
 }
 
-async function deleteClassroomModuleAdmin(id) {
+function deleteClassroomModuleAdmin(id) {
   // Safe module delete without browser confirm
 
   if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
@@ -5123,7 +5505,9 @@ let activeDocFileIndex = 0;
 
 // Buka Halaman Dashboard Video Kelas (Foto 2)
 function openCourseClassroomView(moduleId) {
-  const course = COURSE_EPISODES_MAP[moduleId] || COURSE_EPISODES_MAP['MOD-01'];
+  const courseMap = typeof getActiveCourseEpisodesMap === 'function' ? getActiveCourseEpisodesMap() : COURSE_EPISODES_MAP;
+  const course = courseMap[moduleId] || courseMap['MOD-01'];
+  course.id = moduleId;
   activeCourseData = course;
   activeCourseEpisodeIndex = 0;
 
@@ -5171,7 +5555,9 @@ function openCourseClassroomView(moduleId) {
 
 // Buka Halaman Dashboard Dokumen & Berkas Produk (Foto 3)
 function openDocumentPackageView(moduleId) {
-  const docPkg = DOCUMENT_FILES_MAP[moduleId] || DOCUMENT_FILES_MAP['MOD-02'];
+  const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
+  const docPkg = docMap[moduleId] || docMap['MOD-02'];
+  docPkg.id = moduleId;
   activeDocData = docPkg;
 
   // Toggle view
