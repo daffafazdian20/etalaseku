@@ -1,0 +1,2696 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EtalaseKu DIGITAL HUB & ACADEMY - Katalog Produk & Kelas Digital</title>
+  <meta name="description" content="Platform e-commerce produk digital, kelas online, dan sistem otomasi penjualan instan berbasis Google Apps Script & Sheets.">
+  
+  <!-- App Favicon & Web Icons -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon.png">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. REALISTIC 3D BUTTERFLY CURSOR FOLLOWER & SPARKLE CANVAS
+       ======================================================================== -->
+  <canvas id="sparkle-canvas"></canvas>
+  <div id="butterfly-container">
+    <div class="butterfly-body-wrap">
+      <div class="butterfly-body"></div>
+      <div class="wing left"></div>
+      <div class="wing right"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       2. TOP STICKY ANNOUNCEMENT BAR
+       ======================================================================== -->
+  <div class="announcement-bar">
+    <span class="badge-live">LIVE PROMO</span>
+    <span id="announcement-text">🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!</span>
+  </div>
+
+  <!-- ========================================================================
+       3. TOP NAVIGATION BAR
+       ======================================================================== -->
+  <nav class="navbar">
+    <a href="#" class="brand-logo" title="EtalaseKu DIGITAL HUB & ACADEMY">
+      <span class="brand-name-text">Etalase<span class="brand-accent">Ku</span></span>
+      <span class="brand-motif-pill">DIGITAL HUB &amp; ACADEMY</span>
+    </a>
+    <ul class="nav-links" id="main-nav-links">
+      <li><a href="#hero">Beranda</a></li>
+      <li><a href="#kategori">Kategori</a></li>
+      <li><a href="#produk">Katalog Produk</a></li>
+      <li><a href="javascript:void(0)" onclick="openPameranKaryaPortal()">Hasil Karya Nyata</a></li>
+      <li><a href="#testimoni">Testimoni</a></li>
+      <!-- Navigasi Khusus Member Classroom (Otomatis Muncul Ketika Siswa Sudah Memiliki Order ID) -->
+      <li id="nav-item-member-classroom" style="display:none;">
+        <a href="javascript:void(0)" onclick="openClassroomDashboard()" style="color:var(--coral-pink); font-weight:800; background:#FFF1F4; padding:6px 14px; border-radius:20px; display:inline-flex; align-items:center; gap:6px;">
+          🎓 Ruang Belajar Siswa
+        </a>
+      </li>
+    </ul>
+    <div class="nav-actions">
+      <!-- Navigasi Aksi Khusus Member Classroom yang Sudah Punya Order ID -->
+      <div id="member-classroom-nav-pill" style="display:none; align-items:center; gap:8px;">
+        <button class="shimmer-btn" onclick="openClassroomDashboard()" style="padding:8px 16px; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
+          🎓 Dashboard Belajar (<span id="top-member-order-badge">daffafazdian50@gmail.com</span>)
+        </button>
+        <button class="btn-secondary" onclick="handleClassroomLogout()" title="Keluar dari Sesi Member" style="padding:8px 12px; font-size:12px; color:#EF4444; border-color:#FCA5A5;">
+          Keluar
+        </button>
+      </div>
+
+      <!-- Tombol Redeem Kode Akses (Sesuai Referensi Gambar) -->
+      <button class="btn-secondary" id="nav-btn-redeem" onclick="openRedeemModal()" style="padding:9px 15px; font-size:13px; color:var(--deep-navy); font-weight:700;">
+        🔑 Redeem
+      </button>
+
+      <!-- Tombol Member Area (Sesuai Referensi Gambar) -->
+      <button class="btn-secondary" id="nav-btn-member-login" onclick="openMemberLoginModal()" style="padding:9px 16px; font-size:13px; font-weight:700; color:var(--deep-navy);">
+        ➔] Member Area
+      </button>
+
+      <!-- Tombol Cek Tagihan Siswa (gas-tagihan-pembayaran) -->
+      <button class="btn-secondary" onclick="document.getElementById('modal-student-bills').classList.add('active')" style="padding:9px 15px; font-size:13px;">
+        💳 Cek Tagihan
+      </button>
+      <!-- Tombol Admin Portal -->
+      <button class="shimmer-btn" onclick="openAdminModal()" style="padding:9px 18px; font-size:13px;">
+        Admin Portal ⚙️
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========================================================================
+       4. HERO SECTION WITH AUTO SLIDESHOW & METRIC COUNTERS
+       ======================================================================== -->
+  <section class="hero-section" id="hero">
+    <!-- Left Hero Column -->
+    <div>
+      <span class="hero-tag">Hi, Digital Creator 👋</span>
+      <h1 class="hero-title">
+        Kuasai Skill Digital & Miliki Produk Siap Jual yang <span class="highlight">Banyak Disukai</span>
+      </h1>
+      <p class="hero-desc">
+        Akses 45+ video modul praktis, template bisnis siap pakai, dan otomatisasi pengiriman kuitansi serta link akses materi seketika ke WhatsApp & Email Anda.
+      </p>
+      <div class="hero-btn-group">
+        <a href="#produk" class="shimmer-btn btn-primary" style="text-decoration:none; display:inline-block;">
+          Jelajahi Katalog Produk →
+        </a>
+        <button class="btn-secondary" id="hero-btn-classroom" onclick="openClassroomDashboardOrLogin()">
+          Akses Member Area 🔑
+        </button>
+      </div>
+      <div style="font-size:12px; color:var(--text-muted); font-weight:600; display:flex; align-items:center; gap:8px;">
+        <span>⚡ 100% Otomatisasi Terintegrasi:</span>
+        <span style="background:#FFF; padding:2px 8px; border-radius:6px; border:1px solid #E2E8F0;">Google Drive</span>
+        <span style="background:#FFF; padding:2px 8px; border-radius:6px; border:1px solid #E2E8F0;">Sheets</span>
+        <span style="background:#FFF; padding:2px 8px; border-radius:6px; border:1px solid #E2E8F0;">WhatsApp Fonnte</span>
+      </div>
+    </div>
+
+    <!-- Right Hero Column (Multi-Slide Showcase) -->
+    <div>
+      <div class="hero-slideshow-container">
+        <!-- Slide 1 -->
+        <div class="hero-slide active">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=700&q=80" alt="Masterclass Web App">
+          <div class="hero-slide-caption">
+            <h4>GAS Pro Web App Masterclass</h4>
+            <p>Membangun web app skala industri bebas biaya hosting dengan Google Apps Script & Sheets.</p>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="hero-slide">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=700&q=80" alt="Notion OS Agency">
+          <div class="hero-slide-caption">
+            <h4>Digital Agency Notion OS</h4>
+            <p>Sistem manajemen bisnis & CRM agency terlengkap dengan pipeline closing otomatis.</p>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="hero-slide">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=700&q=80" alt="Mentoring Bootcamp">
+          <div class="hero-slide-caption">
+            <h4>Live Mentoring & Group Support</h4>
+            <p>Bimbingan langsung via WhatsApp & private webinar hingga mahir menghasilkan omset.</p>
+          </div>
+        </div>
+        <!-- Navigation Dots -->
+        <div class="slideshow-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metric Counters Row -->
+  <div style="padding: 0 5%; background: var(--wave-pink); padding-bottom: 50px;">
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-number">1.200+</div>
+        <div class="metric-label">Member Aktif Terdaftar</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">45+</div>
+        <div class="metric-label">Modul Video & Template</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">98%</div>
+        <div class="metric-label">Tingkat Kepuasan Belajar</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">24/7</div>
+        <div class="metric-label">Pengiriman Akses Instan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       5. KATEGORI PRODUK & LAYANAN UNGGULAN
+       ======================================================================== -->
+  <section class="section-wrapper" id="kategori" style="background: var(--canvas-bg);">
+    <div class="section-title-wrap">
+      <div class="section-eyebrow">PILIHAN KATEGORI</div>
+      <h2 class="section-heading">Katalog Produk & Akademi Pilihan</h2>
+      <p style="color:var(--text-muted); margin-top:8px;">Pilih materi belajar mandiri, template instan, atau bimbingan intensif sesuai kebutuhan bisnis Anda.</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:24px;">
+      <!-- Card 1 -->
+      <div class="glow-card" style="padding:28px; text-align:center;">
+        <div style="width:56px; height:56px; background:#FDEEF1; color:#FF2E63; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">🎥</div>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">E-Course Praktis</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Video panduan langkah demi langkah dari nol sampai siap jualan.</p>
+        <a href="#produk" style="color:var(--primary-pink); font-weight:700; text-decoration:none; font-size:13px;">Lihat Kelas →</a>
+      </div>
+      <!-- Card 2 -->
+      <div class="glow-card" style="padding:28px; text-align:center;">
+        <div style="width:56px; height:56px; background:#F3EDFD; color:#7C3AED; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">📂</div>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">Template Bisnis</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Sistem Notion, Spreadsheet akuntansi, dan kit copywriting siap pakai.</p>
+        <a href="#produk" style="color:var(--primary-pink); font-weight:700; text-decoration:none; font-size:13px;">Lihat Template →</a>
+      </div>
+      <!-- Card 3 -->
+      <div class="glow-card" style="padding:28px; text-align:center;">
+        <div style="width:56px; height:56px; background:#E8F8F5; color:#10B981; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">💻</div>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">Source Code Web App</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Aplikasi web siap produksi berbasis Google Apps Script murni.</p>
+        <a href="#produk" style="color:var(--primary-pink); font-weight:700; text-decoration:none; font-size:13px;">Lihat Aplikasi →</a>
+      </div>
+      <!-- Card 4 -->
+      <div class="glow-card" style="padding:28px; text-align:center;">
+        <div style="width:56px; height:56px; background:#FFF8F0; color:#F59E0B; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">🏆</div>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:8px;">Mentoring Eksklusif</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Bimbingan tanya-jawab privat & konsultasi teknis via WhatsApp.</p>
+        <a href="#produk" style="color:var(--primary-pink); font-weight:700; text-decoration:none; font-size:13px;">Lihat Paket →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       6. SELECTED PRODUCTS (MULTI-IMAGE AUTO SLIDESHOW & BATCH LIMITER)
+       ======================================================================== -->
+  <section class="section-wrapper" id="produk" style="background: var(--wave-mint);">
+    <div class="section-title-wrap">
+      <div class="section-eyebrow">BATCH PENDAFTARAN AKTIF</div>
+      <h2 class="section-heading">Produk Digital & Kursus Terlaris</h2>
+      <p style="color:var(--text-muted); margin-top:8px;">Amankan kursi Anda sekarang sebelum kuota pendaftaran mingguan ditutup.</p>
+    </div>
+
+    <!-- Product Grid Rendered Dynamically by app.js (Pre-populated with High-Converting Featured Products) -->
+    <div class="product-grid" id="products-grid">
+      <!-- Card 1: GAS Pro Web App Masterclass -->
+      <div class="glow-card product-card">
+        <div class="product-carousel">
+          <span class="product-badge-batch">Batch 3: 8 Kursi Tersisa</span>
+          <div class="product-slide active">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="GAS Pro Masterclass" loading="lazy">
+          </div>
+          <div class="product-slide">
+            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80" alt="Code Preview" loading="lazy">
+          </div>
+          <div class="product-slide">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Mentoring Class" loading="lazy">
+          </div>
+        </div>
+        <h3 class="product-title">GAS Pro Web App Masterclass</h3>
+        <p class="product-desc">Bangun web app skala industri dengan Google Apps Script, Google Sheets, & Tailwind CSS tanpa server eksternal.</p>
+        <div class="product-pricing">
+          <span class="price-normal">Rp 249.000</span>
+          <span class="price-promo">Rp 99.000</span>
+        </div>
+        <button class="shimmer-btn btn-card-buy" onclick="handleProductAction('PRD-001')">
+          Daftar & Akses Instan →
+        </button>
+      </div>
+
+      <!-- Card 2: Digital Agency Notion OS -->
+      <div class="glow-card product-card">
+        <div class="product-carousel">
+          <span class="product-badge-batch" style="background:#10B981;">Akses Instan ⚡</span>
+          <div class="product-slide active">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Notion OS" loading="lazy">
+          </div>
+          <div class="product-slide">
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80" alt="Template Preview" loading="lazy">
+          </div>
+        </div>
+        <h3 class="product-title">Digital Agency Notion OS</h3>
+        <p class="product-desc">Template Notion terlengkap untuk manajemen klien agency, pipeline penjualan, dan invoice otomatis terpusat.</p>
+        <div class="product-pricing">
+          <span class="price-normal">Rp 199.000</span>
+          <span class="price-promo">Rp 79.000</span>
+        </div>
+        <button class="shimmer-btn btn-card-buy" onclick="handleProductAction('PRD-002')">
+          Beli Sekarang →
+        </button>
+      </div>
+
+      <!-- Card 3: Fullstack Automation Bootcamp (Waitlist) -->
+      <div class="glow-card product-card">
+        <div class="product-carousel">
+          <span class="product-badge-batch" style="background:#EF4444;">Batch Penuh</span>
+          <div class="product-slide active">
+            <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" alt="Bootcamp Mentoring" loading="lazy">
+          </div>
+          <div class="product-slide">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" alt="Live Session" loading="lazy">
+          </div>
+        </div>
+        <h3 class="product-title">Fullstack Automation Bootcamp</h3>
+        <p class="product-desc">Mentoring intensif 4 minggu membangun otomasi bisnis dari nol hingga menghasilkan omset pertama.</p>
+        <div class="product-pricing">
+          <span class="price-normal">Rp 499.000</span>
+          <span class="price-promo">Rp 249.000</span>
+        </div>
+        <button class="shimmer-btn btn-card-buy" style="background:var(--deep-navy);" onclick="handleProductAction('PRD-003')">
+          Batch Penuh — Masuk Waitlist ⏳
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       7. MEMBER SHOWCASE (HASIL KARYA & SOCIAL PROOF)
+       ======================================================================== -->
+  <section class="section-wrapper" id="showcase" style="background: var(--canvas-bg);">
+    <div class="section-title-wrap">
+      <div class="section-eyebrow">HASIL KARYA NYATA</div>
+      <h2 class="section-heading" style="cursor:pointer;" onclick="openPameranKaryaPortal()" title="Buka Dashboard Pameran Karya Lengkap">
+        Showcase Proyek Siswa &amp; Alumni 🚀
+      </h2>
+      <p style="color:var(--text-muted); margin-top:8px;">Berikut adalah portofolio dan sistem bisnis nyata yang dibangun oleh member EtalaseKu.</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:32px;" id="showcase-container">
+      <!-- Showcase 1 -->
+      <div class="glow-card" style="padding:24px; cursor:pointer;" onclick="openPameranKaryaPortal()" title="Klik untuk membuka Pameran Karya">
+        <div style="border-radius:16px; overflow:hidden; margin-bottom:16px; height:200px;">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <span style="background:var(--deep-navy); color:white; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:700;">2.450+ Leads Tercatat</span>
+        <h3 style="font-size:18px; font-weight:800; margin:10px 0 4px; color:var(--deep-navy);">Lawfirm Client Management CRM</h3>
+        <p style="font-size:13px; color:var(--text-muted);">Karya Aditya — Alumni Batch 2</p>
+      </div>
+
+      <!-- Showcase 2 -->
+      <div class="glow-card" style="padding:24px; cursor:pointer;" onclick="openPameranKaryaPortal()" title="Klik untuk membuka Pameran Karya">
+        <div style="border-radius:16px; overflow:hidden; margin-bottom:16px; height:200px;">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <span style="background:var(--deep-navy); color:white; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:700;">10x Lebih Cepat</span>
+        <h3 style="font-size:18px; font-weight:800; margin:10px 0 4px; color:var(--deep-navy);">Sistem Kuitansi & Invoice Toko Online</h3>
+        <p style="font-size:13px; color:var(--text-muted);">Karya Sarah — Alumni Batch 1</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       8. 3D FLIP INTERACTIVE TESTIMONIALS (AUTO-FLIP & GLOW)
+       ======================================================================== -->
+  <section class="testimonials-section" id="testimoni">
+    <div class="section-title-wrap">
+      <div class="section-eyebrow">ULASAN TERVERIFIKASI</div>
+      <h2 class="section-heading">Apa Kata Member yang Telah Bergabung?</h2>
+      <p style="color:var(--text-muted); margin-top:8px;">Arahkan kursor atau sentuh kartu untuk melihat pencapaian dan cerita lengkap alumni.</p>
+    </div>
+
+    <div class="testimonials-grid" id="testimonials-grid">
+      <!-- Testi 1 -->
+      <div class="flip-card-wrapper" onclick="TestimonialFlipManager.showDetailModal({Nama_Member:'Aditya Pratama', Profesi:'Freelance Developer', Foto_Avatar_URL:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80', Hasil_Pencapaian:'Closing Proyek Rp 15 Jt', Isi_Ulasan:'Materi GAS Pro Masterclass sangat aplikatif! Saya berhasil membuat sistem CRM Lawfirm untuk klien dan langsung dibayar 15 juta dalam 2 minggu.'})">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <div>
+              <div class="testi-header">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" class="testi-avatar" alt="Aditya Pratama">
+                <div>
+                  <h4 style="font-weight:700; color:var(--deep-navy);">Aditya Pratama</h4>
+                  <p style="font-size:12px; color:var(--text-muted);">Freelance Developer</p>
+                </div>
+              </div>
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-quote">"Materi GAS Pro Masterclass sangat aplikatif! Saya berhasil membuat sistem CRM Lawfirm untuk klien dan langsung dibayar 15 juta..."</p>
+            </div>
+            <div>
+              <span class="testi-result-badge">📈 Closing Proyek Rp 15 Jt</span>
+              <div class="flip-hint">Hover / Tap to flip ↺</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <div>
+              <div style="font-size:12px; text-transform:uppercase; color:#FF2E63; font-weight:700; margin-bottom:8px;">Pencapaian Siswa</div>
+              <h4 style="font-size:18px; font-weight:800; margin-bottom:12px;">Closing Proyek Rp 15 Jt</h4>
+              <p style="font-size:13px; opacity:0.9; line-height:1.5;">"Materi GAS Pro Masterclass sangat aplikatif! Saya berhasil membuat sistem CRM Lawfirm untuk klien dan langsung dibayar 15 juta dalam 2 minggu."</p>
+            </div>
+            <div>
+              <button class="shimmer-btn" style="width:100%; padding:8px; font-size:12px;">Lihat Cerita Lengkap ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testi 2 -->
+      <div class="flip-card-wrapper" onclick="TestimonialFlipManager.showDetailModal({Nama_Member:'Sarah Amalia', Profesi:'Digital Agency Owner', Foto_Avatar_URL:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80', Hasil_Pencapaian:'Hemat 90% Waktu CS', Isi_Ulasan:'Sistem otomatisasi pengiriman kuitansi dan WhatsApp ini menghemat waktu tim CS kami hingga 90%. Tidak ada lagi komplain akses lambat!'})">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <div>
+              <div class="testi-header">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" class="testi-avatar" alt="Sarah Amalia">
+                <div>
+                  <h4 style="font-weight:700; color:var(--deep-navy);">Sarah Amalia</h4>
+                  <p style="font-size:12px; color:var(--text-muted);">Digital Agency Owner</p>
+                </div>
+              </div>
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-quote">"Sistem otomatisasi pengiriman kuitansi dan WhatsApp ini menghemat waktu tim CS kami hingga 90%. Tidak ada lagi komplain akses..."</p>
+            </div>
+            <div>
+              <span class="testi-result-badge">📈 Hemat 90% Waktu CS</span>
+              <div class="flip-hint">Hover / Tap to flip ↺</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <div>
+              <div style="font-size:12px; text-transform:uppercase; color:#FF2E63; font-weight:700; margin-bottom:8px;">Pencapaian Siswa</div>
+              <h4 style="font-size:18px; font-weight:800; margin-bottom:12px;">Hemat 90% Waktu CS</h4>
+              <p style="font-size:13px; opacity:0.9; line-height:1.5;">"Sistem otomatisasi pengiriman kuitansi dan WhatsApp ini menghemat waktu tim CS kami hingga 90%. Tidak ada lagi komplain akses lambat!"</p>
+            </div>
+            <div>
+              <button class="shimmer-btn" style="width:100%; padding:8px; font-size:12px;">Lihat Cerita Lengkap ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testi 3 -->
+      <div class="flip-card-wrapper" onclick="TestimonialFlipManager.showDetailModal({Nama_Member:'Rian Hidayat', Profesi:'Pemilik UMKM Retail', Foto_Avatar_URL:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80', Hasil_Pencapaian:'100% Otomatisasi SPP', Isi_Ulasan:'Template Notion OS dan modul penagihan siswa sangat rapi. Penagihan SPP bulanan di tempat bimbel saya jadi 100% otomatis tercatat di Spreadsheet.'})">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <div>
+              <div class="testi-header">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" class="testi-avatar" alt="Rian Hidayat">
+                <div>
+                  <h4 style="font-weight:700; color:var(--deep-navy);">Rian Hidayat</h4>
+                  <p style="font-size:12px; color:var(--text-muted);">Pemilik UMKM Retail</p>
+                </div>
+              </div>
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-quote">"Template Notion OS dan modul penagihan siswa sangat rapi. Penagihan SPP bulanan di tempat bimbel saya jadi 100% otomatis..."</p>
+            </div>
+            <div>
+              <span class="testi-result-badge">📈 100% Otomatisasi SPP</span>
+              <div class="flip-hint">Hover / Tap to flip ↺</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <div>
+              <div style="font-size:12px; text-transform:uppercase; color:#FF2E63; font-weight:700; margin-bottom:8px;">Pencapaian Siswa</div>
+              <h4 style="font-size:18px; font-weight:800; margin-bottom:12px;">100% Otomatisasi SPP</h4>
+              <p style="font-size:13px; opacity:0.9; line-height:1.5;">"Template Notion OS dan modul penagihan siswa sangat rapi. Penagihan SPP bulanan di tempat bimbel saya jadi 100% otomatis tercatat di Spreadsheet."</p>
+            </div>
+            <div>
+              <button class="shimmer-btn" style="width:100%; padding:8px; font-size:12px;">Lihat Cerita Lengkap ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       9. PRE-FOOTER HIGH-FIVE COLLABORATION BANNER
+       ======================================================================== -->
+  <section style="padding: 0 5% 80px; background: var(--wave-lavender);">
+    <div style="background: #FFFFFF; border-radius: 28px; padding: 50px 30px; text-align: center; max-width: 860px; margin: 0 auto; box-shadow: var(--shadow-card); border: 2px dashed rgba(255,46,99,0.3);">
+      <div style="font-size: 54px; margin-bottom: 16px;">🙌</div>
+      <h2 style="font-size: 32px; font-weight: 800; color: var(--deep-navy); margin-bottom: 12px;">
+        Punya Ide Proyek Digital? Mari Wujudkan Bersama!
+      </h2>
+      <p style="color: var(--text-muted); max-width: 520px; margin: 0 auto 28px; font-size: 15px;">
+        Konsultasikan kebutuhan pembuatan web app, template bisnis, atau sistem otomatisasi WhatsApp Anda langsung dengan tim mentor kami.
+      </p>
+      <button class="shimmer-btn btn-primary" onclick="toggleWhatsAppPopover()" style="padding: 16px 36px; font-size: 16px;">
+        Konsultasi via WhatsApp Sekarang 💬
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       10. DEEP MIDNIGHT NAVY WAVY FOOTER
+       ======================================================================== -->
+  <footer style="background: var(--deep-navy); color: #FFFFFF; padding: 60px 5% 30px;">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:40px; margin-bottom:50px;">
+      <div>
+        <h3 style="font-size:22px; font-weight:800; margin-bottom:14px; color:#FFFFFF; display:inline-flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <span>Etalase<span style="color:var(--primary-pink);">Ku</span></span>
+          <span class="brand-motif-pill-dark">DIGITAL HUB &amp; ACADEMY</span>
+        </h3>
+        <p style="font-size:13px; color:#94A3B8; line-height:1.6;">
+          Platform produk digital, e-learning academy, dan sistem otomasi penjualan instan berbasis Google Workspace tanpa beban biaya server bulanan.
+        </p>
+      </div>
+      <div>
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:14px; color:#FFFFFF;">Navigasi Cepat</h4>
+        <ul style="list-style:none; font-size:13px; color:#94A3B8; display:flex; flex-direction:column; gap:8px;">
+          <li><a href="#hero" style="color:inherit; text-decoration:none;">Beranda Utama</a></li>
+          <li><a href="#produk" style="color:inherit; text-decoration:none;">Katalog Produk</a></li>
+          <li><a href="#showcase" style="color:inherit; text-decoration:none;">Hasil Karya Siswa</a></li>
+          <li><a href="#testimoni" style="color:inherit; text-decoration:none;">Testimoni Alumni</a></li>
+        </ul>
+      </div>
+            <div>
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:14px; color:#FFFFFF;">Akses Member &amp; Siswa</h4>
+        <ul style="list-style:none; font-size:13px; color:#94A3B8; display:flex; flex-direction:column; gap:8px;">
+          <li><a href="javascript:void(0)" onclick="openRedeemModal()" style="color:#FF2E63; text-decoration:none; font-weight:700;">🔑 Tukar Kode Akses (Redeem)</a></li>
+          <li><a href="javascript:void(0)" onclick="openMemberLoginModal()" style="color:inherit; text-decoration:none;">🎓 Login Member Classroom</a></li>
+          <li><a href="javascript:void(0)" onclick="document.getElementById('modal-student-bills').classList.add('active')" style="color:inherit; text-decoration:none;">💳 Cek &amp; Bayar Tagihan Siswa</a></li>
+          <li><a href="javascript:void(0)" onclick="openAdminModal()" style="color:inherit; text-decoration:none;">👑 Portal Super Admin &amp; CRM</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:14px; color:#FFFFFF;">Teknologi Serverless</h4>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Google Apps Script</span>
+          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Google Sheets DB</span>
+          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Drive Storage</span>
+          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">GmailApp Automation</span>
+          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Fonnte WhatsApp API</span>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #1E293B; padding-top:24px; text-align:center; font-size:12px; color:#64748B;">
+      &copy; 2026 EtalaseKu DIGITAL HUB &amp; ACADEMY. All Rights Reserved. Built with Google Apps Script &amp; Web Standards.
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       11. FLOATING WHATSAPP CHAT WIDGET & QUICK POPOVER
+       ======================================================================== -->
+  <button class="floating-wa-btn" onclick="toggleWhatsAppPopover()" aria-label="Chat WhatsApp">
+    <div class="floating-wa-beacon"></div>
+    <svg viewBox="0 0 24 24">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.27 7.49C9.09 7.49 8.91 7.5 8.76 7.78C8.61 8.07 8.16 8.5 8.16 9.38C8.16 10.26 8.8 11.11 8.9 11.23C9 11.36 10.15 13.13 11.92 13.9C13.4 14.54 13.7 14.41 14.02 14.39C14.35 14.36 15.08 13.95 15.23 13.53C15.38 13.11 15.38 12.75 15.34 12.68C15.29 12.6 15.17 12.56 14.99 12.47C14.81 12.38 13.92 11.94 13.76 11.88C13.59 11.82 13.47 11.79 13.35 11.97C13.24 12.15 12.91 12.53 12.82 12.65C12.73 12.77 12.64 12.78 12.46 12.69C12.28 12.6 11.71 12.41 11.03 11.8C10.5 11.33 10.14 10.75 10.05 10.57C9.96 10.39 10.04 10.29 10.13 10.2C10.21 10.12 10.31 9.99 10.4 9.88C10.49 9.77 10.52 9.68 10.58 9.56C10.64 9.44 10.61 9.34 10.57 9.25C10.52 9.16 10.16 8.28 10.01 7.92C9.87 7.57 9.72 7.62 9.61 7.61C9.51 7.6 9.39 7.49 9.27 7.49Z"/>
+    </svg>
+  </button>
+
+  <div class="wa-popover" id="wa-popover">
+    <div class="wa-popover-header">
+      <div style="width:36px; height:36px; border-radius:50%; background:white; color:#075E54; display:flex; align-items:center; justify-content:center; font-weight:800;">CS</div>
+      <div>
+        <div style="font-weight:700; font-size:14px;">Tim Support EtalaseKu</div>
+        <div style="font-size:11px; opacity:0.85;">Online • Balas Cepat</div>
+      </div>
+      <button onclick="toggleWhatsAppPopover()" style="margin-left:auto; background:none; border:none; color:white; font-size:18px; cursor:pointer;">✕</button>
+    </div>
+    <div class="wa-popover-body">
+      <div class="wa-bubble">
+        Halo kak! 👋 Ada yang bisa kami bantu seputar pendaftaran kelas, kurikulum materi, atau konfirmasi bukti transfer?
+      </div>
+    </div>
+    <div class="wa-popover-footer">
+      <input type="text" id="wa-custom-msg" placeholder="Ketik pertanyaan Anda..." class="form-input" style="margin-bottom:8px;" value="Halo Admin, saya ingin konsultasi mengenai program EtalaseKu.">
+      <button class="shimmer-btn" style="width:100%; padding:10px; font-size:13px;" onclick="sendDirectWaMessage()">
+        Kirim Pesan WhatsApp 🚀
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       12. MODALS (CHECKOUT, WAITLIST, TAGIHAN, TESTI, & ADMIN)
+       ======================================================================== -->
+
+  <!-- Modal Checkout -->
+  <div class="modal-overlay" id="modal-checkout">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Checkout Instan ⚡</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Selesaikan pesanan Anda dalam 60 detik.</p>
+
+      <div style="background:#F8FAFC; border-radius:14px; padding:16px; margin-bottom:16px; border:1px solid #E2E8F0;">
+        <div style="font-weight:700; color:var(--deep-navy);" id="checkout-product-title">GAS Pro Web App Masterclass</div>
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-top:4px;">
+          <div style="font-size:22px; font-weight:800; color:var(--primary-pink);" id="checkout-product-price">Rp 99.000</div>
+          <span style="font-size:11px; background:#DCFCE7; color:#166534; font-weight:700; padding:2px 8px; border-radius:99px;" id="checkout-installment-badge">Akses Seumur Hidup</span>
+        </div>
+      </div>
+
+      <!-- Skema Pembayaran: Lunas vs Cicilan Bertahap -->
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Skema Pembayaran</label>
+        <div class="plan-toggle-container">
+          <button type="button" class="plan-toggle-btn active" id="btn-plan-lunas" onclick="setCheckoutPaymentPlan('lunas')">
+            ⚡ Bayar Penuh (Lunas)
+          </button>
+          <button type="button" class="plan-toggle-btn" id="btn-plan-cicilan" onclick="setCheckoutPaymentPlan('cicilan')">
+            📅 Cicilan Bertahap (2x)
+          </button>
+        </div>
+        <div id="checkout-plan-note" style="font-size:12px; color:var(--text-muted); padding:0 4px;">
+          Bayar 100% lunas untuk langsung mendapatkan akses kuitansi resmi & materi seketika.
+        </div>
+      </div>
+
+      <form onsubmit="submitOrderForm(event)">
+        <div class="form-group">
+          <label class="form-label">Nama Lengkap *</label>
+          <input type="text" id="order-name" required class="form-input" placeholder="Contoh: Budi Santoso">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nomor WhatsApp Aktif *</label>
+          <input type="tel" id="order-whatsapp" required class="form-input" placeholder="Contoh: 08123456789">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Penerima Kuitansi *</label>
+          <input type="email" id="order-email" required class="form-input" placeholder="Contoh: budi@gmail.com">
+        </div>
+
+        <!-- Pilihan Metode Pembayaran Otomatis Server -->
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label class="form-label" style="margin-bottom:0;">Pilih Metode Pembayaran Otomatis</label>
+            <span style="font-size:11px; color:#10B981; font-weight:700;">⚡ Terverifikasi Otomatis</span>
+          </div>
+
+          <div class="payment-channel-grid" id="checkout-payment-channels-grid">
+            <!-- Rendered by app.js: QRIS, BCA, Mandiri, BNI, GoPay, OVO -->
+          </div>
+
+          <!-- Dynamic Payment Details Box (Rekening, QRIS & Copy Button) -->
+          <div class="payment-details-box" id="checkout-payment-details-view">
+            <!-- Dynamic content populated by selectPaymentChannel() -->
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unggah Bukti Transfer (Screenshot)</label>
+          <div class="dropzone" onclick="document.getElementById('order-proof-file').click()">
+            <div style="font-size:24px; margin-bottom:4px;">📸</div>
+            <div style="font-size:13px; font-weight:600; color:var(--deep-navy);">Pilih Berkas Foto Bukti Transfer</div>
+            <div style="font-size:11px; color:var(--text-muted);">Format JPG, PNG (Maks 5 MB)</div>
+            <input type="file" id="order-proof-file" accept="image/*" style="display:none;" onchange="this.previousElementSibling.textContent = this.files[0].name">
+          </div>
+        </div>
+        <button type="submit" id="btn-submit-order" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px; margin-top:10px;">
+          Kirim Pesan & Dapatkan Akses Instan →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Waitlist (Batch Penuh) -->
+  <div class="modal-overlay" id="modal-waitlist">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <span style="background:#FEE2E2; color:#991B1B; padding:3px 10px; border-radius:99px; font-size:11px; font-weight:800;">BATCH PENUH</span>
+      <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:10px 0 6px;">Daftar Tunggu Prioritas (Waitlist) ⏳</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Kursi untuk batch saat ini telah habis. Daftarkan diri Anda untuk mendapatkan akses prioritas di pembukaan batch berikutnya.</p>
+
+      <form onsubmit="submitWaitlistForm(event)">
+        <div class="form-group">
+          <label class="form-label">Produk Pilihan</label>
+          <input type="text" id="waitlist-product-name" readonly class="form-input" style="background:#F1F5F9;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nama Lengkap *</label>
+          <input type="text" id="waitlist-name" required class="form-input" placeholder="Nama Anda">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nomor WhatsApp *</label>
+          <input type="tel" id="waitlist-whatsapp" required class="form-input" placeholder="08123456789">
+        </div>
+        <button type="submit" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px; background:var(--deep-navy);">
+          Daftar Antrean Prioritas 🚀
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Success Order (ELEGAN, PROFESIONAL, BERSIH & RAPI - FOTO 2) -->
+    <!-- ========================================================================
+       MODAL CHECKOUT SUKSES (MENUNGGU VERIFIKASI DENGAN ORDER ID & KONFIRMASI WA/GMAIL)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-success">
+    <div class="modal-card compact-modal" style="text-align:center; max-width:460px; padding:28px 24px; border-radius:24px; box-shadow:0 20px 45px rgba(0,0,0,0.15);">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      
+      <!-- Amber Hourglass Icon Soft Glow -->
+      <div style="width:60px; height:60px; border-radius:20px; background:linear-gradient(135deg, #FEF3C7, #FDE68A); color:#B45309; font-size:28px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; box-shadow:0 6px 18px rgba(217,119,6,0.16);">
+        ⏳
+      </div>
+      
+      <!-- Status Badge -->
+      <div style="display:inline-flex; align-items:center; gap:6px; background:#FEF3C7; color:#B45309; border:1px solid #FCD34D; font-size:11px; font-weight:800; padding:4px 14px; border-radius:99px; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">
+        <span>●</span> Menunggu Verifikasi Super Admin &amp; Admin
+      </div>
+
+      <h3 style="font-size:21px; font-weight:800; color:#0B132B; margin:0 0 4px; letter-spacing:-0.3px;">Pesanan Berhasil Dikirim!</h3>
+      <p style="font-size:12.5px; color:#64748B; margin:0 0 16px; line-height:1.5;">Data dan bukti transfer Anda telah tercatat otomatis di sistem CRM untuk diverifikasi keasliannya.</p>
+      
+      <!-- Sleek Summary Card with prominent ORDER ID -->
+      <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:16px; margin-bottom:18px; text-align:left; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:12px; font-weight:600; color:#64748B;">Nama Pemesan:</span>
+          <span style="font-size:12.5px; font-weight:800; color:#0B132B;"><strong id="success-buyer-name">-</strong> (<span id="success-buyer-phone">-</span>)</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:12px; font-weight:600; color:#64748B;">Produk &amp; Total:</span>
+          <span style="font-size:12.5px; font-weight:800; color:#0B132B;"><span id="success-product-name">-</span> &bull; <span id="success-total-price" style="color:#059669;">-</span></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:12px; font-weight:600; color:#64748B;">Email Penerima:</span>
+          <span style="font-size:12.5px; font-weight:800; color:#059669; word-break:break-all;"><strong id="success-buyer-email">-</strong></span>
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:8px; font-size:11.5px; color:#475569; line-height:1.5; margin-top:6px;">
+          <span style="font-size:14px; flex-shrink:0;">🛡️</span>
+          <span>Setelah diverifikasi Super Admin, kuitansi resmi &amp; akses belajar otomatis dikirimkan ke WhatsApp &amp; Gmail Anda.</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons: WhatsApp Otomatis & Gmail Otomatis dengan ORDER ID -->
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <a id="btn-success-wa" href="https://wa.me/6287894602627" target="_blank" rel="noopener noreferrer" class="shimmer-btn" style="display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; width:100%; padding:12px; font-size:13px; font-weight:700; color:#FFFFFF; background:linear-gradient(135deg, #10B981, #059669); border-radius:12px; box-shadow:0 4px 14px rgba(16,185,129,0.25);">
+          <span>💬</span> Kirim Konfirmasi ke WhatsApp Admin Otomatis ➔
+        </a>
+        <button type="button" class="btn-secondary" style="width:100%; padding:11px; font-size:12.5px; font-weight:700; border-radius:12px; border:1px solid #E2E8F0; background:#F8FAFC; color:#475569;" onclick="closeAllModals()">
+          Tutup &amp; Kembali ke Beranda
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detail Testimoni (Pop-Up Lengkap) -->
+  <div class="modal-overlay" id="modal-testi-detail">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+        <div id="testi-modal-initial" style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, #FFF1F4, #FFE4E6); color:#FF2E63; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800; border:1px solid rgba(255,46,99,0.3); flex-shrink:0;">⭐</div>
+        <div>
+          <h4 id="testi-modal-name" style="font-size:18px; font-weight:800; color:var(--deep-navy);">-</h4>
+          <p id="testi-modal-role" style="font-size:13px; color:var(--text-muted);">-</p>
+          <span id="testi-modal-badge" class="testi-result-badge">-</span>
+        </div>
+      </div>
+      <div style="background:#F8FAFC; border-radius:16px; padding:20px; border:1px solid #E2E8F0; margin-bottom:20px;">
+        <p id="testi-modal-quote" style="font-size:14px; color:var(--text-main); line-height:1.6; font-style:italic;">-</p>
+      </div>
+      <button class="btn-secondary" style="width:100%;" onclick="closeAllModals()">Tutup Cerita</button>
+    </div>
+  </div>
+
+  <!-- Modal Cek Tagihan Siswa (gas-tagihan-pembayaran) -->
+  <div class="modal-overlay" id="modal-student-bills">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Cek & Bayar Tagihan Siswa 💳</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Periksa status SPP, biaya bimbingan, atau cicilan modul kelas Anda.</p>
+
+      <form onsubmit="checkStudentBills(event)">
+        <div class="form-group">
+          <label class="form-label">Masukkan No. WhatsApp Terdaftar</label>
+          <div style="display:flex; gap:8px;">
+            <input type="tel" id="bill-check-phone" required class="form-input" placeholder="08123456789">
+            <button type="submit" class="shimmer-btn" style="padding:10px 18px; font-size:13px; white-space:nowrap;">Cari Tagihan 🔍</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="student-bills-list" style="margin-top:20px;">
+        <!-- List tagihan akan di-render di sini -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Unggah Bukti Bayar Tagihan Siswa -->
+  <div class="modal-overlay" id="modal-pay-bill">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:6px;">Upload Bukti Bayar Tagihan</h3>
+      <form onsubmit="submitStudentBillProof(event)">
+        <div class="form-group">
+          <label class="form-label">ID Tagihan</label>
+          <input type="text" id="pay-bill-id" readonly class="form-input" style="background:#F1F5F9;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total yang Harus Dibayar</label>
+          <input type="text" id="pay-bill-nominal" readonly class="form-input" style="background:#F1F5F9; font-weight:800; color:var(--primary-pink);">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unggah Foto Bukti Transfer</label>
+          <input type="file" id="pay-bill-proof" accept="image/*" required class="form-input">
+        </div>
+        <button type="submit" class="shimmer-btn" style="width:100%; padding:14px; font-size:14px;">Kirim Bukti Pembayaran 🚀</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL UNIFIED AUTHENTICATION: MEMBER (EMAIL) & ADMIN (PIN)
+       (DESAIN SESUAI REFERENSI FOTO NO. 1 DENGAN PALET WARNA DESAIN UI UX)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-member-login">
+    <div class="modal-card compact-modal no-scrollbar" style="max-width:420px; text-align:center; padding:24px 22px;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      
+      <!-- Avatar User Header -->
+      <div style="width:52px; height:52px; border-radius:50%; background:#F1F5F9; border:2px solid var(--deep-navy); margin:0 auto 10px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.06);">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar Siswa" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+
+      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Selamat Datang Member Siswa 🎓</h3>
+      <p style="font-size:12.5px; color:var(--text-muted); margin:0 0 16px;">Masuk untuk mengakses materi belajar & aplikasi Anda.</p>
+
+      <!-- MEMBER LOGIN FORM ONLY -->
+      <div id="auth-view-member-email" style="text-align:left;">
+        <form onsubmit="handleMemberEmailLogin(event)">
+          <div class="form-group" style="margin-bottom:8px;">
+            <label class="form-label" style="font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:4px;">Email Terdaftar</label>
+            <input type="email" id="member-login-email-input" required class="form-input" placeholder="nama@email.com" value="daffafazdian50@gmail.com" style="font-size:14px; padding:10px 14px; border-radius:10px;">
+            <p style="font-size:11px; color:#64748B; margin-top:4px;">Gunakan email yang Anda pakai saat membeli / redeem kode.</p>
+          </div>
+
+          <!-- History / Device Chips -->
+          <div class="auth-device-history-box" id="auth-recent-devices-box" style="margin:8px 0 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:11px; color:#64748B;">Pernah masuk di perangkat ini</span>
+              <a href="javascript:void(0)" onclick="clearDeviceHistory()" style="font-size:11px; color:#64748B; text-decoration:none;">Hapus</a>
+            </div>
+            <div id="auth-chips-container">
+              <span class="auth-device-chip" onclick="fillMemberLoginEmail('daffafazdian50@gmail.com')">
+                <span>🕒</span>
+                <span id="saved-chip-email-text">daffafazdian50@gmail.com</span>
+                <span class="chip-delete-btn" onclick="event.stopPropagation(); removeDeviceEmail('daffafazdian50@gmail.com')" title="Hapus email ini">&times;</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Primary Action Button: Masuk sebagai Member -->
+          <button type="submit" class="shimmer-btn btn-primary" id="btn-login-member-email" style="width:100%; padding:12px; font-size:14px; font-weight:700; justify-content:center; border-radius:10px;">
+            <span>➔]</span> Masuk sebagai Member
+          </button>
+        </form>
+
+        <!-- Secondary Button: Buka Modal Redeem Kode Akses -->
+        <button type="button" class="btn-redeem-outline" onclick="openRedeemModal()" style="border-radius:10px; margin-top:10px; padding:11px 16px; font-size:13px; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <span>🔑</span> Punya Kode Akses? Redeem di sini
+        </button>
+
+        <div style="text-align:center; margin-top:14px; font-size:12px; color:#64748B;">
+          Belum punya akun? <a href="#produk" onclick="closeAllModals()" style="color:var(--coral-pink); font-weight:700; text-decoration:none;">Beli kelas di katalog</a>
+        </div>
+      </div>
+
+      <!-- Back to Landing Page Link -->
+      <div style="margin-top:14px; text-align:center;">
+        <a href="javascript:void(0)" onclick="closeAllModals()" style="color:#64748B; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+          ← Kembali ke beranda
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 14: REDEEM KODE AKSES (DESAIN IDENTIK DENGAN FOTO NO. 2)
+       Menggunakan Palet Warna Desain UI UX (Coral Pink #FF2E63 & Deep Navy #0F172A)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-redeem-code">
+    <div class="modal-card compact-modal" style="max-width:440px; border-radius:20px; padding:30px 26px; text-align:left;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      
+      <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:0 0 6px; text-align:center;">Redeem Kode Akses</h3>
+      <p style="font-size:13px; color:#64748B; margin:0 0 20px; text-align:center; line-height:1.4;">
+        Masukkan kode yang Anda terima setelah membeli di website / invoice WhatsApp.
+      </p>
+
+      <form onsubmit="handleRedeemAccessCodeForm(event)">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:6px;">Kode Akses</label>
+          <input type="text" id="redeem-input-code" required class="form-input" placeholder="LYNK - XXXXX - X" value="ORD-20261028-211630-4012" style="font-size:14px; font-weight:700; color:var(--deep-navy); letter-spacing:0.5px; border-radius:10px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="form-label" style="font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:6px;">Email Anda</label>
+          <input type="email" id="redeem-input-email" required class="form-input" placeholder="nama@email.com" value="daffafazdian50@gmail.com" style="font-size:14px; border-radius:10px;">
+          <p style="font-size:11px; color:#64748B; margin-top:6px;">Email ini menjadi akun login Anda, Pastikan penulisannya benar.</p>
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:center;">
+          <button type="submit" class="shimmer-btn btn-primary" id="btn-submit-redeem-code" style="flex:1; padding:12px 20px; font-size:14px; font-weight:700; justify-content:center; border-radius:10px;">
+            Tukarkan Kode
+          </button>
+          <button type="button" class="btn-secondary" onclick="closeAllModals()" style="padding:12px 20px; font-size:14px; font-weight:600; justify-content:center; background:#F1F5F9; color:#475569; border-color:#E2E8F0; border-radius:10px;">
+            Batal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 15: BERHASIL! (DESAIN IDENTIK DENGAN FOTO NO. 4)
+       Muncul saat berhasil menukarkan kode, lalu klik Buka Sekarang ke Ruang Belajar
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-redeem-success">
+    <div class="modal-card compact-modal" style="max-width:390px; border-radius:20px; padding:36px 28px; text-align:center;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      
+      <!-- Green Circular Checkmark Icon Sesuai Gambar No. 4 -->
+      <div style="width:72px; height:72px; border-radius:50%; background:#ECFDF5; border:2px solid #A7F3D0; margin:0 auto 18px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(16, 185, 129, 0.15);">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+
+      <h3 style="font-size:22px; font-weight:800; color:#0F172A; margin:0 0 10px;">Berhasil!</h3>
+      <p style="font-size:13px; color:#64748B; margin:0 auto 24px; max-width:300px; line-height:1.5;" id="redeem-success-product-title">
+        Produk "GAS Pro Web App Masterclass" sudah Anda miliki.
+      </p>
+
+      <button type="button" class="shimmer-btn btn-primary" onclick="proceedToClassroomPortalFromSuccess()" style="width:100%; padding:13px 24px; font-size:14px; font-weight:700; justify-content:center; border-radius:10px;">
+        Buka Sekarang
+      </button>
+    </div>
+  </div>
+
+  <!-- Fallback Alias Modal ID -->
+  <div class="modal-overlay" id="modal-classroom-login" style="display:none;"></div>
+
+  <!-- Fallback Alias Modal ID -->
+  <div class="modal-overlay" id="modal-classroom-login" style="display:none;"></div>
+
+  <!-- Modal Interaktif Member Classroom Portal (Ruang Belajar Siswa) -->
+  <div class="modal-overlay" id="modal-classroom-portal">
+    <div class="modal-card" style="max-width:820px; max-height:85vh;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid #F1F5F9;">
+        <div>
+          <span class="pill-badge green" style="margin-bottom:6px;">Siswa Aktif Terdaftar</span>
+          <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:4px 0 2px;" id="classroom-course-title">GAS Pro Web App Masterclass 🎓</h3>
+          <p style="font-size:12px; color:var(--text-muted);" id="classroom-student-greeting">Selamat datang! Akses seluruh video modul, template, dan link materi di bawah.</p>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:12px; font-weight:700; color:var(--deep-navy);" id="classroom-modules-count-text">6 Modul Tersedia</span>
+        </div>
+      </div>
+
+      <!-- Quick Search & Filter Modul -->
+      <div style="display:flex; gap:10px; margin-bottom:16px;">
+        <input type="text" id="classroom-search-input" placeholder="Cari judul modul / materi..." class="form-input" style="font-size:12px; padding:8px 14px;" oninput="filterClassroomModules(this.value)">
+      </div>
+
+      <!-- List of Video & Classroom Modules -->
+      <div id="classroom-student-modules-list" style="display:flex; flex-direction:column; gap:12px;">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       12-B. DEDICATED FULL-SCREEN MEMBER CLASSROOM DASHBOARD PORTAL
+       ======================================================================== -->
+  <div class="classroom-portal-wrapper" id="classroom-dashboard-portal">
+    <!-- Sticky Top Navigation Bar Khusus Member Classroom -->
+    <header class="classroom-portal-nav">
+      <div class="classroom-nav-top-row">
+        <div class="classroom-brand">
+          <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, #FF2E63, #E11D48); display:flex; align-items:center; justify-content:center; color:white; font-size:18px; box-shadow:0 4px 12px rgba(255,46,99,0.3); flex-shrink:0;">🎓</div>
+          <div style="display:flex; flex-direction:column; align-items:flex-start; min-width:0;">
+            <div style="display:inline-flex; align-items:center; gap:8px; line-height:1.2; flex-wrap:wrap;">
+              <span class="brand-name-text" style="font-size:17px; font-weight:800; color:#0B132B; white-space:nowrap;">
+                Etalase<span class="brand-accent" style="color:#FF2E63; background:linear-gradient(135deg, #FF2E63 0%, #E11D48 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Ku</span>
+              </span>
+              <span class="brand-motif-pill" style="font-size:9.5px; padding:3px 8px; color:#FF2E63; background:linear-gradient(135deg, #FFF1F4 0%, #FFE4E6 100%); border:1px solid rgba(255,46,99,0.4); font-weight:800;">
+                DIGITAL HUB &amp; ACADEMY
+              </span>
+            </div>
+            <span style="font-size:11px; color:#64748B; font-weight:600; margin-top:3px; display:block; white-space:nowrap;">Ruang Belajar Siswa Terverifikasi</span>
+          </div>
+        </div>
+
+        <!-- Mobile Header Action Buttons (Halaman Utama & Keluar) -->
+        <div class="classroom-btn-actions mobile-only-actions">
+          <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
+            ⬅️ Halaman Utama
+          </button>
+          <button class="btn-secondary btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Siswa">
+            🚪 Keluar
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Nav Links Siswa -->
+      <ul class="classroom-top-links">
+        <li><a href="#cls-modules-anchor" class="active">📚 Modul Materi</a></li>
+        <li><a href="#cls-resources-anchor">💻 Source Code &amp; Drive</a></li>
+        <li><a href="https://wa.me/6287894602627?text=Halo%20Mentor%20VIP%20EtalaseKu%2C%20saya%20siswa%20terverifikasi%20ingin%20konsultasi%20materi" target="_blank" rel="noopener noreferrer">💬 Tanya Mentor VIP</a></li>
+      </ul>
+
+      <!-- User Profile Badge & Action -->
+      <div class="classroom-user-actions-group">
+        <div class="classroom-student-pill">
+          <div class="classroom-student-avatar">👨‍🎓</div>
+          <div class="classroom-student-info">
+            <div style="font-size:12px; font-weight:800; color:var(--deep-navy);" id="cls-active-student-email">daffafazdian50@gmail.com</div>
+            <div style="font-size:10px; color:#10B981; font-weight:700;">🟢 Akses Lunas (<span id="cls-active-order-id">ORD-20261028-211630-4012</span>)</div>
+          </div>
+        </div>
+        <div class="classroom-btn-actions desktop-only-actions">
+          <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
+            ⬅️ Halaman Utama
+          </button>
+          <button class="btn-secondary btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Siswa">
+            🚪 Keluar
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Classroom Body Content -->
+    <main class="classroom-body-container">
+      <!-- 1. Hero Welcome Banner -->
+      <div class="classroom-hero-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+          <div style="max-width:760px;">
+            <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,46,99,0.2); border:1px solid rgba(255,46,99,0.4); padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; color:#FF8FA3; margin-bottom:12px;">
+              <span>🌟</span> MEMBER CLASSROOM DASHBOARD
+            </div>
+            <h1 style="font-size:28px; font-weight:800; margin:0 0 10px; line-height:1.2; color:#FFFFFF;" id="cls-course-banner-title">GAS Pro Web App Masterclass 🎓</h1>
+            <p style="font-size:14px; color:#94A3B8; margin:0; line-height:1.6;" id="cls-student-greeting-text">
+              Selamat datang di dashboard ruang belajar, Siswa Berprestasi (<strong style="color:#FFFFFF;" id="cls-student-greeting-email">daffafazdian50@gmail.com</strong> - <span id="cls-student-greeting-id">ORD-20261028-211630-4012</span>)! Seluruh video materi, repository source code GitHub, dan template Google Sheets siap Anda pelajari kapan saja seumur hidup.
+            </p>
+          </div>
+          <div style="text-align:right;">
+            <span class="pill-badge green" style="font-size:12px; padding:6px 14px;">100% Terverifikasi</span>
+          </div>
+        </div>
+
+        <!-- 4 Quick Stats -->
+        <div class="classroom-stat-grid">
+          <div class="classroom-stat-card">
+            <div style="font-size:24px;">📚</div>
+            <div>
+              <div style="font-size:18px; font-weight:800; color:#FFFFFF;" id="cls-stat-modules-count">6 Modul</div>
+              <div style="font-size:11px; color:#94A3B8;">Siap Dipelajari</div>
+            </div>
+          </div>
+          <div class="classroom-stat-card">
+            <div style="font-size:24px;">⏱️</div>
+            <div>
+              <div style="font-size:18px; font-weight:800; color:#FFFFFF;">3+ Jam Video</div>
+              <div style="font-size:11px; color:#94A3B8;">Kualitas Full HD</div>
+            </div>
+          </div>
+          <div class="classroom-stat-card">
+            <div style="font-size:24px;">💻</div>
+            <div>
+              <div style="font-size:18px; font-weight:800; color:#FFFFFF;">100% Kode Sumber</div>
+              <div style="font-size:11px; color:#94A3B8;">Google Drive & Script</div>
+            </div>
+          </div>
+          <div class="classroom-stat-card">
+            <div style="font-size:24px;">💎</div>
+            <div>
+              <div style="font-size:18px; font-weight:800; color:#FFFFFF;">Akses Seumur Hidup</div>
+              <div style="font-size:11px; color:#94A3B8;">Bebas Biaya Bulanan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Search & Filter Bar -->
+      <div id="cls-modules-anchor" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px;">
+        <div>
+          <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Daftar Modul Pembelajaran 📖</h3>
+          <p style="font-size:13px; color:#64748B; margin:0;">Ikuti kurikulum dari modul 1 untuk pemahaman terbaik.</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <input type="text" id="cls-portal-search-input" placeholder="🔍 Cari materi atau judul modul..." class="form-input" style="font-size:13px; padding:10px 16px; min-width:280px;" oninput="filterClassroomPortalModules(this.value)">
+          <button class="btn-secondary" onclick="filterClassroomByTag('ALL')" style="font-size:12px; padding:8px 12px;">Semua</button>
+          <button class="btn-secondary" onclick="filterClassroomByTag('Video')" style="font-size:12px; padding:8px 12px;">Video</button>
+          <button class="btn-secondary" onclick="filterClassroomByTag('Code')" style="font-size:12px; padding:8px 12px;">Source Code</button>
+        </div>
+      </div>
+
+      <!-- 3. Dynamic Module Cards List -->
+      <div id="cls-portal-modules-list" style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- 4. Extra Perks (Download & Mentor VIP) -->
+      <div class="classroom-perks-grid" style="grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));">
+        <!-- Resource Hub -->
+        <div class="classroom-perk-card" id="cls-resources-anchor">
+          <div style="width:40px; height:40px; border-radius:12px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">📦</div>
+          <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Download Source Code &amp; Project</h4>
+          <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Unduh repositori lengkap boilerplate web app, template spreadsheet database, dan snippet JavaScript siap pakai.</p>
+          <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:#2563EB; border-color:#93C5FD;">
+            📁 Buka Master Folder Google Drive ↗
+          </a>
+        </div>
+
+        <!-- Tanya Mentor VIP -->
+        <div class="classroom-perk-card" id="cls-mentor-anchor">
+          <div style="width:40px; height:40px; border-radius:12px; background:#ECFDF5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">💬</div>
+          <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Bimbingan Langsung Mentor &amp; Tanya Jawab</h4>
+          <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Mengalami kendala saat coding? Tanyakan langsung ke tim instruktur via WhatsApp VIP (0878-9460-2627) dengan respon cepat.</p>
+          <a href="https://wa.me/6287894602627?text=Halo%20Mentor%20VIP%20EtalaseKu%2C%20saya%20siswa%20terverifikasi%20ingin%20konsultasi%20materi" target="_blank" rel="noopener noreferrer" class="shimmer-btn" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#10B981;">
+            🟢 Chat WhatsApp Mentor VIP (0878-9460-2627) ↗
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       12-C. DEDICATED FULL-SCREEN SHOWCASE & PAMERAN KARYA MEMBER PORTAL (FOTO 2)
+       Mengikuti Desain UI/UX Warm Pastel Tech
+       ======================================================================== -->
+  <div class="pameran-portal-wrapper" id="pameran-karya-portal">
+    <!-- Sticky Top Navigation Bar -->
+    <header class="pameran-portal-nav">
+      <div class="pameran-nav-top-row">
+        <div class="pameran-brand" onclick="closePameranKaryaPortal()" style="cursor:pointer;">
+          <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, #FF2E63, #E11D48); display:flex; align-items:center; justify-content:center; color:white; font-size:18px; box-shadow:0 4px 12px rgba(255,46,99,0.3); flex-shrink:0;">
+            🚀
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:flex-start; min-width:0;">
+            <div style="display:inline-flex; align-items:center; gap:8px; line-height:1.2; flex-wrap:wrap;">
+              <span class="brand-name-text" style="font-size:17px; font-weight:800; color:#0B132B; white-space:nowrap;">
+                Etalase<span class="brand-accent" style="color:#FF2E63; background:linear-gradient(135deg, #FF2E63 0%, #E11D48 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Ku</span>
+              </span>
+              <span class="brand-motif-pill" style="font-size:9.5px; padding:3px 8px; color:#FF2E63; background:linear-gradient(135deg, #FFF1F4 0%, #FFE4E6 100%); border:1px solid rgba(255,46,99,0.4); font-weight:800;">
+                DIGITAL HUB &amp; ACADEMY
+              </span>
+            </div>
+            <span style="font-size:11px; color:#64748B; font-weight:600; margin-top:3px; display:block; white-space:nowrap;">Showcase Portofolio &amp; Pameran Karya</span>
+          </div>
+        </div>
+
+        <div class="pameran-btn-actions">
+          <button class="btn-secondary" onclick="closePameranKaryaPortal()" title="Kembali ke Dashboard Utama">
+            ⬅️ Kembali ke Beranda
+          </button>
+          <button class="shimmer-btn" onclick="openSubmitShowcaseModal()" style="padding:8px 16px; font-size:13px; gap:6px;">
+            <span>📤</span> Ajukan Karya Saya
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="pameran-main-container">
+      <!-- 1. Hero Showcase Portofolio Header (Foto 2) -->
+      <div class="pameran-hero-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+          <div style="max-width:680px;">
+            <div class="section-eyebrow" style="color:var(--coral-pink, #FF2E63); font-size:11.5px; font-weight:800; letter-spacing:1px; margin-bottom:6px;">SHOWCASE PORTOFOLIO</div>
+            <h1 style="font-size:clamp(22px, 3.2vw, 32px); font-weight:800; color:var(--deep-navy); margin:0 0 10px; line-height:1.2;">
+              Pameran Karya Siswa &amp; Alumni 🌟
+            </h1>
+            <p style="font-size:13.5px; color:#64748B; line-height:1.6; margin:0;">
+              Bagikan karya terbaik Anda! Unggah foto profil, gambar aplikasi/karya atau video Aplikasi kalian, dan ceritakan pengalaman Anda. Karya yang disetujui tampil di halaman utama.
+            </p>
+          </div>
+          <button class="shimmer-btn" onclick="openSubmitShowcaseModal()" style="padding:12px 24px; font-size:14px; font-weight:700; border-radius:12px; gap:8px;">
+            <span>📤</span> Ajukan Karya Saya
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Announcement & Reward Cards (Foto 2) -->
+      <div class="pameran-banners-grid">
+        <div class="pameran-banner-open">
+          <div style="width:42px; height:42px; border-radius:12px; background:#DCFCE7; color:#16A34A; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">
+            🏛️
+          </div>
+          <div>
+            <h4 style="font-size:14.5px; font-weight:800; color:#14532D; margin:0 0 3px;">Pengajuan karya sedang DIBUKA</h4>
+            <p style="font-size:12px; color:#166534; margin:0;">Kirim karya terbaik Anda untuk tampil di pameran portofolio dan tingkatkan personal branding Anda.</p>
+          </div>
+        </div>
+
+        <div class="pameran-banner-reward">
+          <div style="width:42px; height:42px; border-radius:12px; background:#FFE4E6; color:#BE123C; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">
+            🎁
+          </div>
+          <div>
+            <h4 style="font-size:14.5px; font-weight:800; color:#881337; margin:0 0 3px;">Hadiah untuk Karya Terbaik!</h4>
+            <p style="font-size:12px; color:#9F1239; margin:0;">Karya yang disetujui mendapat reward <strong>Modul Lanjutan Eksklusif &amp; Akses Source Code Master</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Section Pengajuan Saya (Foto 2) -->
+      <div class="pameran-section-block">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+          <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0;">📁 Pengajuan Saya</h3>
+          <span style="font-size:11.5px; color:#64748B;">Status kurasi oleh Super Admin &amp; Admin</span>
+        </div>
+        <div id="my-submissions-container">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </div>
+
+      <!-- 4. Section Galeri Pameran Karya Member (Foto 2) -->
+      <div class="pameran-section-block" style="margin-top:28px;">
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11px; font-weight:800; color:var(--coral-pink, #FF2E63); letter-spacing:0.8px; text-transform:uppercase;">GALERI</div>
+          <h2 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:4px 0 6px;">Pameran Karya Member</h2>
+          <p style="font-size:13px; color:#64748B; margin:0;">Inspirasi dari karya member lain — gambar dan video portofolio nyata hasil karya siswa.</p>
+        </div>
+
+        <!-- Filter Kategori Tabs -->
+        <div class="pameran-category-tabs">
+          <button class="pameran-filter-btn active" onclick="filterPameranCategory('Semua', this)">✨ Semua Karya</button>
+          <button class="pameran-filter-btn" onclick="filterPameranCategory('Web App GAS', this)">💻 Web App GAS</button>
+          <button class="pameran-filter-btn" onclick="filterPameranCategory('CRM & Otomasi', this)">⚡ CRM &amp; Otomasi</button>
+          <button class="pameran-filter-btn" onclick="filterPameranCategory('Kasir & Billing', this)">💳 Kasir &amp; Billing</button>
+        </div>
+
+        <!-- Grid Karya Member -->
+        <div class="pameran-cards-grid" id="pameran-gallery-grid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Admin Login (KHUSUS SUPER ADMIN & ADMIN - TERPISAH TOTAL DARI MEMBER) -->
+  <div class="modal-overlay" id="modal-admin-login">
+    <div class="modal-card compact-modal no-scrollbar" style="max-width:420px; text-align:center; padding:26px 24px;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      
+      <!-- Admin Shield / Crown Icon -->
+      <div style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, #0F172A, #1E293B); border:2px solid #FF2E63; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; color:#FF2E63; font-size:24px; box-shadow:0 4px 14px rgba(255,46,99,0.25);">
+        👑
+      </div>
+
+      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Portal Super Admin & Admin</h3>
+      <p style="font-size:12.5px; color:var(--text-muted); margin:0 0 18px;">Akses khusus pemilik produk, verifikasi transfer & konfigurasi CRM.</p>
+
+      <form onsubmit="handleAdminLogin(event)" style="text-align:left;">
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label" style="font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:4px;">Alamat Email Admin</label>
+          <input type="email" id="admin-login-email-input" class="form-input" placeholder="Masukin Alamat Email SUPER ADMIN &amp; ADMIN TERDAFTAR!" style="font-size:13.5px; padding:11px 14px; border-radius:10px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label class="form-label" style="font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:4px;">PIN / Password Keamanan</label>
+          <input type="password" id="admin-pin-input" required class="form-input" placeholder="Masukin PIN / Sandi" style="font-size:14px; padding:10px 14px; border-radius:10px;">
+          <small style="font-size:11px; color:#64748B; margin-top:4px; display:block;">Masukkan PIN / Sandi keamanan akun admin yang terdaftar.</small>
+        </div>
+
+        <button type="submit" class="shimmer-btn btn-primary" style="width:100%; padding:12px; font-size:14px; font-weight:700; justify-content:center; background:var(--deep-navy); border-radius:10px;">
+          <span>🚀</span> Masuk ke Dashboard CRM & Admin
+        </button>
+      </form>
+
+      <div style="margin-top:14px; text-align:center;">
+        <a href="javascript:void(0)" onclick="closeAllModals()" style="color:#64748B; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+          ← Kembali ke beranda
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       13. FULL-FIDELITY ADMIN & CRM DASHBOARD (DESAIN UI/UX SCREEN 08, 09, 10, 11)
+       ======================================================================== -->
+  <div class="admin-portal-wrapper" id="admin-portal-wrapper">
+    <!-- Top Mobile Header khusus layar HP -->
+    <div class="admin-mobile-header">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg, #FF2E63, #E11D48); display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:13px; flex-shrink:0;">EK</div>
+        <div>
+          <div style="font-size:13px; font-weight:800; color:#FFFFFF; line-height:1.2;">EtalaseKu CRM</div>
+          <div style="font-size:9.5px; color:#FF8FA3; font-weight:700;">DIGITAL HUB &amp; ACADEMY</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button class="btn-secondary" onclick="backToWebsiteFromAdmin()" style="padding:6px 10px; font-size:11px; background:rgba(255,255,255,0.08); color:white; border-color:rgba(255,255,255,0.2);">⬅ Web</button>
+        <button class="btn-secondary" onclick="adminLogout()" style="padding:6px 10px; font-size:11px; background:rgba(239,68,68,0.15); color:#EF4444; border-color:#EF4444;">🚪 Keluar</button>
+      </div>
+    </div>
+    <!-- Fixed Left Sidebar (260px) in Deep Midnight Navy -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <div style="width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, #FF2E63, #E11D48); display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:14px; flex-shrink:0;">EK</div>
+        <div>
+          <div class="brand-title" style="display:flex; align-items:center; gap:6px;">
+            <span>Etalase<span style="color:var(--coral-pink);">Ku</span></span>
+          </div>
+          <div style="font-size:9.5px; color:#FF8FA3; font-weight:700; letter-spacing:0.5px;">DIGITAL HUB &amp; ACADEMY</div>
+        </div>
+      </div>
+      <ul class="admin-nav-list">
+        <li>
+          <a class="admin-nav-item active" onclick="switchAdminTab('tab-dashboard', this)">
+            <span>📊 <span class="nav-text">Dashboard & Analitik</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-orders', this)">
+            <span>🛍️ <span class="nav-text">Pesanan & Verifikasi</span></span>
+            <span class="admin-nav-badge" id="badge-pending-orders">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-products', this)">
+            <span>📦 <span class="nav-text">Katalog Produk</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-showcase', this)">
+            <span>🌟 <span class="nav-text">Hasil Karya Member</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-crm', this)">
+            <span>👥 <span class="nav-text">CRM Leads & Waitlist</span></span>
+            <span class="admin-nav-badge" style="background:#F59E0B;" id="badge-leads-count">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-testimonials', this)">
+            <span>⭐ <span class="nav-text">Testimoni Alumni</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-billing', this)">
+            <span>💳 <span class="nav-text">Tagihan & Cicilan Siswa</span></span>
+            <span class="admin-nav-badge" style="background:#8B5CF6;" id="badge-bills-count">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-classroom', this)">
+            <span>🎓 <span class="nav-text">Modul Member Area</span></span>
+            <span class="admin-nav-badge" style="background:#0284C7;" id="badge-modules-count">6</span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-settings', this)">
+            <span>⚙️ <span class="nav-text">Metode Bayar & Situs</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" onclick="switchAdminTab('tab-account', this)">
+            <span>🔐 <span class="nav-text">Akun & Hak Akses</span></span>
+          </a>
+        </li>
+      </ul>
+      <div id="admin-sidebar-desktop-footer" style="padding:16px; border-top:1px solid rgba(255,255,255,0.08);">
+        <button class="btn-secondary" style="width:100%; color:#EF4444; border-color:#EF4444; padding:8px; font-size:12px; justify-content:center;" onclick="adminLogout()">
+          🚪 Keluar Admin
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area with Topbar & Dynamic Tab Panes -->
+    <main class="admin-main-content">
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <h2 style="font-size:18px; font-weight:800; color:var(--deep-navy);" id="admin-page-title">Dashboard & Analitik Penjualan</h2>
+          <span style="background:#DCFCE7; color:#166534; font-size:11px; font-weight:700; padding:3px 10px; border-radius:99px; display:inline-flex; align-items:center; gap:4px;">
+            <span style="width:6px; height:6px; background:#166534; border-radius:50%;"></span>
+            Google Sheets Connected
+          </span>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span id="admin-portal-role-badge" style="background:#FFE4E6; color:#BE123C; font-size:11px; font-weight:800; padding:4px 10px; border-radius:99px; display:inline-flex; align-items:center; gap:5px;">
+            👑 Super Admin
+          </span>
+          <span id="admin-portal-email" style="font-size:12px; color:var(--text-muted); font-weight:600;">admin@etalaseku.com</span>
+          <button class="btn-secondary" style="padding:8px 16px; font-size:13px;" onclick="backToWebsiteFromAdmin()">
+            ← Kembali ke Website
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable Body with 7 Dedicated Tabs -->
+      <div class="admin-body-scroll">
+        <!-- Tab 1: Dashboard & Analitik -->
+        <div class="admin-tab-content active" id="tab-dashboard">
+          <div class="admin-kpi-grid" id="admin-kpi-container">
+            <!-- Rendered by app.js -->
+          </div>
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Transaksi Terbaru Menunggu Verifikasi</h3>
+              <button class="shimmer-btn" style="padding:6px 14px; font-size:12px;" onclick="switchAdminTab('tab-orders', document.querySelectorAll('.admin-nav-item')[1])">Lihat Semua Pesanan →</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Nama Pembeli</th>
+                    <th>Nominal</th>
+                    <th>Bukti Transfer</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="quick-orders-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Pesanan & Verifikasi -->
+        <div class="admin-tab-content" id="tab-orders">
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Seluruh Data Pesanan & Verifikasi Pembeli</h3>
+              <div style="display:flex; gap:8px;">
+                <input type="text" id="order-search-input" placeholder="Cari nama / WhatsApp..." class="form-input" style="padding:6px 12px; font-size:12px; width:220px;" oninput="filterOrdersTable(this.value)">
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Tanggal</th>
+                    <th>Pembeli & Kontak</th>
+                    <th>Produk</th>
+                    <th>Total</th>
+                    <th>Bukti Transfer</th>
+                    <th>Status</th>
+                    <th>Aksi Verifikasi</th>
+                  </tr>
+                </thead>
+                <tbody id="full-orders-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Katalog Produk (+ Upload Produk & Gambar ke Drive) -->
+        <div class="admin-tab-content" id="tab-products">
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <div>
+                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Manajemen Katalog Produk Digital</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Kelola produk, upload banner, atur kuota batch, dan tautan akses materi tanpa keluar portal.</p>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn-secondary" style="padding:10px 16px; font-size:13px;" onclick="toggleInlineProductForm()">
+                  ⚡ Form Cepat Inline
+                </button>
+                <button class="shimmer-btn" style="padding:10px 18px; font-size:13px;" onclick="openAddProductModal()">
+                  + Tambah Produk Baru 📦
+                </button>
+              </div>
+            </div>
+
+            <!-- Inline Form Cepat Tambah Produk di Dashboard CRM -->
+            <div id="inline-product-form-box" class="crm-inline-box" style="display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <h4 style="font-size:15px; font-weight:800; color:var(--deep-navy);">📝 Form Tambah Produk Langsung di Portal CRM</h4>
+                <button type="button" class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="toggleInlineProductForm()">Tutup ✕</button>
+              </div>
+              <form onsubmit="saveProductForm(event, true)">
+                <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Nama Produk / Kelas *</label>
+                    <input type="text" id="inline-prod-name" required class="form-input" placeholder="Contoh: Flutter & Supabase Masterclass">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Kategori *</label>
+                    <select id="inline-prod-category" class="form-input">
+                      <option value="Kursus Video">Kursus Video</option>
+                      <option value="Template Bisnis">Template Bisnis</option>
+                      <option value="Source Code Web App">Source Code Web App</option>
+                      <option value="Mentoring Eksklusif">Mentoring Eksklusif</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Status</label>
+                    <select id="inline-prod-status" class="form-input">
+                      <option value="Publish">Publish</option>
+                      <option value="Draft">Draft</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Harga Coret (Normal)</label>
+                    <input type="number" id="inline-prod-normal-price" required class="form-input" placeholder="199000">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Harga Promo (Aktif)</label>
+                    <input type="number" id="inline-prod-promo-price" required class="form-input" placeholder="99000">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Nomor Batch</label>
+                    <input type="number" id="inline-prod-batch" class="form-input" value="3">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Kuota Peserta</label>
+                    <input type="number" id="inline-prod-quota" class="form-input" value="50">
+                  </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+                  <div>
+                    <label class="form-label" style="font-size:11px;">URL Banner Foto Produk</label>
+                    <input type="url" id="inline-prod-banner-url" class="form-input" placeholder="https://images.unsplash.com/photo-...">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Link Akses Materi / Kelas Drive</label>
+                    <input type="url" id="inline-prod-access-link" required class="form-input" placeholder="https://drive.google.com/drive/folders/...">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-bottom:14px;">
+                  <label class="form-label" style="font-size:11px;">Deskripsi Singkat</label>
+                  <input type="text" id="inline-prod-desc" required class="form-input" placeholder="Kuasai pembuatan aplikasi dari nol hingga siap jual.">
+                </div>
+                <button type="submit" id="btn-save-inline-prod" class="shimmer-btn" style="padding:10px 20px; font-size:13px;">
+                  Simpan Produk ke Google Sheets 💾
+                </button>
+              </form>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Foto Banner</th>
+                    <th>Nama Produk</th>
+                    <th>Kategori</th>
+                    <th>Harga Normal / Promo</th>
+                    <th>Batch & Kuota</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="products-admin-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Hasil Karya Member (+ Upload Mockup Showcase ke Drive) -->
+        <div class="admin-tab-content" id="tab-showcase">
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <div>
+                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Galeri Hasil Karya & Portofolio Siswa (Social Proof)</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Tampilkan pencapaian nyata member untuk mendongkrak konversi landing page.</p>
+              </div>
+              <button class="shimmer-btn" style="padding:10px 18px; font-size:13px; gap:6px;" onclick="openAddShowcaseModal()">
+                <span>➕</span> Input Manual Hasil Karya Siswa 🌟
+              </button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Preview Mockup</th>
+                    <th>Nama Karya / Proyek</th>
+                    <th>Nama Siswa / Alumni</th>
+                    <th>Statistik Pencapaian</th>
+                    <th>Tautan Live</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="showcase-admin-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: CRM Leads & Waitlist (1-Klik Chat WhatsApp) -->
+        <div class="admin-tab-content" id="tab-crm">
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <div>
+                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">CRM Leads & Antrean Waitlist</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Calon pembeli yang konsultasi via WhatsApp atau terdaftar di antrean batch penuh.</p>
+              </div>
+              <button class="btn-secondary" style="padding:8px 14px; font-size:12px;" onclick="syncCrmContacts()">
+                🔄 Sinkronisasi Kontak CRM
+              </button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Nama Prospek</th>
+                    <th>WhatsApp</th>
+                    <th>Minat Produk / Tipe</th>
+                    <th>Status Follow-Up</th>
+                    <th>Quick WhatsApp Follow-Up</th>
+                  </tr>
+                </thead>
+                <tbody id="crm-leads-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 6: Testimoni Alumni -->
+        <div class="admin-tab-content" id="tab-testimonials">
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <div>
+                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Manajemen Testimoni & Review Siswa</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Ulasan yang ditampilkan pada 3D flip card di beranda.</p>
+              </div>
+              <button class="shimmer-btn" style="padding:10px 18px; font-size:13px;" onclick="openAddTestimonialModal()">
+                + Tambah Testimoni ⭐
+              </button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Avatar</th>
+                    <th>Nama Member</th>
+                    <th>Profesi</th>
+                    <th>Rating</th>
+                    <th>Hasil Pencapaian</th>
+                    <th>Kutipan Ulasan</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="testi-admin-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 7: Tagihan & Cicilan Siswa (gas-tagihan-pembayaran) -->
+        <div class="admin-tab-content" id="tab-billing">
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <div>
+                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Manajemen Tagihan & Cicilan Siswa (Installment Plan)</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Pantau pembayaran bertahap, jatuh tempo, verifikasi pelunasan, dan kirim pengingat WhatsApp 1-klik.</p>
+              </div>
+              <button class="shimmer-btn" style="padding:10px 18px; font-size:13px;" onclick="openCreateBillModal()">
+                + Terbitkan Tagihan Baru 💳
+              </button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID Tagihan</th>
+                    <th>Nama Siswa & Kontak</th>
+                    <th>Produk / Modul</th>
+                    <th>Angsuran</th>
+                    <th>Nominal</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Status</th>
+                    <th>Aksi CRM & Follow-Up</th>
+                  </tr>
+                </thead>
+                <tbody id="billing-admin-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 8: Modul Member Area Classroom (tb_materi_kursus) -->
+        <div class="admin-tab-content" id="tab-classroom">
+          <div class="admin-table-container">
+            <div class="admin-table-header">
+              <div>
+                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Manajemen Modul Pembelajaran Siswa (Member Area Classroom)</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Kelola video modul, link materi Google Drive, durasi, dan urutan materi yang tampil di Member Area.</p>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn-secondary" style="padding:10px 16px; font-size:13px;" onclick="toggleInlineModuleForm()">
+                  ⚡ Form Cepat Modul Inline
+                </button>
+                <button class="shimmer-btn" style="padding:10px 18px; font-size:13px;" onclick="openAddModuleModal()">
+                  + Tambah Modul Baru 🎓
+                </button>
+              </div>
+            </div>
+
+            <!-- Inline Quick Add Module Form -->
+            <div id="inline-module-form-box" class="crm-inline-box" style="display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <h4 style="font-size:15px; font-weight:800; color:var(--deep-navy);">📝 Form Tambah Modul Siswa Langsung di CRM</h4>
+                <button type="button" class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="toggleInlineModuleForm()">Tutup ✕</button>
+              </div>
+              <form onsubmit="saveClassroomModuleForm(event, true)">
+                <div style="display:grid; grid-template-columns:3fr 1fr; gap:12px; margin-bottom:12px;">
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Judul Modul / Topik Pembelajaran *</label>
+                    <input type="text" id="inline-mod-title" required class="form-input" placeholder="Contoh: Modul 01: Arsitektur GAS Pro Headless">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Urutan Modul</label>
+                    <input type="number" id="inline-mod-order" required class="form-input" value="1" min="1">
+                  </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Kategori / Kursus</label>
+                    <select id="inline-mod-product" class="form-input">
+                      <option value="PRD-001">GAS Pro Web App Masterclass</option>
+                      <option value="PRD-002">Fullstack Automation Bootcamp</option>
+                      <option value="PRD-003">Mentoring Eksklusif Batch 3</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Tipe Konten</label>
+                    <select id="inline-mod-type" class="form-input">
+                      <option value="Video HD & Code">Video HD & Source Code</option>
+                      <option value="Video HD & PDF">Video HD & Modul PDF</option>
+                      <option value="Template Bisnis">Template Bisnis Siap Pakai</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px;">Durasi (Menit)</label>
+                    <input type="number" id="inline-mod-duration" class="form-input" value="30">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label class="form-label" style="font-size:11px;">Tautan Video / Google Drive Materi *</label>
+                  <input type="url" id="inline-mod-url" required class="form-input" placeholder="https://drive.google.com/drive/folders/... atau https://youtube.com/embed/...">
+                </div>
+                <div class="form-group" style="margin-bottom:14px;">
+                  <label class="form-label" style="font-size:11px;">Deskripsi Singkat / Rangkuman Modul</label>
+                  <input type="text" id="inline-mod-desc" required class="form-input" placeholder="Pelajari struktur dasar backend dan frontend modern tanpa biaya bulanan.">
+                </div>
+                <button type="submit" id="btn-save-inline-mod" class="shimmer-btn" style="padding:10px 20px; font-size:13px;">
+                  Simpan Modul ke Member Area 💾
+                </button>
+              </form>
+            </div>
+
+            <!-- Table of Classroom Modules -->
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Urutan</th>
+                    <th>Judul Modul Pembelajaran</th>
+                    <th>Tipe Konten</th>
+                    <th>Durasi</th>
+                    <th>Tautan Google Drive / Video</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="classroom-admin-tbody">
+                  <!-- Rendered dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 9: Metode Bayar & Pengaturan Situs -->
+        <div class="admin-tab-content" id="tab-settings">
+          <div style="display:grid; grid-template-columns:1fr; gap:24px; max-width:860px;">
+            <!-- Panel 1: Konfigurasi Metode Pembayaran Otomatis Server -->
+            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:28px; box-shadow:var(--shadow-card);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+                <div>
+                  <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy);">Metode Pembayaran Otomatis Server ⚡</h3>
+                  <p style="font-size:12px; color:var(--text-muted);">Kelola nomor rekening Bank Mandiri, BCA, BNI, GoPay, OVO, dan upload barcode QRIS yang tampil di checkout.</p>
+                </div>
+                <span class="pill-badge green">Server-Managed</span>
+              </div>
+              
+              <form onsubmit="savePaymentChannelsForm(event)">
+                <div id="payment-channels-settings-list">
+                  <!-- Fallback HTML Cards rendered directly so they are immediately editable -->
+                  <div class="payment-setting-card">
+                    <div class="payment-setting-header">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <strong style="color:var(--deep-navy); font-size:15px;">QRIS Instant (Semua Bank / e-Wallet)</strong>
+                        <span class="pill-badge green">QRIS</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:12px; font-weight:700; color:#10B981;">Aktif</span>
+                        <label class="switch-label">
+                          <input type="checkbox" id="cfg-ch-aktif-qris" checked>
+                          <span class="switch-slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px;">
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Nomor / Kode QRIS</label>
+                        <input type="text" id="cfg-ch-rek-qris" class="form-input" value="Scan QRIS Dinamis" placeholder="Scan QRIS Dinamis">
+                      </div>
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Atas Nama Merchant QRIS</label>
+                        <input type="text" id="cfg-ch-nama-qris" class="form-input" value="EtalaseKu Hub" placeholder="EtalaseKu Hub">
+                      </div>
+                    </div>
+                    <div style="margin-bottom:10px;">
+                      <label class="form-label" style="font-size:11px;">URL / Upload Gambar Barcode QRIS</label>
+                      <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="url" id="cfg-ch-qr-qris" class="form-input" value="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F" placeholder="https://..." onchange="updateQrisLivePreview(this.value)">
+                        <input type="file" id="cfg-qris-file-upload" accept="image/*" style="display:none;" onchange="handleQrisFileUpload(event)">
+                        <button type="button" class="btn-secondary" style="padding:8px 12px; font-size:11px; white-space:nowrap;" onclick="document.getElementById('cfg-qris-file-upload').click()">📁 Upload Barcode</button>
+                      </div>
+                      <div id="qris-admin-preview-box" style="margin-top:8px; text-align:center;">
+                        <img id="qris-admin-preview-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F" style="width:110px; height:110px; border-radius:8px; border:1px solid #E2E8F0; padding:4px; background:white;">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:11px;">Petunjuk Pembayaran QRIS</label>
+                      <input type="text" id="cfg-ch-inst-qris" class="form-input" value="Scan barcode QRIS di atas via BCA Mobile, Mandiri Livin, BNI Mobile, GoPay, OVO, atau ShopeePay.">
+                    </div>
+                  </div>
+
+                  <!-- BCA Card -->
+                  <div class="payment-setting-card">
+                    <div class="payment-setting-header">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <strong style="color:var(--deep-navy); font-size:15px;">BCA (Bank Central Asia)</strong>
+                        <span class="pill-badge blue">BANK</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:12px; font-weight:700; color:#10B981;">Aktif</span>
+                        <label class="switch-label">
+                          <input type="checkbox" id="cfg-ch-aktif-bca" checked>
+                          <span class="switch-slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px;">
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Nomor Rekening BCA</label>
+                        <input type="text" id="cfg-ch-rek-bca" class="form-input" value="123-456-7890">
+                      </div>
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Atas Nama Rekening</label>
+                        <input type="text" id="cfg-ch-nama-bca" class="form-input" value="EtalaseKu Hub / Daffa Fazdian">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:11px;">Petunjuk Transfer</label>
+                      <input type="text" id="cfg-ch-inst-bca" class="form-input" value="Transfer melalui m-BCA, ATM BCA, atau KlikBCA ke rekening di atas.">
+                    </div>
+                  </div>
+
+                  <!-- Mandiri Card -->
+                  <div class="payment-setting-card">
+                    <div class="payment-setting-header">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <strong style="color:var(--deep-navy); font-size:15px;">Bank Mandiri (Livin by Mandiri)</strong>
+                        <span class="pill-badge blue">BANK</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:12px; font-weight:700; color:#10B981;">Aktif</span>
+                        <label class="switch-label">
+                          <input type="checkbox" id="cfg-ch-aktif-mandiri" checked>
+                          <span class="switch-slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px;">
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Nomor Rekening Mandiri</label>
+                        <input type="text" id="cfg-ch-rek-mandiri" class="form-input" value="987-654-3210">
+                      </div>
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Atas Nama Rekening</label>
+                        <input type="text" id="cfg-ch-nama-mandiri" class="form-input" value="EtalaseKu Hub / Daffa Fazdian">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:11px;">Petunjuk Transfer</label>
+                      <input type="text" id="cfg-ch-inst-mandiri" class="form-input" value="Transfer melalui Livin by Mandiri atau ATM Mandiri ke rekening di atas.">
+                    </div>
+                  </div>
+
+                  <!-- BNI Card -->
+                  <div class="payment-setting-card">
+                    <div class="payment-setting-header">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <strong style="color:var(--deep-navy); font-size:15px;">BNI (Bank Negara Indonesia)</strong>
+                        <span class="pill-badge blue">BANK</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:12px; font-weight:700; color:#10B981;">Aktif</span>
+                        <label class="switch-label">
+                          <input type="checkbox" id="cfg-ch-aktif-bni" checked>
+                          <span class="switch-slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px;">
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Nomor Rekening BNI</label>
+                        <input type="text" id="cfg-ch-rek-bni" class="form-input" value="112-233-4455">
+                      </div>
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Atas Nama Rekening</label>
+                        <input type="text" id="cfg-ch-nama-bni" class="form-input" value="EtalaseKu Hub / Daffa Fazdian">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:11px;">Petunjuk Transfer</label>
+                      <input type="text" id="cfg-ch-inst-bni" class="form-input" value="Transfer via BNI Mobile Banking atau ATM BNI ke rekening di atas.">
+                    </div>
+                  </div>
+
+                  <!-- GoPay Card -->
+                  <div class="payment-setting-card">
+                    <div class="payment-setting-header">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <strong style="color:var(--deep-navy); font-size:15px;">GoPay (Gojek)</strong>
+                        <span class="pill-badge purple">E-WALLET</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:12px; font-weight:700; color:#10B981;">Aktif</span>
+                        <label class="switch-label">
+                          <input type="checkbox" id="cfg-ch-aktif-gopay" checked>
+                          <span class="switch-slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px;">
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Nomor HP GoPay</label>
+                        <input type="text" id="cfg-ch-rek-gopay" class="form-input" value="0878-9460-2627">
+                      </div>
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Atas Nama Akun GoPay</label>
+                        <input type="text" id="cfg-ch-nama-gopay" class="form-input" value="EtalaseKu Hub">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:11px;">Petunjuk Transfer</label>
+                      <input type="text" id="cfg-ch-inst-gopay" class="form-input" value="Buka Gojek / GoPay > Pilih Bayar / Transfer Saldo > Masukkan nomor HP di atas.">
+                    </div>
+                  </div>
+
+                  <!-- OVO Card -->
+                  <div class="payment-setting-card">
+                    <div class="payment-setting-header">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <strong style="color:var(--deep-navy); font-size:15px;">OVO Cash</strong>
+                        <span class="pill-badge purple">E-WALLET</span>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:12px; font-weight:700; color:#10B981;">Aktif</span>
+                        <label class="switch-label">
+                          <input type="checkbox" id="cfg-ch-aktif-ovo" checked>
+                          <span class="switch-slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px;">
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Nomor HP OVO</label>
+                        <input type="text" id="cfg-ch-rek-ovo" class="form-input" value="0878-9460-2627">
+                      </div>
+                      <div>
+                        <label class="form-label" style="font-size:11px;">Atas Nama Akun OVO</label>
+                        <input type="text" id="cfg-ch-nama-ovo" class="form-input" value="EtalaseKu Hub">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:11px;">Petunjuk Transfer</label>
+                      <input type="text" id="cfg-ch-inst-ovo" class="form-input" value="Buka aplikasi OVO > Pilih Transfer > Sesama OVO > Masukkan nomor HP di atas.">
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" id="btn-save-channels" class="shimmer-btn" style="padding:12px 24px; font-size:14px; margin-top:8px;">
+                  Simpan Konfigurasi Pembayaran Otomatis 💾
+                </button>
+              </form>
+            </div>
+
+            <!-- Panel 2: Teks Promo & Informasi Situs -->
+            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:28px; box-shadow:var(--shadow-card);">
+              <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy); margin-bottom:16px;">Pengaturan Banner Promo & Kontak Situs</h3>
+              <form onsubmit="saveAdminSettingsForm(event)">
+                <div class="form-group">
+                  <label class="form-label">Teks Promo Announcement Bar (Atas Website)</label>
+                  <input type="text" id="setting-announcement-text" class="form-input" placeholder="🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas!">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Nomor WhatsApp CS Utama (Diawali 62)</label>
+                  <input type="text" id="setting-wa-cs" class="form-input" placeholder="628123456789">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tautan Komunitas Telegram / WhatsApp Group</label>
+                  <input type="url" id="setting-komunitas-link" class="form-input" placeholder="https://t.me/komunitas_etalaseku">
+                </div>
+                <button type="submit" class="btn-secondary" style="padding:12px 24px; font-size:14px;">
+                  Simpan Teks Banner & CS ke Google Sheets 💾
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 9: Akun & Hak Akses (Multi-Admin & Transparansi Sandi) -->
+        <div class="admin-tab-content" id="tab-account">
+          <div style="display:flex; flex-direction:column; gap:24px; max-width:850px;">
+            
+            <!-- CARD 1: KREDENSIAL AKUN SAAT INI & TRANSPARANSI SANDI -->
+            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:24px 26px; box-shadow:var(--shadow-card);">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #F1F5F9; flex-wrap:wrap; gap:10px;">
+                <div>
+                  <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">🔑 Sandi &amp; Akun Sesi Aktif</h3>
+                  <p style="font-size:12px; color:var(--text-muted); margin:0;">Lihat sandi aktif, hapus sandi lama, atau ubah kata sandi sesi Anda saat ini.</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span id="account-current-badge" style="background:#FFE4E6; color:#BE123C; padding:5px 12px; border-radius:99px; font-size:11.5px; font-weight:800;">
+                    👑 SUPER ADMIN
+                  </span>
+                </div>
+              </div>
+
+              <!-- Sesi Email Aktif & Sandi Lama Aktif -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-bottom:18px;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label" style="font-size:12px;">Email Pengelola Aktif</label>
+                  <input type="email" id="active-admin-email-display" readonly class="form-input" style="background:#F8FAFC; color:#334155; font-weight:700; cursor:default;" value="admin@etalaseku.com">
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <label class="form-label" style="font-size:12px; margin-bottom:0;">Sandi / PIN Aktif Saat Ini</label>
+                    <span style="font-size:11px; color:#10B981; font-weight:700;">● Tersimpan di Sistem</span>
+                  </div>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <input type="password" id="active-admin-pin-display" readonly class="form-input" style="background:#F8FAFC; font-weight:700; letter-spacing:2px; font-family:monospace; color:var(--deep-navy); cursor:default;" value="123456">
+                    <button type="button" class="btn-secondary" id="btn-toggle-active-pin" onclick="toggleViewActivePin()" title="Tampilkan / Sembunyikan Sandi" style="padding:10px 14px; font-size:14px; flex-shrink:0;">
+                      👁️
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="copyActivePin()" title="Salin Sandi Aktif" style="padding:10px 14px; font-size:14px; flex-shrink:0;">
+                      📋
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="resetActivePin()" title="Hapus / Reset Sandi Lama" style="padding:10px 14px; font-size:12px; color:#EF4444; border-color:#FCA5A5; flex-shrink:0;">
+                      🗑️ Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ganti Sandi Baru untuk Akun Ini -->
+              <div style="background:#F8FAFC; border-radius:14px; padding:16px; border:1px solid #E2E8F0;">
+                <h4 style="font-size:13.5px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Ganti Sandi Akun Sesi Ini</h4>
+                <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:12px;">Anda dapat melihat sandi baru secara transparan dengan mengklik ikon mata di samping kolom.</p>
+                <form onsubmit="saveActiveAdminNewPassword(event)">
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-bottom:12px;">
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label class="form-label" style="font-size:11.5px;">Sandi / PIN Baru</label>
+                      <div style="display:flex; gap:6px; align-items:center;">
+                        <input type="password" id="active-new-pin-input" class="form-input" placeholder="Minimal 4 karakter" required style="font-size:13px;">
+                        <button type="button" class="btn-secondary" onclick="toggleInputPasswordVisibility('active-new-pin-input', this)" style="padding:8px 12px; font-size:13px; flex-shrink:0;">👁️</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label class="form-label" style="font-size:11.5px;">Konfirmasi Sandi Baru</label>
+                      <div style="display:flex; gap:6px; align-items:center;">
+                        <input type="password" id="active-new-pin-confirm" class="form-input" placeholder="Ulangi sandi baru" required style="font-size:13px;">
+                        <button type="button" class="btn-secondary" onclick="toggleInputPasswordVisibility('active-new-pin-confirm', this)" style="padding:8px 12px; font-size:13px; flex-shrink:0;">👁️</button>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="shimmer-btn" style="padding:9px 18px; font-size:12.5px;">
+                    💾 Simpan Sandi Baru Akun Ini
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- CARD 2: TAMBAH AKUN PENGELOLA BARU (INPUT MANUAL EMAIL GOOGLE & SANDI) -->
+            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:24px 26px; box-shadow:var(--shadow-card);">
+              <div style="margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #F1F5F9;">
+                <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">➕ Tambah Akun Pengelola Baru (Email Google &amp; Sandi Manual)</h3>
+                <p style="font-size:12px; color:var(--text-muted); margin:0;">Daftarkan email Google admin baru (tidak terbatas 1 email) beserta peran dan sandi yang dapat diotak-atik secara manual.</p>
+              </div>
+
+              <form onsubmit="handleAddNewAdminAccount(event)">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-bottom:14px;">
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" style="font-size:12px;">Alamat Email Google Admin *</label>
+                    <input type="email" id="new-admin-email" required class="form-input" placeholder="contoh: daffafazdian50@gmail.com" style="font-size:13.5px;">
+                  </div>
+
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" style="font-size:12px;">Hak Akses / Peran *</label>
+                    <select id="new-admin-role" class="form-input" style="font-size:13px; font-weight:700;">
+                      <option value="SUPER_ADMIN">👑 Super Admin (Akses Penuh: Kelola Produk &amp; Ubah Sandi)</option>
+                      <option value="ADMIN">🛡️ Admin Staff (Akses Operasional: Pesanan &amp; CRM)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label" style="font-size:12px;">PIN / Sandi Keamanan *</label>
+                    <div style="display:flex; gap:6px; align-items:center;">
+                      <input type="password" id="new-admin-pin" required class="form-input" placeholder="Masukkan PIN / Sandi" style="font-size:13.5px;">
+                      <button type="button" class="btn-secondary" onclick="toggleInputPasswordVisibility('new-admin-pin', this)" style="padding:10px 14px; font-size:14px; flex-shrink:0;">👁️</button>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" id="btn-add-admin-account" class="shimmer-btn" style="padding:11px 22px; font-size:13.5px; background:linear-gradient(135deg, #0F172A, #1E293B);">
+                  <span>➕</span> Daftarkan Akun Admin Ini
+                </button>
+              </form>
+            </div>
+
+            <!-- CARD 3: DAFTAR SEMUA AKUN SUPER ADMIN & ADMIN TERDAFTAR -->
+            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:24px 26px; box-shadow:var(--shadow-card);">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #F1F5F9; flex-wrap:wrap; gap:8px;">
+                <div>
+                  <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">👥 Seluruh Akun Super Admin &amp; Admin Terdaftar</h3>
+                  <p style="font-size:12px; color:var(--text-muted); margin:0;">Semua akun di bawah ini dapat digunakan untuk login ke portal. Anda dapat melihat sandi masing-masing secara transparan.</p>
+                </div>
+                <span id="admin-account-count-badge" style="background:#F1F5F9; color:#475569; font-size:12px; font-weight:700; padding:4px 10px; border-radius:8px;">2 Akun Terdaftar</span>
+              </div>
+
+              <!-- Tabel Responsive Akun Admin -->
+              <div class="admin-table-responsive" style="overflow-x:auto;">
+                <table class="admin-table" style="width:100%; font-size:13px;">
+                  <thead>
+                    <tr>
+                      <th style="width:40px;">No</th>
+                      <th>Email Google Admin</th>
+                      <th>Hak Akses (Role)</th>
+                      <th>PIN / Sandi Keamanan</th>
+                      <th style="text-align:right;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="multi-admin-table-body">
+                    <!-- Dynamic rendering by app.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       MODAL FORM TAMBAH / EDIT PRODUK DIGITAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-product-form">
+    <div class="modal-card" style="max-width:640px;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;" id="product-form-title">Tambah Produk Digital Baru 📦</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Data dan foto banner akan otomatis tersimpan ke Google Sheets & Google Drive.</p>
+      
+      <form onsubmit="saveProductForm(event)">
+        <input type="hidden" id="prod-form-id">
+        <div class="form-group">
+          <label class="form-label">Nama Produk / Kelas *</label>
+          <input type="text" id="prod-form-name" required class="form-input" placeholder="Contoh: GAS Pro Web App Masterclass">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Kategori *</label>
+            <select id="prod-form-category" class="form-input">
+              <option value="E-Course Praktis">E-Course Praktis</option>
+              <option value="Template Bisnis">Template Bisnis</option>
+              <option value="Source Code Web App">Source Code Web App</option>
+              <option value="Mentoring Eksklusif">Mentoring Eksklusif</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status Tayang</label>
+            <select id="prod-form-status" class="form-input">
+              <option value="Publish">Publish (Tampil di Web)</option>
+              <option value="Draft">Draft (Disembunyikan)</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Harga Normal (Rp)</label>
+            <input type="number" id="prod-form-price-normal" class="form-input" placeholder="249000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Harga Promo (Rp) *</label>
+            <input type="number" id="prod-form-price-promo" required class="form-input" placeholder="99000">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Nomor Batch Aktif</label>
+            <input type="number" id="prod-form-batch-no" class="form-input" value="3">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Maksimal Kuota Kursi (Isi 0 jika Penuh/Waitlist)</label>
+            <input type="number" id="prod-form-batch-quota" class="form-input" value="50">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Upload Foto Banner (Disimpan ke Google Drive)</label>
+          <input type="file" id="prod-form-banner-file" accept="image/*" class="form-input">
+          <input type="url" id="prod-form-banner-url" class="form-input" placeholder="Atau tempel URL gambar eksternal di sini..." style="margin-top:6px;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Galeri Foto Slideshow (Pisahkan dengan tanda koma jika ada beberapa URL)</label>
+          <input type="text" id="prod-form-gallery-urls" class="form-input" placeholder="https://link1.jpg, https://link2.jpg">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Link Akses Materi / Folder Drive Siswa</label>
+          <input type="url" id="prod-form-access-link" class="form-input" placeholder="https://drive.google.com/drive/folders/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi Singkat</label>
+          <textarea id="prod-form-desc" class="form-input" rows="3" placeholder="Jelaskan manfaat dan materi utama yang didapatkan..."></textarea>
+        </div>
+        <button type="submit" id="btn-save-product" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px;">
+          Simpan Produk ke Database 💾
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL FORM TAMBAH / EDIT HASIL KARYA MEMBER (SHOWCASE)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-showcase-form">
+    <div class="modal-card compact-modal" style="max-width:580px; text-align:left; padding:0; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; max-height:90vh;">
+      
+      <!-- Fixed Header Modal -->
+      <div style="padding:18px 22px 14px; border-bottom:1px solid #F1F5F9; position:relative; background:#FFFFFF; flex-shrink:0;">
+        <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+        <h3 id="showcase-modal-heading" style="font-size:19px; font-weight:800; color:var(--deep-navy); margin:0 0 3px;">Input Manual Hasil Karya Siswa 🌟</h3>
+        <p style="font-size:11.5px; color:#64748B; margin:0;">Input manual hasil karya siswa atau edit pengajuan dari Portal Hasil Karya Nyata.</p>
+      </div>
+
+      <form onsubmit="saveShowcaseForm(event)" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+        <input type="hidden" id="showcase-form-id">
+        <div style="padding:16px 22px; overflow-y:auto; flex:1; -webkit-overflow-scrolling:touch;">
+          
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Nama Proyek / Karya *</label>
+            <input type="text" id="showcase-form-title" required class="form-input" placeholder="Contoh: Lawfirm Client Management CRM" style="font-size:13px;">
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Nama Siswa / Alumni *</label>
+              <input type="text" id="showcase-form-author" required class="form-input" placeholder="Contoh: Aditya — Alumni Batch 2" style="font-size:13px;">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Profesi Siswa *</label>
+              <input type="text" id="showcase-form-profession" class="form-input" placeholder="Contoh: Fresh Graduate / Guru" style="font-size:13px;">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Kategori Proyek</label>
+              <select id="showcase-form-category" class="form-input" style="font-size:13px; font-weight:600;">
+                <option value="Web App GAS">Web App GAS</option>
+                <option value="CRM & Otomasi">CRM &amp; Otomasi</option>
+                <option value="Kasir & Billing">Kasir &amp; Billing</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Statistik Pencapaian / Metrik *</label>
+              <input type="text" id="showcase-form-stats" required class="form-input" placeholder="Contoh: 2.450+ Leads / Omset 50 Jt" style="font-size:13px;">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Tautan Live Demo (Opsional)</label>
+              <input type="url" id="showcase-form-link" class="form-input" placeholder="https://demo-aplikasiku.com" style="font-size:13px;">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Link Video YouTube (Opsional)</label>
+              <input type="url" id="showcase-form-youtube" class="form-input" placeholder="https://youtube.com/watch?v=..." style="font-size:13px;">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Upload Gambar Mockup / Screenshot (Disimpan ke Google Drive / Img)</label>
+            <input type="file" id="showcase-form-file" accept="image/*" class="form-input" style="font-size:12px;">
+            <input type="url" id="showcase-form-url" class="form-input" placeholder="Atau masukkan URL gambar mockup langsung..." style="margin-top:6px; font-size:12px;">
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Cerita / Testimoni Hasil Karya Siswa</label>
+            <textarea id="showcase-form-story" class="form-input" rows="2" placeholder="Ceritakan bagaimana karya ini dibangun dan manfaat nyata yang diperoleh siswa..." style="font-size:12.5px;"></textarea>
+          </div>
+
+          <div class="form-group" style="margin-bottom:8px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Status Publikasi</label>
+            <select id="showcase-form-status" class="form-input" style="font-size:13px; font-weight:700;">
+              <option value="Publish">Publish (Tampil Langsung di Pameran &amp; Beranda)</option>
+              <option value="Draft">Draft (Menunggu Review Super Admin &amp; Admin)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Sticky Footer Modal -->
+        <div style="padding:14px 22px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; gap:10px; align-items:center; flex-shrink:0;">
+          <button type="submit" id="btn-save-showcase" class="shimmer-btn" style="flex:1; padding:12px; font-size:14px; font-weight:800; justify-content:center; border-radius:10px;">
+            Simpan Hasil Karya Siswa 💾
+          </button>
+          <button type="button" class="btn-secondary" onclick="closeAllModals()" style="padding:12px 20px; font-size:13px; font-weight:700; border-radius:10px;">
+            Batal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL FORM TAMBAH TESTIMONI ALUMNI
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-testi-form">
+    <div class="modal-card" style="max-width:540px;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Tambah Testimoni Siswa ⭐</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Ulasan akan otomatis berputar pada kartu 3D flip di beranda.</p>
+      
+      <form onsubmit="saveTestimonialForm(event)">
+        <div class="form-group">
+          <label class="form-label">Nama Lengkap Siswa *</label>
+          <input type="text" id="testi-form-name" required class="form-input" placeholder="Nama Siswa">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profesi / Bisnis *</label>
+          <input type="text" id="testi-form-role" required class="form-input" placeholder="Freelancer / Pemilik Agency">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Hasil Pencapaian Nyata *</label>
+          <input type="text" id="testi-form-achievement" required class="form-input" placeholder="Contoh: Closing Proyek Rp 15 Juta">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Isi Kutipan Ulasan *</label>
+          <textarea id="testi-form-quote" required class="form-input" rows="3" placeholder="Ceritakan pengalaman belajar dan hasil yang diperoleh..."></textarea>
+        </div>
+        <button type="submit" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px;">
+          Simpan Testimoni ⭐
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL TERBITKAN TAGIHAN / CICILAN SISWA (gas-tagihan-pembayaran)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-create-bill">
+    <div class="modal-card" style="max-width:540px;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Terbitkan Tagihan Cicilan Siswa 💳</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Tagihan ini akan tercatat di sistem dan dapat dilihat siswa melalui menu Cek Tagihan.</p>
+      
+      <form onsubmit="handleCreateBillForm(event)">
+        <div class="form-group">
+          <label class="form-label">Nama Siswa / Pembeli *</label>
+          <input type="text" id="bill-form-name" required class="form-input" placeholder="Contoh: Budi Santoso">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nomor WhatsApp Siswa (Diawali 62/08) *</label>
+          <input type="tel" id="bill-form-phone" required class="form-input" placeholder="Contoh: 08123456789">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nama Modul / Produk Tagihan *</label>
+          <input type="text" id="bill-form-title" required class="form-input" placeholder="Contoh: GAS Pro Web App Masterclass (Cicilan 2 dari 2)">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="form-group">
+            <label class="form-label">Nominal Tagihan (Rp) *</label>
+            <input type="number" id="bill-form-amount" required class="form-input" placeholder="Contoh: 49500">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tanggal Jatuh Tempo *</label>
+            <input type="date" id="bill-form-due" required class="form-input">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Catatan Tambahan untuk Siswa</label>
+          <input type="text" id="bill-form-notes" class="form-input" placeholder="Pelunasan modul tahap 2">
+        </div>
+        <button type="submit" id="btn-submit-bill" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px;">
+          Terbitkan Tagihan Sekarang 🚀
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL TAMBAH / EDIT MODUL CLASSROOM (tb_materi_kursus)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-module-form">
+    <div class="modal-card" style="max-width:580px;">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;" id="module-form-modal-title">Tambah Modul Materi Baru 🎓</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Modul akan otomatis tampil di Member Area siswa yang telah diverifikasi.</p>
+      
+      <form onsubmit="saveClassroomModuleForm(event, false)">
+        <input type="hidden" id="mod-form-id">
+        <div style="display:grid; grid-template-columns:3fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label class="form-label" style="font-size:11px;">Judul Modul / Materi *</label>
+            <input type="text" id="mod-form-title" required class="form-input" placeholder="Contoh: Modul 01: Dasar Google Apps Script">
+          </div>
+          <div>
+            <label class="form-label" style="font-size:11px;">Urutan</label>
+            <input type="number" id="mod-form-order" required class="form-input" value="1" min="1">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label class="form-label" style="font-size:11px;">Kategori Kursus</label>
+            <select id="mod-form-product" class="form-input">
+              <option value="PRD-001">GAS Pro Web App Masterclass</option>
+              <option value="PRD-002">Fullstack Automation Bootcamp</option>
+              <option value="PRD-003">Mentoring Eksklusif Batch 3</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" style="font-size:11px;">Tipe Konten</label>
+            <select id="mod-form-type" class="form-input">
+              <option value="Video HD & Code">Video HD & Source Code</option>
+              <option value="Video HD & PDF">Video HD & Modul PDF</option>
+              <option value="Template Bisnis">Template Bisnis Siap Pakai</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" style="font-size:11px;">Durasi (Menit)</label>
+            <input type="number" id="mod-form-duration" class="form-input" value="30">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label" style="font-size:11px;">Tautan Video / Google Drive Materi *</label>
+          <input type="url" id="mod-form-url" required class="form-input" placeholder="https://drive.google.com/drive/folders/... atau https://youtube.com/...">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="font-size:11px;">Deskripsi / Petunjuk Modul</label>
+          <input type="text" id="mod-form-desc" required class="form-input" placeholder="Rangkuman poin materi dan file yang dapat diunduh.">
+        </div>
+        <button type="submit" id="btn-save-module-modal" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px;">
+          Simpan Modul ke Database 💾
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL AJUKAN KARYA KE PAMERAN (FOTO 3 DENGAN TOMBOL KIRIM PENGAJUAN STICKY JELAS)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-showcase-submit">
+    <div class="modal-card compact-modal" style="max-width:540px; text-align:left; padding:0; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; max-height:90vh;">
+      
+      <!-- Fixed Header Modal -->
+      <div style="padding:18px 22px 14px; border-bottom:1px solid #F1F5F9; position:relative; background:#FFFFFF; flex-shrink:0;">
+        <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+        <h3 style="font-size:19px; font-weight:800; color:var(--deep-navy); margin:0 0 3px; text-align:center;">Ajukan Karya ke Pameran</h3>
+        <p style="font-size:11.5px; color:#64748B; margin:0; text-align:center;">Kirim karya terbaik Anda untuk dikurasi oleh Super Admin &amp; Admin.</p>
+      </div>
+
+      <!-- Scrollable Form Body -->
+      <form onsubmit="handleUserSubmitShowcase(event)" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+        <div style="padding:16px 22px; overflow-y:auto; flex:1; -webkit-overflow-scrolling:touch;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Judul Karya / Aplikasi *</label>
+              <input type="text" id="user-showcase-title" required class="form-input" placeholder="mis. Aplikasi Absensi Guru" style="font-size:13px;">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Profesi *</label>
+              <input type="text" id="user-showcase-profession" required class="form-input" placeholder="mis. Fresh Graduate / Guru" style="font-size:13px;">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Kelas yang Anda ikuti</label>
+            <select id="user-showcase-class" class="form-input" style="font-size:13px; font-weight:600;">
+              <option value="GAS Pro Web App Masterclass">GAS Pro Web App Masterclass</option>
+              <option value="Fullstack Automation Bootcamp">Fullstack Automation Bootcamp</option>
+              <option value="Template CRM & Spreadsheet">Template CRM &amp; Spreadsheet</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Nama Lengkap Siswa / Member *</label>
+            <input type="text" id="user-showcase-author" required class="form-input" placeholder="Nama Lengkap Anda" style="font-size:13px;">
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Cerita Member (Testimoni) *</label>
+            <textarea id="user-showcase-story" required class="form-input" rows="3" style="font-size:12.5px; resize:vertical;" placeholder="Ceritakan:&#10;• Kenapa memilih kelas ini?&#10;• Apa yang Anda buat &amp; manfaatnya?&#10;• Kesan Anda setelah ikut kelas"></textarea>
+            <small style="font-size:11px; color:#64748B; margin-top:3px; display:block;">Minimal 30 karakter.</small>
+          </div>
+
+          <!-- Link Demo (Opsional) & Video YouTube (Opsional) -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Link Demo (Opsional)</label>
+              <input type="url" id="user-showcase-demo-link" class="form-input" placeholder="https://demo-aplikasiku.com" style="font-size:13px;">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:12px; font-weight:700;">Video YouTube (Opsional)</label>
+              <input type="url" id="user-showcase-youtube-link" class="form-input" placeholder="https://youtube.com/watch?v=..." style="font-size:13px;">
+            </div>
+          </div>
+
+          <!-- Upload Gambar Karya Terbaik -->
+          <div class="form-group" style="margin-bottom:14px;">
+            <label class="form-label" style="font-size:12px; font-weight:700;">Upload Gambar / Mockup Screenshot Karya *</label>
+            <div class="dropzone" id="user-showcase-dropzone" onclick="document.getElementById('user-showcase-img-file').click()" style="padding:16px; border:2px dashed #CBD5E1; border-radius:12px; text-align:center; background:#F8FAFC; cursor:pointer; transition:all 0.2s;">
+              <div style="font-size:24px; margin-bottom:4px;">🖼️</div>
+              <div id="user-showcase-img-label" style="font-size:12.5px; font-weight:700; color:var(--deep-navy);">Pilih Berkas Foto Screenshot Karya</div>
+              <div style="font-size:11px; color:#64748B;">Format PNG/JPG (Gambar pertama jadi sampul)</div>
+              <!-- Preview thumbnail saat gambar/mockup dipilih -->
+              <div id="user-showcase-img-preview-box" style="display:none; margin-top:10px; text-align:center;">
+                <img id="user-showcase-img-preview-el" src="" alt="Preview Screenshot" style="max-height:140px; max-width:100%; border-radius:10px; border:1px solid #CBD5E1; object-fit:contain; box-shadow:0 4px 14px rgba(0,0,0,0.06); background:#FFFFFF; padding:4px;">
+                <div style="font-size:11px; color:#10B981; font-weight:700; margin-top:5px;">✓ Gambar karya siap disimpan ke sistem CRM</div>
+              </div>
+              <input type="file" id="user-showcase-img-file" accept="image/*" style="display:none;" onchange="handleShowcaseImgSelect(this)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Footer with Prominent "Kirim Pengajuan" Button & Note (FOTO 3) -->
+        <div style="padding:14px 22px; background:#FFFFFF; border-top:1px solid #E2E8F0; flex-shrink:0; box-shadow:0 -4px 16px rgba(0,0,0,0.05);">
+          <div style="font-size:11px; color:#64748B; margin-bottom:8px; text-align:center;">
+            🛡️ Pengajuan akan ditinjau &amp; diverifikasi oleh <strong>Super Admin &amp; Admin</strong> pada sistem CRM sebelum diterbitkan ke pameran.
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button type="submit" id="btn-submit-user-showcase" class="shimmer-btn" style="flex:1; padding:12px; font-size:14px; font-weight:800; background:#2563EB; justify-content:center; border-radius:10px; color:#FFFFFF;" title="Akan ditinjau oleh Super Admin & Admin pada sistem CRM">
+              Kirim Pengajuan
+            </button>
+            <button type="button" class="btn-secondary" onclick="closeAllModals()" style="padding:12px 22px; font-size:13px; font-weight:700; border-radius:10px;">
+              Batal
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL TONTON VIDEO YOUTUBE DEMO SHOWCASE
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-showcase-youtube">
+    <div class="modal-card compact-modal" style="max-width:680px; padding:20px; background:#0F172A; color:#FFFFFF; text-align:left;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div>
+          <h4 id="youtube-modal-title" style="font-size:16px; font-weight:800; color:#FFFFFF; margin:0;">Video Demo Proyek</h4>
+          <p id="youtube-modal-author" style="font-size:11.5px; color:#94A3B8; margin:2px 0 0;"></p>
+        </div>
+        <button class="modal-close-btn" onclick="closeAllModals()" style="color:#FFFFFF; font-size:24px;">&times;</button>
+      </div>
+      <div class="youtube-player-container" style="position:relative; width:100%; padding-bottom:56.25%; height:0; border-radius:12px; overflow:hidden; background:#000;">
+        <iframe id="youtube-player-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ========================================================================
+       MODAL STRUK KUITANSI RESMI (PAYMENT SUCCESSFUL - FOTO 2 & DESAIN UI UX)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-receipt-success">
+    <div class="modal-card compact-modal receipt-modal-card" style="max-width:440px; padding:0; border-radius:24px; overflow:hidden; background:#FFFFFF; box-shadow:0 25px 60px rgba(0,0,0,0.18); text-align:left;">
+      
+      <!-- Modal Close Button -->
+      <button class="modal-close-btn" onclick="closeAllModals()" style="top:14px; right:14px; z-index:10;">&times;</button>
+
+      <!-- Receipt Top Decorative Header -->
+      <div style="background:linear-gradient(135deg, #F8FAFC, #F1F5F9); padding:26px 24px 18px; text-align:center; border-bottom:1px solid #E2E8F0; position:relative;">
+        <!-- Receipt / Invoice Icon with Green Checkmark Badge -->
+        <div style="width:64px; height:64px; border-radius:20px; background:#FFFFFF; border:2px solid #E2E8F0; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; box-shadow:0 8px 20px rgba(16,185,129,0.15); position:relative;">
+          <span style="font-size:30px;">🧾</span>
+          <span style="position:absolute; bottom:-4px; right:-4px; width:22px; height:22px; border-radius:50%; background:#10B981; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; border:2px solid #FFFFFF;">✓</span>
+        </div>
+        <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:0 0 4px; letter-spacing:-0.4px;">Payment Successful</h3>
+        <p style="font-size:12px; color:#64748B; margin:0;">Kuitansi &amp; Bukti Pembayaran Resmi Terverifikasi</p>
+      </div>
+
+      <!-- Receipt Body Content -->
+      <div id="receipt-printable-area" style="padding:22px 24px;">
+        
+        <!-- Section: Detail Transaksi & Pembayaran -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:#94A3B8; letter-spacing:0.8px; margin-bottom:10px;">
+            Payment Details
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px; font-size:12.5px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Order ID (Produk):</span>
+              <span id="receipt-order-id" style="font-weight:800; color:var(--deep-navy); font-family:monospace; font-size:13px;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Tanggal Transaksi:</span>
+              <span id="receipt-order-date" style="font-weight:600; color:#334155;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Metode Pembayaran:</span>
+              <span id="receipt-payment-method" style="font-weight:600; color:#334155;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Status Pembayaran:</span>
+              <span id="receipt-status-badge" style="background:#DCFCE7; color:#15803D; font-weight:800; font-size:11px; padding:3px 10px; border-radius:99px;">
+                ✓ Successful (Lunas)
+              </span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-top:6px; border-top:1px dashed #CBD5E1; margin-top:2px;">
+              <span style="color:var(--deep-navy); font-weight:700;">Biaya Produk (Total):</span>
+              <span id="receipt-total-amount" style="font-size:17px; font-weight:900; color:#059669;">Rp 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="receipt-dashed-divider"></div>
+
+        <!-- Section: Data Siswa & Produk -->
+        <div style="margin-bottom:18px;">
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:#94A3B8; letter-spacing:0.8px; margin-bottom:10px;">
+            Member &amp; Product Details
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px; font-size:12.5px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Nama Lengkap:</span>
+              <span id="receipt-buyer-name" style="font-weight:800; color:var(--deep-navy);">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Email Terdaftar:</span>
+              <span id="receipt-buyer-email" style="font-weight:700; color:#059669; word-break:break-all;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Nomor WhatsApp:</span>
+              <span id="receipt-buyer-phone" style="font-weight:700; color:#334155;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="color:#64748B;">Produk Digital:</span>
+              <span id="receipt-product-name" style="font-weight:700; color:var(--deep-navy); text-align:right;">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scallop Edge -->
+        <div class="receipt-scallop-edge"></div>
+      </div>
+
+      <!-- Action Buttons Footer -->
+      <div style="padding:0 24px 24px; display:flex; flex-direction:column; gap:9px;">
+        <!-- Button 1: Download PDF Receipt -->
+        <button type="button" class="btn-secondary" id="btn-download-pdf-receipt" onclick="downloadReceiptPdf()" style="width:100%; padding:12px; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px; background:#F8FAFC; border:1px solid #CBD5E1; color:#1E293B; border-radius:12px;">
+          <span>📥</span> Download PDF Struk Produk
+        </button>
+
+        <!-- Button 2: Kirim ke WhatsApp Siswa -->
+        <button type="button" class="shimmer-btn" id="btn-send-receipt-wa" onclick="sendReceiptToStudentWhatsApp()" style="width:100%; padding:12px; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg, #10B981, #059669); color:#FFFFFF; border-radius:12px; box-shadow:0 4px 14px rgba(16,185,129,0.25);">
+          <span>💬</span> Kirim Struk ke WhatsApp Siswa ➔
+        </button>
+
+        <!-- Button 3: Kirim ke Gmail Siswa -->
+        <button type="button" class="btn-secondary" id="btn-send-receipt-gmail" onclick="sendReceiptToStudentGmail()" style="width:100%; padding:11px; font-size:12.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid #CBD5E1; color:#475569; border-radius:12px;">
+          <span>📧</span> Kirim Struk ke Gmail Siswa
+        </button>
+
+        <!-- Button 4: Tutup -->
+        <button type="button" class="btn-secondary" onclick="closeAllModals()" style="width:100%; padding:10px; font-size:12px; font-weight:600; border:none; background:transparent; color:#64748B;">
+          Tutup Kuitansi
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+
+  <!-- ========================================================================
+       MODAL LIHAT BUKTI TRANSFER PEMBAYARAN (IN-APP PROOF LIGHTBOX)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-proof-viewer">
+    <div class="modal-card compact-modal" style="max-width:540px; padding:22px 24px; border-radius:20px; text-align:center; box-shadow:var(--shadow-card);">
+      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      <div style="width:46px; height:46px; border-radius:14px; background:#FFE4E6; color:#BE123C; display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 10px;">
+        🧾
+      </div>
+      <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Bukti Transfer Pembayaran</h3>
+      <p id="proof-modal-subtitle" style="font-size:12px; color:#64748B; margin:0 0 14px;">Memuat detail pesanan...</p>
+      
+      <div style="background:#0F172A; border-radius:14px; padding:10px; margin-bottom:16px; max-height:420px; overflow:auto; display:flex; align-items:center; justify-content:center; border:1px solid #1E293B;">
+        <img id="proof-modal-img" src="" style="max-width:100%; max-height:380px; border-radius:8px; object-fit:contain;" alt="Bukti Transfer">
+      </div>
+      
+      <div id="proof-modal-actions" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <!-- Injected dynamically by openProofModal() -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
