@@ -3831,6 +3831,147 @@ function toggleInlineModuleForm() {
 
 
 // ============================================================================
+
+// ============================================================================
+// MANUAL INPUT HELPERS (EDIT & SAVE BUTTONS FOR KATEGORI & TIPE KONTEN)
+// ============================================================================
+
+function enableManualInput(field, isInline) {
+  if (field === 'cat') {
+    const selectWrap = document.getElementById(isInline ? 'inline-cat-select-wrap' : 'mod-cat-select-wrap');
+    const inputWrap = document.getElementById(isInline ? 'inline-cat-input-wrap' : 'mod-cat-input-wrap');
+    const selectEl = document.getElementById(isInline ? 'inline-mod-product' : 'mod-form-product');
+    const inputEl = document.getElementById(isInline ? 'inline-mod-product-manual' : 'mod-form-product-manual');
+
+    if (selectWrap && inputWrap && inputEl && selectEl) {
+      selectWrap.style.display = 'none';
+      inputWrap.style.display = 'block';
+      inputEl.value = selectEl.value || '';
+      inputEl.focus();
+    }
+  } else if (field === 'type') {
+    const selectWrap = document.getElementById(isInline ? 'inline-type-select-wrap' : 'mod-type-select-wrap');
+    const inputWrap = document.getElementById(isInline ? 'inline-type-input-wrap' : 'mod-type-input-wrap');
+    const selectEl = document.getElementById(isInline ? 'inline-mod-type' : 'mod-form-type');
+    const inputEl = document.getElementById(isInline ? 'inline-mod-type-manual' : 'mod-form-type-manual');
+
+    if (selectWrap && inputWrap && inputEl && selectEl) {
+      selectWrap.style.display = 'none';
+      inputWrap.style.display = 'block';
+      inputEl.value = selectEl.value || '';
+      inputEl.focus();
+    }
+  }
+}
+
+function saveManualInput(field, isInline) {
+  if (field === 'cat') {
+    const selectWrap = document.getElementById(isInline ? 'inline-cat-select-wrap' : 'mod-cat-select-wrap');
+    const inputWrap = document.getElementById(isInline ? 'inline-cat-input-wrap' : 'mod-cat-input-wrap');
+    const selectEl = document.getElementById(isInline ? 'inline-mod-product' : 'mod-form-product');
+    const inputEl = document.getElementById(isInline ? 'inline-mod-product-manual' : 'mod-form-product-manual');
+
+    if (inputEl && selectEl) {
+      const val = inputEl.value.trim();
+      if (val) {
+        let optExists = false;
+        for (let i = 0; i < selectEl.options.length; i++) {
+          if (selectEl.options[i].value.toLowerCase() === val.toLowerCase() || selectEl.options[i].text.toLowerCase() === val.toLowerCase()) {
+            selectEl.selectedIndex = i;
+            optExists = true;
+            break;
+          }
+        }
+        if (!optExists) {
+          const newOpt = document.createElement('option');
+          newOpt.value = val;
+          newOpt.textContent = val;
+          newOpt.selected = true;
+          selectEl.appendChild(newOpt);
+        }
+        if (typeof showToast === 'function') {
+          showToast('Kategori "' + val + '" berhasil disimpan & dipilih! ✨', 'info');
+        }
+      }
+      if (selectWrap && inputWrap) {
+        inputWrap.style.display = 'none';
+        selectWrap.style.display = 'block';
+      }
+    }
+  } else if (field === 'type') {
+    const selectWrap = document.getElementById(isInline ? 'inline-type-select-wrap' : 'mod-type-select-wrap');
+    const inputWrap = document.getElementById(isInline ? 'inline-type-input-wrap' : 'mod-type-input-wrap');
+    const selectEl = document.getElementById(isInline ? 'inline-mod-type' : 'mod-form-type');
+    const inputEl = document.getElementById(isInline ? 'inline-mod-type-manual' : 'mod-form-type-manual');
+
+    if (inputEl && selectEl) {
+      const val = inputEl.value.trim();
+      if (val) {
+        let optExists = false;
+        for (let i = 0; i < selectEl.options.length; i++) {
+          if (selectEl.options[i].value.toLowerCase() === val.toLowerCase() || selectEl.options[i].text.toLowerCase() === val.toLowerCase()) {
+            selectEl.selectedIndex = i;
+            optExists = true;
+            break;
+          }
+        }
+        if (!optExists) {
+          const newOpt = document.createElement('option');
+          newOpt.value = val;
+          newOpt.textContent = val;
+          newOpt.selected = true;
+          selectEl.appendChild(newOpt);
+        }
+        if (typeof showToast === 'function') {
+          showToast('Tipe Konten "' + val + '" berhasil disimpan & dipilih! ✨', 'info');
+        }
+      }
+      if (selectWrap && inputWrap) {
+        inputWrap.style.display = 'none';
+        selectWrap.style.display = 'block';
+      }
+    }
+  }
+}
+
+function handleInlineModuleBannerUpload(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const bannerInput = document.getElementById('inline-mod-banner');
+    if (bannerInput) bannerInput.value = dataUrl;
+    if (typeof showToast === 'function') {
+      showToast('Foto banner modul berhasil dimuat! 🖼️', 'info');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function switchInlineModuleType(type) {
+  const btnCourse = document.getElementById('btn-inline-type-course');
+  const btnDoc = document.getElementById('btn-inline-type-doc');
+  const secCourse = document.getElementById('inline-sec-course');
+  const secDoc = document.getElementById('inline-sec-doc');
+  const selectedTypeInput = document.getElementById('inline-mod-editor-selected-type');
+
+  if (selectedTypeInput) selectedTypeInput.value = type;
+
+  if (type === 'document') {
+    if (btnCourse) btnCourse.classList.remove('active');
+    if (btnDoc) btnDoc.classList.add('active');
+    if (secCourse) secCourse.style.display = 'none';
+    if (secDoc) secDoc.style.display = 'block';
+  } else {
+    if (btnDoc) btnDoc.classList.remove('active');
+    if (btnCourse) btnCourse.classList.add('active');
+    if (secDoc) secDoc.style.display = 'none';
+    if (secCourse) secCourse.style.display = 'block';
+  }
+}
+
 // DYNAMIC COURSE & DOCUMENT STORAGE SYNC (CONNECTED TO CRM & RUANG BELAJARKU)
 // ============================================================================
 
@@ -4130,31 +4271,116 @@ async function saveClassroomModuleForm(e, isInline) {
     const inlineId = 'MOD-' + Date.now().toString().slice(-4);
     const inlineTitle = document.getElementById('inline-mod-title').value;
     const inlineOrder = Number(document.getElementById('inline-mod-order').value || 1);
+    const inlineProduct = document.getElementById('inline-mod-product').value;
     const inlineType = document.getElementById('inline-mod-type').value;
-    const inlineDuration = Number(document.getElementById('inline-mod-duration').value || 30);
-    const inlineUrl = document.getElementById('inline-mod-url').value;
-    const inlineDesc = document.getElementById('inline-mod-desc').value;
+    const inlineDurationText = document.getElementById('inline-mod-duration').value || '30 Menit';
+    const inlineDurationNum = parseInt(inlineDurationText) || 30;
+    const inlineBanner = document.getElementById('inline-mod-banner').value || './assets/modules/thumb-metode3.jpg';
+    const inlineUrl = document.getElementById('inline-mod-url').value || 'https://drive.google.com';
+    const inlineDesc = document.getElementById('inline-mod-desc').value || '';
+    const editorType = (document.getElementById('inline-mod-editor-selected-type') ? document.getElementById('inline-mod-editor-selected-type').value : 'course');
+
+    const isDoc = (editorType === 'document' || inlineType.toLowerCase().includes('dokumen') || inlineType.toLowerCase().includes('prd') || inlineProduct.toLowerCase().includes('prd'));
 
     const newMod = {
       ID_Materi: inlineId,
-      ID_Produk: 'PRD-001',
+      ID_Produk: inlineProduct,
       Judul_Modul: inlineTitle,
       Urutan: inlineOrder,
+      Tipe_Badge: isDoc ? 'DOKUMEN' : 'KELAS',
+      Kategori: isDoc ? 'Dokumen' : 'Kelas',
       Tipe_Konten: inlineType,
       URL_Konten: inlineUrl,
-      Durasi_Menit: inlineDuration,
+      Durasi_Menit: inlineDurationNum,
       Status: 'Publish',
-      Deskripsi: inlineDesc
+      Deskripsi: inlineDesc,
+      Thumbnail_URL: inlineBanner,
+      Foto_URL: inlineBanner
     };
+
+    if (!isDoc) {
+      const inlineWaName = (document.getElementById('inline-mod-wa-name') && document.getElementById('inline-mod-wa-name').value) ? document.getElementById('inline-mod-wa-name').value : ('Khusus peserta ' + inlineTitle);
+      const inlineWaLink = (document.getElementById('inline-mod-wa-link') && document.getElementById('inline-mod-wa-link').value) ? document.getElementById('inline-mod-wa-link').value : 'https://chat.whatsapp.com/';
+      const inlineSummary = (document.getElementById('inline-mod-summary-text') && document.getElementById('inline-mod-summary-text').value) ? document.getElementById('inline-mod-summary-text').value : inlineDesc;
+
+      newMod.Episode = 1;
+      newMod.Materi_Count = 1;
+
+      const courseObj = {
+        title: inlineTitle,
+        shortTitle: inlineTitle.length > 45 ? (inlineTitle.slice(0, 42) + '...') : inlineTitle,
+        poster: inlineBanner,
+        materialsCount: 1,
+        summary: inlineSummary,
+        waGroupTitle: inlineWaName,
+        waGroupLink: inlineWaLink,
+        episodes: [
+          {
+            title: 'Step 1 - ' + inlineTitle,
+            duration: inlineDurationText,
+            summary: inlineSummary,
+            videoEmbedUrl: inlineUrl,
+            posterTag: inlineTitle
+          }
+        ],
+        materials: [
+          {
+            name: 'Aset & Source Code Modul',
+            type: inlineType,
+            url: inlineUrl
+          }
+        ]
+      };
+
+      const courseMap = typeof getActiveCourseEpisodesMap === 'function' ? getActiveCourseEpisodesMap() : COURSE_EPISODES_MAP;
+      courseMap[inlineId] = courseObj;
+      COURSE_EPISODES_MAP[inlineId] = courseObj;
+      localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(courseMap));
+    } else {
+      const inlinePkgFiles = (document.getElementById('inline-mod-doc-pkg-files') && document.getElementById('inline-mod-doc-pkg-files').value) ? document.getElementById('inline-mod-doc-pkg-files').value : '10 berkas';
+      const inlinePkgFormat = (document.getElementById('inline-mod-doc-pkg-format') && document.getElementById('inline-mod-doc-pkg-format').value) ? document.getElementById('inline-mod-doc-pkg-format').value : '10 Dokumen';
+      const inlineDocSubtitle = (document.getElementById('inline-mod-doc-subtitle') && document.getElementById('inline-mod-doc-subtitle').value) ? document.getElementById('inline-mod-doc-subtitle').value : (inlineDesc || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
+
+      newMod.Episode = 1;
+      newMod.Materi_Count = 1;
+
+      const docObj = {
+        title: inlineTitle,
+        subtitle: inlineDocSubtitle,
+        banner: inlineBanner,
+        totalFiles: 1,
+        totalLinks: 0,
+        pkgFilesText: inlinePkgFiles,
+        pkgFormatText: inlinePkgFormat,
+        files: [
+          {
+            name: inlineTitle,
+            filename: 'PRD_' + inlineId + '.md',
+            size: '0.01 MB',
+            url: inlineUrl,
+            content: '# PRD: ' + inlineTitle + '\n\n## 1. Ringkasan Eksekutif\n' + (inlineDesc || 'Dokumen spesifikasi teknis dan implementasi produk.') + '\n\n## 2. Fitur Utama\n- Skema Database Google Sheets\n- Endpoint REST API Headless\n- Frontend Terpisah'
+          }
+        ]
+      };
+
+      const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
+      docMap[inlineId] = docObj;
+      DOCUMENT_FILES_MAP[inlineId] = docObj;
+      localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+    }
+
     if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
     STATE.modules.push(newMod);
     STATE.modules.sort((a, b) => (Number(a.Urutan) || 0) - (Number(b.Urutan) || 0));
     localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
+
     renderClassroomModulesAdmin();
     renderClassroomPortalModules('', 'ALL');
+
     const inlineBox = document.getElementById('inline-module-form-box');
     if (inlineBox) inlineBox.style.display = 'none';
-    showToast('Modul berhasil disimpan ke database!', 'info');
+
+    showToast('Modul berhasil disimpan dan otomatis terhubung ke Buka Ruang Belajar & Akses Produk! 🚀', 'info');
     return;
   }
 

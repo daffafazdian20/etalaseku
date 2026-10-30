@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261031-06">
+  <link rel="stylesheet" href="css/style.css?v=20261031-07">
 </head>
 <body>
 
@@ -1969,55 +1969,172 @@
               </div>
             </div>
 
-            <!-- Inline Quick Add Module Form -->
-            <div id="inline-module-form-box" class="crm-inline-box" style="display:none;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <h4 style="font-size:15px; font-weight:800; color:var(--deep-navy);">📝 Form Tambah Modul Siswa Langsung di CRM</h4>
-                <button type="button" class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="toggleInlineModuleForm()">Tutup ✕</button>
+                        <!-- Inline Quick Add Module Form -->
+            <div id="inline-module-form-box" class="crm-inline-box" style="display:none; background:#FFFFFF; border:1.5px solid #F1F5F9; border-radius:18px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,0.03); margin-bottom:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1.5px solid #F1F5F9;">
+                <div>
+                  <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 2px;">⚡ Form Cepat Modul Pembelajaran Inline</h4>
+                  <p style="font-size:12px; color:var(--text-muted); margin:0;">Input modul baru langsung tanpa keluar dari halaman CRM, otomatis terhubung ke Ruang Belajar &amp; Akses Produk.</p>
+                </div>
+                <button type="button" class="btn-secondary" style="padding:6px 12px; font-size:12px; border-radius:8px;" onclick="toggleInlineModuleForm()">Tutup ✕</button>
               </div>
+
               <form onsubmit="saveClassroomModuleForm(event, true)">
+                <input type="hidden" id="inline-mod-editor-selected-type" value="course">
+
+                <!-- Type Switcher Pill -->
+                <div class="mod-type-switcher" style="margin-bottom:16px;">
+                  <button type="button" class="mod-type-pill active" id="btn-inline-type-course" onclick="switchInlineModuleType('course')">
+                    🎓 Modul Kelas Video (Buka Ruang Belajar)
+                  </button>
+                  <button type="button" class="mod-type-pill" id="btn-inline-type-doc" onclick="switchInlineModuleType('document')">
+                    📁 Paket Dokumen &amp; PRD (Akses Produk)
+                  </button>
+                </div>
+
+                <!-- Row 1: Judul & Urutan -->
                 <div style="display:grid; grid-template-columns:3fr 1fr; gap:12px; margin-bottom:12px;">
                   <div>
-                    <label class="form-label" style="font-size:11px;">Judul Modul / Topik Pembelajaran *</label>
-                    <input type="text" id="inline-mod-title" required class="form-input" placeholder="Contoh: Modul 01: Arsitektur GAS Pro Headless">
+                    <label class="form-label" style="font-size:11px; font-weight:700;">Judul Modul / Topik Pembelajaran *</label>
+                    <input type="text" id="inline-mod-title" required class="form-input" placeholder="Contoh: METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL">
                   </div>
                   <div>
-                    <label class="form-label" style="font-size:11px;">Urutan Modul</label>
+                    <label class="form-label" style="font-size:11px; font-weight:700;">Urutan Modul</label>
                     <input type="number" id="inline-mod-order" required class="form-input" value="1" min="1">
                   </div>
                 </div>
+
+                <!-- Row 2: Kategori (with Edit & Save), Tipe Konten (with Edit & Save), Durasi -->
                 <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                  <!-- Kategori with Edit & Save buttons -->
                   <div>
-                    <label class="form-label" style="font-size:11px;">Kategori / Kursus</label>
-                    <select id="inline-mod-product" class="form-input">
-                      <option value="PRD-001">GAS Pro Web App Masterclass</option>
-                      <option value="PRD-002">Fullstack Automation Bootcamp</option>
-                      <option value="PRD-003">Mentoring Eksklusif Batch 3</option>
-                    </select>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                      <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Kategori / Kursus</label>
+                      <div style="display:flex; gap:4px;">
+                        <button type="button" id="btn-edit-inline-cat" class="btn-micro-edit" onclick="enableManualInput('cat', true)" title="Edit / Ketik Kategori Baru Manual">
+                          ✏️ Edit
+                        </button>
+                        <button type="button" id="btn-save-inline-cat" class="btn-micro-save" onclick="saveManualInput('cat', true)" title="Simpan Kategori Baru">
+                          💾 Save
+                        </button>
+                      </div>
+                    </div>
+                    <div id="inline-cat-select-wrap">
+                      <select id="inline-mod-product" class="form-input">
+                        <option value="GAS Pro Web App Masterclass">GAS Pro Web App Masterclass</option>
+                        <option value="Fullstack Automation Bootcamp">Fullstack Automation Bootcamp</option>
+                        <option value="Mentoring Eksklusif Batch 3">Mentoring Eksklusif Batch 3</option>
+                        <option value="Kumpulan PRD">Kumpulan PRD</option>
+                        <option value="Template Bisnis">Template Bisnis</option>
+                      </select>
+                    </div>
+                    <div id="inline-cat-input-wrap" style="display:none;">
+                      <input type="text" id="inline-mod-product-manual" class="form-input" placeholder="Ketik Kategori / Kursus baru..." style="border-color:#2563EB;">
+                    </div>
                   </div>
+
+                  <!-- Tipe Konten with Edit & Save buttons -->
                   <div>
-                    <label class="form-label" style="font-size:11px;">Tipe Konten</label>
-                    <select id="inline-mod-type" class="form-input">
-                      <option value="Video HD & Code">Video HD & Source Code</option>
-                      <option value="Video HD & PDF">Video HD & Modul PDF</option>
-                      <option value="Template Bisnis">Template Bisnis Siap Pakai</option>
-                    </select>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                      <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Tipe Konten</label>
+                      <div style="display:flex; gap:4px;">
+                        <button type="button" id="btn-edit-inline-type" class="btn-micro-edit" onclick="enableManualInput('type', true)" title="Edit / Ketik Tipe Konten Baru Manual">
+                          ✏️ Edit
+                        </button>
+                        <button type="button" id="btn-save-inline-type" class="btn-micro-save" onclick="saveManualInput('type', true)" title="Simpan Tipe Konten Baru">
+                          💾 Save
+                        </button>
+                      </div>
+                    </div>
+                    <div id="inline-type-select-wrap">
+                      <select id="inline-mod-type" class="form-input">
+                        <option value="Video HD & Source Code">Video HD &amp; Source Code</option>
+                        <option value="Video HD & Modul PDF">Video HD &amp; Modul PDF</option>
+                        <option value="Template Bisnis Siap Pakai">Template Bisnis Siap Pakai</option>
+                        <option value="Dokumen PRD & Template">Dokumen PRD &amp; Template</option>
+                      </select>
+                    </div>
+                    <div id="inline-type-input-wrap" style="display:none;">
+                      <input type="text" id="inline-mod-type-manual" class="form-input" placeholder="Ketik Tipe Konten baru..." style="border-color:#2563EB;">
+                    </div>
                   </div>
+
+                  <!-- Durasi -->
                   <div>
-                    <label class="form-label" style="font-size:11px;">Durasi (Menit)</label>
-                    <input type="number" id="inline-mod-duration" class="form-input" value="30">
+                    <label class="form-label" style="font-size:11px; font-weight:700;">Durasi / Keterangan</label>
+                    <input type="text" id="inline-mod-duration" class="form-input" value="30 Menit" placeholder="misal: 65 Menit / 10 Berkas">
                   </div>
                 </div>
+
+                <!-- Row 3: Upload / Foto Banner Modul -->
+                <div style="margin-bottom:12px;">
+                  <label class="form-label" style="font-size:11px; font-weight:700;">Foto Banner / Thumbnail Modul</label>
+                  <div style="display:flex; gap:8px;">
+                    <input type="text" id="inline-mod-banner" class="form-input" placeholder="https://... atau pilih berkas foto" value="./assets/modules/thumb-metode3.jpg" style="flex:1;">
+                    <label class="btn-secondary" style="padding:8px 14px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin:0; white-space:nowrap; border-radius:10px;">
+                      📁 Pilih Foto
+                      <input type="file" accept="image/*" style="display:none;" onchange="handleInlineModuleBannerUpload(event)">
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Row 4: URL Video / Drive Utama -->
                 <div class="form-group" style="margin-bottom:12px;">
-                  <label class="form-label" style="font-size:11px;">Tautan Video / Google Drive Materi *</label>
+                  <label class="form-label" style="font-size:11px; font-weight:700;">Tautan Video / Google Drive Materi *</label>
                   <input type="url" id="inline-mod-url" required class="form-input" placeholder="https://drive.google.com/drive/folders/... atau https://youtube.com/embed/...">
                 </div>
+
+                <!-- Section Khusus Kursus Video (Inline) -->
+                <div id="inline-sec-course" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:14px; margin-bottom:14px;">
+                  <div style="font-size:12.5px; font-weight:800; color:#1E1B4B; margin-bottom:10px;">
+                    🎬 Pengaturan Kurikulum &amp; WhatsApp Group
+                  </div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div>
+                      <label class="form-label" style="font-size:10.5px; font-weight:700;">Nama Grup WhatsApp</label>
+                      <input type="text" id="inline-mod-wa-name" class="form-input" placeholder="Khusus peserta METODE 3...">
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:10.5px; font-weight:700;">Link Undangan WhatsApp Group</label>
+                      <input type="url" id="inline-mod-wa-link" class="form-input" placeholder="https://chat.whatsapp.com/...">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:10.5px; font-weight:700;">Ringkasan Kelas (Muncul di Tab Ringkasan Kelas)</label>
+                    <textarea id="inline-mod-summary-text" class="form-input" rows="2" placeholder="Integrasi Apps Script sebagai REST API dan Github Frontend dan Vercel untuk Deploy persiapkan Domain Sendiri."></textarea>
+                  </div>
+                </div>
+
+                <!-- Section Khusus Dokumen PRD (Inline) -->
+                <div id="inline-sec-doc" style="display:none; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:14px; margin-bottom:14px;">
+                  <div style="font-size:12.5px; font-weight:800; color:#1E1B4B; margin-bottom:10px;">
+                    📄 Pengaturan Paket Dokumen
+                  </div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div>
+                      <label class="form-label" style="font-size:10.5px; font-weight:700;">Jumlah Berkas Tambahan</label>
+                      <input type="text" id="inline-mod-doc-pkg-files" class="form-input" value="10 berkas" placeholder="10 berkas">
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:10.5px; font-weight:700;">Format Material</label>
+                      <input type="text" id="inline-mod-doc-pkg-format" class="form-input" value="10 Dokumen" placeholder="10 Dokumen">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:10.5px; font-weight:700;">Subjudul Petunjuk Unduh</label>
+                    <input type="text" id="inline-mod-doc-subtitle" class="form-input" value="Silahkan Download PRD yang dibutuhkan sebagai Referensi" placeholder="Silahkan Download PRD yang dibutuhkan...">
+                  </div>
+                </div>
+
+                <!-- Deskripsi Singkat -->
                 <div class="form-group" style="margin-bottom:14px;">
-                  <label class="form-label" style="font-size:11px;">Deskripsi Singkat / Rangkuman Modul</label>
+                  <label class="form-label" style="font-size:11px; font-weight:700;">Deskripsi Singkat / Rangkuman Modul</label>
                   <input type="text" id="inline-mod-desc" required class="form-input" placeholder="Pelajari struktur dasar backend dan frontend modern tanpa biaya bulanan.">
                 </div>
-                <button type="submit" id="btn-save-inline-mod" class="shimmer-btn" style="padding:10px 20px; font-size:13px;">
-                  Simpan Modul ke Member Area 💾
+
+                <!-- Submit Button Renamed as requested -->
+                <button type="submit" id="btn-save-inline-mod" class="shimmer-btn" style="width:100%; padding:13px 20px; font-size:14px; font-weight:800; border-radius:12px;">
+                  Simpan &amp; Hubungkan ke Dashboard Ruang Belajar &amp; Akses Produk 🚀
                 </button>
               </form>
             </div>
@@ -3150,8 +3267,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261031-06"></script>
-  <script src="js/app.js?v=20261031-06"></script>
+  <script src="js/config.js?v=20261031-07"></script>
+  <script src="js/app.js?v=20261031-07"></script>
 
   <!-- Modal Reader & Salin Dokumen PRD -->
   <div class="modal-overlay" id="modal-doc-reader">
