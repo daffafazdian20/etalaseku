@@ -3237,3 +3237,15 @@ input:checked + .switch-slider:before {
     font-size: 19px !important;
   }
 }
+
+
+/* Responsive CRM Inline Form on Mobile */
+@media (max-width: 768px) {
+  .crm-inline-box {
+    padding: 14px 12px !important;
+  }
+  .crm-inline-box form > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+}

@@ -1532,12 +1532,25 @@
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
                   <div>
-                    <label class="form-label" style="font-size:11px;">URL Banner Foto Produk</label>
-                    <input type="url" id="inline-prod-banner-url" class="form-input" placeholder="https://images.unsplash.com/photo-...">
+                    <label class="form-label" style="font-size:11px; font-weight:700; color:var(--deep-navy);">Upload Foto Di Folder/URL Google Drive/Upload Foto</label>
+                    <div style="display:flex; gap:6px; align-items:center;">
+                      <input type="text" id="inline-prod-banner-url" class="form-input" placeholder="Tempel URL Google Drive / Link Foto..." style="font-size:12.5px; flex:1;" oninput="handleInlineBannerInput(this.value)">
+                      <button type="button" class="btn-secondary" style="padding:9px 12px; font-size:11.5px; font-weight:700; color:#FF2E63; border-color:#FF2E63; border-radius:10px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;" onclick="document.getElementById('inline-prod-banner-file').click()" title="Pilih foto dari folder laptop / HP">
+                        📁 Pilih Foto
+                      </button>
+                      <input type="file" id="inline-prod-banner-file" accept="image/*" style="display:none;" onchange="handleInlineBannerFile(this)">
+                    </div>
+                    <div id="inline-prod-banner-preview" style="display:none; margin-top:8px; padding:6px 10px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; align-items:center; gap:10px;">
+                      <img id="inline-prod-banner-preview-img" src="" style="width:48px; height:32px; border-radius:6px; object-fit:cover; border:1px solid #CBD5E1;" alt="Preview Banner">
+                      <div style="font-size:11px; color:#10B981; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;" id="inline-prod-banner-filename">
+                        ✓ Foto banner siap digunakan
+                      </div>
+                      <button type="button" onclick="clearInlineBannerPhoto()" style="background:none; border:none; color:#EF4444; font-size:14px; font-weight:800; cursor:pointer; padding:2px 6px;" title="Hapus foto">&times;</button>
+                    </div>
                   </div>
                   <div>
-                    <label class="form-label" style="font-size:11px;">Link Akses Materi / Kelas Drive</label>
-                    <input type="url" id="inline-prod-access-link" required class="form-input" placeholder="https://drive.google.com/drive/folders/...">
+                    <label class="form-label" style="font-size:11px; font-weight:700; color:var(--deep-navy);">Link Akses Materi / Kelas Drive</label>
+                    <input type="url" id="inline-prod-access-link" required class="form-input" placeholder="https://drive.google.com/drive/folders/..." style="font-size:12.5px;">
                   </div>
                 </div>
                 <div class="form-group" style="margin-bottom:14px;">
@@ -2236,9 +2249,21 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Upload Foto Banner (Disimpan ke Google Drive)</label>
-          <input type="file" id="prod-form-banner-file" accept="image/*" class="form-input">
-          <input type="url" id="prod-form-banner-url" class="form-input" placeholder="Atau tempel URL gambar eksternal di sini..." style="margin-top:6px;">
+          <label class="form-label">Upload Foto Di Folder/URL Google Drive/Upload Foto</label>
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+            <input type="text" id="prod-form-banner-url" class="form-input" placeholder="Tempel URL Google Drive / Link Foto..." oninput="handleModalBannerInput(this.value)">
+            <button type="button" class="btn-secondary" style="padding:10px 14px; font-size:12px; font-weight:700; color:#FF2E63; border-color:#FF2E63; border-radius:10px; cursor:pointer; white-space:nowrap; flex-shrink:0;" onclick="document.getElementById('prod-form-banner-file').click()">
+              📁 Pilih Foto Folder
+            </button>
+            <input type="file" id="prod-form-banner-file" accept="image/*" style="display:none;" onchange="handleModalBannerFile(this)">
+          </div>
+          <div id="modal-prod-banner-preview" style="display:none; padding:6px 10px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; align-items:center; gap:10px; margin-top:6px;">
+            <img id="modal-prod-banner-preview-img" src="" style="width:52px; height:34px; border-radius:6px; object-fit:cover; border:1px solid #CBD5E1;" alt="Preview Banner">
+            <div style="font-size:11.5px; color:#10B981; font-weight:700; flex:1;" id="modal-prod-banner-filename">
+              ✓ Foto banner siap digunakan
+            </div>
+            <button type="button" onclick="clearModalBannerPhoto()" style="background:none; border:none; color:#EF4444; font-size:16px; font-weight:800; cursor:pointer; padding:2px 6px;" title="Hapus foto">&times;</button>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">Galeri Foto Slideshow (Pisahkan dengan tanda koma jika ada beberapa URL)</label>

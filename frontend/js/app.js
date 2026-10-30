@@ -138,6 +138,15 @@ window.compressAndReadImage = compressAndReadImage;
 function formatImageUrl(url) {
   if (!url) return 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80';
   const str = String(url).trim();
+
+  // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
+  if (str.includes('drive.google.com')) {
+    const fileIdMatch = str.match(/\/d\/([a-zA-Z0-9_-]+)/) || str.match(/id=([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}`;
+    }
+  }
+
   if (str.startsWith('http://') || str.startsWith('https://') || str.startsWith('data:image/')) {
     return str;
   }
@@ -1989,6 +1998,9 @@ async function saveProductForm(e, isInline = false) {
       document.getElementById('inline-prod-banner-url').value = '';
       document.getElementById('inline-prod-access-link').value = '';
       document.getElementById('inline-prod-desc').value = '';
+      clearInlineBannerPhoto();
+    } else {
+      clearModalBannerPhoto();
     }
     showToast('Produk berhasil disimpan ke database Google Sheets!', 'info');
     loadAdminPortalData();
@@ -4432,3 +4444,107 @@ function sendReceiptToStudentGmail() {
   showToast('📧 Draft Gmail kuitansi resmi disiapkan!', 'info', 3000);
 }
 window.sendReceiptToStudentGmail = sendReceiptToStudentGmail;
+
+
+// ============================================================================
+// UPLOAD FOTO DI FOLDER / URL GOOGLE DRIVE / UPLOAD FOTO (KATALOG PRODUK CRM)
+// ============================================================================
+async function handleInlineBannerFile(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    try {
+      const dataUrl = await compressAndReadImage(file, 1200, 0.85);
+      const urlInput = document.getElementById('inline-prod-banner-url');
+      if (urlInput) urlInput.value = dataUrl;
+      const previewBox = document.getElementById('inline-prod-banner-preview');
+      const previewImg = document.getElementById('inline-prod-banner-preview-img');
+      const filenameEl = document.getElementById('inline-prod-banner-filename');
+      if (previewBox && previewImg) {
+        previewImg.src = dataUrl;
+        if (filenameEl) filenameEl.textContent = '✓ ' + file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+        previewBox.style.display = 'flex';
+      }
+      showToast('Foto banner dari folder berhasil dimuat! 🖼️', 'success', 2500);
+    } catch (err) {
+      showToast('Gagal memproses file foto: ' + err.message, 'error');
+    }
+  }
+}
+window.handleInlineBannerFile = handleInlineBannerFile;
+
+function handleInlineBannerInput(val) {
+  const previewBox = document.getElementById('inline-prod-banner-preview');
+  const previewImg = document.getElementById('inline-prod-banner-preview-img');
+  const filenameEl = document.getElementById('inline-prod-banner-filename');
+  if (!val || val.trim().length < 5) {
+    if (previewBox) previewBox.style.display = 'none';
+    return;
+  }
+  const formatted = formatImageUrl(val);
+  if (previewBox && previewImg) {
+    previewImg.src = formatted;
+    if (filenameEl) filenameEl.textContent = val.includes('drive.google.com') ? '✓ Google Drive Banner Terhubung' : '✓ Link Foto Banner Terhubung';
+    previewBox.style.display = 'flex';
+  }
+}
+window.handleInlineBannerInput = handleInlineBannerInput;
+
+function clearInlineBannerPhoto() {
+  const urlInput = document.getElementById('inline-prod-banner-url');
+  if (urlInput) urlInput.value = '';
+  const fileInput = document.getElementById('inline-prod-banner-file');
+  if (fileInput) fileInput.value = '';
+  const previewBox = document.getElementById('inline-prod-banner-preview');
+  if (previewBox) previewBox.style.display = 'none';
+}
+window.clearInlineBannerPhoto = clearInlineBannerPhoto;
+
+async function handleModalBannerFile(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    try {
+      const dataUrl = await compressAndReadImage(file, 1200, 0.85);
+      const urlInput = document.getElementById('prod-form-banner-url');
+      if (urlInput) urlInput.value = dataUrl;
+      const previewBox = document.getElementById('modal-prod-banner-preview');
+      const previewImg = document.getElementById('modal-prod-banner-preview-img');
+      const filenameEl = document.getElementById('modal-prod-banner-filename');
+      if (previewBox && previewImg) {
+        previewImg.src = dataUrl;
+        if (filenameEl) filenameEl.textContent = '✓ ' + file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+        previewBox.style.display = 'flex';
+      }
+      showToast('Foto banner dari folder berhasil dimuat! 🖼️', 'success', 2500);
+    } catch (err) {
+      showToast('Gagal memproses file foto: ' + err.message, 'error');
+    }
+  }
+}
+window.handleModalBannerFile = handleModalBannerFile;
+
+function handleModalBannerInput(val) {
+  const previewBox = document.getElementById('modal-prod-banner-preview');
+  const previewImg = document.getElementById('modal-prod-banner-preview-img');
+  const filenameEl = document.getElementById('modal-prod-banner-filename');
+  if (!val || val.trim().length < 5) {
+    if (previewBox) previewBox.style.display = 'none';
+    return;
+  }
+  const formatted = formatImageUrl(val);
+  if (previewBox && previewImg) {
+    previewImg.src = formatted;
+    if (filenameEl) filenameEl.textContent = val.includes('drive.google.com') ? '✓ Google Drive Banner Terhubung' : '✓ Link Foto Banner Terhubung';
+    previewBox.style.display = 'flex';
+  }
+}
+window.handleModalBannerInput = handleModalBannerInput;
+
+function clearModalBannerPhoto() {
+  const urlInput = document.getElementById('prod-form-banner-url');
+  if (urlInput) urlInput.value = '';
+  const fileInput = document.getElementById('prod-form-banner-file');
+  if (fileInput) fileInput.value = '';
+  const previewBox = document.getElementById('modal-prod-banner-preview');
+  if (previewBox) previewBox.style.display = 'none';
+}
+window.clearModalBannerPhoto = clearModalBannerPhoto;
