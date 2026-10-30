@@ -3555,6 +3555,7 @@ function openClassroomPortalDemo() {
 }
 
 function openClassroomDashboard(orderId, email) {
+  if (typeof closeClassroomDetailView === 'function') closeClassroomDetailView();
   closeAllModals();
   const activeId = orderId || localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261028-211630-4012';
   const activeEmail = email || localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
@@ -3704,7 +3705,7 @@ function renderClassroomPortalModules(query, filterTag) {
 
     return `
       <div class="rb-card">
-        <div class="rb-thumb-wrap">
+        <div class="rb-thumb-wrap" onclick="${isDoc ? `openDocumentPackageView('${m.ID_Materi}')` : `openCourseClassroomView('${m.ID_Materi}')`}" style="cursor:pointer;" title="Buka ${isDoc ? 'Dokumen' : 'Kelas'}">
           <img src="${bannerUrl}" alt="${escapeHtml(m.Judul_Modul)}" class="rb-thumb-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-metode3.jpg';">
           <div class="rb-badge-left ${badgeTypeClass}">${tipeBadge}</div>
           <div class="rb-badge-right">
@@ -3714,23 +3715,26 @@ function renderClassroomPortalModules(query, filterTag) {
         </div>
         <div class="rb-card-content">
           <div class="rb-cat-pill ${catPillClass}">${kategori}</div>
-          <h3 class="rb-card-title" title="${escapeHtml(m.Judul_Modul)}">${m.Judul_Modul}</h3>
+          <h3 class="rb-card-title" onclick="${isDoc ? `openDocumentPackageView('${m.ID_Materi}')` : `openCourseClassroomView('${m.ID_Materi}')`}" style="cursor:pointer;" title="${escapeHtml(m.Judul_Modul)}">${m.Judul_Modul}</h3>
           <p class="rb-card-desc">${m.Deskripsi || 'Akses modul dan materi lengkap seumur hidup.'}</p>
           <div class="rb-card-meta">
             ${metaText}
           </div>
           <div class="rb-card-action">
             ${isDoc ? `
-              <button type="button" class="rb-btn-action rb-btn-doc" onclick="openDocumentPackageView('${m.ID_Materi}')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">
-                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              <button type="button" class="rb-btn-action rb-btn-doc" onclick="openDocumentPackageView('${m.ID_Materi}')" title="Buka Dashboard Paket Dokumen">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="rb-btn-svg" style="display:inline-block; vertical-align:middle; margin-right:4px;">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                  <line x1="12" y1="11" x2="12" y2="17"></line>
+                  <polyline points="9 14 12 17 15 14"></polyline>
                 </svg>
                 <span>Akses Produk</span>
               </button>
             ` : `
-              <button type="button" class="rb-btn-action" onclick="openCourseClassroomView('${m.ID_Materi}')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle;">
-                  <path d="M8 5v14l11-7z"/>
+              <button type="button" class="rb-btn-action" onclick="openCourseClassroomView('${m.ID_Materi}')" title="Buka Dashboard Video Pembelajaran">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="rb-btn-svg" style="display:inline-block; vertical-align:middle; margin-right:4px;">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
                 </svg>
                 <span>Buka Ruang Belajar</span>
               </button>
