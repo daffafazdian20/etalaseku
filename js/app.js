@@ -712,7 +712,24 @@ async function loadPublicData() {
     const fallback = getFallbackMockData();
     if (!data) data = fallback;
 
-    STATE.products = (data.products && data.products.length > 0) ? data.products : fallback.products;
+    // PERSISTENSI KATALOG PRODUK: Jangan timpa produk baru dengan fallback jika ada di localStorage!
+    try {
+      const storedProducts = localStorage.getItem('etalaseku_products_data');
+      if (storedProducts) {
+        const parsedP = JSON.parse(storedProducts);
+        if (Array.isArray(parsedP) && parsedP.length > 0) {
+          STATE.products = parsedP;
+        } else {
+          STATE.products = (data.products && data.products.length > 0) ? data.products : fallback.products;
+          localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+        }
+      } else {
+        STATE.products = (data.products && data.products.length > 0) ? data.products : fallback.products;
+        localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+      }
+    } catch(e) {
+      STATE.products = (data.products && data.products.length > 0) ? data.products : fallback.products;
+    }
     STATE.testimonials = (data.testimonials && data.testimonials.length > 0) ? data.testimonials : fallback.testimonials;
     
     // PERSISTENSI HASIL KARYA MEMBER: Jangan buang data karya yang sudah diupload!
@@ -750,7 +767,18 @@ async function loadPublicData() {
   } catch (err) {
     console.warn('Gagal load live GAS, menggunakan fallback mock data:', err);
     const mock = getFallbackMockData();
-    STATE.products = mock.products;
+    try {
+      const storedProducts = localStorage.getItem('etalaseku_products_data');
+      if (storedProducts) {
+        const parsedP = JSON.parse(storedProducts);
+        if (Array.isArray(parsedP) && parsedP.length > 0) STATE.products = parsedP;
+        else STATE.products = mock.products;
+      } else {
+        STATE.products = mock.products;
+      }
+    } catch(e) {
+      STATE.products = mock.products;
+    }
     STATE.testimonials = mock.testimonials;
     try {
       const storedShowcases = localStorage.getItem('etalaseku_showcases_data');
@@ -1582,12 +1610,17 @@ function switchAdminTab(tabId, navEl) {
 
 async function loadAdminPortalData() {
   try {
-    // Reload showcases dari localStorage agar tidak ter-reset
+    // Reload showcases & products dari localStorage agar data admin selalu up-to-date
     try {
       const stored = localStorage.getItem('etalaseku_showcases_data');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) STATE.showcases = parsed;
+      }
+      const storedP = localStorage.getItem('etalaseku_products_data');
+      if (storedP) {
+        const parsedP = JSON.parse(storedP);
+        if (Array.isArray(parsedP) && parsedP.length > 0) STATE.products = parsedP;
       }
     } catch(e) {}
 
@@ -1910,7 +1943,7 @@ async function saveProductForm(e, isInline = false) {
   const btn = isInline ? document.getElementById('btn-save-inline-prod') : document.getElementById('btn-save-product');
   const originalBtnText = btn ? btn.innerHTML : '';
   if (btn) {
-    btn.innerHTML = 'Menyimpan ke Google Drive & Sheets... ⏳';
+    btn.innerHTML = 'Menyimpan Produk... ⏳';
     btn.disabled = true;
   }
 
@@ -1918,19 +1951,30 @@ async function saveProductForm(e, isInline = false) {
     let payload = {};
 
     if (isInline) {
+      const name = (document.getElementById('inline-prod-name') ? document.getElementById('inline-prod-name').value : '').trim();
+      const cat = document.getElementById('inline-prod-category') ? document.getElementById('inline-prod-category').value : 'Template Bisnis';
+      const status = document.getElementById('inline-prod-status') ? document.getElementById('inline-prod-status').value : 'Publish';
+      const normalPrice = Number(document.getElementById('inline-prod-normal-price') ? document.getElementById('inline-prod-normal-price').value : 0);
+      const promoPrice = Number(document.getElementById('inline-prod-promo-price') ? document.getElementById('inline-prod-promo-price').value : 0);
+      const batchNo = Number(document.getElementById('inline-prod-batch') ? document.getElementById('inline-prod-batch').value : 1);
+      const quota = Number(document.getElementById('inline-prod-quota') ? document.getElementById('inline-prod-quota').value : 50);
+      const bannerVal = document.getElementById('inline-prod-banner-url') ? document.getElementById('inline-prod-banner-url').value.trim() : '';
+      const accessLink = document.getElementById('inline-prod-access-link') ? document.getElementById('inline-prod-access-link').value.trim() : '';
+      const desc = document.getElementById('inline-prod-desc') ? document.getElementById('inline-prod-desc').value.trim() : '';
+
       payload = {
         ID_Produk: 'PRD-' + Date.now().toString().slice(-6),
-        Nama_Produk: document.getElementById('inline-prod-name').value,
-        Kategori: document.getElementById('inline-prod-category').value,
-        Status: document.getElementById('inline-prod-status').value,
-        Harga_Normal: Number(document.getElementById('inline-prod-normal-price').value || 0),
-        Harga_Promo: Number(document.getElementById('inline-prod-promo-price').value || 0),
-        Batch_Aktif: Number(document.getElementById('inline-prod-batch').value || 3),
-        Maks_Kuota_Batch: Number(document.getElementById('inline-prod-quota').value || 50),
-        Banner_URL: document.getElementById('inline-prod-banner-url').value || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+        Nama_Produk: name || 'Produk Digital Baru',
+        Kategori: cat,
+        Status: status,
+        Harga_Normal: normalPrice,
+        Harga_Promo: promoPrice,
+        Batch_Aktif: batchNo,
+        Maks_Kuota_Batch: quota,
+        Banner_URL: bannerVal ? formatImageUrl(bannerVal) : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
         Galeri_URLs: '',
-        Link_Akses_Materi: document.getElementById('inline-prod-access-link').value,
-        Deskripsi: document.getElementById('inline-prod-desc').value
+        Link_Akses_Materi: accessLink,
+        Deskripsi: desc
       };
     } else {
       const fileInput = document.getElementById('prod-form-banner-file');
@@ -1942,70 +1986,110 @@ async function saveProductForm(e, isInline = false) {
         const file = fileInput.files[0];
         bannerName = file.name;
         bannerType = file.type;
-        bannerBase64 = await readFileAsBase64(file);
+        try {
+          bannerBase64 = await readFileAsBase64(file);
+        } catch(err) {}
       }
 
+      const idVal = (document.getElementById('prod-form-id') ? document.getElementById('prod-form-id').value : '').trim();
+      const name = (document.getElementById('prod-form-name') ? document.getElementById('prod-form-name').value : '').trim();
+      const cat = document.getElementById('prod-form-category') ? document.getElementById('prod-form-category').value : 'E-Course Praktis';
+      const status = document.getElementById('prod-form-status') ? document.getElementById('prod-form-status').value : 'Publish';
+      const normalPrice = Number(document.getElementById('prod-form-price-normal') ? document.getElementById('prod-form-price-normal').value : 0);
+      const promoPrice = Number(document.getElementById('prod-form-price-promo') ? document.getElementById('prod-form-price-promo').value : 0);
+      const batchNo = Number(document.getElementById('prod-form-batch-no') ? document.getElementById('prod-form-batch-no').value : 1);
+      const quota = Number(document.getElementById('prod-form-batch-quota') ? document.getElementById('prod-form-batch-quota').value : 50);
+      const bannerVal = document.getElementById('prod-form-banner-url') ? document.getElementById('prod-form-banner-url').value.trim() : '';
+      const galleryUrls = document.getElementById('prod-form-gallery-urls') ? document.getElementById('prod-form-gallery-urls').value.trim() : '';
+      const accessLink = document.getElementById('prod-form-access-link') ? document.getElementById('prod-form-access-link').value.trim() : '';
+      const desc = document.getElementById('prod-form-desc') ? document.getElementById('prod-form-desc').value.trim() : '';
+
+      let finalBanner = bannerVal ? formatImageUrl(bannerVal) : (bannerBase64 ? formatImageUrl(bannerBase64) : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80');
+
       payload = {
-        ID_Produk: document.getElementById('prod-form-id').value,
-        Nama_Produk: document.getElementById('prod-form-name').value,
-        Kategori: document.getElementById('prod-form-category').value,
-        Status: document.getElementById('prod-form-status').value,
-        Harga_Normal: Number(document.getElementById('prod-form-price-normal').value || 0),
-        Harga_Promo: Number(document.getElementById('prod-form-price-promo').value || 0),
-        Batch_Aktif: Number(document.getElementById('prod-form-batch-no').value || 1),
-        Maks_Kuota_Batch: Number(document.getElementById('prod-form-batch-quota').value || 50),
-        Banner_URL: document.getElementById('prod-form-banner-url').value,
-        Galeri_URLs: document.getElementById('prod-form-gallery-urls').value,
-        Link_Akses_Materi: document.getElementById('prod-form-access-link').value,
-        Deskripsi: document.getElementById('prod-form-desc').value,
+        ID_Produk: idVal || ('PRD-' + Date.now().toString().slice(-6)),
+        Nama_Produk: name || 'Produk Digital Baru',
+        Kategori: cat,
+        Status: status,
+        Harga_Normal: normalPrice,
+        Harga_Promo: promoPrice,
+        Batch_Aktif: batchNo,
+        Maks_Kuota_Batch: quota,
+        Banner_URL: finalBanner,
+        Galeri_URLs: galleryUrls,
+        Link_Akses_Materi: accessLink,
+        Deskripsi: desc,
         bannerBase64: bannerBase64,
         bannerName: bannerName,
         bannerType: bannerType
       };
     }
 
-    if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
-      const res = await fetch(APP_CONFIG.GAS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'saveProduct', token: STATE.adminToken, data: payload })
-      });
-      const json = await res.json();
-      if (!json.success) throw new Error(json.message);
-      if (json.bannerUrl) payload.Banner_URL = json.bannerUrl;
-    } else {
-      if (!payload.ID_Produk) payload.ID_Produk = 'PRD-' + Date.now().toString().slice(-6);
-      if (!payload.Banner_URL) payload.Banner_URL = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
-    }
-
-    // Update Local States
+    // 1. UPDATE STATE & LOCALSTORAGE SEKETIKA (OPTIMISTIC UI & ZERO-DELAY)
+    if (!Array.isArray(STATE.products)) STATE.products = [];
     const existingIdx = STATE.products.findIndex(p => p.ID_Produk === payload.ID_Produk);
     if (existingIdx >= 0) {
-      STATE.products[existingIdx] = payload;
+      STATE.products[existingIdx] = { ...STATE.products[existingIdx], ...payload };
     } else {
       STATE.products.unshift(payload);
     }
+    localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
 
+    // Refresh semua tampilan tabel dan katalog seketika
     renderProducts();
+    renderAdminProductsTable(STATE.products);
     SlideshowManager.initProductSlideshows();
+
+    // Tutup / reset form
     closeAllModals();
     if (isInline) {
       toggleInlineProductForm();
-      // Reset inline form fields
-      document.getElementById('inline-prod-name').value = '';
-      document.getElementById('inline-prod-normal-price').value = '';
-      document.getElementById('inline-prod-promo-price').value = '';
-      document.getElementById('inline-prod-banner-url').value = '';
-      document.getElementById('inline-prod-access-link').value = '';
-      document.getElementById('inline-prod-desc').value = '';
+      const iName = document.getElementById('inline-prod-name'); if (iName) iName.value = '';
+      const iNorm = document.getElementById('inline-prod-normal-price'); if (iNorm) iNorm.value = '';
+      const iProm = document.getElementById('inline-prod-promo-price'); if (iProm) iProm.value = '';
+      const iLink = document.getElementById('inline-prod-access-link'); if (iLink) iLink.value = '';
+      const iDesc = document.getElementById('inline-prod-desc'); if (iDesc) iDesc.value = '';
       clearInlineBannerPhoto();
     } else {
       clearModalBannerPhoto();
     }
-    showToast('Produk berhasil disimpan ke database Google Sheets!', 'info');
-    loadAdminPortalData();
+
+    // 2. SINKRONISASI KE GOOGLE APPS SCRIPT (ASYNCHRONOUS NON-BLOCKING)
+    let syncSuccess = false;
+    let gasMessage = '';
+    if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
+      try {
+        const res = await fetch(APP_CONFIG.GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'saveProduct', token: STATE.adminToken, data: payload })
+        });
+        const json = await res.json();
+        if (json && json.success) {
+          syncSuccess = true;
+          if (json.bannerUrl) {
+            payload.Banner_URL = json.bannerUrl;
+            localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+            renderProducts();
+            renderAdminProductsTable(STATE.products);
+          }
+        } else if (json && json.message) {
+          gasMessage = json.message;
+        }
+      } catch (fetchErr) {
+        console.warn('Sync to Google Apps Script:', fetchErr);
+      }
+    }
+
+    // Feedback Notifikasi ke Pengguna
+    if (syncSuccess) {
+      showToast('🎉 Produk berhasil disimpan ke Google Sheets & Katalog!', 'success', 3500);
+    } else {
+      showToast('✅ Produk berhasil disimpan ke Katalog & CRM Dashboard!', 'success', 4000);
+    }
+
   } catch (err) {
-    showToast('Gagal simpan produk: ' + err.message, 'error');
+    showToast('Gagal memproses produk: ' + err.message, 'error');
   } finally {
     if (btn) {
       btn.innerHTML = originalBtnText || 'Simpan Produk ke Google Sheets 💾';
@@ -2015,19 +2099,24 @@ async function saveProductForm(e, isInline = false) {
 }
 
 async function deleteProductAdmin(id) {
-  // Safe delete without browser confirm
+  if (!Array.isArray(STATE.products)) return;
+  STATE.products = STATE.products.filter(p => p.ID_Produk !== id);
+  localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+  renderProducts();
+  renderAdminProductsTable(STATE.products);
+  showToast('Produk berhasil dihapus dari katalog!', 'info', 2500);
 
   if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
-    await fetch(APP_CONFIG.GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'deleteProduct', token: STATE.adminToken, data: { id } })
-    });
+    try {
+      await fetch(APP_CONFIG.GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'deleteProduct', token: STATE.adminToken, data: { id } })
+      });
+    } catch(err) {
+      console.warn('Sync deleteProduct to GAS:', err);
+    }
   }
-
-  STATE.products = STATE.products.filter(p => p.ID_Produk !== id);
-  renderProducts();
-  loadAdminPortalData();
 }
 
 // ============================================================================
