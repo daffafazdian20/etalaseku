@@ -3720,9 +3720,21 @@ function renderClassroomPortalModules(query, filterTag) {
             ${metaText}
           </div>
           <div class="rb-card-action">
-            <a href="${url}" target="_blank" rel="noopener noreferrer" class="rb-btn-action ${isDoc ? 'rb-btn-doc' : ''}">
-              ${btnText}
-            </a>
+            ${isDoc ? `
+              <button type="button" class="rb-btn-action rb-btn-doc" onclick="openDocumentPackageView('${m.ID_Materi}')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>Akses Produk</span>
+              </button>
+            ` : `
+              <button type="button" class="rb-btn-action" onclick="openCourseClassroomView('${m.ID_Materi}')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle;">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                <span>Buka Ruang Belajar</span>
+              </button>
+            `}
           </div>
         </div>
       </div>
@@ -4816,3 +4828,667 @@ function clearModalBannerPhoto() {
   if (previewBox) previewBox.style.display = 'none';
 }
 window.clearModalBannerPhoto = clearModalBannerPhoto;
+
+
+// ==========================================================================
+// COURSE CLASSROOM & DOCUMENT FILES PORTAL LOGIC (Foto 2 & Foto 3)
+// ==========================================================================
+
+const COURSE_EPISODES_MAP = {
+  'MOD-01': {
+    title: 'METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL [CLAUDE]',
+    shortTitle: 'METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL...',
+    poster: './assets/modules/banner-video-metode3.jpg',
+    videoEmbedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1',
+    materialsCount: 27,
+    episodes: [
+      {
+        title: 'Step 1 - Setup Github + Repo',
+        duration: '07:40',
+        summary: 'Integrasi Apps Script sebagai REST API dan Github Frontend dan Vercel untuk Deploy persiapkan Domain Sendiri.',
+        posterTag: 'Step 1 - Setup Github ( Integrasi Apps Script, GITHUB, Vercel )'
+      },
+      {
+        title: 'Step 2 - Setup Vercel',
+        duration: '02:22',
+        summary: 'Menghubungkan repository GitHub ke platform hosting Vercel dengan continuous automated deployment dan custom domain gratis.',
+        posterTag: 'Step 2 - Setup Vercel & Automated CI/CD'
+      },
+      {
+        title: 'Step 3 - Setup Git Bash Dekstop',
+        duration: '03:02',
+        summary: 'Instalasi dan konfigurasi Git command line di laptop/PC agar push & pull kode berjalan lancar tanpa kendala kredensial.',
+        posterTag: 'Step 3 - Konfigurasi Git Bash di Laptop'
+      },
+      {
+        title: 'Step 4 - Setup Cursor Dekstop',
+        duration: '02:03',
+        summary: 'Mengaktifkan IDE modern Cursor AI untuk coding berbantuan AI prompt pintar dan debugging kode otomatis.',
+        posterTag: 'Step 4 - Setup Cursor AI untuk Pengembangan Cepat'
+      },
+      {
+        title: 'Step 5 - Instalasi App Script by GITHUB',
+        duration: '18:50',
+        summary: 'Menghubungkan script Google Apps Script ke GitHub menggunakan Google Clasp dan token rahasia Script Properties.',
+        posterTag: 'Step 5 - Deploy Kode GAS Langsung dari GitHub'
+      },
+      {
+        title: 'Step 6 - Instalasi App Script by Vercel',
+        duration: '09:00',
+        summary: 'Konfigurasi route rewrites, proxy bypass CORS, dan penyesuaian CSP headers agar aplikasi web stabil diakses publik.',
+        posterTag: 'Step 6 - Menjalankan Fullstack Headless GAS di Vercel'
+      }
+    ],
+    materials: [
+      { name: 'Master Boilerplate Repository GitHub', type: 'GitHub Repo', url: 'https://github.com' },
+      { name: 'Template Spreadsheet Database Master', type: 'Google Sheets', url: 'https://docs.google.com/spreadsheets' },
+      { name: 'Snippet Script doPost & doGet Bypass CORS', type: 'JavaScript Code', url: 'https://drive.google.com' },
+      { name: 'Panduan PDF Step-by-Step Integrasi Vercel', type: 'E-Book PDF', url: 'https://drive.google.com' },
+      { name: 'Konfigurasi vercel.json & environment variables', type: 'Config File', url: 'https://drive.google.com' }
+    ]
+  },
+  'MOD-03': {
+    title: 'Kumpulan Video Cara Revisi & Upgrade AppWeb',
+    shortTitle: 'Kumpulan Video Cara Revisi & Upgrade',
+    poster: './assets/modules/thumb-revisi.jpg',
+    videoEmbedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1',
+    materialsCount: 8,
+    episodes: [
+      {
+        title: 'Modul 01: Cara Revisi Script Tanpa Mengubah ID Spreadsheet',
+        duration: '15:20',
+        summary: 'Metode aman melakukan upgrade fitur web app tanpa merusak database dan tanpa mengganggu pengguna aktif.',
+        posterTag: 'Modul 01 - Revisi Script Aman Tanpa Ganti Spreadsheet'
+      },
+      {
+        title: 'Modul 02: Manajemen Versi New Deployment di Google Apps Script',
+        duration: '18:40',
+        summary: 'Langkah mengelola nomor versi deployment GAS agar perubahan frontend seketika aktif tanpa caching lama.',
+        posterTag: 'Modul 02 - Cara Buat New Deployment Baru yang Benar'
+      }
+    ],
+    materials: [
+      { name: 'Checklist Pra-Deployment Update', type: 'Dokumen PDF', url: 'https://drive.google.com' },
+      { name: 'Script Backup Spreadsheet Otomatis', type: 'Google Script', url: 'https://drive.google.com' }
+    ]
+  },
+  'MOD-04': {
+    title: 'METODE 1 | BASIC - Belajar GAS sangat Mudah dari Dasar',
+    shortTitle: 'METODE 1 | BASIC - Belajar GAS sangat Mudah...',
+    poster: './assets/modules/thumb-basic.jpg',
+    videoEmbedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1',
+    materialsCount: 7,
+    episodes: [
+      {
+        title: 'Dasar 1: Pengenalan Google Apps Script & Editor Web',
+        duration: '10:15',
+        summary: 'Mengenal struktur project GAS, console log, dan eksekusi fungsi pertama.',
+        posterTag: 'Dasar 1 - Pengenalan Lingkungan Google Apps Script'
+      },
+      {
+        title: 'Dasar 2: Membaca & Menulis Data Spreadsheet dengan Range API',
+        duration: '12:30',
+        summary: 'Mempelajari SpreadsheetApp, getActiveSpreadsheet, getSheetByName, dan getValue/setValue.',
+        posterTag: 'Dasar 2 - CRUD Spreadsheet dengan Apps Script'
+      },
+      {
+        title: 'Dasar 3: Membuat Web App dengan HtmlService & Templated HTML',
+        duration: '14:20',
+        summary: 'Membangun antarmuka HTML langsung dari Google Apps Script.',
+        posterTag: 'Dasar 3 - Web App Sederhana dengan HtmlService'
+      },
+      {
+        title: 'Dasar 4: Mengirim Email & Notifikasi Otomatis dengan MailApp',
+        duration: '08:45',
+        summary: 'Kirim notifikasi email otomatis saat ada form submit.',
+        posterTag: 'Dasar 4 - Kirim Email Otomatis dengan Apps Script'
+      }
+    ],
+    materials: [
+      { name: 'Latihan Kode Dasar GAS (Zip)', type: 'Source Code', url: 'https://drive.google.com' },
+      { name: 'Cheatsheet Sintaks Penting GAS', type: 'PDF Ringkas', url: 'https://drive.google.com' }
+    ]
+  },
+  'MOD-05': {
+    title: 'Masterclass: Social Influence in Workplace & Leadership',
+    shortTitle: 'Masterclass: Social Influence in Workplace',
+    poster: './social-influence-banner.jpg',
+    videoEmbedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1',
+    materialsCount: 18,
+    episodes: [
+      {
+        title: 'Pilar 1: Kredibilitas & Kepercayaan Profesional',
+        duration: '16:00',
+        summary: 'Membangun otoritas keahlian dan rekam jejak tanpa harus memiliki jabatan formal.',
+        posterTag: 'Pilar 1 - Kredibilitas & Pengaruh Organik'
+      },
+      {
+        title: 'Pilar 2: Komunikasi Persuasif & Storytelling Bisnis',
+        duration: '18:15',
+        summary: 'Teknik menyusun argumen yang meyakinkan atasan, klien, dan tim kerja.',
+        posterTag: 'Pilar 2 - Komunikasi yang Menggerakkan Orang Lain'
+      },
+      {
+        title: 'Pilar 3: Membangun Jaringan Aliansi & Koneksi Strategis',
+        duration: '22:30',
+        summary: 'Menjalin kolaborasi lintas divisi dan memperluas lingkar pengaruh positif.',
+        posterTag: 'Pilar 3 - Jaringan Aliansi di Dunia Kerja Modern'
+      }
+    ],
+    materials: [
+      { name: 'E-Book Lengkap Social Influence (PDF)', type: 'Buku Panduan', url: 'https://drive.google.com' },
+      { name: 'Template Rencana Aksi Pengembangan Pengaruh', type: 'Notion/Doc', url: 'https://drive.google.com' }
+    ]
+  },
+  'MOD-07': {
+    title: 'GAS Pro Web App Masterclass 🎓 (Skala Industri)',
+    shortTitle: 'GAS Pro Web App Masterclass 🎓',
+    poster: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+    videoEmbedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1',
+    materialsCount: 32,
+    episodes: [
+      {
+        title: 'Modul 01: Arsitektur GAS Pro Headless & Google Sheets REST API',
+        duration: '28:00',
+        summary: 'Memahami cara kerja decoupled frontend modern dengan Google Apps Script tanpa hosting bulanan.',
+        posterTag: 'Modul 01 - Arsitektur GAS Pro Headless'
+      },
+      {
+        title: 'Modul 02: Setup Endpoint doGet & doPost JSON Bebas Masalah CORS',
+        duration: '42:00',
+        summary: 'Teknik output text/plain;charset=utf-8 untuk bypass preflight OPTIONS CORS secara sempurna.',
+        posterTag: 'Modul 02 - Setup Endpoint Bebas CORS'
+      },
+      {
+        title: 'Modul 03: Desain UI/UX SPA Interaktif, Animasi Kupu-Kupu 3D & Shimmer',
+        duration: '35:00',
+        summary: 'Membangun antarmuka kelas dunia dengan mikro-interaksi, 3D flip card, dan sparkle glow.',
+        posterTag: 'Modul 03 - UI/UX SPA Interaktif Kelas Dunia'
+      }
+    ],
+    materials: [
+      { name: 'Master Starter Project Boilerplate', type: 'GitHub Zip', url: 'https://drive.google.com' },
+      { name: 'Dokumentasi REST API & Skema Spreadsheet', type: 'Google Sheets', url: 'https://drive.google.com' }
+    ]
+  }
+};
+
+const DOCUMENT_FILES_MAP = {
+  'MOD-02': {
+    title: 'Kumpulan PRD (GRATIS)',
+    subtitle: 'Silahkan Download PRD yang dibutuhkan sebagai Referensi',
+    banner: './assets/modules/banner-doc-prd.jpg',
+    totalFiles: 10,
+    totalLinks: 0,
+    files: [
+      {
+        name: 'E-TOKO (Referensi AppWeb E-COMMERCE Mini)',
+        filename: '20261021_150037_PRD-6-TOKO.md',
+        size: '0.01 MB',
+        content: '# PRD: E-TOKO (Aplikasi Web E-COMMERCE Mini)\n\n## 1. Executive Summary\nAplikasi web e-commerce minimalis decoupled berbasis Google Sheets REST API dan frontend modern tanpa hosting bulanan.\n\n## 2. Fitur Utama\n- Katalog produk responsif dengan filter kategori real-time\n- Keranjang belanja instan & integrasi WhatsApp Checkout otomatis\n- Notifikasi kuitansi verifikasi pembayaran ber-HMAC\n\n## 3. Skema Data Database (Sheets)\n- Sheet Produk: ID_Produk, Nama, Kategori, Harga, Stok, Foto_URL\n- Sheet Order: Order_ID, Nama_Pembeli, Total, Status, Bukti_Transfer, Timestamp\n\n## 4. Panduan Deployment\nDeploy frontend ke GitHub Pages atau Vercel dan script backend sebagai Web App Google Apps Script.'
+      },
+      {
+        name: 'PRD Final Landing Page Portofolio Diri',
+        filename: '20261025_232343_PRD Final Landing Page Portofolio Diri.md',
+        size: '0.01 MB',
+        content: '# PRD: Personal Branding & Portfolio Showcase\n\n## 1. Latar Belakang\nWebsite portofolio interaktif untuk memamerkan proyek digital, testimoni klien, dan layanan profesional bagi freelancer & kreator.\n\n## 2. Fitur Kunci\n- Hero section dengan mikro-interaksi 3D dan CTA ganda\n- Galeri studi kasus proyek dengan modal detail showcase\n- Form kontak terintegrasi langsung ke WhatsApp & Email Admin'
+      },
+      {
+        name: 'PRD SURAT DIGITAL',
+        filename: '20261025_232348_PRD SURAT DIGITAL.md',
+        size: '0.05 MB',
+        content: '# PRD: Sistem Manajemen Surat & Dokumen Digital\n\n## 1. Tujuan\nOtomasi pencatatan surat masuk, disposisi persetujuan berjenjang, dan penerbitan nomor surat resmi ber-QR Code HMAC verifikasi publik.\n\n## 2. Modul Sistem\n- Generator nomor surat berurutan anti-duplikat\n- Digital signature approval dengan verifikasi PIN pejabat\n- Export PDF instan ke Google Drive terpusat'
+      },
+      {
+        name: 'PRD_Keuangan_Digital',
+        filename: '20261025_232353_PRD_Keuangan_Digital.md',
+        size: '0.02 MB',
+        content: '# PRD: Aplikasi Pencatatan Keuangan & Arus Kas Digital\n\n## 1. Ringkasan\nDashboard pencatatan debit, kredit, laba-rugi, dan laporan arus kas bulanan real-time tanpa langganan software akuntansi mahal.\n\n## 2. Fitur Utama\n- Multi-kategori pengeluaran dan pemasukan\n- Analitik grafik cashflow interaktif bulanan\n- Rekonsiliasi mutasi rekening bank dan export laporan Excel'
+      },
+      {
+        name: 'PRD_SIM_KELAS KULIAH',
+        filename: '20261025_232358_PRD_SIM_KELAS KULIAH.md',
+        size: '0.02 MB',
+        content: '# PRD: Sistem Informasi Manajemen Kelas Perkuliahan\n\n## 1. Modul Aplikasi\n- Absensi perkuliahan real-time berbasis QR Code & GPS validator\n- Pengumpulan tugas mahasiswa langsung ke folder Google Drive terstruktur\n- Rekapitulasi nilai otomatis berbobot persentase tugas, UTS, dan UAS'
+      },
+      {
+        name: 'PRD Landing Page Produk Digital',
+        filename: '20261025_232401_PRD-Landing-Page-Produk-Digital.md',
+        size: '0.02 MB',
+        content: '# PRD: Landing Page Konversi Tinggi Penjualan Produk Digital\n\n## 1. Komponen Utama\n- Sticky announcement bar promo terbatas dengan countdown timer\n- Kartu katalog produk dengan shimmer glowing CTA\n- Instant checkout modal 1-layar terhubung ke QRIS, Virtual Account, & WhatsApp'
+      },
+      {
+        name: 'PRD Landing Page Sekolah',
+        filename: '20261025_232406_PRD-Landing-Page-Sekolah.md',
+        size: '0.02 MB',
+        content: '# PRD: Portal Web Profil Sekolah & PPDB Online\n\n## 1. Fitur Utama\n- Formulir pendaftaran siswa baru online dengan verifikasi data mandiri\n- Validasi berkas upload rapor & akta kelahiran langsung ke Drive sekolah\n- Pengumuman kelulusan berbasis pencarian nomor induk siswa'
+      },
+      {
+        name: 'PRD UjianKu Pro TES CBT',
+        filename: '20261025_232410_PRD-UjianKu-Pro TES CBT.md',
+        size: '0.01 MB',
+        content: '# PRD: Computer Based Test (CBT) Online Anti-Curang\n\n## 1. Proteksi Ujian\n- Fullscreen lock & deteksi otomatis jika membuka tab peramban lain\n- Pengacakan urutan soal dan opsi jawaban per peserta ujian\n- Auto-submit jawaban seketika saat hitungan mundur ujian berakhir'
+      },
+      {
+        name: 'PRD E-TOKO / eCommerce Mini',
+        filename: '20261026_114501_PRD-6-TOKO.md',
+        size: '0.01 MB',
+        content: '# PRD: E-Commerce Multi-Kategori & WhatsApp Cart\n\n## 1. Alur Transaksi\nPembeli memilih varian produk -> menambahkan ke keranjang -> submit checkout -> ringkasan pesanan & invoice dikirim otomatis via WhatsApp Gateway.'
+      },
+      {
+        name: 'PRD SIMRS Mini (Sistem Informasi Manajemen Klinik)',
+        filename: '20261029_214838_PRD_SIMRS_Mini.md',
+        size: '0.08 MB',
+        content: '# PRD: SIMRS & Klinik Rawat Jalan Mini\n\n## 1. Modul Lengkap\n- Pendaftaran antrean poliklinik online\n- Rekam Medis Elektronik (RME) dokter sesuai standar Kemenkes\n- Resep obat elektronik ke instalasi farmasi & billing kasir terpadu'
+      }
+    ]
+  },
+  'MOD-06': {
+    title: 'Digital Agency Notion OS Workspace & CRM',
+    subtitle: 'Template Notion terlengkap untuk manajemen klien agency, pipeline penjualan, dan invoice otomatis',
+    banner: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80',
+    totalFiles: 5,
+    totalLinks: 2,
+    files: [
+      {
+        name: 'Workspace Notion OS Agency Template',
+        filename: 'Notion_Agency_OS_Master_Template.md',
+        size: '0.02 MB',
+        content: '# Notion OS Master Template\n\nKoleksi database lengkap untuk manajemen proyek, timesheet tim, dan pipeline klien agensi.'
+      },
+      {
+        name: 'Sales CRM & Client Pipeline Tracker',
+        filename: 'Sales_Pipeline_CRM.md',
+        size: '0.01 MB',
+        content: '# Sales CRM Tracker\n\nFormat pipeline penjualan berbasis Kanban untuk mengonversi prospek menjadi klien aktif.'
+      },
+      {
+        name: 'Invoice Generator & Financial Spreadsheet',
+        filename: 'Invoice_Generator_Template.md',
+        size: '0.01 MB',
+        content: '# Invoice Generator\n\nTemplate invoice otomatis dengan formula pajak, diskon, dan nomor seri tagihan.'
+      }
+    ]
+  }
+};
+
+let activeCourseData = null;
+let activeCourseEpisodeIndex = 0;
+let activeDocData = null;
+let activeDocFileIndex = 0;
+
+// Buka Halaman Dashboard Video Kelas (Foto 2)
+function openCourseClassroomView(moduleId) {
+  const course = COURSE_EPISODES_MAP[moduleId] || COURSE_EPISODES_MAP['MOD-01'];
+  activeCourseData = course;
+  activeCourseEpisodeIndex = 0;
+
+  // Toggle view
+  const viewGrid = document.getElementById('rb-view-grid');
+  const viewCourse = document.getElementById('rb-view-course');
+  const viewDoc = document.getElementById('rb-view-document');
+
+  if (viewGrid) viewGrid.style.display = 'none';
+  if (viewDoc) viewDoc.style.display = 'none';
+  if (viewCourse) viewCourse.style.display = 'block';
+
+  // Update Breadcrumbs & Titles
+  const crumbTitle = document.getElementById('course-crumb-title');
+  if (crumbTitle) crumbTitle.textContent = course.shortTitle || course.title;
+
+  const activeCourseName = document.getElementById('course-active-course-name');
+  if (activeCourseName) activeCourseName.textContent = course.title;
+
+  const sidebarName = document.getElementById('course-sidebar-name');
+  if (sidebarName) sidebarName.textContent = course.shortTitle || course.title;
+
+  const sidebarCount = document.getElementById('course-sidebar-count');
+  if (sidebarCount) sidebarCount.textContent = (course.episodes.length) + ' materi';
+
+  const waTarget = document.getElementById('course-wa-target-title');
+  if (waTarget) waTarget.textContent = course.title;
+
+  const matCountBadge = document.getElementById('course-materials-count-badge');
+  if (matCountBadge) matCountBadge.textContent = course.materialsCount || (course.materials ? course.materials.length : 27);
+
+  // Render episode list in sidebar
+  renderCourseEpisodesSidebar(course);
+
+  // Render materials tab
+  renderCourseMaterialsList(course);
+
+  // Select Episode 0 by default
+  selectEpisode(0);
+
+  // Scroll to top of classroom wrapper
+  const wrapper = document.getElementById('classroom-dashboard-portal');
+  if (wrapper) wrapper.scrollTop = 0;
+}
+
+// Buka Halaman Dashboard Dokumen & Berkas Produk (Foto 3)
+function openDocumentPackageView(moduleId) {
+  const docPkg = DOCUMENT_FILES_MAP[moduleId] || DOCUMENT_FILES_MAP['MOD-02'];
+  activeDocData = docPkg;
+
+  // Toggle view
+  const viewGrid = document.getElementById('rb-view-grid');
+  const viewCourse = document.getElementById('rb-view-course');
+  const viewDoc = document.getElementById('rb-view-document');
+
+  if (viewGrid) viewGrid.style.display = 'none';
+  if (viewCourse) viewCourse.style.display = 'none';
+  if (viewDoc) viewDoc.style.display = 'block';
+
+  // Update Breadcrumbs & Titles
+  const crumbTitle = document.getElementById('doc-crumb-title');
+  if (crumbTitle) crumbTitle.textContent = docPkg.title;
+
+  const pageTitle = document.getElementById('doc-page-title');
+  if (pageTitle) pageTitle.textContent = docPkg.title;
+
+  const pageSubtitle = document.getElementById('doc-page-subtitle');
+  if (pageSubtitle) pageSubtitle.textContent = docPkg.subtitle;
+
+  const bannerImg = document.getElementById('doc-active-banner-img');
+  if (bannerImg && docPkg.banner) bannerImg.src = docPkg.banner;
+
+  const bannerText = document.getElementById('doc-banner-items-text');
+  if (bannerText) bannerText.textContent = 'Lihat ' + (docPkg.files ? docPkg.files.length : 10) + ' Berkas';
+
+  const pkgFilesVal = document.getElementById('doc-pkg-files-val');
+  if (pkgFilesVal) pkgFilesVal.textContent = (docPkg.files ? docPkg.files.length : 10) + ' berkas';
+
+  const pkgLinksVal = document.getElementById('doc-pkg-links-val');
+  if (pkgLinksVal) pkgLinksVal.textContent = (docPkg.totalLinks || 0) + ' tautan';
+
+  const filesCountBadge = document.getElementById('doc-files-count-badge');
+  if (filesCountBadge) filesCountBadge.textContent = (docPkg.files ? docPkg.files.length : 10) + ' Item';
+
+  // Render list of files
+  renderDocumentFilesList(docPkg);
+
+  // Scroll to top of classroom wrapper
+  const wrapper = document.getElementById('classroom-dashboard-portal');
+  if (wrapper) wrapper.scrollTop = 0;
+}
+
+// Kembali ke Halaman Ruang BelajarKu Grid (Foto 1)
+function closeClassroomDetailView() {
+  const viewGrid = document.getElementById('rb-view-grid');
+  const viewCourse = document.getElementById('rb-view-course');
+  const viewDoc = document.getElementById('rb-view-document');
+
+  if (viewCourse) viewCourse.style.display = 'none';
+  if (viewDoc) viewDoc.style.display = 'none';
+  if (viewGrid) viewGrid.style.display = 'block';
+
+  // Stop video iframe if playing
+  const embedBox = document.getElementById('rb-video-embed');
+  const posterBox = document.getElementById('rb-video-poster');
+  const iframe = document.getElementById('rb-video-iframe');
+  if (iframe) iframe.src = '';
+  if (embedBox) embedBox.style.display = 'none';
+  if (posterBox) posterBox.style.display = 'flex';
+
+  // Scroll to top
+  const wrapper = document.getElementById('classroom-dashboard-portal');
+  if (wrapper) wrapper.scrollTop = 0;
+}
+
+// Render Sidebar Episode List
+function renderCourseEpisodesSidebar(course) {
+  const container = document.getElementById('course-ep-items-list');
+  if (!container || !course.episodes) return;
+
+  container.innerHTML = course.episodes.map((ep, idx) => {
+    const isActive = idx === activeCourseEpisodeIndex;
+    return `
+      <div class="rb-ep-item ${isActive ? 'active' : ''}" id="rb-ep-item-${idx}" onclick="selectEpisode(${idx})">
+        <div class="rb-ep-num">
+          ${isActive ? '▶' : (idx + 1)}
+        </div>
+        <div class="rb-ep-info">
+          <div class="rb-ep-item-title">${ep.title}</div>
+          <div class="rb-ep-item-meta">${ep.duration} ${isActive ? '• Sedang diputar' : ''}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Select Episode
+function selectEpisode(idx) {
+  if (!activeCourseData || !activeCourseData.episodes) return;
+  if (idx < 0 || idx >= activeCourseData.episodes.length) return;
+
+  activeCourseEpisodeIndex = idx;
+  const ep = activeCourseData.episodes[idx];
+  const total = activeCourseData.episodes.length;
+
+  // Update top badge
+  const topBadge = document.getElementById('course-ep-top-badge');
+  if (topBadge) topBadge.textContent = '🎬 Episode ' + (idx + 1) + ' / ' + total;
+
+  // Update episode card tags
+  const epBadge = document.getElementById('course-active-ep-badge');
+  if (epBadge) epBadge.textContent = 'EPISODE ' + (idx + 1) + '/' + total;
+
+  const epDuration = document.getElementById('course-active-ep-duration');
+  if (epDuration) epDuration.textContent = '• Durasi ' + ep.duration;
+
+  const epTitle = document.getElementById('course-active-ep-title');
+  if (epTitle) epTitle.textContent = ep.title;
+
+  const summaryText = document.getElementById('course-active-summary-text');
+  if (summaryText) summaryText.textContent = ep.summary || activeCourseData.title;
+
+  const videoTag = document.getElementById('rb-video-top-tag');
+  if (videoTag) videoTag.textContent = ep.posterTag || ep.title;
+
+  // Update Progress
+  const progressRatio = document.getElementById('course-progress-ratio');
+  if (progressRatio) progressRatio.textContent = (idx + 1) + ' / ' + total;
+
+  const progressBar = document.getElementById('course-progress-bar');
+  if (progressBar) progressBar.style.width = Math.round(((idx + 1) / total) * 100) + '%';
+
+  // Prev / Next button states
+  const btnPrev = document.getElementById('btn-ep-prev');
+  const btnNext = document.getElementById('btn-ep-next');
+  if (btnPrev) btnPrev.disabled = (idx === 0);
+  if (btnNext) btnNext.disabled = (idx === total - 1);
+
+  // Update active class in sidebar items
+  const totalItems = activeCourseData.episodes.length;
+  for (let i = 0; i < totalItems; i++) {
+    const el = document.getElementById('rb-ep-item-' + i);
+    if (el) {
+      if (i === idx) {
+        el.className = 'rb-ep-item active';
+        const num = el.querySelector('.rb-ep-num');
+        if (num) num.textContent = '▶';
+        const meta = el.querySelector('.rb-ep-item-meta');
+        if (meta) meta.textContent = activeCourseData.episodes[i].duration + ' • Sedang diputar';
+      } else {
+        el.className = 'rb-ep-item';
+        const num = el.querySelector('.rb-ep-num');
+        if (num) num.textContent = (i + 1);
+        const meta = el.querySelector('.rb-ep-item-meta');
+        if (meta) meta.textContent = activeCourseData.episodes[i].duration;
+      }
+    }
+  }
+
+  // Reset video poster
+  const embedBox = document.getElementById('rb-video-embed');
+  const posterBox = document.getElementById('rb-video-poster');
+  const iframe = document.getElementById('rb-video-iframe');
+  if (iframe) iframe.src = '';
+  if (embedBox) embedBox.style.display = 'none';
+  if (posterBox) posterBox.style.display = 'flex';
+}
+
+function navigateEpisode(direction) {
+  selectEpisode(activeCourseEpisodeIndex + direction);
+}
+
+function playCurrentCourseVideo() {
+  const embedBox = document.getElementById('rb-video-embed');
+  const posterBox = document.getElementById('rb-video-poster');
+  const iframe = document.getElementById('rb-video-iframe');
+
+  if (activeCourseData && activeCourseData.videoEmbedUrl && iframe) {
+    iframe.src = activeCourseData.videoEmbedUrl;
+    if (posterBox) posterBox.style.display = 'none';
+    if (embedBox) embedBox.style.display = 'block';
+  } else {
+    showToast('Memutar video materi pembelajaran...', 'success', 2000);
+  }
+}
+
+function switchCourseTab(tabName) {
+  const btnSummary = document.getElementById('tab-btn-summary');
+  const btnMaterials = document.getElementById('tab-btn-materials');
+  const paneSummary = document.getElementById('rb-tab-pane-summary');
+  const paneMaterials = document.getElementById('rb-tab-pane-materials');
+
+  if (tabName === 'materials') {
+    if (btnSummary) btnSummary.classList.remove('active');
+    if (btnMaterials) btnMaterials.classList.add('active');
+    if (paneSummary) paneSummary.style.display = 'none';
+    if (paneMaterials) paneMaterials.style.display = 'block';
+  } else {
+    if (btnMaterials) btnMaterials.classList.remove('active');
+    if (btnSummary) btnSummary.classList.add('active');
+    if (paneMaterials) paneMaterials.style.display = 'none';
+    if (paneSummary) paneSummary.style.display = 'block';
+  }
+}
+
+function renderCourseMaterialsList(course) {
+  const container = document.getElementById('course-active-materials-list');
+  if (!container) return;
+
+  const materials = course.materials || [
+    { name: 'Master Boilerplate Repository GitHub', type: 'GitHub Repo', url: 'https://github.com' },
+    { name: 'Template Spreadsheet Database Master', type: 'Google Sheets', url: 'https://docs.google.com/spreadsheets' },
+    { name: 'Snippet Script doPost & doGet Bypass CORS', type: 'JavaScript Code', url: 'https://drive.google.com' },
+    { name: 'Panduan PDF Step-by-Step Integrasi Vercel', type: 'E-Book PDF', url: 'https://drive.google.com' }
+  ];
+
+  container.innerHTML = materials.map(mat => `
+    <div class="rb-material-row">
+      <div class="rb-mat-left">
+        <div style="font-size:20px;">📦</div>
+        <div>
+          <div class="rb-mat-name">${mat.name}</div>
+          <div class="rb-mat-type">${mat.type} • Siap diunduh</div>
+        </div>
+      </div>
+      <a href="${mat.url}" target="_blank" rel="noopener noreferrer" class="rb-mat-btn">
+        Akses Berkas ↗
+      </a>
+    </div>
+  `).join('');
+}
+
+// Render Document Files List (Foto 3)
+function renderDocumentFilesList(docPkg) {
+  const container = document.getElementById('doc-items-list');
+  if (!container || !docPkg.files) return;
+
+  container.innerHTML = docPkg.files.map((file, idx) => `
+    <div class="rb-doc-row">
+      <div class="rb-doc-row-left">
+        <div class="rb-doc-file-icon">MD</div>
+        <div class="rb-doc-file-meta">
+          <div class="rb-doc-file-name">${file.name}</div>
+          <p class="rb-doc-file-sub">${file.filename} • ${file.size} • bisa disalin langsung</p>
+        </div>
+      </div>
+      <div class="rb-doc-row-right">
+        <button class="btn-doc-view" onclick="openDocReaderModal(${idx})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Lihat &amp; Salin</span>
+        </button>
+        <button class="btn-doc-dl" title="Buka / Download Dokumen" onclick="downloadDocFile(${idx})">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function scrollToDocList() {
+  const target = document.getElementById('rb-doc-files-container');
+  if (target) target.scrollIntoView({ behavior: 'smooth' });
+}
+
+function openDocReaderModal(idx) {
+  if (!activeDocData || !activeDocData.files || !activeDocData.files[idx]) return;
+  activeDocFileIndex = idx;
+  const file = activeDocData.files[idx];
+
+  const titleEl = document.getElementById('modal-doc-title');
+  if (titleEl) titleEl.textContent = file.name;
+
+  const metaEl = document.getElementById('modal-doc-meta');
+  if (metaEl) metaEl.textContent = file.filename + ' • ' + file.size + ' • Siap disalin';
+
+  const bodyEl = document.getElementById('modal-doc-body');
+  if (bodyEl) bodyEl.textContent = file.content || ('# ' + file.name + '\n\nDokumen referensi resmi siap digunakan.');
+
+  const modal = document.getElementById('modal-doc-reader');
+  if (modal) modal.classList.add('active');
+}
+
+function copyActiveDocContent() {
+  const bodyEl = document.getElementById('modal-doc-body');
+  if (!bodyEl) return;
+  const text = bodyEl.textContent;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('📋 Seluruh teks dokumen PRD berhasil disalin ke clipboard!', 'success', 3000);
+    }).catch(() => {
+      fallbackCopyText(text);
+    });
+  } else {
+    fallbackCopyText(text);
+  }
+}
+
+function fallbackCopyText(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    showToast('📋 Seluruh teks dokumen PRD berhasil disalin ke clipboard!', 'success', 3000);
+  } catch (err) {
+    showToast('Gagal menyalin otomatis, silakan salin manual.', 'error', 3000);
+  }
+  document.body.removeChild(textArea);
+}
+
+function downloadDocFile(idx) {
+  if (!activeDocData || !activeDocData.files || !activeDocData.files[idx]) return;
+  const file = activeDocData.files[idx];
+  const blob = new Blob([file.content || ''], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = file.filename || (file.name + '.md');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('📥 Mengunduh ' + file.filename, 'success', 2500);
+}
+
+function openWhatsAppDiscussionGroup() {
+  const courseTitle = activeCourseData ? activeCourseData.title : 'Kelas Ruang BelajarKu';
+  const url = 'https://wa.me/6287894602627?text=' + encodeURIComponent('Halo Admin EtalaseKu, saya siswa terverifikasi ingin bergabung ke Grup Diskusi untuk kelas: ' + courseTitle);
+  window.open(url, '_blank');
+}

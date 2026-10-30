@@ -3788,3 +3788,1040 @@ input:checked + .switch-slider:before {
     box-sizing: border-box !important;
   }
 }
+
+
+/* ==========================================================================
+   DETAIL DASHBOARDS: VIDEO CLASSROOM & DOCUMENT FILES (Foto 2 & Foto 3)
+   ========================================================================== */
+
+/* Topbar Breadcrumb & Actions */
+.rb-detail-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.rb-detail-crumbs-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.rb-detail-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.rb-detail-breadcrumbs a {
+  color: #64748B;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.rb-detail-breadcrumbs a:hover {
+  color: #2563EB;
+}
+
+.rb-detail-breadcrumbs .crumb-sep {
+  color: #94A3B8;
+  font-size: 11px;
+}
+
+.rb-detail-breadcrumbs .crumb-current {
+  color: #0F172A;
+  font-weight: 800;
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.rb-detail-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rb-badge-pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rb-badge-pill.green {
+  background: #DCFCE7;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.rb-badge-pill.slate {
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+}
+
+.rb-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-detail-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #334155;
+  border: 1.5px solid #CBD5E1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-detail-action:hover {
+  background: #F8FAFC;
+  border-color: #0F172A;
+  color: #0F172A;
+}
+
+.btn-detail-action.btn-detail-back {
+  background: #FFFFFF;
+  color: #2563EB;
+  border-color: #BFDBFE;
+}
+
+.btn-detail-action.btn-detail-back:hover {
+  background: #EFF6FF;
+  border-color: #2563EB;
+}
+
+/* --------------------------------------------------------------------------
+   FOTO 2: VIDEO CLASSROOM DASHBOARD
+   -------------------------------------------------------------------------- */
+.rb-course-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.rb-course-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* Video Player Container */
+.rb-video-container {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15);
+}
+
+.rb-video-poster {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rb-video-poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.rb-video-poster:hover .rb-video-poster-img {
+  transform: scale(1.02);
+}
+
+.rb-youtube-play-btn {
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #FF0000;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(255, 0, 0, 0.45);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 3;
+}
+
+.rb-video-poster:hover .rb-youtube-play-btn {
+  transform: scale(1.15);
+  background: #CC0000;
+}
+
+.rb-video-top-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 2;
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Episode Header Card */
+.rb-ep-header-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.rb-ep-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.rb-ep-pill-tag {
+  background: #EFF6FF;
+  color: #2563EB;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.rb-ep-duration {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 600;
+}
+
+.rb-ep-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 4px;
+  line-height: 1.3;
+}
+
+.rb-ep-subtitle {
+  font-size: 13px;
+  color: #64748B;
+  margin: 0;
+  font-weight: 500;
+}
+
+.rb-ep-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rb-nav-ep-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #475569;
+  border: 1.5px solid #CBD5E1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rb-nav-ep-btn:hover {
+  border-color: #0F172A;
+  color: #0F172A;
+  background: #F8FAFC;
+}
+
+.rb-nav-ep-btn.primary {
+  background: #2563EB;
+  color: #FFFFFF;
+  border-color: #2563EB;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.rb-nav-ep-btn.primary:hover {
+  background: #1D4ED8;
+  border-color: #1D4ED8;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+.rb-nav-ep-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Tabs Card */
+.rb-tabs-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.rb-tabs-header {
+  display: flex;
+  border-bottom: 1.5px solid #E2E8F0;
+  background: #F8FAFC;
+  padding: 6px 16px 0;
+  gap: 12px;
+}
+
+.rb-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #64748B;
+  background: transparent;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rb-tab-btn:hover {
+  color: #2563EB;
+}
+
+.rb-tab-btn.active {
+  color: #2563EB;
+  border-bottom-color: #2563EB;
+  background: #FFFFFF;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.rb-tab-pane {
+  padding: 22px 24px;
+}
+
+.rb-summary-text {
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.rb-materials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rb-material-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.rb-material-row:hover {
+  border-color: #2563EB;
+  background: #FFFFFF;
+}
+
+.rb-mat-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.rb-mat-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0F172A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rb-mat-type {
+  font-size: 11.5px;
+  color: #64748B;
+}
+
+.rb-mat-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  background: #EFF6FF;
+  color: #2563EB;
+  text-decoration: none;
+  border: 1px solid #BFDBFE;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.rb-mat-btn:hover {
+  background: #2563EB;
+  color: #FFFFFF;
+}
+
+/* WhatsApp Group Card */
+.rb-wa-group-card {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  border-radius: 18px;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.rb-wa-group-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rb-wa-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #10B981;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.rb-wa-group-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #065F46;
+  margin: 0 0 3px;
+}
+
+.rb-wa-group-desc {
+  font-size: 12.5px;
+  color: #047857;
+  margin: 0;
+}
+
+.rb-wa-group-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 12px;
+  background: #10B981;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+}
+
+.rb-wa-group-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+  color: #FFFFFF;
+}
+
+/* Course Sidebar */
+.rb-course-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rb-sidebar-ep-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.rb-sidebar-ep-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.rb-sidebar-ep-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 2px;
+}
+
+.rb-sidebar-ep-course {
+  font-size: 11px;
+  color: #64748B;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rb-sidebar-ep-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748B;
+}
+
+.rb-progress-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+
+.rb-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.rb-progress-bar-track {
+  width: 100%;
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.rb-progress-bar-fill {
+  height: 100%;
+  background: #2563EB;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.rb-ep-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.rb-ep-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rb-ep-item:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+.rb-ep-item.active {
+  background: #EFF6FF;
+  border-color: #2563EB;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+}
+
+.rb-ep-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #F1F5F9;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.rb-ep-item.active .rb-ep-num {
+  background: #2563EB;
+  color: #FFFFFF;
+}
+
+.rb-ep-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rb-ep-item-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rb-ep-item.active .rb-ep-item-title {
+  color: #2563EB;
+}
+
+.rb-ep-item-meta {
+  font-size: 11px;
+  color: #64748B;
+}
+
+.rb-ep-item.active .rb-ep-item-meta {
+  color: #1D4ED8;
+  font-weight: 600;
+}
+
+/* Helpdesk Card */
+.rb-helpdesk-card {
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.rb-helpdesk-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #DBEAFE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.rb-helpdesk-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1E3A8A;
+  margin: 0 0 6px;
+}
+
+.rb-helpdesk-desc {
+  font-size: 12px;
+  color: #3B82F6;
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+.rb-helpdesk-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #2563EB;
+  text-decoration: none;
+  transition: gap 0.2s;
+}
+
+.rb-helpdesk-link:hover {
+  gap: 10px;
+  color: #1D4ED8;
+}
+
+/* --------------------------------------------------------------------------
+   FOTO 3: DOCUMENT & FILES PACKAGE DASHBOARD
+   -------------------------------------------------------------------------- */
+.rb-doc-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.rb-doc-top-row {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.rb-doc-banner-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  background: #0F172A;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rb-doc-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rb-doc-banner-overlay-btn {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.rb-doc-banner-overlay-btn:hover {
+  background: #2563EB;
+  border-color: #2563EB;
+  transform: scale(1.05);
+}
+
+.rb-doc-package-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.rb-doc-package-head {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #94A3B8;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.rb-doc-package-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rb-pkg-lbl {
+  font-size: 11.5px;
+  color: #64748B;
+}
+
+.rb-pkg-val {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.rb-doc-info-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.rb-doc-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.rb-doc-subtitle {
+  font-size: 14px;
+  color: #64748B;
+  margin: 0;
+}
+
+/* Document Files List Card */
+.rb-doc-files-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+}
+
+.rb-doc-files-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px solid #F1F5F9;
+}
+
+.rb-doc-files-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rb-doc-files-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.rb-doc-count-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #2563EB;
+  background: #EFF6FF;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid #BFDBFE;
+}
+
+.rb-doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rb-doc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+}
+
+.rb-doc-row:hover {
+  background: #FFFFFF;
+  border-color: #2563EB;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+}
+
+.rb-doc-row-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1;
+}
+
+.rb-doc-file-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #EFF6FF;
+  color: #2563EB;
+  border: 1px solid #BFDBFE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.rb-doc-file-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.rb-doc-file-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 3px;
+  line-height: 1.35;
+}
+
+.rb-doc-file-sub {
+  font-size: 11.5px;
+  color: #64748B;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rb-doc-row-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-doc-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: #2563EB;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+  white-space: nowrap;
+}
+
+.btn-doc-view:hover {
+  background: #1D4ED8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+}
+
+.btn-doc-dl {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-doc-dl:hover {
+  border-color: #0F172A;
+  color: #0F172A;
+  background: #F1F5F9;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS (ALL SMARTPHONES 320px - 768px)
+   ========================================================================== */
+@media (max-width: 860px) {
+  .rb-course-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .rb-doc-top-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .rb-detail-topbar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+  .rb-detail-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+  .btn-detail-action {
+    flex: 1 !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .rb-ep-header-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .rb-ep-header-right {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+  .rb-nav-ep-btn {
+    flex: 1 !important;
+    justify-content: center !important;
+    height: 42px !important;
+  }
+  .rb-doc-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .rb-doc-row-right {
+    width: 100% !important;
+    justify-content: flex-end !important;
+  }
+  .btn-doc-view {
+    flex: 1 !important;
+    justify-content: center !important;
+    height: 40px !important;
+  }
+}

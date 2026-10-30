@@ -1061,61 +1061,309 @@
 
     <!-- Classroom Body Content -->
     <main class="classroom-body-container">
-      <!-- 1. Header Member Portal matching Foto 2 -->
-      <div class="ruang-belajar-header">
-        <div class="rb-header-titles">
-          <span class="rb-eyebrow">MEMBER PORTAL</span>
-          <h1 class="rb-main-title">Ruang BelajarKu</h1>
-          <p class="rb-sub-title">Semua kelas, aplikasi &amp; dokumen yang sudah Anda miliki.</p>
+      <!-- ======================================================================
+           VIEW 1: GRID RUANG BELAJARKU (Foto 1 Reference)
+           ====================================================================== -->
+      <div id="rb-view-grid">
+        <!-- 1. Header Member Portal -->
+        <div class="ruang-belajar-header">
+          <div class="rb-header-titles">
+            <span class="rb-eyebrow">MEMBER PORTAL</span>
+            <h1 class="rb-main-title">Ruang BelajarKu</h1>
+            <p class="rb-sub-title">Semua kelas, aplikasi &amp; dokumen yang sudah Anda miliki.</p>
+          </div>
+          <div class="rb-header-badges">
+            <div class="rb-user-pill">
+              <span class="rb-user-dot"></span>
+              <span id="cls-student-greeting-email">daffafazdian50@gmail.com</span>
+              <span class="rb-user-order" id="cls-student-greeting-id">ORD-20261028-211630-4012</span>
+            </div>
+          </div>
         </div>
-        <div class="rb-header-badges">
-          <div class="rb-user-pill">
-            <span class="rb-user-dot"></span>
-            <span id="cls-student-greeting-email">daffafazdian50@gmail.com</span>
-            <span class="rb-user-order" id="cls-student-greeting-id">ORD-20261028-211630-4012</span>
+
+        <!-- 2. Search & Filter Bar -->
+        <div class="rb-filter-toolbar">
+          <div class="rb-search-wrap">
+            <input type="text" id="cls-portal-search-input" placeholder="🔍 Cari kelas, modul, atau dokumen..." class="rb-search-input" oninput="filterClassroomPortalModules(this.value)">
+          </div>
+          <div class="rb-filter-pills" id="cls-portal-filter-pills">
+            <button class="rb-pill active" onclick="filterClassroomByTag('ALL', this)">✨ Semua</button>
+            <button class="rb-pill" onclick="filterClassroomByTag('Kelas', this)">🎓 Kelas</button>
+            <button class="rb-pill" onclick="filterClassroomByTag('Dokumen', this)">📑 Dokumen</button>
+            <button class="rb-pill" onclick="filterClassroomByTag('Aplikasi', this)">💻 Aplikasi</button>
+            <button class="rb-pill" onclick="filterClassroomByTag('Code', this)">⚡ Source Code</button>
+          </div>
+        </div>
+
+        <!-- 3. Dynamic Card Grid -->
+        <div id="cls-portal-modules-list" class="rb-cards-grid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+
+        <!-- 4. Extra Perks (Download & Mentor VIP) -->
+        <div class="classroom-perks-grid" style="grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));">
+          <!-- Resource Hub -->
+          <div class="classroom-perk-card" id="cls-resources-anchor">
+            <div style="width:40px; height:40px; border-radius:12px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">📦</div>
+            <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Download Source Code &amp; Project</h4>
+            <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Unduh repositori lengkap boilerplate web app, template spreadsheet database, dan snippet JavaScript siap pakai.</p>
+            <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:#2563EB; border-color:#93C5FD;">
+              📁 Buka Master Folder Google Drive ↗
+            </a>
+          </div>
+
+          <!-- Tanya Mentor VIP -->
+          <div class="classroom-perk-card" id="cls-mentor-anchor">
+            <div style="width:40px; height:40px; border-radius:12px; background:#ECFDF5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">💬</div>
+            <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Bimbingan Langsung Mentor &amp; Tanya Jawab</h4>
+            <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Mengalami kendala saat coding? Tanyakan langsung ke tim instruktur via WhatsApp VIP (0878-9460-2627) dengan respon cepat.</p>
+            <a href="https://wa.me/6287894602627?text=Halo%20Mentor%20VIP%20EtalaseKu%2C%20saya%20siswa%20terverifikasi%20ingin%20konsultasi%20materi" target="_blank" rel="noopener noreferrer" class="shimmer-btn" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#10B981;">
+              📲 Chat Mentor WhatsApp VIP ↗
+            </a>
           </div>
         </div>
       </div>
 
-      <!-- 2. Search & Filter Bar matching modern aesthetic -->
-      <div class="rb-filter-toolbar">
-        <div class="rb-search-wrap">
-          <input type="text" id="cls-portal-search-input" placeholder="🔍 Cari kelas, modul, atau dokumen..." class="rb-search-input" oninput="filterClassroomPortalModules(this.value)">
+      <!-- ======================================================================
+           VIEW 2: DASHBOARD VIDEO KELAS & KURIKULUM (Foto 2 Reference)
+           ====================================================================== -->
+      <div id="rb-view-course" style="display:none;">
+        <!-- Top Breadcrumbs & Action Controls -->
+        <div class="rb-detail-topbar">
+          <div class="rb-detail-crumbs-wrap">
+            <nav class="rb-detail-breadcrumbs">
+              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Member Portal</a>
+              <span class="crumb-sep">&gt;</span>
+              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Kelas Saya</a>
+              <span class="crumb-sep">&gt;</span>
+              <span class="crumb-current" id="course-crumb-title">METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL...</span>
+            </nav>
+            <div class="rb-detail-badges">
+              <span class="rb-badge-pill green">🟢 Akses Aktif</span>
+              <span class="rb-badge-pill slate" id="course-ep-top-badge">🎬 Episode 1 / 6</span>
+            </div>
+          </div>
+          <div class="rb-detail-actions">
+            <button class="btn-detail-action" onclick="openWhatsAppDiscussionGroup()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>Grup Diskusi</span>
+            </button>
+            <button class="btn-detail-action btn-detail-back" onclick="closeClassroomDetailView()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              <span>Kembali</span>
+            </button>
+          </div>
         </div>
-        <div class="rb-filter-pills" id="cls-portal-filter-pills">
-          <button class="rb-pill active" onclick="filterClassroomByTag('ALL', this)">✨ Semua</button>
-          <button class="rb-pill" onclick="filterClassroomByTag('Kelas', this)">🎓 Kelas</button>
-          <button class="rb-pill" onclick="filterClassroomByTag('Dokumen', this)">📑 Dokumen</button>
-          <button class="rb-pill" onclick="filterClassroomByTag('Aplikasi', this)">💻 Aplikasi</button>
-          <button class="rb-pill" onclick="filterClassroomByTag('Code', this)">⚡ Source Code</button>
+
+        <!-- 2 Columns Course Grid -->
+        <div class="rb-course-layout">
+          <!-- Left Main Player Column -->
+          <div class="rb-course-main">
+            <!-- Video Player Box -->
+            <div class="rb-video-container" id="rb-video-container">
+              <div class="rb-video-poster" id="rb-video-poster" onclick="playCurrentCourseVideo()">
+                <img src="./assets/modules/banner-video-metode3.jpg" id="rb-video-poster-img" alt="Video Cover" class="rb-video-poster-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-metode3.jpg';">
+                <div class="rb-youtube-play-btn" title="Putar Video Materi">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="#FFFFFF"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </div>
+                <div class="rb-video-top-tag" id="rb-video-top-tag">Step 1 - Setup Github ( Integrasi Apps Script, GITHUB, Vercel )</div>
+              </div>
+              <div id="rb-video-embed" style="display:none; width:100%; height:100%;">
+                <iframe id="rb-video-iframe" src="" style="width:100%; height:100%; border:none; border-radius:18px;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            </div>
+
+            <!-- Episode Header & Next/Prev Controls -->
+            <div class="rb-ep-header-card">
+              <div class="rb-ep-header-left">
+                <div class="rb-ep-tag-row">
+                  <span class="rb-ep-pill-tag" id="course-active-ep-badge">EPISODE 1/6</span>
+                  <span class="rb-ep-duration" id="course-active-ep-duration">• Durasi 07:40</span>
+                </div>
+                <h2 class="rb-ep-title" id="course-active-ep-title">Step 1 - Setup Github + Repo</h2>
+                <p class="rb-ep-subtitle" id="course-active-course-name">METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL [CLAUDE]</p>
+              </div>
+              <div class="rb-ep-header-right">
+                <button class="rb-nav-ep-btn" id="btn-ep-prev" onclick="navigateEpisode(-1)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                  <span>Sebelumnya</span>
+                </button>
+                <button class="rb-nav-ep-btn primary" id="btn-ep-next" onclick="navigateEpisode(1)">
+                  <span>Selanjutnya</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabs: Ringkasan Kelas & Materi File -->
+            <div class="rb-tabs-card">
+              <div class="rb-tabs-header">
+                <button class="rb-tab-btn active" id="tab-btn-summary" onclick="switchCourseTab('summary')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  <span>Ringkasan Kelas</span>
+                </button>
+                <button class="rb-tab-btn" id="tab-btn-materials" onclick="switchCourseTab('materials')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  <span>Materi &amp; File (<span id="course-materials-count-badge">27</span>)</span>
+                </button>
+              </div>
+
+              <div class="rb-tab-pane" id="rb-tab-pane-summary">
+                <p class="rb-summary-text" id="course-active-summary-text">
+                  Integrasi Apps Script sebagai REST API dan Github Frontend dan Vercel untuk Deploy persiapkan Domain Sendiri.
+                </p>
+              </div>
+
+              <div class="rb-tab-pane" id="rb-tab-pane-materials" style="display:none;">
+                <div class="rb-materials-list" id="course-active-materials-list">
+                  <!-- Materials & source code items -->
+                </div>
+              </div>
+            </div>
+
+            <!-- WhatsApp Community Banner -->
+            <div class="rb-wa-group-card">
+              <div class="rb-wa-group-left">
+                <div class="rb-wa-icon-circle">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.072-1.802-.41-1.393-.576-2.316-1.996-2.386-2.089-.07-.093-.564-.75-.564-1.429 0-.679.356-1.013.483-1.15.127-.137.28-.172.373-.172.093 0 .186.002.268.006.086.004.202-.033.315.241.118.283.401.979.436 1.05.035.071.059.155.012.248-.047.093-.07.152-.14.233-.07.082-.148.182-.211.245-.07.07-.143.146-.061.287.082.141.365.602.784.974.54.48 1.002.637 1.144.708.142.071.226.061.31-.035.084-.096.357-.417.452-.56.095-.143.19-.119.32-.071.13.048.824.388.966.459.142.071.237.107.272.167.035.06.035.347-.109.752z"/></svg>
+                </div>
+                <div>
+                  <h4 class="rb-wa-group-title">Grup Diskusi Kelas</h4>
+                  <p class="rb-wa-group-desc">Khusus peserta <span id="course-wa-target-title">METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL [CLAUDE]</span>.</p>
+                </div>
+              </div>
+              <a href="https://wa.me/6287894602627?text=Halo%20Admin%2C%20saya%20peserta%20ingin%20gabung%20ke%20grup%20diskusi%20kelas" target="_blank" rel="noopener noreferrer" class="rb-wa-group-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771z"/></svg>
+                <span>Gabung WhatsApp Group</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Sidebar Column -->
+          <div class="rb-course-sidebar">
+            <!-- Daftar Episode Card -->
+            <div class="rb-sidebar-ep-card">
+              <div class="rb-sidebar-ep-head">
+                <div>
+                  <h3 class="rb-sidebar-ep-title">Daftar Episode</h3>
+                  <div class="rb-sidebar-ep-course" id="course-sidebar-name">METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL...</div>
+                </div>
+                <span class="rb-sidebar-ep-count" id="course-sidebar-count">6 materi</span>
+              </div>
+
+              <div class="rb-progress-box">
+                <div class="rb-progress-label">
+                  <span>Posisi Anda</span>
+                  <span id="course-progress-ratio">1 / 6</span>
+                </div>
+                <div class="rb-progress-bar-track">
+                  <div class="rb-progress-bar-fill" id="course-progress-bar" style="width: 16.6%;"></div>
+                </div>
+              </div>
+
+              <!-- Episode List -->
+              <div class="rb-ep-items-list" id="course-ep-items-list">
+                <!-- Dynamic episode items -->
+              </div>
+            </div>
+
+            <!-- Butuh Bantuan Card -->
+            <div class="rb-helpdesk-card">
+              <div class="rb-helpdesk-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <h4 class="rb-helpdesk-title">Butuh Bantuan?</h4>
+              <p class="rb-helpdesk-desc">Video tidak tampil atau materi tidak bisa dibuka? Cek Helpdesk atau hubungi Admin.</p>
+              <a href="https://wa.me/6287894602627?text=Halo%20Admin%20EtalaseKu%2C%20saya%20butuh%20bantuan%20terkait%20ruang%20belajar" target="_blank" rel="noopener noreferrer" class="rb-helpdesk-link">
+                <span>Buka Helpdesk</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- 3. Dynamic Card Grid matching Foto 2 -->
-      <div id="cls-portal-modules-list" class="rb-cards-grid">
-        <!-- Rendered dynamically by app.js -->
-      </div>
-
-      <!-- 4. Extra Perks (Download & Mentor VIP) -->
-      <div class="classroom-perks-grid" style="grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));">
-        <!-- Resource Hub -->
-        <div class="classroom-perk-card" id="cls-resources-anchor">
-          <div style="width:40px; height:40px; border-radius:12px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">📦</div>
-          <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Download Source Code &amp; Project</h4>
-          <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Unduh repositori lengkap boilerplate web app, template spreadsheet database, dan snippet JavaScript siap pakai.</p>
-          <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:#2563EB; border-color:#93C5FD;">
-            📁 Buka Master Folder Google Drive ↗
-          </a>
+      <!-- ======================================================================
+           VIEW 3: DASHBOARD DOKUMEN & BERKAS PRODUK (Foto 3 Reference)
+           ====================================================================== -->
+      <div id="rb-view-document" style="display:none;">
+        <!-- Top Breadcrumbs & Action Controls -->
+        <div class="rb-detail-topbar">
+          <div class="rb-detail-crumbs-wrap">
+            <nav class="rb-detail-breadcrumbs">
+              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Member Portal</a>
+              <span class="crumb-sep">&gt;</span>
+              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Kelas Saya</a>
+              <span class="crumb-sep">&gt;</span>
+              <span class="crumb-current" id="doc-crumb-title">Kumpulan PRD (GRATIS)</span>
+            </nav>
+            <div class="rb-detail-badges">
+              <span class="rb-badge-pill green">🟢 Akses Aktif</span>
+            </div>
+          </div>
+          <div class="rb-detail-actions">
+            <button class="btn-detail-action btn-detail-back" onclick="closeClassroomDetailView()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              <span>Kembali</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Tanya Mentor VIP -->
-        <div class="classroom-perk-card" id="cls-mentor-anchor">
-          <div style="width:40px; height:40px; border-radius:12px; background:#ECFDF5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">💬</div>
-          <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Bimbingan Langsung Mentor &amp; Tanya Jawab</h4>
-          <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Mengalami kendala saat coding? Tanyakan langsung ke tim instruktur via WhatsApp VIP (0878-9460-2627) dengan respon cepat.</p>
-          <a href="https://wa.me/6287894602627?text=Halo%20Mentor%20VIP%20EtalaseKu%2C%20saya%20siswa%20terverifikasi%20ingin%20konsultasi%20materi" target="_blank" rel="noopener noreferrer" class="shimmer-btn" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#10B981;">
-            🟢 Chat WhatsApp Mentor VIP (0878-9460-2627) ↗
-          </a>
+        <!-- Document Main Layout -->
+        <div class="rb-doc-layout">
+          <!-- Top Row: Banner and Package Meta -->
+          <div class="rb-doc-top-row">
+            <!-- Banner with Centered Overlay Button -->
+            <div class="rb-doc-banner-wrap">
+              <img src="./assets/modules/banner-doc-prd.jpg" id="doc-active-banner-img" alt="Cover Dokumen" class="rb-doc-banner-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-prd.jpg';">
+              <button class="rb-doc-banner-overlay-btn" onclick="scrollToDocList()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span id="doc-banner-items-text">Lihat 10 Berkas</span>
+              </button>
+            </div>
+
+            <!-- Isi Paket Box -->
+            <div class="rb-doc-package-card">
+              <div class="rb-doc-package-head">ISI PAKET</div>
+              <div class="rb-doc-package-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                <div>
+                  <div class="rb-pkg-lbl">Berkas tambahan</div>
+                  <div class="rb-pkg-val" id="doc-pkg-files-val">10 berkas</div>
+                </div>
+              </div>
+              <div class="rb-doc-package-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <div>
+                  <div class="rb-pkg-lbl">Tautan eksternal</div>
+                  <div class="rb-pkg-val" id="doc-pkg-links-val">0 tautan</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Title and Description -->
+          <div class="rb-doc-info-block">
+            <span class="rb-cat-pill cat-dokumen">Dokumen</span>
+            <h1 class="rb-doc-title" id="doc-page-title">Kumpulan PRD (GRATIS)</h1>
+            <p class="rb-doc-subtitle" id="doc-page-subtitle">Silahkan Download PRD yang dibutuhkan sebagai Referensi</p>
+          </div>
+
+          <!-- Document Files List Card -->
+          <div class="rb-doc-files-card" id="rb-doc-files-container">
+            <div class="rb-doc-files-header">
+              <div class="rb-doc-files-head-left">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <h3 class="rb-doc-files-title">Berkas Dokumen</h3>
+              </div>
+              <span class="rb-doc-count-badge" id="doc-files-count-badge">10 Item</span>
+            </div>
+
+            <!-- List of 10 PRD Items -->
+            <div class="rb-doc-list" id="doc-items-list">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -2745,5 +2993,36 @@
 
   <script src="js/config.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- Modal Reader & Salin Dokumen PRD -->
+  <div class="modal-overlay" id="modal-doc-reader">
+    <div class="modal-card compact-modal" style="max-width:760px; max-height:88vh; display:flex; flex-direction:column; text-align:left; padding:0; border-radius:20px; overflow:hidden;">
+      <div style="padding:18px 24px; background:#0F172A; color:#FFFFFF; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1);">
+        <div style="min-width:0;">
+          <span style="font-size:11px; font-weight:800; background:#2563EB; color:#FFFFFF; padding:3px 8px; border-radius:6px; letter-spacing:0.5px;">DOKUMEN PRD</span>
+          <h3 id="modal-doc-title" style="font-size:16px; font-weight:800; margin:4px 0 0; color:#FFFFFF; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Judul Dokumen</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeAllModals()" style="color:#94A3B8; font-size:24px; background:transparent; border:none; cursor:pointer;">&times;</button>
+      </div>
+      <div style="padding:14px 24px; background:#F8FAFC; border-bottom:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <span style="font-size:12px; color:#64748B;" id="modal-doc-meta">20261021_150037_PRD-6-TOKO.md • 0.01 MB</span>
+        <div style="display:flex; gap:8px;">
+          <button class="shimmer-btn" onclick="copyActiveDocContent()" style="padding:8px 16px; font-size:12px; gap:6px; background:#2563EB;">
+            <span>📋</span> Salin Seluruh Teks Dokumen
+          </button>
+          <a href="https://drive.google.com" id="modal-doc-drive-link" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:8px 14px; font-size:12px; text-decoration:none;">
+            <span>📁</span> Buka Folder Drive
+          </a>
+        </div>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:20px 24px; background:#FFFFFF;">
+        <pre id="modal-doc-body" style="font-family:'Courier New', monospace; font-size:12.5px; line-height:1.6; white-space:pre-wrap; word-break:break-word; color:#334155; margin:0; background:#F8FAFC; padding:16px; border-radius:12px; border:1px solid #E2E8F0;"></pre>
+      </div>
+      <div style="padding:12px 24px; background:#FFFFFF; border-top:1px solid #E2E8F0; text-align:right;">
+        <button class="btn-secondary" onclick="closeAllModals()" style="padding:8px 18px; font-size:12.5px; border-radius:10px;">Tutup</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
