@@ -180,13 +180,15 @@ window.formatImageUrl = formatImageUrl;
 
 function sanitizeProduct(p) {
   if (!p) return p;
+  if (p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence')) {
+    // Gunakan file banner aset lokal terkompresi resmi yang sangat ringan & tajam
+    if (!p.Banner_URL || p.Banner_URL.includes('unsplash') || p.Banner_URL.length < 50 || p.Banner_URL.startsWith('data:image/')) {
+      p.Banner_URL = 'social-influence-banner.jpg';
+    }
+  }
   if (!p.Banner_URL || typeof p.Banner_URL !== 'string' || p.Banner_URL.trim() === '' || 
       (p.Banner_URL.startsWith('data:image/') && (!p.Banner_URL.includes(',') || p.Banner_URL.split(',')[1].length < 30))) {
-    if (p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence')) {
-      p.Banner_URL = 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80';
-    } else {
-      p.Banner_URL = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
-    }
+    p.Banner_URL = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
   } else {
     p.Banner_URL = formatImageUrl(p.Banner_URL);
   }
@@ -754,6 +756,12 @@ async function loadPublicData() {
       if (storedProducts) {
         const parsedP = JSON.parse(storedProducts);
         if (Array.isArray(parsedP) && parsedP.length > 0) {
+          // Pastikan produk "Social Influence" selalu hadir di semua perangkat (Desktop maupun Mobile)
+          const hasSocial = parsedP.some(p => p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence'));
+          if (!hasSocial) {
+            const socialFallback = fallback.products.find(p => p.Nama_Produk.toLowerCase().includes('social influence'));
+            if (socialFallback) parsedP.unshift(socialFallback);
+          }
           STATE.products = parsedP.map(sanitizeProduct);
           localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
         } else {
@@ -808,8 +816,17 @@ async function loadPublicData() {
       const storedProducts = localStorage.getItem('etalaseku_products_data');
       if (storedProducts) {
         const parsedP = JSON.parse(storedProducts);
-        if (Array.isArray(parsedP) && parsedP.length > 0) STATE.products = parsedP.map(sanitizeProduct);
-        else STATE.products = mock.products.map(sanitizeProduct);
+        if (Array.isArray(parsedP) && parsedP.length > 0) {
+          const hasSocial = parsedP.some(p => p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence'));
+          if (!hasSocial) {
+            const socialFallback = mock.products.find(p => p.Nama_Produk.toLowerCase().includes('social influence'));
+            if (socialFallback) parsedP.unshift(socialFallback);
+          }
+          STATE.products = parsedP.map(sanitizeProduct);
+          localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+        } else {
+          STATE.products = mock.products.map(sanitizeProduct);
+        }
       } else {
         STATE.products = mock.products.map(sanitizeProduct);
       }
@@ -3866,6 +3883,20 @@ function getFallbackMockData() {
       announcement_bar_text: '🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!'
     },
     products: [
+      {
+        ID_Produk: 'PRD-000',
+        Nama_Produk: 'Social Influence',
+        Kategori: 'Template Bisnis',
+        Deskripsi: 'Pemateri: Dr. Dasep Suryanto, AT., SH., MM., MIKom., PhD. (Inisiatif Kemnaker & GNIK) Ringkasan: Dalam lanskap karier modern, kompetensi teknis (hard skills) membuka pintu kesempatan, namun kecakapan pengaruh sosial (social influence) yang menentukan seberapa jauh Anda mampu melangkah dan memimpin. Modul panduan ini merangkum strategi esensial bagaimana membangun pengaruh positif tanpa bergantung semata pada jabatan hierarki.',
+        Harga_Normal: 259000,
+        Harga_Promo: 99000,
+        Banner_URL: 'social-influence-banner.jpg',
+        Galeri_URLs: '',
+        Batch_Aktif: 1,
+        Maks_Kuota_Batch: 50,
+        Status: 'Publish',
+        Link_Akses_Materi: 'https://drive.google.com/file/d/1BeH_fPc2UEY5gFmjpi4dnuLzmiTernOR/view'
+      },
       {
         ID_Produk: 'PRD-001',
         Nama_Produk: 'GAS Pro Web App Masterclass',
