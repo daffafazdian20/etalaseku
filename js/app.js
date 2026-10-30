@@ -135,9 +135,21 @@ function compressAndReadImage(file, maxWidth = 1000, quality = 0.82) {
 }
 window.compressAndReadImage = compressAndReadImage;
 
+function escapeHtml(str) {
+  if (str === undefined || str === null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+window.escapeHtml = escapeHtml;
+
 function formatImageUrl(url) {
-  if (!url) return 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80';
-  const str = String(url).trim();
+  if (!url || typeof url !== 'string') return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+  let str = url.trim();
+  if (!str) return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -147,7 +159,15 @@ function formatImageUrl(url) {
     }
   }
 
-  if (str.startsWith('http://') || str.startsWith('https://') || str.startsWith('data:image/')) {
+  // Jika Data URL terpotong tanpa payload gambar (misal hanya prefix 'data:image/jpeg;base64' atau payload sangat pendek)
+  if (str.startsWith('data:image/')) {
+    if (!str.includes(',') || str.split(',')[1].length < 30) {
+      return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+    }
+    return str;
+  }
+
+  if (str.startsWith('http://') || str.startsWith('https://')) {
     return str;
   }
   // Bila format raw base64 tanpa prefix
@@ -157,6 +177,22 @@ function formatImageUrl(url) {
   return str;
 }
 window.formatImageUrl = formatImageUrl;
+
+function sanitizeProduct(p) {
+  if (!p) return p;
+  if (!p.Banner_URL || typeof p.Banner_URL !== 'string' || p.Banner_URL.trim() === '' || 
+      (p.Banner_URL.startsWith('data:image/') && (!p.Banner_URL.includes(',') || p.Banner_URL.split(',')[1].length < 30))) {
+    if (p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence')) {
+      p.Banner_URL = 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80';
+    } else {
+      p.Banner_URL = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+    }
+  } else {
+    p.Banner_URL = formatImageUrl(p.Banner_URL);
+  }
+  return p;
+}
+window.sanitizeProduct = sanitizeProduct;
 
 const DEFAULT_SHOWCASES_LIST = [
   {
@@ -718,17 +754,18 @@ async function loadPublicData() {
       if (storedProducts) {
         const parsedP = JSON.parse(storedProducts);
         if (Array.isArray(parsedP) && parsedP.length > 0) {
-          STATE.products = parsedP;
+          STATE.products = parsedP.map(sanitizeProduct);
+          localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
         } else {
-          STATE.products = (data.products && data.products.length > 0) ? data.products : fallback.products;
+          STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
           localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
         }
       } else {
-        STATE.products = (data.products && data.products.length > 0) ? data.products : fallback.products;
+        STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
         localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
       }
     } catch(e) {
-      STATE.products = (data.products && data.products.length > 0) ? data.products : fallback.products;
+      STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
     }
     STATE.testimonials = (data.testimonials && data.testimonials.length > 0) ? data.testimonials : fallback.testimonials;
     
@@ -771,13 +808,13 @@ async function loadPublicData() {
       const storedProducts = localStorage.getItem('etalaseku_products_data');
       if (storedProducts) {
         const parsedP = JSON.parse(storedProducts);
-        if (Array.isArray(parsedP) && parsedP.length > 0) STATE.products = parsedP;
-        else STATE.products = mock.products;
+        if (Array.isArray(parsedP) && parsedP.length > 0) STATE.products = parsedP.map(sanitizeProduct);
+        else STATE.products = mock.products.map(sanitizeProduct);
       } else {
-        STATE.products = mock.products;
+        STATE.products = mock.products.map(sanitizeProduct);
       }
     } catch(e) {
-      STATE.products = mock.products;
+      STATE.products = mock.products.map(sanitizeProduct);
     }
     STATE.testimonials = mock.testimonials;
     try {
@@ -814,21 +851,41 @@ function renderProducts() {
   grid.innerHTML = '';
 
   STATE.products.forEach(p => {
-    // Galeri multi-gambar untuk slideshow otomatis
-    const images = (p.Galeri_URLs || p.Banner_URL || '').split(',').map(s => s.trim()).filter(Boolean);
-    if (!images.length) images.push('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80');
+    // 1. Dapatkan banner utama yang aman dan terformat
+    const mainBanner = formatImageUrl(p.Banner_URL);
+
+    // 2. Galeri multi-gambar untuk slideshow otomatis
+    let images = [];
+    if (p.Galeri_URLs && typeof p.Galeri_URLs === 'string' && p.Galeri_URLs.trim()) {
+      // Split Galeri_URLs hanya jika dipisahkan oleh tanda koma antar URL valid (bukan membelah base64)
+      if (p.Galeri_URLs.includes('data:image/')) {
+        images = p.Galeri_URLs.split(/\s*,\s*(?=https?:\/\/|data:image\/)/i).map(s => s.trim()).filter(Boolean);
+      } else {
+        images = p.Galeri_URLs.split(',').map(s => s.trim()).filter(Boolean);
+      }
+    }
+
+    // Bila tidak ada galeri multi-gambar, pakai banner utama
+    if (!images.length) {
+      if (mainBanner) {
+        images.push(mainBanner);
+      } else {
+        images.push('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80');
+      }
+    }
 
     let slidesHtml = '';
     images.forEach((img, i) => {
+      const formattedSrc = formatImageUrl(img);
       slidesHtml += `
         <div class="product-slide ${i === 0 ? 'active' : ''}">
-          <img src="${img}" alt="${p.Nama_Produk}" loading="lazy">
+          <img src="${formattedSrc}" alt="${escapeHtml(p.Nama_Produk)}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';">
         </div>
       `;
     });
 
     const isSoldOut = Number(p.Maks_Kuota_Batch || 50) <= 0;
-    const badgeText = isSoldOut ? 'Batch Penuh' : `Batch ${p.Batch_Aktif || 3}: Kuota Terbatas`;
+    const badgeText = isSoldOut ? 'Batch Penuh' : `Batch ${p.Batch_Aktif || 1}: Kuota Terbatas`;
 
     const card = document.createElement('div');
     card.className = 'glow-card product-card';
@@ -837,8 +894,8 @@ function renderProducts() {
         <span class="product-badge-batch" style="background: ${isSoldOut ? '#EF4444' : '#0F172A'}">${badgeText}</span>
         ${slidesHtml}
       </div>
-      <h3 class="product-title">${p.Nama_Produk}</h3>
-      <p class="product-desc">${p.Deskripsi || ''}</p>
+      <h3 class="product-title">${escapeHtml(p.Nama_Produk)}</h3>
+      <p class="product-desc">${escapeHtml(p.Deskripsi || '')}</p>
       <div class="product-pricing">
         <span class="price-normal">Rp ${Number(p.Harga_Normal || 0).toLocaleString('id-ID')}</span>
         <span class="price-promo">Rp ${Number(p.Harga_Promo || 0).toLocaleString('id-ID')}</span>
@@ -924,9 +981,9 @@ function renderShowcases() {
 
     card.innerHTML = `
       <div class="pameran-card-thumb-wrap">
-        <img src="${formatImageUrl(s.Gambar_Preview_URL)}" class="pameran-card-thumb" alt="${s.Nama_Karya}">
+        <img src="${formatImageUrl(s.Gambar_Preview_URL)}" class="pameran-card-thumb" alt="${escapeHtml(s.Nama_Karya)}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80';">
         <span style="position:absolute; top:12px; left:12px; background:var(--deep-navy); color:#FFFFFF; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:800; box-shadow:0 2px 8px rgba(0,0,0,0.3);">
-          ${s.Statistik_Pencapaian || 'Hasil Karya'}
+          ${escapeHtml(s.Statistik_Pencapaian || 'Hasil Karya')}
         </span>
       </div>
       <div class="pameran-card-content">
@@ -1858,17 +1915,18 @@ function filterOrdersTable(query) {
 function renderAdminProductsTable(products) {
   const tbody = document.getElementById('products-admin-tbody');
   if (!tbody) return;
-  if (!products.length) {
+  const list = Array.isArray(products) && products.length > 0 ? products : (STATE.products || []);
+  if (!list.length) {
     tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px;">Belum ada produk dalam katalog. Klik tombol "+ Tambah Produk Baru".</td></tr>`;
     return;
   }
-  tbody.innerHTML = products.map(p => `
+  tbody.innerHTML = list.map(p => `
     <tr>
       <td>
-        <img src="${p.Banner_URL || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=100&q=80'}" style="width:60px; height:40px; border-radius:8px; object-fit:cover;">
+        <img src="${formatImageUrl(p.Banner_URL)}" style="width:60px; height:40px; border-radius:8px; object-fit:cover; border:1px solid #CBD5E1; box-shadow:0 1px 3px rgba(0,0,0,0.08);" alt="${escapeHtml(p.Nama_Produk)}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=100&q=80';">
       </td>
-      <td><strong>${p.Nama_Produk}</strong><br><small style="color:#64748B;">ID: ${p.ID_Produk}</small></td>
-      <td><span class="pill-badge blue">${p.Kategori}</span></td>
+      <td><strong>${escapeHtml(p.Nama_Produk)}</strong><br><small style="color:#64748B;">ID: ${escapeHtml(p.ID_Produk)}</small></td>
+      <td><span class="pill-badge blue">${escapeHtml(p.Kategori)}</span></td>
       <td>
         <span style="text-decoration:line-through; color:#94A3B8; font-size:12px;">Rp ${Number(p.Harga_Normal).toLocaleString('id-ID')}</span><br>
         <strong style="color:var(--deep-navy);">Rp ${Number(p.Harga_Promo).toLocaleString('id-ID')}</strong>
@@ -1880,7 +1938,7 @@ function renderAdminProductsTable(products) {
         </small>
       </td>
       <td>
-        <span class="pill-badge ${p.Status === 'Publish' ? 'green' : 'yellow'}">${p.Status}</span>
+        <span class="pill-badge ${p.Status === 'Publish' ? 'green' : 'yellow'}">${escapeHtml(p.Status)}</span>
       </td>
       <td>
         <div style="display:flex; gap:6px;">
@@ -1906,6 +1964,7 @@ function openAddProductModal() {
   document.getElementById('prod-form-gallery-urls').value = '';
   document.getElementById('prod-form-access-link').value = '';
   document.getElementById('prod-form-desc').value = '';
+  clearModalBannerPhoto();
   document.getElementById('modal-product-form').classList.add('active');
 }
 
@@ -1926,6 +1985,11 @@ function openEditProductModal(productId) {
   document.getElementById('prod-form-gallery-urls').value = p.Galeri_URLs || '';
   document.getElementById('prod-form-access-link').value = p.Link_Akses_Materi || '';
   document.getElementById('prod-form-desc').value = p.Deskripsi || '';
+  if (p.Banner_URL) {
+    handleModalBannerInput(p.Banner_URL);
+  } else {
+    clearModalBannerPhoto();
+  }
   document.getElementById('modal-product-form').classList.add('active');
 }
 
@@ -2152,7 +2216,7 @@ function renderAdminShowcaseTable(showcases) {
     return `
       <tr>
         <td>
-          <img src="${formatImageUrl(s.Gambar_Preview_URL)}" style="width:65px; height:44px; border-radius:8px; object-fit:cover; border:1px solid #E2E8F0;" alt="${escapeHtml(s.Nama_Karya)}">
+          <img src="${formatImageUrl(s.Gambar_Preview_URL)}" style="width:65px; height:44px; border-radius:8px; object-fit:cover; border:1px solid #CBD5E1; box-shadow:0 1px 3px rgba(0,0,0,0.08);" alt="${escapeHtml(s.Nama_Karya)}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80';">
         </td>
         <td>
           <strong style="color:var(--deep-navy);">${s.Nama_Karya}</strong>
