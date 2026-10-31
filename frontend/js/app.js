@@ -3934,6 +3934,36 @@ function saveManualInput(field, isInline) {
   }
 }
 
+function handleModalModuleBannerUpload(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const bannerInput = document.getElementById('mod-form-banner');
+    if (bannerInput) bannerInput.value = dataUrl;
+    updateModalBannerPreview(dataUrl);
+    if (typeof showToast === 'function') {
+      showToast('Foto banner modul berhasil dimuat! 🖼️', 'info');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateModalBannerPreview(url) {
+  const box = document.getElementById('modal-banner-preview-box');
+  const img = document.getElementById('modal-banner-preview-img');
+  if (box && img) {
+    if (url && url.trim()) {
+      img.src = url;
+      box.style.display = 'block';
+    } else {
+      box.style.display = 'none';
+    }
+  }
+}
+
 function handleInlineModuleBannerUpload(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
@@ -4210,6 +4240,11 @@ function openEditModuleModal(id) {
   document.getElementById('mod-form-duration').value = mod.Durasi_Menit ? (mod.Durasi_Menit + ' Menit') : (mod.Durasi || '30 Menit');
   document.getElementById('mod-form-banner').value = mod.Thumbnail_URL || mod.Foto_URL || '';
   document.getElementById('mod-form-desc').value = mod.Deskripsi || '';
+  updateModalBannerPreview(mod.Thumbnail_URL || mod.Foto_URL || '');
+  const epCountField = document.getElementById('mod-form-episode-count');
+  if (epCountField) epCountField.value = mod.Episode || (courseData && courseData.episodes ? courseData.episodes.length : 1);
+  const matCountField = document.getElementById('mod-form-materi-count');
+  if (matCountField) matCountField.value = mod.Materi_Count || (courseData && courseData.materials ? courseData.materials.length : (docData && docData.files ? docData.files.length : 1));
 
   const isDoc = (mod.Tipe_Badge === 'DOKUMEN' || mod.Tipe_Badge === 'APLIKASI' || (mod.Kategori && mod.Kategori.toLowerCase() === 'dokumen'));
   document.getElementById('mod-form-badge').value = isDoc ? 'Dokumen' : 'Kelas';
@@ -4303,8 +4338,10 @@ async function saveClassroomModuleForm(e, isInline) {
       const inlineWaLink = (document.getElementById('inline-mod-wa-link') && document.getElementById('inline-mod-wa-link').value) ? document.getElementById('inline-mod-wa-link').value : 'https://chat.whatsapp.com/';
       const inlineSummary = (document.getElementById('inline-mod-summary-text') && document.getElementById('inline-mod-summary-text').value) ? document.getElementById('inline-mod-summary-text').value : inlineDesc;
 
-      newMod.Episode = 1;
-      newMod.Materi_Count = 1;
+      const customEpCount = parseInt(document.getElementById('inline-mod-episode-count') ? document.getElementById('inline-mod-episode-count').value : 0) || 1;
+      const customMatCount = parseInt(document.getElementById('inline-mod-materi-count') ? document.getElementById('inline-mod-materi-count').value : 0) || 1;
+      newMod.Episode = customEpCount;
+      newMod.Materi_Count = customMatCount;
 
       const courseObj = {
         title: inlineTitle,
@@ -4448,8 +4485,10 @@ async function saveClassroomModuleForm(e, isInline) {
     const waLink = document.getElementById('mod-form-wa-link').value || 'https://chat.whatsapp.com/';
     const summaryText = document.getElementById('mod-form-summary-text').value || desc;
 
-    formattedModule.Episode = episodes.length;
-    formattedModule.Materi_Count = materials.length;
+    const inputEpCount = parseInt(document.getElementById('mod-form-episode-count') ? document.getElementById('mod-form-episode-count').value : 0) || episodes.length || 1;
+    const inputMatCount = parseInt(document.getElementById('mod-form-materi-count') ? document.getElementById('mod-form-materi-count').value : 0) || materials.length || 1;
+    formattedModule.Episode = inputEpCount;
+    formattedModule.Materi_Count = inputMatCount;
 
     const courseObj = {
       title: title,
@@ -4492,8 +4531,9 @@ async function saveClassroomModuleForm(e, isInline) {
     const pkgFormat = document.getElementById('mod-doc-pkg-format').value || (docFiles.length + ' Dokumen');
     const subTitle = document.getElementById('mod-doc-subtitle').value || desc;
 
+    const inputDocMatCount = parseInt(document.getElementById('mod-form-materi-count') ? document.getElementById('mod-form-materi-count').value : 0) || docFiles.length || 10;
     formattedModule.Episode = 1;
-    formattedModule.Materi_Count = docFiles.length;
+    formattedModule.Materi_Count = inputDocMatCount;
 
     const docObj = {
       title: title,
@@ -5732,7 +5772,54 @@ let activeDocFileIndex = 0;
 // Buka Halaman Dashboard Video Kelas (Foto 2)
 function openCourseClassroomView(moduleId) {
   const courseMap = typeof getActiveCourseEpisodesMap === 'function' ? getActiveCourseEpisodesMap() : COURSE_EPISODES_MAP;
-  const course = courseMap[moduleId] || courseMap['MOD-01'];
+  let course = courseMap[moduleId];
+
+  if (!course) {
+    const mod = (STATE.modules || DEFAULT_MODULES).find(m => m.ID_Materi === moduleId);
+    if (mod) {
+      course = {
+        title: mod.Judul_Modul,
+        shortTitle: mod.Judul_Modul.length > 45 ? (mod.Judul_Modul.slice(0, 42) + '...') : mod.Judul_Modul,
+        poster: mod.Thumbnail_URL || mod.Foto_URL || './assets/modules/thumb-metode3.jpg',
+        materialsCount: mod.Materi_Count || 1,
+        summary: mod.Deskripsi || 'Akses modul dan materi lengkap seumur hidup.',
+        waGroupTitle: 'Khusus peserta ' + mod.Judul_Modul,
+        waGroupLink: 'https://chat.whatsapp.com/',
+        episodes: [
+          {
+            title: 'Step 1 - ' + mod.Judul_Modul,
+            duration: mod.Durasi_Menit ? (mod.Durasi_Menit + ' Menit') : '30:00',
+            summary: mod.Deskripsi || '',
+            videoEmbedUrl: mod.URL_Konten || 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1',
+            posterTag: mod.Judul_Modul
+          }
+        ],
+        materials: [
+          {
+            name: 'Aset & Source Code Modul',
+            type: mod.Tipe_Konten || 'Source Code',
+            url: mod.URL_Konten || 'https://drive.google.com'
+          }
+        ]
+      };
+      courseMap[moduleId] = course;
+      COURSE_EPISODES_MAP[moduleId] = course;
+      try {
+        localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(courseMap));
+      } catch(e) {}
+    } else {
+      course = Object.assign({}, courseMap['MOD-01'] || {
+        title: 'Materi Pembelajaran',
+        shortTitle: 'Materi Pembelajaran',
+        poster: './assets/modules/thumb-metode3.jpg',
+        materialsCount: 1,
+        summary: 'Akses materi lengkap.',
+        episodes: [{ title: 'Step 1 - Video', duration: '10:00', summary: 'Materi' }],
+        materials: []
+      });
+    }
+  }
+
   course.id = moduleId;
   activeCourseData = course;
   activeCourseEpisodeIndex = 0;
@@ -5782,7 +5869,45 @@ function openCourseClassroomView(moduleId) {
 // Buka Halaman Dashboard Dokumen & Berkas Produk (Foto 3)
 function openDocumentPackageView(moduleId) {
   const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
-  const docPkg = docMap[moduleId] || docMap['MOD-02'];
+  let docPkg = docMap[moduleId];
+
+  if (!docPkg) {
+    const mod = (STATE.modules || DEFAULT_MODULES).find(m => m.ID_Materi === moduleId);
+    if (mod) {
+      docPkg = {
+        title: mod.Judul_Modul,
+        subtitle: mod.Deskripsi || 'Silahkan Download Dokumen yang dibutuhkan sebagai Referensi',
+        banner: mod.Thumbnail_URL || mod.Foto_URL || './assets/modules/thumb-prd.jpg',
+        totalFiles: mod.Materi_Count || 10,
+        totalLinks: 0,
+        pkgFilesText: (mod.Materi_Count || 10) + ' berkas',
+        pkgFormatText: (mod.Materi_Count || 10) + ' Dokumen',
+        files: [
+          {
+            name: mod.Judul_Modul,
+            filename: 'Dokumen_' + (mod.ID_Materi || '01') + '.md',
+            size: '0.01 MB',
+            url: mod.URL_Konten || 'https://drive.google.com',
+            content: '# ' + mod.Judul_Modul + '\n\n## 1. Ringkasan Eksekutif\n' + (mod.Deskripsi || 'Dokumen spesifikasi teknis dan implementasi produk.')
+          }
+        ]
+      };
+      docMap[moduleId] = docPkg;
+      DOCUMENT_FILES_MAP[moduleId] = docPkg;
+      try {
+        localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+      } catch(e) {}
+    } else {
+      docPkg = Object.assign({}, docMap['MOD-02'] || {
+        title: 'Paket Dokumen',
+        subtitle: 'Dokumen referensi',
+        banner: './assets/modules/thumb-prd.jpg',
+        totalFiles: 1,
+        files: []
+      });
+    }
+  }
+
   docPkg.id = moduleId;
   activeDocData = docPkg;
 

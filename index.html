@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261031-07">
+  <link rel="stylesheet" href="css/style.css?v=20261031-09">
 </head>
 <body>
 
@@ -2068,7 +2068,7 @@
 
                 <!-- Row 3: Upload / Foto Banner Modul -->
                 <div style="margin-bottom:12px;">
-                  <label class="form-label" style="font-size:11px; font-weight:700;">Foto Banner / Thumbnail Modul</label>
+                  <label class="form-label" style="font-size:11px; font-weight:700;">Upload File Foto Banner atau Link URL</label>
                   <div style="display:flex; gap:8px;">
                     <input type="text" id="inline-mod-banner" class="form-input" placeholder="https://... atau pilih berkas foto" value="./assets/modules/thumb-metode3.jpg" style="flex:1;">
                     <label class="btn-secondary" style="padding:8px 14px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin:0; white-space:nowrap; border-radius:10px;">
@@ -2079,7 +2079,17 @@
                 </div>
 
                 <!-- Row 4: URL Video / Drive Utama -->
-                <div class="form-group" style="margin-bottom:12px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                    <div>
+                      <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Video / Episode (🎬)</label>
+                      <input type="number" id="inline-mod-episode-count" class="form-input" placeholder="Contoh: 6" min="1" value="1">
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Materi / File (📚)</label>
+                      <input type="number" id="inline-mod-materi-count" class="form-input" placeholder="Contoh: 27" min="1" value="1">
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:12px;">
                   <label class="form-label" style="font-size:11px; font-weight:700;">Tautan Video / Google Drive Materi *</label>
                   <input type="url" id="inline-mod-url" required class="form-input" placeholder="https://drive.google.com/drive/folders/... atau https://youtube.com/embed/...">
                 </div>
@@ -2866,8 +2876,32 @@
             </div>
 
             <div style="margin-bottom:12px;">
-              <label class="form-label" style="font-size:11px; font-weight:700;">URL Banner / Thumbnail Foto Modul</label>
-              <input type="text" id="mod-form-banner" class="form-input" placeholder="https://... atau ./assets/modules/thumb-metode3.jpg">
+              <label class="form-label" style="font-size:11px; font-weight:700;">Upload File Foto Banner atau Link URL</label>
+              <div style="display:flex; gap:8px;">
+                <input type="text" id="mod-form-banner" class="form-input" placeholder="https://... atau pilih berkas foto" style="flex:1;" oninput="updateModalBannerPreview(this.value)">
+                <label class="btn-secondary" style="padding:8px 14px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin:0; white-space:nowrap; border-radius:10px;">
+                  📁 Pilih Foto
+                  <input type="file" accept="image/*" style="display:none;" onchange="handleModalModuleBannerUpload(event)">
+                </label>
+              </div>
+              <div id="modal-banner-preview-box" style="margin-top:8px; display:none;">
+                <div style="display:flex; align-items:center; gap:10px; background:#F8FAFC; border:1px solid #E2E8F0; padding:8px 12px; border-radius:10px;">
+                  <img id="modal-banner-preview-img" src="" alt="Banner Preview" style="width:52px; height:34px; object-fit:cover; border-radius:6px; border:1px solid #CBD5E1;">
+                  <span id="modal-banner-preview-text" style="font-size:11.5px; color:#475569; font-weight:600;">Foto banner siap digunakan</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Jumlah Video & Materi Explicit Inputs for Card Display -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Video / Episode (🎬)</label>
+                <input type="number" id="mod-form-episode-count" class="form-input" placeholder="Contoh: 6" min="1" value="1">
+              </div>
+              <div>
+                <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Materi / File (📚)</label>
+                <input type="number" id="mod-form-materi-count" class="form-input" placeholder="Contoh: 27" min="1" value="1">
+              </div>
             </div>
 
             <div>
@@ -3267,8 +3301,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261031-07"></script>
-  <script src="js/app.js?v=20261031-07"></script>
+  <script src="js/config.js?v=20261031-09"></script>
+  <script src="js/app.js?v=20261031-09"></script>
 
   <!-- Modal Reader & Salin Dokumen PRD -->
   <div class="modal-overlay" id="modal-doc-reader">

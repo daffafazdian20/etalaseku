@@ -3477,9 +3477,10 @@ input:checked + .switch-slider:before {
 }
 
 .rb-search-input:focus {
-  border-color: #2563EB;
+  outline: none;
+  border-color: #FF2E63;
   background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.15);
 }
 
 .rb-filter-pills {
@@ -3490,28 +3491,31 @@ input:checked + .switch-slider:before {
 }
 
 .rb-pill {
-  border: 1px solid #E2E8F0;
-  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
   color: #64748B;
-  padding: 8px 14px;
+  padding: 8px 16px;
   font-size: 12.5px;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .rb-pill:hover {
-  background: #EFF6FF;
-  color: #2563EB;
-  border-color: #BFDBFE;
+  background: #FDEEF1;
+  color: #E11D48;
+  border-color: #FECDD3;
 }
 
 .rb-pill.active {
-  background: #2563EB;
-  color: #FFFFFF;
-  border-color: #2563EB;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #E11D48 !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.35) !important;
 }
 
 /* Card Grid */
@@ -3597,7 +3601,7 @@ input:checked + .switch-slider:before {
 }
 
 .rb-badge-left.type-kelas {
-  background: #2563EB;
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
 }
 
 .rb-badge-left.type-dokumen {
@@ -3626,7 +3630,7 @@ input:checked + .switch-slider:before {
 }
 
 .rb-badge-right svg {
-  color: #2563EB;
+  color: #10B981;
 }
 
 /* Card Content */
@@ -3642,11 +3646,12 @@ input:checked + .switch-slider:before {
   align-self: flex-start;
   font-size: 11px;
   font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
   margin-bottom: 10px;
-  background: #EFF6FF;
-  color: #2563EB;
+  background: #FDEEF1;
+  color: #E11D48;
+  border: 1px solid #FECDD3;
 }
 
 .rb-cat-pill.cat-dokumen {
@@ -3704,35 +3709,40 @@ input:checked + .switch-slider:before {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 11px 16px;
+  padding: 12px 18px;
   font-size: 13.5px;
   font-weight: 700;
-  border-radius: 12px;
+  border-radius: 9999px;
   text-decoration: none;
   cursor: pointer;
   border: none;
-  background: #2563EB;
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
   color: #FFFFFF;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+  transition: all 0.22s ease;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.3);
   box-sizing: border-box;
 }
 
 .rb-btn-action:hover {
-  background: #1D4ED8;
+  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 6px 20px rgba(225, 29, 72, 0.45);
   color: #FFFFFF;
 }
 
 .rb-btn-action.rb-btn-doc {
-  background: #0F172A;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+  background: linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%);
+  color: #FFFFFF;
+  border: 1.5px solid rgba(255, 46, 99, 0.35);
+  box-shadow: 0 4px 14px rgba(30, 27, 75, 0.25);
 }
 
 .rb-btn-action.rb-btn-doc:hover {
-  background: #1E293B;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.3);
+  background: linear-gradient(135deg, #312E81 0%, #1E1B4B 100%);
+  border-color: #FF2E63;
+  box-shadow: 0 6px 20px rgba(255, 46, 99, 0.35);
+  transform: translateY(-2px);
+  color: #FFFFFF;
 }
 
 /* Mobile responsive rules for Ruang BelajarKu */
@@ -4082,10 +4092,9 @@ input:checked + .switch-slider:before {
 }
 
 .rb-nav-ep-btn.primary {
-  background: #2563EB;
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
   color: #FFFFFF;
-  border-color: #2563EB;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  border: none;
 }
 
 .rb-nav-ep-btn.primary:hover {
@@ -4387,9 +4396,9 @@ input:checked + .switch-slider:before {
 }
 
 .rb-ep-item.active {
-  background: #EFF6FF;
-  border-color: #2563EB;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+  background: #FDEEF1;
+  border-color: #FF2E63;
+  box-shadow: 0 2px 8px rgba(255, 46, 99, 0.15);
 }
 
 .rb-ep-num {
@@ -4407,7 +4416,7 @@ input:checked + .switch-slider:before {
 }
 
 .rb-ep-item.active .rb-ep-num {
-  background: #2563EB;
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
   color: #FFFFFF;
 }
 
@@ -4427,7 +4436,7 @@ input:checked + .switch-slider:before {
 }
 
 .rb-ep-item.active .rb-ep-item-title {
-  color: #2563EB;
+  color: #E11D48;
 }
 
 .rb-ep-item-meta {
@@ -5141,10 +5150,9 @@ input:checked + .switch-slider:before {
 }
 
 .rb-nav-ep-btn.primary {
-  background: linear-gradient(135deg, #FF2D75 0%, #E11D48 100%);
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
   color: #FFFFFF;
-  border-color: transparent;
-  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
+  border: none;
 }
 
 .rb-nav-ep-btn.primary:hover {
@@ -5488,9 +5496,9 @@ input:checked + .switch-slider:before {
 }
 
 .rb-ep-item.active {
-  background: #FFF1F2;
-  border-color: #FDA4AF;
-  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.08);
+  background: #FDEEF1;
+  border-color: #FF2E63;
+  box-shadow: 0 2px 8px rgba(255, 46, 99, 0.15);
 }
 
 .rb-ep-num-badge {
