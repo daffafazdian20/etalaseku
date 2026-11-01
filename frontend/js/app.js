@@ -4008,6 +4008,44 @@ function switchInlineModuleType(type) {
 // DYNAMIC COURSE & DOCUMENT STORAGE SYNC (CONNECTED TO CRM & RUANG BELAJARKU)
 // ============================================================================
 
+
+function enableManualCountInput(field, isInline) {
+  const elId = isInline 
+    ? (field === 'episode' ? 'inline-mod-episode-count' : 'inline-mod-materi-count')
+    : (field === 'episode' ? 'mod-form-episode-count' : 'mod-form-materi-count');
+  const input = document.getElementById(elId);
+  if (!input) return;
+  input.removeAttribute('readonly');
+  input.focus();
+  input.select();
+  input.style.borderColor = '#2563EB';
+  input.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.15)';
+  if (typeof showToast === 'function') {
+    showToast('Silakan ketik manual jumlah ' + (field === 'episode' ? 'Video / Episode (0-100+)' : 'Materi / File (0-100+)') + ' ✏️', 'info');
+  }
+}
+
+function saveManualCountInput(field, isInline) {
+  const elId = isInline 
+    ? (field === 'episode' ? 'inline-mod-episode-count' : 'inline-mod-materi-count')
+    : (field === 'episode' ? 'mod-form-episode-count' : 'mod-form-materi-count');
+  const input = document.getElementById(elId);
+  if (!input) return;
+  let val = parseInt(input.value);
+  if (isNaN(val) || val < 0) val = 0;
+  if (val > 1000) val = 1000;
+  input.value = val;
+  input.style.borderColor = '#10B981';
+  input.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+  setTimeout(() => {
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
+  }, 1200);
+  if (typeof showToast === 'function') {
+    showToast('Jumlah ' + (field === 'episode' ? 'Video/Episode' : 'Materi/File') + ' berhasil disimpan: ' + val + ' 💾', 'info');
+  }
+}
+
 function getActiveCourseEpisodesMap() {
   try {
     const saved = localStorage.getItem('etalaseku_course_episodes_map');
@@ -4076,7 +4114,7 @@ function addEpisodeRowToForm(epData) {
     <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
       <div>
         <label class="form-label" style="font-size:10.5px; font-weight:700;">Judul Episode *</label>
-        <input type="text" class="form-input ep-item-title" required value="${escapeHtml(title)}" placeholder="Contoh: Step 1 - Setup Github + Repo">
+        <input type="text" class="form-input ep-item-title" value="${escapeHtml(title)}" placeholder="Contoh: Step 1 - Setup Github + Repo">
       </div>
       <div>
         <label class="form-label" style="font-size:10.5px; font-weight:700;">Durasi</label>
@@ -4111,7 +4149,7 @@ function addMaterialRowToForm(matData) {
     <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
       <div>
         <label class="form-label" style="font-size:10.5px; font-weight:700;">Nama Berkas / File *</label>
-        <input type="text" class="form-input mat-item-name" required value="${escapeHtml(name)}" placeholder="Contoh: Snippet Script CORS">
+        <input type="text" class="form-input mat-item-name" value="${escapeHtml(name)}" placeholder="Contoh: Snippet Script CORS">
       </div>
       <div>
         <label class="form-label" style="font-size:10.5px; font-weight:700;">Tipe File</label>
@@ -4145,7 +4183,7 @@ function addDocumentRowToForm(docData) {
     <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
       <div>
         <label class="form-label" style="font-size:10.5px; font-weight:700;">Judul Dokumen PRD *</label>
-        <input type="text" class="form-input doc-item-name" required value="${escapeHtml(name)}" placeholder="Contoh: E-TOKO Mini Commerce">
+        <input type="text" class="form-input doc-item-name" value="${escapeHtml(name)}" placeholder="Contoh: E-TOKO Mini Commerce">
       </div>
       <div>
         <label class="form-label" style="font-size:10.5px; font-weight:700;">Nama File</label>
@@ -4244,21 +4282,52 @@ function openEditModuleModal(id) {
   document.getElementById('mod-form-banner').value = mod.Thumbnail_URL || mod.Foto_URL || '';
   document.getElementById('mod-form-desc').value = mod.Deskripsi || '';
   updateModalBannerPreview(mod.Thumbnail_URL || mod.Foto_URL || '');
+
+  const isDoc = (mod.Tipe_Badge === 'DOKUMEN' || mod.Tipe_Badge === 'APLIKASI' || (mod.Kategori && (mod.Kategori.toLowerCase() === 'dokumen' || mod.Kategori.toLowerCase() === 'aplikasi')));
+  const badgeSelect = document.getElementById('mod-form-badge');
+  if (badgeSelect) {
+    badgeSelect.value = (mod.Tipe_Badge === 'APLIKASI' || (mod.Kategori && mod.Kategori.toLowerCase() === 'aplikasi')) ? 'Aplikasi' : (isDoc ? 'Dokumen' : 'Kelas');
+  }
+
+  // Load Course Data & Document Data upfront safely to prevent TDZ ReferenceError
+  const courseMap = typeof getActiveCourseEpisodesMap === 'function' ? getActiveCourseEpisodesMap() : COURSE_EPISODES_MAP;
+  const courseData = courseMap[id] || courseMap['MOD-01'] || null;
+
+  const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
+  const docData = docMap[id] || docMap['MOD-02'] || null;
+
+  // Set episode count & materi count safely
   const epCountField = document.getElementById('mod-form-episode-count');
-  if (epCountField) epCountField.value = mod.Episode || (courseData && courseData.episodes ? courseData.episodes.length : 1);
+  if (epCountField) {
+    if (typeof mod.Episode !== 'undefined' && mod.Episode !== null && mod.Episode !== '') {
+      epCountField.value = mod.Episode;
+    } else if (courseData && courseData.episodes && courseData.episodes.length > 0) {
+      epCountField.value = courseData.episodes.length;
+    } else {
+      epCountField.value = isDoc ? 1 : 1;
+    }
+  }
+
   const matCountField = document.getElementById('mod-form-materi-count');
-  if (matCountField) matCountField.value = mod.Materi_Count || (courseData && courseData.materials ? courseData.materials.length : (docData && docData.files ? docData.files.length : 1));
+  if (matCountField) {
+    if (typeof mod.Materi_Count !== 'undefined' && mod.Materi_Count !== null && mod.Materi_Count !== '') {
+      matCountField.value = mod.Materi_Count;
+    } else if (isDoc && docData && docData.files && docData.files.length > 0) {
+      matCountField.value = docData.files.length;
+    } else if (courseData && courseData.materials && courseData.materials.length > 0) {
+      matCountField.value = courseData.materials.length;
+    } else {
+      matCountField.value = isDoc ? 10 : 1;
+    }
+  }
 
-  const isDoc = (mod.Tipe_Badge === 'DOKUMEN' || mod.Tipe_Badge === 'APLIKASI' || (mod.Kategori && mod.Kategori.toLowerCase() === 'dokumen'));
-  document.getElementById('mod-form-badge').value = isDoc ? 'Dokumen' : 'Kelas';
-
-  // Load Course Data
-  const courseMap = getActiveCourseEpisodesMap();
-  const courseData = courseMap[id] || courseMap['MOD-01'];
-
-  document.getElementById('mod-form-wa-name').value = (courseData && courseData.waGroupTitle) ? courseData.waGroupTitle : ('Khusus peserta ' + (mod.Judul_Modul || ''));
-  document.getElementById('mod-form-wa-link').value = (courseData && courseData.waGroupLink) ? courseData.waGroupLink : 'https://chat.whatsapp.com/';
-  document.getElementById('mod-form-summary-text').value = (courseData && courseData.summary) ? courseData.summary : (mod.Deskripsi || '');
+  // WhatsApp & Summary
+  const waNameEl = document.getElementById('mod-form-wa-name');
+  if (waNameEl) waNameEl.value = (courseData && courseData.waGroupTitle) ? courseData.waGroupTitle : ('Khusus peserta ' + (mod.Judul_Modul || ''));
+  const waLinkEl = document.getElementById('mod-form-wa-link');
+  if (waLinkEl) waLinkEl.value = (courseData && courseData.waGroupLink) ? courseData.waGroupLink : 'https://chat.whatsapp.com/';
+  const summaryEl = document.getElementById('mod-form-summary-text');
+  if (summaryEl) summaryEl.value = (courseData && courseData.summary) ? courseData.summary : (mod.Deskripsi || '');
 
   // Populate episodes
   const epBox = document.getElementById('mod-episodes-container');
@@ -4280,13 +4349,13 @@ function openEditModuleModal(id) {
     materials.forEach(mat => addMaterialRowToForm(mat));
   }
 
-  // Load Document Data
-  const docMap = getActiveDocumentFilesMap();
-  const docData = docMap[id] || docMap['MOD-02'];
-
-  document.getElementById('mod-doc-pkg-files').value = (docData && docData.totalFiles) ? (docData.totalFiles + ' berkas') : '10 berkas';
-  document.getElementById('mod-doc-pkg-format').value = (docData && docData.totalLinks) ? (docData.totalLinks + ' tautan') : '10 Dokumen';
-  document.getElementById('mod-doc-subtitle').value = (docData && docData.subtitle) ? docData.subtitle : (mod.Deskripsi || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
+  // Document fields
+  const pkgFilesEl = document.getElementById('mod-doc-pkg-files');
+  if (pkgFilesEl) pkgFilesEl.value = (docData && docData.pkgFilesText) ? docData.pkgFilesText : ((docData && docData.totalFiles) ? (docData.totalFiles + ' berkas') : '10 berkas');
+  const pkgFormatEl = document.getElementById('mod-doc-pkg-format');
+  if (pkgFormatEl) pkgFormatEl.value = (docData && docData.pkgFormatText) ? docData.pkgFormatText : '10 Dokumen';
+  const docSubEl = document.getElementById('mod-doc-subtitle');
+  if (docSubEl) docSubEl.value = (docData && docData.subtitle) ? docData.subtitle : (mod.Deskripsi || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
 
   // Populate documents
   const docContainer = document.getElementById('mod-documents-container');
@@ -4298,19 +4367,26 @@ function openEditModuleModal(id) {
     docFiles.forEach(df => addDocumentRowToForm(df));
   }
 
+  updateFormCounters();
   switchModuleEditorType(isDoc ? 'document' : 'course');
   document.getElementById('modal-module-form').classList.add('active');
 }
 
 async function saveClassroomModuleForm(e, isInline) {
-  e.preventDefault();
+  if (e && e.preventDefault) e.preventDefault();
 
   if (isInline) {
     const inlineId = 'MOD-' + Date.now().toString().slice(-4);
-    const inlineTitle = document.getElementById('inline-mod-title').value;
+    const inlineTitleInput = document.getElementById('inline-mod-title');
+    const inlineTitle = inlineTitleInput ? inlineTitleInput.value.trim() : '';
+    if (!inlineTitle) {
+      if (typeof showToast === 'function') showToast('Judul modul wajib diisi!', 'warning');
+      if (inlineTitleInput) inlineTitleInput.focus();
+      return;
+    }
     const inlineOrder = Number(document.getElementById('inline-mod-order').value || 1);
-    const inlineProduct = document.getElementById('inline-mod-product').value;
-    const inlineType = document.getElementById('inline-mod-type').value;
+    const inlineProduct = document.getElementById('inline-mod-product').value || 'GAS Pro Web App Masterclass';
+    const inlineType = document.getElementById('inline-mod-type').value || 'Video HD & Code';
     const inlineDurationText = document.getElementById('inline-mod-duration').value || '30 Menit';
     const inlineDurationNum = parseInt(inlineDurationText) || 30;
     const inlineBanner = document.getElementById('inline-mod-banner').value || './assets/modules/thumb-metode3.jpg';
@@ -4319,6 +4395,9 @@ async function saveClassroomModuleForm(e, isInline) {
     const editorType = (document.getElementById('inline-mod-editor-selected-type') ? document.getElementById('inline-mod-editor-selected-type').value : 'course');
 
     const isDoc = (editorType === 'document' || inlineType.toLowerCase().includes('dokumen') || inlineType.toLowerCase().includes('prd') || inlineProduct.toLowerCase().includes('prd'));
+
+    const customEpCount = parseInt(document.getElementById('inline-mod-episode-count') ? document.getElementById('inline-mod-episode-count').value : 0) || (isDoc ? 1 : 1);
+    const customMatCount = parseInt(document.getElementById('inline-mod-materi-count') ? document.getElementById('inline-mod-materi-count').value : 0) || (isDoc ? 10 : 1);
 
     const newMod = {
       ID_Materi: inlineId,
@@ -4333,7 +4412,9 @@ async function saveClassroomModuleForm(e, isInline) {
       Status: 'Publish',
       Deskripsi: inlineDesc,
       Thumbnail_URL: inlineBanner,
-      Foto_URL: inlineBanner
+      Foto_URL: inlineBanner,
+      Episode: customEpCount,
+      Materi_Count: customMatCount
     };
 
     if (!isDoc) {
@@ -4341,16 +4422,11 @@ async function saveClassroomModuleForm(e, isInline) {
       const inlineWaLink = (document.getElementById('inline-mod-wa-link') && document.getElementById('inline-mod-wa-link').value) ? document.getElementById('inline-mod-wa-link').value : 'https://chat.whatsapp.com/';
       const inlineSummary = (document.getElementById('inline-mod-summary-text') && document.getElementById('inline-mod-summary-text').value) ? document.getElementById('inline-mod-summary-text').value : inlineDesc;
 
-      const customEpCount = parseInt(document.getElementById('inline-mod-episode-count') ? document.getElementById('inline-mod-episode-count').value : 0) || 1;
-      const customMatCount = parseInt(document.getElementById('inline-mod-materi-count') ? document.getElementById('inline-mod-materi-count').value : 0) || 1;
-      newMod.Episode = customEpCount;
-      newMod.Materi_Count = customMatCount;
-
       const courseObj = {
         title: inlineTitle,
         shortTitle: inlineTitle.length > 45 ? (inlineTitle.slice(0, 42) + '...') : inlineTitle,
         poster: inlineBanner,
-        materialsCount: 1,
+        materialsCount: customMatCount,
         summary: inlineSummary,
         waGroupTitle: inlineWaName,
         waGroupLink: inlineWaLink,
@@ -4375,20 +4451,19 @@ async function saveClassroomModuleForm(e, isInline) {
       const courseMap = typeof getActiveCourseEpisodesMap === 'function' ? getActiveCourseEpisodesMap() : COURSE_EPISODES_MAP;
       courseMap[inlineId] = courseObj;
       COURSE_EPISODES_MAP[inlineId] = courseObj;
-      localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(courseMap));
+      try {
+        localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(courseMap));
+      } catch (err) {}
     } else {
-      const inlinePkgFiles = (document.getElementById('inline-mod-doc-pkg-files') && document.getElementById('inline-mod-doc-pkg-files').value) ? document.getElementById('inline-mod-doc-pkg-files').value : '10 berkas';
-      const inlinePkgFormat = (document.getElementById('inline-mod-doc-pkg-format') && document.getElementById('inline-mod-doc-pkg-format').value) ? document.getElementById('inline-mod-doc-pkg-format').value : '10 Dokumen';
+      const inlinePkgFiles = (document.getElementById('inline-mod-doc-pkg-files') && document.getElementById('inline-mod-doc-pkg-files').value) ? document.getElementById('inline-mod-doc-pkg-files').value : (customMatCount + ' berkas');
+      const inlinePkgFormat = (document.getElementById('inline-mod-doc-pkg-format') && document.getElementById('inline-mod-doc-pkg-format').value) ? document.getElementById('inline-mod-doc-pkg-format').value : (customMatCount + ' Dokumen');
       const inlineDocSubtitle = (document.getElementById('inline-mod-doc-subtitle') && document.getElementById('inline-mod-doc-subtitle').value) ? document.getElementById('inline-mod-doc-subtitle').value : (inlineDesc || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
-
-      newMod.Episode = 1;
-      newMod.Materi_Count = 1;
 
       const docObj = {
         title: inlineTitle,
         subtitle: inlineDocSubtitle,
         banner: inlineBanner,
-        totalFiles: 1,
+        totalFiles: customMatCount,
         totalLinks: 0,
         pkgFilesText: inlinePkgFiles,
         pkgFormatText: inlinePkgFormat,
@@ -4406,13 +4481,17 @@ async function saveClassroomModuleForm(e, isInline) {
       const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
       docMap[inlineId] = docObj;
       DOCUMENT_FILES_MAP[inlineId] = docObj;
-      localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+      try {
+        localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+      } catch (err) {}
     }
 
     if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
     STATE.modules.push(newMod);
     STATE.modules.sort((a, b) => (Number(a.Urutan) || 0) - (Number(b.Urutan) || 0));
-    localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
+    try {
+      localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
+    } catch (err) {}
 
     renderClassroomModulesAdmin();
     renderClassroomPortalModules('', 'ALL');
@@ -4420,21 +4499,36 @@ async function saveClassroomModuleForm(e, isInline) {
     const inlineBox = document.getElementById('inline-module-form-box');
     if (inlineBox) inlineBox.style.display = 'none';
 
-    showToast('Modul berhasil disimpan dan otomatis terhubung ke Buka Ruang Belajar & Akses Produk! 🚀', 'info');
+    if (typeof showToast === 'function') {
+      showToast('Modul berhasil disimpan dan otomatis terhubung ke Buka Ruang Belajar & Akses Produk! 🚀', 'info');
+    }
     return;
   }
 
+  // Modal Save Handler
   const id = document.getElementById('mod-form-id').value || ('MOD-' + Date.now().toString().slice(-4));
-  const title = document.getElementById('mod-form-title').value;
+  const titleInput = document.getElementById('mod-form-title');
+  const title = titleInput ? titleInput.value.trim() : '';
+  if (!title) {
+    if (typeof showToast === 'function') showToast('Judul modul wajib diisi!', 'warning');
+    if (titleInput) titleInput.focus();
+    return;
+  }
   const order = Number(document.getElementById('mod-form-order').value || 1);
-  const badgeType = document.getElementById('mod-form-badge').value;
+  const badgeSelect = document.getElementById('mod-form-badge');
+  const badgeType = badgeSelect ? badgeSelect.value : 'Kelas';
   const durationText = document.getElementById('mod-form-duration').value || '30 Menit';
   const durationNum = parseInt(durationText) || 30;
   const bannerUrl = document.getElementById('mod-form-banner').value || './assets/modules/thumb-metode3.jpg';
   const desc = document.getElementById('mod-form-desc').value || '';
-  const editorType = document.getElementById('mod-editor-selected-type').value;
+  const editorTypeInput = document.getElementById('mod-editor-selected-type');
+  const editorType = editorTypeInput ? editorTypeInput.value : 'course';
 
   const isDoc = (editorType === 'document' || badgeType.toLowerCase() === 'dokumen' || badgeType.toLowerCase() === 'aplikasi');
+
+  // Input episode count & materi count from manual inputs (0 - 100+)
+  const inputEpCount = parseInt(document.getElementById('mod-form-episode-count') ? document.getElementById('mod-form-episode-count').value : 0) || 0;
+  const inputMatCount = parseInt(document.getElementById('mod-form-materi-count') ? document.getElementById('mod-form-materi-count').value : 0) || 0;
 
   // Format module record for STATE.modules
   const formattedModule = {
@@ -4450,18 +4544,20 @@ async function saveClassroomModuleForm(e, isInline) {
     Status: 'Publish',
     Deskripsi: desc,
     Thumbnail_URL: bannerUrl,
-    Foto_URL: bannerUrl
+    Foto_URL: bannerUrl,
+    Episode: inputEpCount,
+    Materi_Count: inputMatCount
   };
 
-  // Process Course Curriculum & Episodes
+  // Process Course Curriculum & Episodes (Foto 1 - Buka Ruang Belajar)
   if (!isDoc) {
     const epContainer = document.getElementById('mod-episodes-container');
     const epRows = epContainer ? Array.from(epContainer.querySelectorAll('.crm-row-builder-item')) : [];
     const episodes = epRows.map((row, idx) => {
-      const epTitle = (row.querySelector('.ep-item-title') ? row.querySelector('.ep-item-title').value : '') || ('Step ' + (idx + 1));
-      const epDur = (row.querySelector('.ep-item-duration') ? row.querySelector('.ep-item-duration').value : '') || '10:00';
-      const epUrl = (row.querySelector('.ep-item-url') ? row.querySelector('.ep-item-url').value : '') || '';
-      const epSum = (row.querySelector('.ep-item-summary') ? row.querySelector('.ep-item-summary').value : '') || '';
+      const epTitle = (row.querySelector('.ep-item-title') ? row.querySelector('.ep-item-title').value.trim() : '') || ('Step ' + (idx + 1));
+      const epDur = (row.querySelector('.ep-item-duration') ? row.querySelector('.ep-item-duration').value.trim() : '') || '10:00';
+      const epUrl = (row.querySelector('.ep-item-url') ? row.querySelector('.ep-item-url').value.trim() : '') || '';
+      const epSum = (row.querySelector('.ep-item-summary') ? row.querySelector('.ep-item-summary').value.trim() : '') || '';
       return {
         title: epTitle,
         duration: epDur,
@@ -4474,9 +4570,9 @@ async function saveClassroomModuleForm(e, isInline) {
     const matContainer = document.getElementById('mod-materials-container');
     const matRows = matContainer ? Array.from(matContainer.querySelectorAll('.crm-row-builder-item')) : [];
     const materials = matRows.map(row => {
-      const matName = (row.querySelector('.mat-item-name') ? row.querySelector('.mat-item-name').value : '') || 'Aset Modul';
-      const matType = (row.querySelector('.mat-item-type') ? row.querySelector('.mat-item-type').value : '') || 'Source Code';
-      const matUrl = (row.querySelector('.mat-item-url') ? row.querySelector('.mat-item-url').value : '') || 'https://drive.google.com';
+      const matName = (row.querySelector('.mat-item-name') ? row.querySelector('.mat-item-name').value.trim() : '') || 'Aset Modul';
+      const matType = (row.querySelector('.mat-item-type') ? row.querySelector('.mat-item-type').value.trim() : '') || 'Source Code';
+      const matUrl = (row.querySelector('.mat-item-url') ? row.querySelector('.mat-item-url').value.trim() : '') || 'https://drive.google.com';
       return {
         name: matName,
         type: matType,
@@ -4484,43 +4580,40 @@ async function saveClassroomModuleForm(e, isInline) {
       };
     });
 
-    const waName = document.getElementById('mod-form-wa-name').value || ('Khusus peserta ' + title);
-    const waLink = document.getElementById('mod-form-wa-link').value || 'https://chat.whatsapp.com/';
-    const summaryText = document.getElementById('mod-form-summary-text').value || desc;
-
-    const inputEpCount = parseInt(document.getElementById('mod-form-episode-count') ? document.getElementById('mod-form-episode-count').value : 0) || episodes.length || 1;
-    const inputMatCount = parseInt(document.getElementById('mod-form-materi-count') ? document.getElementById('mod-form-materi-count').value : 0) || materials.length || 1;
-    formattedModule.Episode = inputEpCount;
-    formattedModule.Materi_Count = inputMatCount;
+    const waName = (document.getElementById('mod-form-wa-name') && document.getElementById('mod-form-wa-name').value) ? document.getElementById('mod-form-wa-name').value : ('Khusus peserta ' + title);
+    const waLink = (document.getElementById('mod-form-wa-link') && document.getElementById('mod-form-wa-link').value) ? document.getElementById('mod-form-wa-link').value : 'https://chat.whatsapp.com/';
+    const summaryText = (document.getElementById('mod-form-summary-text') && document.getElementById('mod-form-summary-text').value) ? document.getElementById('mod-form-summary-text').value : desc;
 
     const courseObj = {
       title: title,
       shortTitle: title.length > 45 ? (title.slice(0, 42) + '...') : title,
       poster: bannerUrl,
-      materialsCount: materials.length,
+      materialsCount: inputMatCount || materials.length || 1,
       summary: summaryText,
       waGroupTitle: waName,
       waGroupLink: waLink,
       episodes: episodes.length > 0 ? episodes : [
-        { title: 'Step 1 - Pengenalan Kelas', duration: '08:00', summary: summaryText }
+        { title: 'Step 1 - ' + title, duration: durationText, summary: summaryText }
       ],
       materials: materials
     };
 
-    const courseMap = getActiveCourseEpisodesMap();
+    const courseMap = typeof getActiveCourseEpisodesMap === 'function' ? getActiveCourseEpisodesMap() : COURSE_EPISODES_MAP;
     courseMap[id] = courseObj;
     COURSE_EPISODES_MAP[id] = courseObj;
-    localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(courseMap));
+    try {
+      localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(courseMap));
+    } catch (err) {}
   } else {
-    // Process Documents & PRD
+    // Process Documents & PRD (Foto 2 - Akses Produk)
     const docContainer = document.getElementById('mod-documents-container');
     const docRows = docContainer ? Array.from(docContainer.querySelectorAll('.crm-row-builder-item')) : [];
-    const docFiles = docRows.map(row => {
-      const dName = (row.querySelector('.doc-item-name') ? row.querySelector('.doc-item-name').value : '') || 'Dokumen PRD';
-      const dFilename = (row.querySelector('.doc-item-filename') ? row.querySelector('.doc-item-filename').value : '') || 'PRD.md';
-      const dSize = (row.querySelector('.doc-item-size') ? row.querySelector('.doc-item-size').value : '') || '0.01 MB';
-      const dUrl = (row.querySelector('.doc-item-url') ? row.querySelector('.doc-item-url').value : '') || 'https://drive.google.com';
-      const dContent = (row.querySelector('.doc-item-content') ? row.querySelector('.doc-item-content').value : '') || ('# ' + dName);
+    const docFiles = docRows.map((row, idx) => {
+      const dName = (row.querySelector('.doc-item-name') ? row.querySelector('.doc-item-name').value.trim() : '') || ('Dokumen PRD ' + (idx + 1));
+      const dFilename = (row.querySelector('.doc-item-filename') ? row.querySelector('.doc-item-filename').value.trim() : '') || ('PRD_' + (idx + 1) + '.md');
+      const dSize = (row.querySelector('.doc-item-size') ? row.querySelector('.doc-item-size').value.trim() : '') || '0.01 MB';
+      const dUrl = (row.querySelector('.doc-item-url') ? row.querySelector('.doc-item-url').value.trim() : '') || 'https://drive.google.com';
+      const dContent = (row.querySelector('.doc-item-content') ? row.querySelector('.doc-item-content').value.trim() : '') || ('# ' + dName);
       return {
         name: dName,
         filename: dFilename,
@@ -4530,29 +4623,35 @@ async function saveClassroomModuleForm(e, isInline) {
       };
     });
 
-    const pkgFiles = document.getElementById('mod-doc-pkg-files').value || (docFiles.length + ' berkas');
-    const pkgFormat = document.getElementById('mod-doc-pkg-format').value || (docFiles.length + ' Dokumen');
-    const subTitle = document.getElementById('mod-doc-subtitle').value || desc;
-
-    const inputDocMatCount = parseInt(document.getElementById('mod-form-materi-count') ? document.getElementById('mod-form-materi-count').value : 0) || docFiles.length || 10;
-    formattedModule.Episode = 1;
-    formattedModule.Materi_Count = inputDocMatCount;
+    const pkgFiles = (document.getElementById('mod-doc-pkg-files') && document.getElementById('mod-doc-pkg-files').value) ? document.getElementById('mod-doc-pkg-files').value : ((inputMatCount || docFiles.length || 10) + ' berkas');
+    const pkgFormat = (document.getElementById('mod-doc-pkg-format') && document.getElementById('mod-doc-pkg-format').value) ? document.getElementById('mod-doc-pkg-format').value : ((inputMatCount || docFiles.length || 10) + ' Dokumen');
+    const subTitle = (document.getElementById('mod-doc-subtitle') && document.getElementById('mod-doc-subtitle').value) ? document.getElementById('mod-doc-subtitle').value : (desc || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
 
     const docObj = {
       title: title,
       subtitle: subTitle,
       banner: bannerUrl,
-      totalFiles: docFiles.length,
+      totalFiles: inputMatCount || docFiles.length || 10,
       totalLinks: 0,
       pkgFilesText: pkgFiles,
       pkgFormatText: pkgFormat,
-      files: docFiles
+      files: docFiles.length > 0 ? docFiles : [
+        {
+          name: title,
+          filename: 'PRD_' + id + '.md',
+          size: '0.01 MB',
+          url: 'https://drive.google.com',
+          content: '# PRD: ' + title + '\n\n' + (desc || 'Silahkan unduh berkas PRD dan dokumen referensi.')
+        }
+      ]
     };
 
-    const docMap = getActiveDocumentFilesMap();
+    const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
     docMap[id] = docObj;
     DOCUMENT_FILES_MAP[id] = docObj;
-    localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+    try {
+      localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+    } catch (err) {}
   }
 
   // Update STATE.modules
@@ -4565,7 +4664,9 @@ async function saveClassroomModuleForm(e, isInline) {
   }
 
   STATE.modules.sort((a, b) => (Number(a.Urutan) || 0) - (Number(b.Urutan) || 0));
-  localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
+  try {
+    localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
+  } catch (err) {}
 
   // Sync non-blocking ke GAS jika backend tersedia
   if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
@@ -4580,14 +4681,16 @@ async function saveClassroomModuleForm(e, isInline) {
   renderClassroomPortalModules('', 'ALL');
 
   // If this module is currently opened in classroom, update the view live
-  if (activeCourseData && activeCourseData.id === id) {
+  if (typeof activeCourseData !== 'undefined' && activeCourseData && activeCourseData.id === id) {
     openCourseClassroomView(id);
-  } else if (activeDocData && activeDocData.id === id) {
+  } else if (typeof activeDocData !== 'undefined' && activeDocData && activeDocData.id === id) {
     openDocumentPackageView(id);
   }
 
   closeAllModals();
-  showToast('Modul berhasil diperbarui! Perubahan langsung aktif di Dashboard Ruang Belajar & Akses Produk 🚀', 'info');
+  if (typeof showToast === 'function') {
+    showToast('Modul berhasil disimpan dan terhubung langsung ke Ruang Belajar & Akses Produk! 🚀', 'info');
+  }
 }
 
 function deleteClassroomModuleAdmin(id) {

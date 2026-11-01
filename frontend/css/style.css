@@ -6257,3 +6257,33 @@ input:checked + .switch-slider:before {
     gap: 16px !important;
   }
 }
+
+
+/* ==========================================================================
+   MOBILE RESPONSIVE ENHANCEMENTS FOR CRM MODULE EDITOR & MICRO BUTTONS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .crm-meditor-body div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .crm-module-editor-dialog {
+    width: 96% !important;
+    max-height: 94vh !important;
+    margin: 8px auto !important;
+    border-radius: 16px !important;
+  }
+  .crm-meditor-header {
+    padding: 14px 16px !important;
+  }
+  .crm-meditor-body {
+    padding: 14px 16px !important;
+  }
+  .crm-meditor-footer {
+    padding: 12px 16px !important;
+  }
+  .btn-micro-edit, .btn-micro-save {
+    padding: 3px 8px !important;
+    font-size: 11px !important;
+  }
+}

@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261101-02">
+  <link rel="stylesheet" href="css/style.css?v=20261101-03">
 </head>
 <body>
 
@@ -2033,7 +2033,7 @@
                 <button type="button" class="btn-secondary" style="padding:6px 12px; font-size:12px; border-radius:8px;" onclick="toggleInlineModuleForm()">Tutup ✕</button>
               </div>
 
-              <form onsubmit="saveClassroomModuleForm(event, true)">
+              <form novalidate onsubmit="saveClassroomModuleForm(event, true)">
                 <input type="hidden" id="inline-mod-editor-selected-type" value="course">
 
                 <!-- Type Switcher Pill -->
@@ -2134,17 +2134,29 @@
                 <!-- Row 4: URL Video / Drive Utama -->
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
                     <div>
-                      <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Video / Episode (🎬)</label>
-                      <input type="number" id="inline-mod-episode-count" class="form-input" placeholder="Contoh: 6" min="1" value="1">
+                      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Jumlah Video / Episode (🎬)</label>
+                        <div style="display:flex; gap:4px;">
+                          <button type="button" class="btn-micro-edit" onclick="enableManualCountInput('episode', true)" title="Input manual jumlah episode (0-100+)">✏️ Edit</button>
+                          <button type="button" class="btn-micro-save" onclick="saveManualCountInput('episode', true)" title="Simpan jumlah episode">💾 Save</button>
+                        </div>
+                      </div>
+                      <input type="number" id="inline-mod-episode-count" class="form-input" placeholder="Contoh: 6 (0-100+)" min="0" max="1000" step="1" value="1">
                     </div>
                     <div>
-                      <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Materi / File (📚)</label>
-                      <input type="number" id="inline-mod-materi-count" class="form-input" placeholder="Contoh: 27" min="1" value="1">
+                      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Jumlah Materi / File (📚)</label>
+                        <div style="display:flex; gap:4px;">
+                          <button type="button" class="btn-micro-edit" onclick="enableManualCountInput('materi', true)" title="Input manual jumlah materi/file (0-100+)">✏️ Edit</button>
+                          <button type="button" class="btn-micro-save" onclick="saveManualCountInput('materi', true)" title="Simpan jumlah materi/file">💾 Save</button>
+                        </div>
+                      </div>
+                      <input type="number" id="inline-mod-materi-count" class="form-input" placeholder="Contoh: 27 (0-100+)" min="0" max="1000" step="1" value="1">
                     </div>
                   </div>
                   <div class="form-group" style="margin-bottom:12px;">
                   <label class="form-label" style="font-size:11px; font-weight:700;">Tautan Video / Google Drive Materi *</label>
-                  <input type="url" id="inline-mod-url" required class="form-input" placeholder="https://drive.google.com/drive/folders/... atau https://youtube.com/embed/...">
+                  <input type="text" id="inline-mod-url" class="form-input" placeholder="https://drive.google.com/drive/folders/... atau https://youtube.com/embed/...">
                 </div>
 
                 <!-- Section Khusus Kursus Video (Inline) -->
@@ -2192,11 +2204,11 @@
                 <!-- Deskripsi Singkat -->
                 <div class="form-group" style="margin-bottom:14px;">
                   <label class="form-label" style="font-size:11px; font-weight:700;">Deskripsi Singkat / Rangkuman Modul</label>
-                  <input type="text" id="inline-mod-desc" required class="form-input" placeholder="Pelajari struktur dasar backend dan frontend modern tanpa biaya bulanan.">
+                  <input type="text" id="inline-mod-desc" class="form-input" placeholder="Pelajari struktur dasar backend dan frontend modern tanpa biaya bulanan.">
                 </div>
 
                 <!-- Submit Button Renamed as requested -->
-                <button type="submit" id="btn-save-inline-mod" class="shimmer-btn" style="width:100%; padding:13px 20px; font-size:14px; font-weight:800; border-radius:12px;">
+                <button type="button" onclick="saveClassroomModuleForm(event, true)" id="btn-save-inline-mod" class="shimmer-btn" style="width:100%; padding:13px 20px; font-size:14px; font-weight:800; border-radius:12px;">
                   Simpan &amp; Hubungkan ke Dashboard Ruang Belajar &amp; Akses Produk 🚀
                 </button>
               </form>
@@ -2881,7 +2893,7 @@
       </div>
       
       <!-- Scrollable Modal Form Body -->
-      <form onsubmit="saveClassroomModuleForm(event, false)" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+      <form novalidate onsubmit="saveClassroomModuleForm(event, false)" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
         <div class="crm-meditor-body">
           <input type="hidden" id="mod-form-id">
           <input type="hidden" id="mod-editor-selected-type" value="course">
@@ -2944,15 +2956,27 @@
               </div>
             </div>
 
-            <!-- Jumlah Video & Materi Explicit Inputs for Card Display -->
+            <!-- Jumlah Video & Materi Explicit Inputs for Card Display with Micro Edit & Save -->
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
               <div>
-                <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Video / Episode (🎬)</label>
-                <input type="number" id="mod-form-episode-count" class="form-input" placeholder="Contoh: 6" min="1" value="1">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Jumlah Video / Episode (🎬)</label>
+                  <div style="display:flex; gap:4px;">
+                    <button type="button" class="btn-micro-edit" onclick="enableManualCountInput('episode', false)" title="Input manual jumlah episode (0-100+)">✏️ Edit</button>
+                    <button type="button" class="btn-micro-save" onclick="saveManualCountInput('episode', false)" title="Simpan jumlah episode">💾 Save</button>
+                  </div>
+                </div>
+                <input type="number" id="mod-form-episode-count" class="form-input" placeholder="Contoh: 6 (0-100+)" min="0" max="1000" step="1" value="1">
               </div>
               <div>
-                <label class="form-label" style="font-size:11px; font-weight:700;">Jumlah Materi / File (📚)</label>
-                <input type="number" id="mod-form-materi-count" class="form-input" placeholder="Contoh: 27" min="1" value="1">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Jumlah Materi / File (📚)</label>
+                  <div style="display:flex; gap:4px;">
+                    <button type="button" class="btn-micro-edit" onclick="enableManualCountInput('materi', false)" title="Input manual jumlah materi/file (0-100+)">✏️ Edit</button>
+                    <button type="button" class="btn-micro-save" onclick="saveManualCountInput('materi', false)" title="Simpan jumlah materi/file">💾 Save</button>
+                  </div>
+                </div>
+                <input type="number" id="mod-form-materi-count" class="form-input" placeholder="Contoh: 27 (0-100+)" min="0" max="1000" step="1" value="1">
               </div>
             </div>
 
@@ -2976,7 +3000,7 @@
               </div>
               <div>
                 <label class="form-label" style="font-size:11px; font-weight:700;">Tautan Link WhatsApp Group</label>
-                <input type="url" id="mod-form-wa-link" class="form-input" placeholder="https://chat.whatsapp.com/... atau https://wa.me/...">
+                <input type="text" inputmode="url" id="mod-form-wa-link" class="form-input" placeholder="https://chat.whatsapp.com/... atau https://wa.me/...">
               </div>
             </div>
 
@@ -3058,7 +3082,7 @@
 
         <!-- Sticky Footer Modal with Renamed Action Button -->
         <div class="crm-meditor-footer">
-          <button type="submit" id="btn-save-module-modal" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px; font-weight:800;">
+          <button type="button" onclick="saveClassroomModuleForm(event, false)" id="btn-save-module-modal" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px; font-weight:800;">
             Simpan &amp; Hubungkan ke Dashboard Ruang Belajar &amp; Akses Produk 🚀
           </button>
           <div style="text-align:center; font-size:11.5px; color:#64748B;">
@@ -3317,8 +3341,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261101-02"></script>
-  <script src="js/app.js?v=20261101-02"></script>
+  <script src="js/config.js?v=20261101-03"></script>
+  <script src="js/app.js?v=20261101-03"></script>
 
   <!-- Modal Reader & Salin Dokumen PRD -->
   <div class="modal-overlay" id="modal-doc-reader">
