@@ -4099,6 +4099,128 @@ function saveManualDocHeading(type, isInline) {
   }
 }
 
+
+function enableEditReaderBadge() {
+  const displayEl = document.getElementById('modal-doc-badge');
+  const inputEl = document.getElementById('modal-doc-badge-input');
+  const saveBtn = document.getElementById('btn-save-reader-badge');
+  if (displayEl && inputEl) {
+    displayEl.style.display = 'none';
+    inputEl.style.display = 'inline-block';
+    if (saveBtn) saveBtn.style.display = 'inline-flex';
+    inputEl.removeAttribute('readonly');
+    inputEl.focus();
+    inputEl.select();
+  }
+}
+
+function saveEditReaderBadge() {
+  const displayEl = document.getElementById('modal-doc-badge');
+  const inputEl = document.getElementById('modal-doc-badge-input');
+  const saveBtn = document.getElementById('btn-save-reader-badge');
+  if (displayEl && inputEl) {
+    const val = inputEl.value.trim() || 'Dokumen';
+    inputEl.value = val;
+    displayEl.textContent = val;
+    displayEl.style.display = 'inline-block';
+    inputEl.style.display = 'none';
+    if (saveBtn) saveBtn.style.display = 'none';
+
+    // Persist badge to activeDocData, file item, and localStorage
+    if (activeDocData) {
+      activeDocData.badge = val;
+      if (activeDocData.files && typeof activeDocFileIndex !== 'undefined' && activeDocData.files[activeDocFileIndex]) {
+        activeDocData.files[activeDocFileIndex].badge = val;
+      }
+      const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
+      if (activeDocData.id) {
+        docMap[activeDocData.id] = activeDocData;
+        try {
+          localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+        } catch(e) {}
+      }
+    }
+    if (typeof showToast === 'function') {
+      showToast('Badge "' + val + '" berhasil disimpan! 💾', 'info');
+    }
+  }
+}
+
+function enableEditReaderFilename() {
+  const displayEl = document.getElementById('modal-doc-meta-filename');
+  const inputEl = document.getElementById('modal-doc-meta-filename-input');
+  const saveBtn = document.getElementById('btn-save-reader-filename');
+  if (displayEl && inputEl) {
+    displayEl.style.display = 'none';
+    inputEl.style.display = 'inline-block';
+    if (saveBtn) saveBtn.style.display = 'inline-flex';
+    inputEl.removeAttribute('readonly');
+    inputEl.focus();
+    inputEl.select();
+  }
+}
+
+function saveEditReaderFilename() {
+  const displayEl = document.getElementById('modal-doc-meta-filename');
+  const inputEl = document.getElementById('modal-doc-meta-filename-input');
+  const saveBtn = document.getElementById('btn-save-reader-filename');
+  if (displayEl && inputEl) {
+    let val = inputEl.value.trim() || 'Dokumen.md';
+    if (!val.includes('.')) val += '.md';
+    inputEl.value = val;
+    displayEl.textContent = val;
+    displayEl.style.display = 'inline';
+    inputEl.style.display = 'none';
+    if (saveBtn) saveBtn.style.display = 'none';
+
+    // Persist filename to activeDocData and localStorage
+    if (activeDocData && activeDocData.files && typeof activeDocFileIndex !== 'undefined' && activeDocData.files[activeDocFileIndex]) {
+      activeDocData.files[activeDocFileIndex].filename = val;
+      const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
+      if (activeDocData.id) {
+        docMap[activeDocData.id] = activeDocData;
+        try {
+          localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+        } catch(e) {}
+      }
+    }
+    if (typeof showToast === 'function') {
+      showToast('Nama berkas "' + val + '" berhasil disimpan! 💾', 'info');
+    }
+  }
+}
+
+function enableManualDocBadge(isInline) {
+  const elId = isInline ? 'inline-mod-doc-badge-label' : 'mod-doc-badge-label';
+  const input = document.getElementById(elId);
+  if (!input) return;
+  input.removeAttribute('readonly');
+  input.focus();
+  input.select();
+  input.style.borderColor = '#2563EB';
+  input.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.15)';
+  if (typeof showToast === 'function') {
+    showToast('Silakan edit Badge Dokumen (muncul di Header Reader Dokumen) ✏️', 'info');
+  }
+}
+
+function saveManualDocBadge(isInline) {
+  const elId = isInline ? 'inline-mod-doc-badge-label' : 'mod-doc-badge-label';
+  const input = document.getElementById(elId);
+  if (!input) return;
+  const val = input.value.trim() || 'Dokumen Social Influence';
+  input.value = val;
+  input.style.borderColor = '#10B981';
+  input.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+  setTimeout(() => {
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
+  }, 1200);
+  if (typeof showToast === 'function') {
+    showToast('Badge Dokumen "' + val + '" berhasil disimpan! 💾', 'info');
+  }
+}
+
 function getActiveCourseEpisodesMap() {
   try {
     const saved = localStorage.getItem('etalaseku_course_episodes_map');
@@ -4420,6 +4542,11 @@ function openEditModuleModal(id) {
   if (listHeadingInput) listHeadingInput.value = curListTitle;
 
   // Document fields
+  const docBadgeEl = document.getElementById('mod-doc-badge-label');
+  if (docBadgeEl) {
+    docBadgeEl.value = (docData && docData.badge) ? docData.badge : ('Dokumen ' + (mod.Judul_Modul || 'Social Influence'));
+  }
+
   const pkgFilesEl = document.getElementById('mod-doc-pkg-files');
   if (pkgFilesEl) pkgFilesEl.value = (docData && docData.pkgFilesText) ? docData.pkgFilesText : ((docData && docData.totalFiles) ? (docData.totalFiles + ' berkas') : '10 berkas');
   const pkgFormatEl = document.getElementById('mod-doc-pkg-format');
@@ -4529,10 +4656,15 @@ async function saveClassroomModuleForm(e, isInline) {
       const inlinePkgFormat = (document.getElementById('inline-mod-doc-pkg-format') && document.getElementById('inline-mod-doc-pkg-format').value) ? document.getElementById('inline-mod-doc-pkg-format').value : (customMatCount + ' Dokumen');
       const inlineDocSubtitle = (document.getElementById('inline-mod-doc-subtitle') && document.getElementById('inline-mod-doc-subtitle').value) ? document.getElementById('inline-mod-doc-subtitle').value : (inlineDesc || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
 
+      const cleanInlineName = inlineTitle.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
+      const inlineBadgeInput = document.getElementById('inline-mod-doc-badge-label');
+      const inlineBadgeVal = inlineBadgeInput ? inlineBadgeInput.value.trim() : ('Dokumen ' + inlineTitle);
+
       const docObj = {
         title: inlineTitle,
         subtitle: inlineDocSubtitle,
         banner: inlineBanner,
+        badge: inlineBadgeVal || ('Dokumen ' + inlineTitle),
         totalFiles: customMatCount,
         totalLinks: 0,
         pkgFilesText: inlinePkgFiles,
@@ -4540,10 +4672,11 @@ async function saveClassroomModuleForm(e, isInline) {
         files: [
           {
             name: inlineTitle,
-            filename: 'PRD_' + inlineId + '.md',
+            filename: 'Dokumen_' + cleanInlineName + '.md',
+            badge: inlineBadgeVal || ('Dokumen ' + inlineTitle),
             size: '0.01 MB',
             url: inlineUrl,
-            content: '# PRD: ' + inlineTitle + '\n\n## 1. Ringkasan Eksekutif\n' + (inlineDesc || 'Dokumen spesifikasi teknis dan implementasi produk.') + '\n\n## 2. Fitur Utama\n- Skema Database Google Sheets\n- Endpoint REST API Headless\n- Frontend Terpisah'
+            content: '# Dokumen: ' + inlineTitle + '\n\n## 1. Ringkasan Eksekutif\n' + (inlineDesc || 'Dokumen materi, panduan teknis, dan implementasi referensi lengkap.') + '\n\n## 2. Poin Utama Pembelajaran & Berkas\n- Modul Pembelajaran Terverifikasi\n- Repositori dan Berkas Referensi\n- Panduan Implementasi Langkah demi Langkah'
           }
         ]
       };
@@ -4712,13 +4845,15 @@ async function saveClassroomModuleForm(e, isInline) {
       totalLinks: 0,
       pkgFilesText: pkgFiles,
       pkgFormatText: pkgFormat,
+      badge: (document.getElementById('mod-doc-badge-label') ? document.getElementById('mod-doc-badge-label').value.trim() : '') || ('Dokumen ' + title),
       files: docFiles.length > 0 ? docFiles : [
         {
           name: title,
-          filename: 'PRD_' + id + '.md',
+          filename: 'Dokumen_' + title.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_') + '.md',
+          badge: (document.getElementById('mod-doc-badge-label') ? document.getElementById('mod-doc-badge-label').value.trim() : '') || ('Dokumen ' + title),
           size: '0.01 MB',
           url: 'https://drive.google.com',
-          content: '# PRD: ' + title + '\n\n' + (desc || 'Silahkan unduh berkas PRD dan dokumen referensi.')
+          content: '# Dokumen: ' + title + '\n\n## 1. Ringkasan Eksekutif\n' + (desc || 'Dokumen materi, panduan teknis, dan implementasi referensi lengkap.') + '\n\n## 2. Poin Utama Pembelajaran & Berkas\n- Modul Pembelajaran Terverifikasi\n- Repositori dan Berkas Referensi\n- Panduan Implementasi Langkah demi Langkah'
         }
       ]
     };
@@ -6354,13 +6489,41 @@ function openDocReaderModal(idx) {
   const file = activeDocData.files[idx];
 
   const titleEl = document.getElementById('modal-doc-title');
-  if (titleEl) titleEl.textContent = file.name;
+  if (titleEl) titleEl.textContent = file.name || activeDocData.title;
 
-  const metaEl = document.getElementById('modal-doc-meta');
-  if (metaEl) metaEl.textContent = file.filename + ' • ' + file.size + ' • Siap disalin';
+  // Badge handling: default to custom badge or 'Dokumen ' + title (e.g. Dokumen Social Influence)
+  const badgeEl = document.getElementById('modal-doc-badge');
+  const badgeInput = document.getElementById('modal-doc-badge-input');
+  let badgeVal = file.badge || activeDocData.badge;
+  if (!badgeVal || badgeVal === 'DOKUMEN PRD' || badgeVal.toLowerCase().includes('prd')) {
+    badgeVal = 'Dokumen ' + (activeDocData.title || file.name || 'Social Influence');
+  }
+  if (badgeEl) badgeEl.textContent = badgeVal;
+  if (badgeInput) badgeInput.value = badgeVal;
 
+  // Filename handling: clean filename without hardcoded PRD_
+  let rawFilename = file.filename || '';
+  if (!rawFilename || rawFilename.startsWith('PRD_')) {
+    const cleanName = (file.name || activeDocData.title || 'Dokumen').replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
+    rawFilename = 'Dokumen_' + cleanName + '.md';
+    file.filename = rawFilename;
+  }
+  const filenameEl = document.getElementById('modal-doc-meta-filename');
+  const filenameInput = document.getElementById('modal-doc-meta-filename-input');
+  if (filenameEl) filenameEl.textContent = rawFilename;
+  if (filenameInput) filenameInput.value = rawFilename;
+
+  const sizeEl = document.getElementById('modal-doc-meta-size');
+  if (sizeEl) sizeEl.textContent = file.size || '0.01 MB';
+
+  const driveLink = document.getElementById('modal-doc-drive-link');
+  if (driveLink && file.url) driveLink.href = file.url;
+
+  let bodyContent = file.content || ('# Dokumen: ' + (file.name || activeDocData.title) + '\n\n## 1. Ringkasan Eksekutif\nDokumen referensi resmi siap digunakan.');
+  // Clean up any old '# PRD:' to '# Dokumen:'
+  bodyContent = bodyContent.replace(/^#\s*PRD:\s*/i, '# Dokumen: ');
   const bodyEl = document.getElementById('modal-doc-body');
-  if (bodyEl) bodyEl.textContent = file.content || ('# ' + file.name + '\n\nDokumen referensi resmi siap digunakan.');
+  if (bodyEl) bodyEl.textContent = bodyContent;
 
   const modal = document.getElementById('modal-doc-reader');
   if (modal) modal.classList.add('active');
@@ -6373,7 +6536,7 @@ function copyActiveDocContent() {
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
-      showToast('📋 Seluruh teks dokumen PRD berhasil disalin ke clipboard!', 'success', 3000);
+      showToast('📋 Seluruh teks dokumen berhasil disalin ke clipboard!', 'success', 3000);
     }).catch(() => {
       fallbackCopyText(text);
     });

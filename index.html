@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261101-04">
+  <link rel="stylesheet" href="css/style.css?v=20261101-05">
 </head>
 <body>
 
@@ -3050,6 +3050,20 @@
                 <span id="mod-doc-sec-heading-display">📄 Paket Dokumen &amp; Berkas</span>
                 <input type="text" id="mod-doc-sec-heading-input" class="form-input" style="display:none; max-width:260px; padding:3px 8px; font-size:12px; font-weight:700;" value="Paket Dokumen &amp; Berkas">
               </div>
+
+            <!-- Badge / Penamaan Dokumen di Reader -->
+            <div style="margin-bottom:12px; background:#F8FAFC; border:1px solid #E2E8F0; padding:10px 14px; border-radius:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Label / Badge Dokumen (Muncul di Header Reader Dokumen)</label>
+                <div style="display:flex; gap:4px;">
+                  <button type="button" class="btn-micro-edit" onclick="enableManualDocBadge(false)" title="Edit Badge Dokumen">✏️ Edit</button>
+                  <button type="button" class="btn-micro-save" onclick="saveManualDocBadge(false)" title="Simpan Badge">💾 Save</button>
+                </div>
+              </div>
+              <input type="text" id="mod-doc-badge-label" class="form-input" placeholder="Contoh: Dokumen Social Influence" value="Dokumen Social Influence">
+            </div>
+
+            
               <div style="display:flex; gap:4px;">
                 <button type="button" class="btn-micro-edit" onclick="enableManualDocHeading('sec-heading', false)" title="Edit penamaan Paket Dokumen & Berkas">✏️ Edit</button>
                 <button type="button" class="btn-micro-save" onclick="saveManualDocHeading('sec-heading', false)" title="Simpan penamaan">💾 Save</button>
@@ -3357,35 +3371,63 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261101-04"></script>
-  <script src="js/app.js?v=20261101-04"></script>
+  <script src="js/config.js?v=20261101-05"></script>
+  <script src="js/app.js?v=20261101-05"></script>
 
   <!-- Modal Reader & Salin Dokumen PRD -->
   <div class="modal-overlay" id="modal-doc-reader">
-    <div class="modal-card compact-modal" style="max-width:760px; max-height:88vh; display:flex; flex-direction:column; text-align:left; padding:0; border-radius:20px; overflow:hidden;">
-      <div style="padding:18px 24px; background:#0F172A; color:#FFFFFF; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1);">
-        <div style="min-width:0;">
-          <span style="font-size:11px; font-weight:800; background:#2563EB; color:#FFFFFF; padding:3px 8px; border-radius:6px; letter-spacing:0.5px;">DOKUMEN PRD</span>
-          <h3 id="modal-doc-title" style="font-size:16px; font-weight:800; margin:4px 0 0; color:#FFFFFF; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Judul Dokumen</h3>
+    <div class="modal-card doc-reader-dialog">
+      <!-- Header Modal: Deep Midnight Indigo (#1E1B4B) with Warm Pastel Tech motif -->
+      <div class="doc-reader-header">
+        <div style="min-width:0; flex:1;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:5px;">
+            <span id="modal-doc-badge" class="doc-reader-badge">
+              Dokumen Social Influence
+            </span>
+            <input type="text" id="modal-doc-badge-input" class="form-input" style="display:none; max-width:240px; padding:3px 8px; font-size:11px; font-weight:700; background:#FFFFFF; color:#1E1B4B; border-radius:6px;" value="Dokumen Social Influence">
+            <button type="button" class="btn-micro-edit" onclick="enableEditReaderBadge()" style="padding:2px 7px; font-size:10.5px; background:rgba(255,255,255,0.15); color:#FFFFFF; border:1px solid rgba(255,255,255,0.3);" title="Edit Badge Dokumen">✏️ Edit</button>
+            <button type="button" class="btn-micro-save" id="btn-save-reader-badge" onclick="saveEditReaderBadge()" style="display:none; padding:2px 7px; font-size:10.5px;" title="Simpan Badge">💾 Save</button>
+          </div>
+          <h3 id="modal-doc-title" class="doc-reader-title">
+            Social Influence
+          </h3>
         </div>
-        <button class="modal-close-btn" onclick="closeAllModals()" style="color:#94A3B8; font-size:24px; background:transparent; border:none; cursor:pointer;">&times;</button>
+        <button class="modal-close-btn" onclick="closeAllModals()" style="color:#94A3B8; font-size:24px; background:transparent; border:none; cursor:pointer; padding:4px 8px;" title="Tutup">&times;</button>
       </div>
-      <div style="padding:14px 24px; background:#F8FAFC; border-bottom:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <span style="font-size:12px; color:#64748B;" id="modal-doc-meta">20261021_150037_PRD-6-TOKO.md • 0.01 MB</span>
-        <div style="display:flex; gap:8px;">
-          <button class="shimmer-btn" onclick="copyActiveDocContent()" style="padding:8px 16px; font-size:12px; gap:6px; background:#2563EB;">
+
+      <!-- Action & Meta Bar: Warm Cream Surface (#FBF9F5) -->
+      <div class="doc-reader-meta-bar">
+        <div class="doc-reader-meta-info">
+          <span id="modal-doc-meta-filename" class="doc-reader-filename">Dokumen_Social_Influence.md</span>
+          <input type="text" id="modal-doc-meta-filename-input" class="form-input" style="display:none; max-width:260px; padding:3px 8px; font-size:11.5px; font-weight:700; font-family:'Courier New', monospace;" value="Dokumen_Social_Influence.md">
+          <div style="display:inline-flex; gap:3px;">
+            <button type="button" class="btn-micro-edit" onclick="enableEditReaderFilename()" title="Edit Nama File Dokumen">✏️ Edit</button>
+            <button type="button" class="btn-micro-save" id="btn-save-reader-filename" onclick="saveEditReaderFilename()" style="display:none;" title="Simpan Nama File">💾 Save</button>
+          </div>
+          <span style="color:#CBD5E1;">•</span>
+          <span id="modal-doc-meta-size">0.01 MB</span>
+          <span style="color:#CBD5E1;">•</span>
+          <span style="color:#10B981; font-weight:700;">● Siap disalin</span>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="shimmer-btn doc-reader-btn-copy" onclick="copyActiveDocContent()">
             <span>📋</span> Salin Seluruh Teks Dokumen
           </button>
-          <a href="https://drive.google.com" id="modal-doc-drive-link" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding:8px 14px; font-size:12px; text-decoration:none;">
+          <a href="https://drive.google.com" id="modal-doc-drive-link" target="_blank" rel="noopener noreferrer" class="doc-reader-btn-drive">
             <span>📁</span> Buka Folder Drive
           </a>
         </div>
       </div>
-      <div style="flex:1; overflow-y:auto; padding:20px 24px; background:#FFFFFF;">
-        <pre id="modal-doc-body" style="font-family:'Courier New', monospace; font-size:12.5px; line-height:1.6; white-space:pre-wrap; word-break:break-word; color:#334155; margin:0; background:#F8FAFC; padding:16px; border-radius:12px; border:1px solid #E2E8F0;"></pre>
+
+      <!-- Document Content Body -->
+      <div class="doc-reader-body-wrap">
+        <pre id="modal-doc-body" class="doc-reader-pre"></pre>
       </div>
-      <div style="padding:12px 24px; background:#FFFFFF; border-top:1px solid #E2E8F0; text-align:right;">
-        <button class="btn-secondary" onclick="closeAllModals()" style="padding:8px 18px; font-size:12.5px; border-radius:10px;">Tutup</button>
+
+      <!-- Footer Modal -->
+      <div class="doc-reader-footer">
+        <span style="font-size:11.5px; color:#64748B;">✨ Dokumen terverifikasi resmi untuk member Ruang BelajarKu.</span>
+        <button class="btn-secondary" onclick="closeAllModals()" style="padding:8px 20px; font-size:12.5px; font-weight:700; border-radius:10px; background:#FFFFFF; border:1.5px solid #CBD5E1; color:#475569; cursor:pointer;">Tutup</button>
       </div>
     </div>
   </div>
