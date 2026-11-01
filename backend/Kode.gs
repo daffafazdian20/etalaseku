@@ -1036,6 +1036,19 @@ function sendInstallmentReminder_(data) {
 
 function saveProduct_(data) {
   let bannerUrl = data.Banner_URL || '';
+  
+  // Otomatis ekstrak data:image base64 dari Banner_URL jika bannerBase64 belum terkirim
+  if (!data.bannerBase64 && bannerUrl && String(bannerUrl).startsWith('data:image/')) {
+    const commaIdx = bannerUrl.indexOf(',');
+    if (commaIdx > 0) {
+      data.bannerBase64 = bannerUrl.substring(commaIdx + 1);
+      const mime = bannerUrl.substring(5, commaIdx).split(';')[0] || 'image/jpeg';
+      data.bannerType = mime;
+      const ext = mime.includes('png') ? '.png' : '.jpg';
+      data.bannerName = 'PROD_' + String(data.Nama_Produk || 'katalog').replace(/[^a-zA-Z0-9]/g, '_') + ext;
+    }
+  }
+
   if (data.bannerBase64 && data.bannerName) {
     try {
       const folder = DriveApp.getFolderById(CONFIG.UPLOADS_FOLDER_ID);

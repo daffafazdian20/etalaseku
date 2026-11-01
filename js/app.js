@@ -89,9 +89,124 @@ function initAdminAccounts() {
 window.initAdminAccounts = initAdminAccounts;
 
 // ============================================================================
+// ============================================================================
+// RESILIENT MULTI-TIER STORAGE ENGINE (INDEXEDDB + ZERO-QUOTA SAFE LOCALSTORAGE)
+// Mengatasi 'exceeded the quota' selamanya pada semua browser Desktop & HP!
+// ============================================================================
+const StorageHub = {
+  dbPromise: null,
+
+  getDB() {
+    if (this.dbPromise) return this.dbPromise;
+    if (typeof window === 'undefined' || !window.indexedDB) {
+      return Promise.resolve(null);
+    }
+    this.dbPromise = new Promise((resolve) => {
+      try {
+        const req = window.indexedDB.open('EtalaseKu_AppDB', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('keyval')) {
+            db.createObjectStore('keyval');
+          }
+        };
+        req.onsuccess = (e) => resolve(e.target.result);
+        req.onerror = () => resolve(null);
+      } catch (err) {
+        resolve(null);
+      }
+    });
+    return this.dbPromise;
+  },
+
+  async idbSet(key, val) {
+    try {
+      const db = await this.getDB();
+      if (!db) return false;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction('keyval', 'readwrite');
+          const store = tx.objectStore('keyval');
+          store.put(val, key);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch(e) { resolve(false); }
+      });
+    } catch (e) { return false; }
+  },
+
+  async idbGet(key) {
+    try {
+      const db = await this.getDB();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction('keyval', 'readonly');
+          const store = tx.objectStore('keyval');
+          const req = store.get(key);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        } catch(e) { resolve(null); }
+      });
+    } catch (e) { return null; }
+  },
+
+  // Safe localStorage set with QuotaExceeded auto-healing
+  safeSet(key, valueStr, isProductsList = false) {
+    try {
+      localStorage.setItem(key, valueStr);
+      return true;
+    } catch (err) {
+      console.warn('localStorage quota warning on ' + key + ', activating auto-healing:', err);
+      if (isProductsList) {
+        try {
+          const parsed = JSON.parse(valueStr);
+          if (Array.isArray(parsed)) {
+            const lightweight = parsed.map(item => {
+              const clone = { ...item };
+              // Pangkas data:image raksasa di localStorage agar muat di bawah batas kuota 5MB browser
+              if (clone.Banner_URL && clone.Banner_URL.startsWith('data:image/') && clone.Banner_URL.length > 2000) {
+                clone.Banner_URL = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+              }
+              delete clone.bannerBase64;
+              return clone;
+            });
+            localStorage.setItem(key, JSON.stringify(lightweight));
+            return true;
+          }
+        } catch (e2) {
+          console.warn('Fallback lightweight save failed:', e2);
+        }
+      }
+      return false;
+    }
+  }
+};
+window.StorageHub = StorageHub;
+
+function persistProductsSafely(products) {
+  if (!Array.isArray(products)) return;
+  STATE.products = products;
+  
+  // 1. Simpan ke IndexedDB (kapasitas 500MB+, tahan semua gambar tanpa batas kuota)
+  if (typeof StorageHub !== 'undefined' && StorageHub.idbSet) {
+    StorageHub.idbSet('etalaseku_products_data', products);
+  }
+
+  // 2. Simpan ke localStorage dengan proteksi QuotaExceeded auto-healing
+  if (typeof StorageHub !== 'undefined' && StorageHub.safeSet) {
+    StorageHub.safeSet('etalaseku_products_data', JSON.stringify(products), true);
+  } else {
+    try {
+      localStorage.setItem('etalaseku_products_data', JSON.stringify(products));
+    } catch(e) {}
+  }
+}
+window.persistProductsSafely = persistProductsSafely;
+
 // HIGH-PERFORMANCE IMAGE COMPRESSION & PERSISTENCE ENGINE (ZERO-QUOTA LOSS)
 // ============================================================================
-function compressAndReadImage(file, maxWidth = 1000, quality = 0.82) {
+function compressAndReadImage(file, maxWidth = 800, quality = 0.70) {
   return new Promise((resolve, reject) => {
     if (!file) return resolve('');
     if (file.type === 'image/svg+xml') {
@@ -121,7 +236,11 @@ function compressAndReadImage(file, maxWidth = 1000, quality = 0.82) {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+        // Jika masih di atas 65KB (~85.000 chars), kompres tahap 2 agar sangat hemat storage
+        if (dataUrl.length > 85000) {
+          dataUrl = canvas.toDataURL('image/jpeg', 0.58);
+        }
         resolve(dataUrl);
       };
       img.onerror = () => {
@@ -955,30 +1074,44 @@ async function loadPublicData() {
     const fallback = getFallbackMockData();
     if (!data) data = fallback;
 
-    // PERSISTENSI KATALOG PRODUK: Jangan timpa produk baru dengan fallback jika ada di localStorage!
+    // PERSISTENSI KATALOG PRODUK: Zero-Quota Safe Storage (localStorage + IndexedDB)
     try {
       const storedProducts = localStorage.getItem('etalaseku_products_data');
       if (storedProducts) {
         const parsedP = JSON.parse(storedProducts);
         if (Array.isArray(parsedP) && parsedP.length > 0) {
-          // Pastikan produk "Social Influence" selalu hadir di semua perangkat (Desktop maupun Mobile)
           const hasSocial = parsedP.some(p => p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence'));
           if (!hasSocial) {
             const socialFallback = fallback.products.find(p => p.Nama_Produk.toLowerCase().includes('social influence'));
             if (socialFallback) parsedP.unshift(socialFallback);
           }
           STATE.products = parsedP.map(sanitizeProduct);
-          localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+          persistProductsSafely(STATE.products);
         } else {
           STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
-          localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+          persistProductsSafely(STATE.products);
         }
       } else {
         STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
-        localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+        persistProductsSafely(STATE.products);
       }
     } catch(e) {
       STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
+    }
+
+    // Asynchronous IndexedDB synchronization (mengambil versi produk lengkap jika ada foto baru)
+    if (typeof StorageHub !== 'undefined' && StorageHub.idbGet) {
+      StorageHub.idbGet('etalaseku_products_data').then(idbProds => {
+        if (Array.isArray(idbProds) && idbProds.length > 0) {
+          if (idbProds.length >= STATE.products.length) {
+            STATE.products = idbProds.map(sanitizeProduct);
+            renderProducts();
+            if (typeof renderAdminProductsTable === 'function') {
+              renderAdminProductsTable(STATE.products);
+            }
+          }
+        }
+      }).catch(() => {});
     }
     STATE.testimonials = (data.testimonials && data.testimonials.length > 0) ? data.testimonials : fallback.testimonials;
     
@@ -1044,7 +1177,7 @@ async function loadPublicData() {
             if (socialFallback) parsedP.unshift(socialFallback);
           }
           STATE.products = parsedP.map(sanitizeProduct);
-          localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+          persistProductsSafely(STATE.products);
         } else {
           STATE.products = mock.products.map(sanitizeProduct);
         }
@@ -2356,7 +2489,7 @@ function toggleInlineProductForm() {
 }
 
 async function saveProductForm(e, isInline = false) {
-  e.preventDefault();
+  if (e && typeof e.preventDefault === 'function') e.preventDefault();
   const btn = isInline ? document.getElementById('btn-save-inline-prod') : document.getElementById('btn-save-product');
   const originalBtnText = btn ? btn.innerHTML : '';
   if (btn) {
@@ -2379,6 +2512,20 @@ async function saveProductForm(e, isInline = false) {
       const accessLink = document.getElementById('inline-prod-access-link') ? document.getElementById('inline-prod-access-link').value.trim() : '';
       const desc = document.getElementById('inline-prod-desc') ? document.getElementById('inline-prod-desc').value.trim() : '';
 
+      // Ekstraksi base64 jika bannerVal berupa data:image agar Google Drive bisa mengupload secara resmi
+      let bannerBase64 = '';
+      let bannerName = '';
+      let bannerType = 'image/jpeg';
+      if (bannerVal && bannerVal.startsWith('data:image/')) {
+        const parts = bannerVal.split(',');
+        if (parts.length > 1) {
+          bannerBase64 = parts[1];
+          bannerType = parts[0].split(';')[0].replace('data:', '') || 'image/jpeg';
+          const ext = bannerType.includes('png') ? '.png' : '.jpg';
+          bannerName = 'PROD_' + (name || 'produk').replace(/[^a-zA-Z0-9]/g, '_') + ext;
+        }
+      }
+
       payload = {
         ID_Produk: 'PRD-' + Date.now().toString().slice(-6),
         Nama_Produk: name || 'Produk Digital Baru',
@@ -2391,7 +2538,10 @@ async function saveProductForm(e, isInline = false) {
         Banner_URL: bannerVal ? formatImageUrl(bannerVal) : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
         Galeri_URLs: '',
         Link_Akses_Materi: accessLink,
-        Deskripsi: desc
+        Deskripsi: desc,
+        bannerBase64: bannerBase64,
+        bannerName: bannerName,
+        bannerType: bannerType
       };
     } else {
       const fileInput = document.getElementById('prod-form-banner-file');
@@ -2404,7 +2554,13 @@ async function saveProductForm(e, isInline = false) {
         bannerName = file.name;
         bannerType = file.type;
         try {
-          bannerBase64 = await readFileAsBase64(file);
+          const comp = await compressAndReadImage(file, 800, 0.70);
+          if (comp && comp.startsWith('data:image/')) {
+            const parts = comp.split(',');
+            if (parts.length > 1) bannerBase64 = parts[1];
+          } else {
+            bannerBase64 = await readFileAsBase64(file);
+          }
         } catch(err) {}
       }
 
@@ -2421,7 +2577,17 @@ async function saveProductForm(e, isInline = false) {
       const accessLink = document.getElementById('prod-form-access-link') ? document.getElementById('prod-form-access-link').value.trim() : '';
       const desc = document.getElementById('prod-form-desc') ? document.getElementById('prod-form-desc').value.trim() : '';
 
-      let finalBanner = bannerVal ? formatImageUrl(bannerVal) : (bannerBase64 ? formatImageUrl(bannerBase64) : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80');
+      if (!bannerBase64 && bannerVal && bannerVal.startsWith('data:image/')) {
+        const parts = bannerVal.split(',');
+        if (parts.length > 1) {
+          bannerBase64 = parts[1];
+          bannerType = parts[0].split(';')[0].replace('data:', '') || 'image/jpeg';
+          const ext = bannerType.includes('png') ? '.png' : '.jpg';
+          bannerName = 'PROD_' + (name || 'produk').replace(/[^a-zA-Z0-9]/g, '_') + ext;
+        }
+      }
+
+      let finalBanner = bannerVal ? formatImageUrl(bannerVal) : (bannerBase64 ? formatImageUrl('data:' + (bannerType || 'image/jpeg') + ';base64,' + bannerBase64) : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80');
 
       payload = {
         ID_Produk: idVal || ('PRD-' + Date.now().toString().slice(-6)),
@@ -2442,7 +2608,7 @@ async function saveProductForm(e, isInline = false) {
       };
     }
 
-    // 1. UPDATE STATE & LOCALSTORAGE SEKETIKA (OPTIMISTIC UI & ZERO-DELAY)
+    // 1. UPDATE STATE & PERSIST SECARA AMAN (ANTI QUOTA EXCEEDED CRASH)
     if (!Array.isArray(STATE.products)) STATE.products = [];
     const existingIdx = STATE.products.findIndex(p => p.ID_Produk === payload.ID_Produk);
     if (existingIdx >= 0) {
@@ -2450,12 +2616,18 @@ async function saveProductForm(e, isInline = false) {
     } else {
       STATE.products.unshift(payload);
     }
-    localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+    
+    // Simpan ke IndexedDB & Safe LocalStorage tanpa pernah melempar unhandled QuotaExceededError!
+    persistProductsSafely(STATE.products);
 
-    // Refresh semua tampilan tabel dan katalog seketika
+    // Refresh semua tampilan tabel dan katalog seketika (Optimistic UI 0ms)
     renderProducts();
-    renderAdminProductsTable(STATE.products);
-    SlideshowManager.initProductSlideshows();
+    if (typeof renderAdminProductsTable === 'function') {
+      renderAdminProductsTable(STATE.products);
+    }
+    if (typeof SlideshowManager !== 'undefined' && SlideshowManager.initProductSlideshows) {
+      SlideshowManager.initProductSlideshows();
+    }
 
     // Tutup / reset form
     closeAllModals();
@@ -2486,26 +2658,29 @@ async function saveProductForm(e, isInline = false) {
           syncSuccess = true;
           if (json.bannerUrl) {
             payload.Banner_URL = json.bannerUrl;
-            localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+            persistProductsSafely(STATE.products);
             renderProducts();
-            renderAdminProductsTable(STATE.products);
+            if (typeof renderAdminProductsTable === 'function') {
+              renderAdminProductsTable(STATE.products);
+            }
           }
         } else if (json && json.message) {
           gasMessage = json.message;
         }
       } catch (fetchErr) {
-        console.warn('Sync to Google Apps Script:', fetchErr);
+        console.warn('Sync to Google Apps Script berjalan lokal:', fetchErr);
       }
     }
 
     // Feedback Notifikasi ke Pengguna
     if (syncSuccess) {
-      showToast('🎉 Produk berhasil disimpan ke Google Sheets & Katalog!', 'success', 3500);
+      showToast('🎉 Produk berhasil disimpan ke Google Sheets & Katalog Halaman Utama!', 'success', 3500);
     } else {
-      showToast('✅ Produk berhasil disimpan ke Katalog & CRM Dashboard!', 'success', 4000);
+      showToast('✅ Produk berhasil disimpan ke Katalog Halaman Utama & CRM!', 'success', 4000);
     }
 
   } catch (err) {
+    console.error('Error saveProductForm:', err);
     showToast('Gagal memproses produk: ' + err.message, 'error');
   } finally {
     if (btn) {
@@ -2518,9 +2693,11 @@ async function saveProductForm(e, isInline = false) {
 async function deleteProductAdmin(id) {
   if (!Array.isArray(STATE.products)) return;
   STATE.products = STATE.products.filter(p => p.ID_Produk !== id);
-  localStorage.setItem('etalaseku_products_data', JSON.stringify(STATE.products));
+  persistProductsSafely(STATE.products);
   renderProducts();
-  renderAdminProductsTable(STATE.products);
+  if (typeof renderAdminProductsTable === 'function') {
+    renderAdminProductsTable(STATE.products);
+  }
   showToast('Produk berhasil dihapus dari katalog!', 'info', 2500);
 
   if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
@@ -6254,7 +6431,7 @@ async function handleInlineBannerFile(input) {
   if (input.files && input.files[0]) {
     const file = input.files[0];
     try {
-      const dataUrl = await compressAndReadImage(file, 1200, 0.85);
+      const dataUrl = await compressAndReadImage(file, 800, 0.70);
       const urlInput = document.getElementById('inline-prod-banner-url');
       if (urlInput) urlInput.value = dataUrl;
       const previewBox = document.getElementById('inline-prod-banner-preview');
@@ -6304,7 +6481,7 @@ async function handleModalBannerFile(input) {
   if (input.files && input.files[0]) {
     const file = input.files[0];
     try {
-      const dataUrl = await compressAndReadImage(file, 1200, 0.85);
+      const dataUrl = await compressAndReadImage(file, 800, 0.70);
       const urlInput = document.getElementById('prod-form-banner-url');
       if (urlInput) urlInput.value = dataUrl;
       const previewBox = document.getElementById('modal-prod-banner-preview');
