@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261101-05">
+  <link rel="stylesheet" href="css/style.css?v=20261101-06">
 </head>
 <body>
 
@@ -2138,12 +2138,44 @@
                   </div>
                 </div>
 
-                <!-- Section Khusus Dokumen PRD (Inline) -->
+                <!-- Section Khusus Paket Dokumen & Berkas (Inline CRM Portal Ruang BelajarKu) -->
                 <div id="inline-sec-doc" style="display:none; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:14px; margin-bottom:14px;">
-                  <div style="font-size:12.5px; font-weight:800; color:#1E1B4B; margin-bottom:10px;">
-                    📄 Pengaturan Paket Dokumen
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+                    <div style="display:flex; align-items:center; gap:8px; flex:1;">
+                      <span id="inline-doc-sec-heading-display" style="font-size:12.5px; font-weight:800; color:#1E1B4B;">📄 Paket Dokumen &amp; Berkas</span>
+                      <input type="text" id="inline-doc-sec-heading-input" class="form-input" style="display:none; max-width:240px; padding:3px 8px; font-size:12px; font-weight:700;" value="Paket Dokumen & Berkas">
+                    </div>
+                    <div style="display:flex; gap:4px;">
+                      <button type="button" class="btn-micro-edit" onclick="enableManualDocHeading('sec-heading', true)" title="Edit penamaan Paket Dokumen & Berkas">✏️ Edit</button>
+                      <button type="button" class="btn-micro-save" onclick="saveManualDocHeading('sec-heading', true)" title="Simpan penamaan">💾 Save</button>
+                    </div>
                   </div>
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+
+                  <!-- Badge & Nama File Dokumen di CRM Portal Ruang BelajarKu -->
+                  <div class="crm-grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div style="background:#FFFFFF; border:1px solid #E2E8F0; padding:10px 12px; border-radius:10px;">
+                      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
+                        <label class="form-label" style="font-size:10.5px; font-weight:700; margin:0;">Label / Badge Header Reader</label>
+                        <div style="display:flex; gap:4px;">
+                          <button type="button" class="btn-micro-edit" onclick="enableManualDocBadge(true)" title="Edit Label Badge Dokumen">✏️ Edit</button>
+                          <button type="button" class="btn-micro-save" onclick="saveManualDocBadge(true)" title="Simpan Label Badge Dokumen">💾 Save</button>
+                        </div>
+                      </div>
+                      <input type="text" id="inline-mod-doc-badge-label" class="form-input" value="Dokumen Social Influence" placeholder="Contoh: Dokumen Social Influence">
+                    </div>
+                    <div style="background:#FFFFFF; border:1px solid #E2E8F0; padding:10px 12px; border-radius:10px;">
+                      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
+                        <label class="form-label" style="font-size:10.5px; font-weight:700; margin:0;">Nama File Berkas (.md)</label>
+                        <div style="display:flex; gap:4px;">
+                          <button type="button" class="btn-micro-edit" onclick="enableManualDocFilenameInline()" title="Edit Nama File Dokumen">✏️ Edit</button>
+                          <button type="button" class="btn-micro-save" onclick="saveManualDocFilenameInline()" title="Simpan Nama File Dokumen">💾 Save</button>
+                        </div>
+                      </div>
+                      <input type="text" id="inline-mod-doc-filename" class="form-input" value="Dokumen_Social_Influence.md" placeholder="Contoh: Dokumen_Social_Influence.md">
+                    </div>
+                  </div>
+
+                  <div class="crm-grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
                     <div>
                       <label class="form-label" style="font-size:10.5px; font-weight:700;">Jumlah Berkas Tambahan</label>
                       <input type="text" id="inline-mod-doc-pkg-files" class="form-input" value="10 berkas" placeholder="10 berkas">
@@ -2153,9 +2185,13 @@
                       <input type="text" id="inline-mod-doc-pkg-format" class="form-input" value="10 Dokumen" placeholder="10 Dokumen">
                     </div>
                   </div>
-                  <div>
+                  <div style="margin-bottom:10px;">
                     <label class="form-label" style="font-size:10.5px; font-weight:700;">Subjudul Petunjuk Unduh</label>
-                    <input type="text" id="inline-mod-doc-subtitle" class="form-input" value="Silahkan Download PRD yang dibutuhkan sebagai Referensi" placeholder="Silahkan Download PRD yang dibutuhkan...">
+                    <input type="text" id="inline-mod-doc-subtitle" class="form-input" value="Silahkan Download Dokumen yang dibutuhkan sebagai Referensi" placeholder="Silahkan Download Dokumen yang dibutuhkan...">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:10.5px; font-weight:700;">Isi Teks Dokumen</label>
+                    <textarea id="inline-mod-doc-content" class="form-input" rows="3" placeholder="# Dokumen: Judul Dokumen&#10;&#10;Tuliskan isi teks dokumen lengkap di sini..."></textarea>
                   </div>
                 </div>
 
@@ -2216,26 +2252,7 @@
 
             
 
-            <!-- Table of Classroom Modules -->
-            <div style="overflow-x:auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Urutan</th>
-                    <th>Judul Modul Pembelajaran</th>
-                    <th>Tipe Konten</th>
-                    <th>Durasi</th>
-                    <th>Tautan Google Drive / Video</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="classroom-admin-tbody">
-                  <!-- Rendered dynamically by app.js -->
-                </tbody>
-              </table>
-            </div>
-          </div>
+                      </div>
         </div>
 
         <!-- Tab 9: Metode Bayar & Pengaturan Situs -->
@@ -3048,30 +3065,33 @@
             <div class="crm-editor-sec-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
               <div style="display:flex; align-items:center; gap:8px; flex:1;">
                 <span id="mod-doc-sec-heading-display">📄 Paket Dokumen &amp; Berkas</span>
-                <input type="text" id="mod-doc-sec-heading-input" class="form-input" style="display:none; max-width:260px; padding:3px 8px; font-size:12px; font-weight:700;" value="Paket Dokumen &amp; Berkas">
+                <input type="text" id="mod-doc-sec-heading-input" class="form-input" style="display:none; max-width:260px; padding:3px 8px; font-size:12px; font-weight:700;" value="Paket Dokumen & Berkas">
               </div>
-
-            <!-- Badge / Penamaan Dokumen di Reader -->
-            <div style="margin-bottom:12px; background:#F8FAFC; border:1px solid #E2E8F0; padding:10px 14px; border-radius:12px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                <label class="form-label" style="font-size:11px; font-weight:700; margin:0;">Label / Badge Dokumen (Muncul di Header Reader Dokumen)</label>
-                <div style="display:flex; gap:4px;">
-                  <button type="button" class="btn-micro-edit" onclick="enableManualDocBadge(false)" title="Edit Badge Dokumen">✏️ Edit</button>
-                  <button type="button" class="btn-micro-save" onclick="saveManualDocBadge(false)" title="Simpan Badge">💾 Save</button>
-                </div>
-              </div>
-              <input type="text" id="mod-doc-badge-label" class="form-input" placeholder="Contoh: Dokumen Social Influence" value="Dokumen Social Influence">
-            </div>
-
-            
               <div style="display:flex; gap:4px;">
                 <button type="button" class="btn-micro-edit" onclick="enableManualDocHeading('sec-heading', false)" title="Edit penamaan Paket Dokumen & Berkas">✏️ Edit</button>
                 <button type="button" class="btn-micro-save" onclick="saveManualDocHeading('sec-heading', false)" title="Simpan penamaan">💾 Save</button>
               </div>
             </div>
 
+            <!-- Pengaturan Label / Badge Header Reader Dokumen di CRM Portal Ruang BelajarKu -->
+            <div style="margin-bottom:14px; background:#FBF9F5; border:1.5px solid #EAE8E4; padding:12px 14px; border-radius:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+                <label class="form-label" style="font-size:11px; font-weight:800; color:#1E1B4B; margin:0;">
+                  🏷️ Label / Badge Dokumen Utama (Tampil di Header Reader Dokumen Siswa)
+                </label>
+                <div style="display:flex; gap:4px;">
+                  <button type="button" class="btn-micro-edit" onclick="enableManualDocBadge(false)" title="Edit Label Badge Dokumen">✏️ Edit</button>
+                  <button type="button" class="btn-micro-save" onclick="saveManualDocBadge(false)" title="Simpan Label Badge Dokumen">💾 Save</button>
+                </div>
+              </div>
+              <input type="text" id="mod-doc-badge-label" class="form-input" placeholder="Contoh: Dokumen Social Influence" value="Dokumen Social Influence">
+              <div style="font-size:10.5px; color:#64748B; margin-top:4px;">
+                💡 Nama file &amp; badge per berkas juga dapat diedit dan disimpan pada masing-masing baris berkas dokumen di bawah ini.
+              </div>
+            </div>
+
             <!-- Info Paket -->
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:14px;">
+            <div class="crm-grid-3" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:14px;">
               <div>
                 <label class="form-label" style="font-size:11px; font-weight:700;">Total Berkas Tambahan</label>
                 <input type="text" id="mod-doc-pkg-files" class="form-input" placeholder="misal: 10 berkas">
@@ -3082,7 +3102,7 @@
               </div>
               <div>
                 <label class="form-label" style="font-size:11px; font-weight:700;">Subjudul Petunjuk</label>
-                <input type="text" id="mod-doc-subtitle" class="form-input" placeholder="Silahkan Download PRD yang dibutuhkan...">
+                <input type="text" id="mod-doc-subtitle" class="form-input" placeholder="Silahkan Download Dokumen yang dibutuhkan...">
               </div>
             </div>
 
@@ -3104,7 +3124,7 @@
                 </button>
               </div>
               <div id="mod-documents-container">
-                <!-- Dynamic document items -->
+                <!-- Dynamic document items with Edit & Save for Filename & Badge -->
               </div>
             </div>
           </div>
@@ -3371,10 +3391,10 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261101-05"></script>
-  <script src="js/app.js?v=20261101-05"></script>
+  <script src="js/config.js?v=20261101-06"></script>
+  <script src="js/app.js?v=20261101-06"></script>
 
-  <!-- Modal Reader & Salin Dokumen PRD -->
+  <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
     <div class="modal-card doc-reader-dialog">
       <!-- Header Modal: Deep Midnight Indigo (#1E1B4B) with Warm Pastel Tech motif -->
@@ -3384,9 +3404,6 @@
             <span id="modal-doc-badge" class="doc-reader-badge">
               Dokumen Social Influence
             </span>
-            <input type="text" id="modal-doc-badge-input" class="form-input" style="display:none; max-width:240px; padding:3px 8px; font-size:11px; font-weight:700; background:#FFFFFF; color:#1E1B4B; border-radius:6px;" value="Dokumen Social Influence">
-            <button type="button" class="btn-micro-edit" onclick="enableEditReaderBadge()" style="padding:2px 7px; font-size:10.5px; background:rgba(255,255,255,0.15); color:#FFFFFF; border:1px solid rgba(255,255,255,0.3);" title="Edit Badge Dokumen">✏️ Edit</button>
-            <button type="button" class="btn-micro-save" id="btn-save-reader-badge" onclick="saveEditReaderBadge()" style="display:none; padding:2px 7px; font-size:10.5px;" title="Simpan Badge">💾 Save</button>
           </div>
           <h3 id="modal-doc-title" class="doc-reader-title">
             Social Influence
@@ -3399,17 +3416,12 @@
       <div class="doc-reader-meta-bar">
         <div class="doc-reader-meta-info">
           <span id="modal-doc-meta-filename" class="doc-reader-filename">Dokumen_Social_Influence.md</span>
-          <input type="text" id="modal-doc-meta-filename-input" class="form-input" style="display:none; max-width:260px; padding:3px 8px; font-size:11.5px; font-weight:700; font-family:'Courier New', monospace;" value="Dokumen_Social_Influence.md">
-          <div style="display:inline-flex; gap:3px;">
-            <button type="button" class="btn-micro-edit" onclick="enableEditReaderFilename()" title="Edit Nama File Dokumen">✏️ Edit</button>
-            <button type="button" class="btn-micro-save" id="btn-save-reader-filename" onclick="saveEditReaderFilename()" style="display:none;" title="Simpan Nama File">💾 Save</button>
-          </div>
           <span style="color:#CBD5E1;">•</span>
           <span id="modal-doc-meta-size">0.01 MB</span>
           <span style="color:#CBD5E1;">•</span>
           <span style="color:#10B981; font-weight:700;">● Siap disalin</span>
         </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <div class="doc-reader-actions-group">
           <button class="shimmer-btn doc-reader-btn-copy" onclick="copyActiveDocContent()">
             <span>📋</span> Salin Seluruh Teks Dokumen
           </button>

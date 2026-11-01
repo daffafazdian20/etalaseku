@@ -515,6 +515,72 @@ const DEFAULT_MODULES = [
 ];
 
 // Global State
+// ============================================================================
+// PERSISTENT CLASSROOM MODULES STORAGE ENGINE (ANTI-REAPPEAR ON DELETE/REFRESH)
+// ============================================================================
+function getDeletedModuleIds() {
+  try {
+    const raw = localStorage.getItem('etalaseku_deleted_module_ids');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {}
+  return [];
+}
+
+function saveDeletedModuleIds(ids) {
+  try {
+    const unique = Array.from(new Set((ids || []).filter(Boolean)));
+    localStorage.setItem('etalaseku_deleted_module_ids', JSON.stringify(unique));
+  } catch (e) {}
+}
+
+function loadStoredClassroomModules() {
+  const deletedSet = new Set(getDeletedModuleIds());
+  try {
+    const rawPrimary = localStorage.getItem('etalaseku_classroom_modules');
+    if (rawPrimary !== null) {
+      const parsed = JSON.parse(rawPrimary);
+      if (Array.isArray(parsed)) {
+        const clean = parsed.filter(m => m && !deletedSet.has(m.ID_Materi));
+        // Sync both keys so there is never a mismatch
+        const json = JSON.stringify(clean);
+        localStorage.setItem('etalaseku_classroom_modules', json);
+        localStorage.setItem('etalaseku_modules', json);
+        return clean;
+      }
+    }
+    const rawLegacy = localStorage.getItem('etalaseku_modules');
+    if (rawLegacy !== null) {
+      const parsedLegacy = JSON.parse(rawLegacy);
+      if (Array.isArray(parsedLegacy)) {
+        const cleanLegacy = parsedLegacy.filter(m => m && !deletedSet.has(m.ID_Materi));
+        const json = JSON.stringify(cleanLegacy);
+        localStorage.setItem('etalaseku_classroom_modules', json);
+        localStorage.setItem('etalaseku_modules', json);
+        return cleanLegacy;
+      }
+    }
+  } catch (e) {
+    console.warn('Gagal membaca modul tersimpan:', e);
+  }
+  const initial = DEFAULT_MODULES.filter(m => !deletedSet.has(m.ID_Materi));
+  return initial;
+}
+
+function persistClassroomModules(mods) {
+  const safeMods = Array.isArray(mods) ? mods : [];
+  STATE.modules = safeMods;
+  try {
+    const json = JSON.stringify(safeMods);
+    localStorage.setItem('etalaseku_classroom_modules', json);
+    localStorage.setItem('etalaseku_modules', json);
+  } catch (e) {
+    console.warn('Gagal menyimpan modul ke localStorage:', e);
+  }
+}
+
 const STATE = {
   products: [],
   testimonials: [],
@@ -543,16 +609,7 @@ const STATE = {
     ];
   })(),
   settings: {},
-  modules: (function() {
-    try {
-      const stored = localStorage.getItem('etalaseku_modules');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed && parsed.length > 0 && parsed[0].Thumbnail_URL) return parsed;
-      }
-    } catch(e) {}
-    return DEFAULT_MODULES;
-  })(),
+  modules: loadStoredClassroomModules(),
   activeProductCheckout: null,
   selectedPaymentChannelKey: 'qris',
   selectedPaymentPlan: 'lunas',
@@ -1668,6 +1725,7 @@ function openAdminPortal() {
   } catch(e) {}
 
   STATE.orders = getMergedOrdersList();
+  STATE.modules = loadStoredClassroomModules();
 
   // 2. Render cepat seketika agar tidak ada tab yang kosong
   renderFullOrdersTable(STATE.orders);
@@ -1722,6 +1780,7 @@ function switchAdminTab(tabId, navEl) {
   } else if (tabId === 'tab-billing') {
     renderStudentBillingTab(STATE.bills || []);
   } else if (tabId === 'tab-classroom') {
+    STATE.modules = loadStoredClassroomModules();
     renderClassroomModulesAdmin();
   } else if (tabId === 'tab-showcase') {
     renderAdminShowcaseTable(STATE.showcases || []);
@@ -1847,8 +1906,9 @@ function renderAdminPortalViews(data) {
   const badgeBills = document.getElementById('badge-bills-count');
   if (badgeBills) badgeBills.textContent = (data.bills || []).filter(b => b.Status !== 'Lunas').length;
 
+  STATE.modules = loadStoredClassroomModules();
   const badgeModules = document.getElementById('badge-modules-count');
-  if (badgeModules) badgeModules.textContent = (data.modules || STATE.modules || []).length;
+  if (badgeModules) badgeModules.textContent = (Array.isArray(STATE.modules) ? STATE.modules : []).length;
 
   // 1. KPI Cards in Tab Dashboard
   const kpiContainer = document.getElementById('admin-kpi-container');
@@ -3573,12 +3633,16 @@ function openClassroomDashboard(orderId, email) {
   const greetingIdEl = document.getElementById('cls-student-greeting-id');
   if (greetingIdEl) greetingIdEl.textContent = activeId;
 
+  // Muat ulang modul terbaru dari penyimpanan agar modul yang dihapus tidak pernah muncul lagi
+  STATE.modules = loadStoredClassroomModules();
+
   // Render modul ke dalam kartu dashboard
   renderClassroomPortalModules('', 'ALL');
 
   // Tampilkan Halaman Dashboard Khusus Member Classroom
   const portal = document.getElementById('classroom-dashboard-portal');
   if (portal) portal.classList.add('active');
+  localStorage.setItem('etalaseku_is_in_classroom', 'true');
 
   // Pastikan navigasi di navbar utama halaman dashboard aktif
   updateMemberClassroomNavbar(activeId, activeEmail);
@@ -3587,6 +3651,7 @@ function openClassroomDashboard(orderId, email) {
 function closeClassroomDashboard() {
   const portal = document.getElementById('classroom-dashboard-portal');
   if (portal) portal.classList.remove('active');
+  localStorage.removeItem('etalaseku_is_in_classroom');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -3645,7 +3710,7 @@ function renderClassroomPortalModules(query, filterTag) {
   const container = document.getElementById('cls-portal-modules-list');
   if (!container) return;
 
-  let modules = (STATE.modules && STATE.modules.length > 0) ? STATE.modules : DEFAULT_MODULES;
+  let modules = Array.isArray(STATE.modules) ? STATE.modules : loadStoredClassroomModules();
 
   if (query && query.trim()) {
     const q = query.toLowerCase();
@@ -3778,47 +3843,64 @@ function renderClassroomStudentView(query) {
 }
 
 function renderClassroomModulesAdmin() {
+  if (!Array.isArray(STATE.modules)) {
+    STATE.modules = loadStoredClassroomModules();
+  }
   if (typeof renderClassroomCrmCards === 'function') {
     renderClassroomCrmCards(currentCrmRbQuery || '', currentCrmRbFilterTag || 'ALL');
   }
+  const badgeEl = document.getElementById('badge-modules-count');
+  if (badgeEl) badgeEl.textContent = STATE.modules.length;
+
   const tbody = document.getElementById('classroom-admin-tbody');
   if (!tbody) return;
 
-  const modules = (STATE.modules && STATE.modules.length > 0) ? STATE.modules : DEFAULT_MODULES;
+  const modules = STATE.modules;
 
   if (modules.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px;">Belum ada modul kursus. Tambahkan modul baru di atas.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:28px; color:#64748B;">Belum ada kartu/modul di Portal Ruang BelajarKu. Klik tombol <strong>+ Tambah Kartu / Modul Baru</strong> di atas.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = modules.map((m, idx) => {
     const id = m.ID_Materi || ('MOD-' + (idx + 1));
     const urutan = m.Urutan || (idx + 1);
+    const banner = m.Thumbnail_URL || m.Foto_URL || './assets/modules/thumb-metode3.jpg';
+    const kategori = m.Kategori || m.Tipe_Badge || 'Kelas';
     const tipe = m.Tipe_Konten || 'Video HD';
-    const durasi = m.Durasi_Menit ? `${m.Durasi_Menit} Menit` : '-';
-    const url = m.URL_Konten || '#';
+    const ep = m.Episode || 1;
+    const mat = m.Materi_Count || 1;
+    const url = m.URL_Konten || 'https://drive.google.com';
     const status = m.Status || 'Publish';
     const isPublish = status === 'Publish';
 
     return `
       <tr>
-        <td style="font-weight:700; text-align:center;">${urutan}</td>
+        <td style="font-weight:800; text-align:center;">#${urutan}</td>
         <td>
-          <strong>${m.Judul_Modul}</strong><br>
-          <small style="color:#64748B;">${(m.Deskripsi || '').slice(0, 50)}${(m.Deskripsi && m.Deskripsi.length > 50) ? '...' : ''}</small>
+          <img src="${banner}" alt="Banner" style="width:64px; height:40px; object-fit:cover; border-radius:8px; border:1px solid #E2E8F0;" onerror="this.onerror=null;this.src='./assets/modules/thumb-metode3.jpg';">
         </td>
-        <td><span class="pill-badge purple">${tipe}</span></td>
-        <td><span style="font-size:12px; font-weight:600;">${durasi}</span></td>
+        <td>
+          <strong style="color:#0F172A;">${m.Judul_Modul}</strong><br>
+          <small style="color:#64748B;">${(m.Deskripsi || '').slice(0, 60)}${(m.Deskripsi && m.Deskripsi.length > 60) ? '...' : ''}</small>
+        </td>
+        <td>
+          <span class="pill-badge purple">${kategori}</span>
+          <div style="font-size:11px; color:#64748B; margin-top:3px;">${tipe}</div>
+        </td>
+        <td>
+          <span style="font-size:12px; font-weight:700; color:#1E1B4B;">🎬 ${ep} Ep • 📚 ${mat} Materi</span>
+        </td>
         <td>
           <a href="${url}" target="_blank" rel="noopener noreferrer" style="color:var(--coral-pink); text-decoration:none; font-size:12px; font-weight:700;">
-            🔗 Buka Tautan Drive
+            🔗 Buka Tautan ↗
           </a>
         </td>
         <td><span class="pill-badge ${isPublish ? 'green' : 'yellow'}">${status}</span></td>
         <td>
-          <div style="display:flex; gap:6px;">
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="openEditModuleModal('${id}')">✏️ Edit</button>
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px; color:#EF4444; border-color:#FCA5A5;" onclick="deleteClassroomModuleAdmin('${id}')">🗑️ Hapus</button>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="btn-secondary" style="padding:5px 10px; font-size:11px;" onclick="openEditModuleModal('${id}')">✏️ Edit</button>
+            <button type="button" class="btn-secondary" style="padding:5px 10px; font-size:11px; color:#EF4444; border-color:#FCA5A5;" onclick="deleteClassroomModuleAdmin('${id}')">🗑️ Hapus</button>
           </div>
         </td>
       </tr>
@@ -4100,96 +4182,9 @@ function saveManualDocHeading(type, isInline) {
 }
 
 
-function enableEditReaderBadge() {
-  const displayEl = document.getElementById('modal-doc-badge');
-  const inputEl = document.getElementById('modal-doc-badge-input');
-  const saveBtn = document.getElementById('btn-save-reader-badge');
-  if (displayEl && inputEl) {
-    displayEl.style.display = 'none';
-    inputEl.style.display = 'inline-block';
-    if (saveBtn) saveBtn.style.display = 'inline-flex';
-    inputEl.removeAttribute('readonly');
-    inputEl.focus();
-    inputEl.select();
-  }
-}
-
-function saveEditReaderBadge() {
-  const displayEl = document.getElementById('modal-doc-badge');
-  const inputEl = document.getElementById('modal-doc-badge-input');
-  const saveBtn = document.getElementById('btn-save-reader-badge');
-  if (displayEl && inputEl) {
-    const val = inputEl.value.trim() || 'Dokumen';
-    inputEl.value = val;
-    displayEl.textContent = val;
-    displayEl.style.display = 'inline-block';
-    inputEl.style.display = 'none';
-    if (saveBtn) saveBtn.style.display = 'none';
-
-    // Persist badge to activeDocData, file item, and localStorage
-    if (activeDocData) {
-      activeDocData.badge = val;
-      if (activeDocData.files && typeof activeDocFileIndex !== 'undefined' && activeDocData.files[activeDocFileIndex]) {
-        activeDocData.files[activeDocFileIndex].badge = val;
-      }
-      const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
-      if (activeDocData.id) {
-        docMap[activeDocData.id] = activeDocData;
-        try {
-          localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
-        } catch(e) {}
-      }
-    }
-    if (typeof showToast === 'function') {
-      showToast('Badge "' + val + '" berhasil disimpan! 💾', 'info');
-    }
-  }
-}
-
-function enableEditReaderFilename() {
-  const displayEl = document.getElementById('modal-doc-meta-filename');
-  const inputEl = document.getElementById('modal-doc-meta-filename-input');
-  const saveBtn = document.getElementById('btn-save-reader-filename');
-  if (displayEl && inputEl) {
-    displayEl.style.display = 'none';
-    inputEl.style.display = 'inline-block';
-    if (saveBtn) saveBtn.style.display = 'inline-flex';
-    inputEl.removeAttribute('readonly');
-    inputEl.focus();
-    inputEl.select();
-  }
-}
-
-function saveEditReaderFilename() {
-  const displayEl = document.getElementById('modal-doc-meta-filename');
-  const inputEl = document.getElementById('modal-doc-meta-filename-input');
-  const saveBtn = document.getElementById('btn-save-reader-filename');
-  if (displayEl && inputEl) {
-    let val = inputEl.value.trim() || 'Dokumen.md';
-    if (!val.includes('.')) val += '.md';
-    inputEl.value = val;
-    displayEl.textContent = val;
-    displayEl.style.display = 'inline';
-    inputEl.style.display = 'none';
-    if (saveBtn) saveBtn.style.display = 'none';
-
-    // Persist filename to activeDocData and localStorage
-    if (activeDocData && activeDocData.files && typeof activeDocFileIndex !== 'undefined' && activeDocData.files[activeDocFileIndex]) {
-      activeDocData.files[activeDocFileIndex].filename = val;
-      const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
-      if (activeDocData.id) {
-        docMap[activeDocData.id] = activeDocData;
-        try {
-          localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
-        } catch(e) {}
-      }
-    }
-    if (typeof showToast === 'function') {
-      showToast('Nama berkas "' + val + '" berhasil disimpan! 💾', 'info');
-    }
-  }
-}
-
+// ============================================================================
+// CRM PORTAL RUANG BELAJARKU — EDIT & SAVE BADGE DAN NAMA FILE DOKUMEN
+// ============================================================================
 function enableManualDocBadge(isInline) {
   const elId = isInline ? 'inline-mod-doc-badge-label' : 'mod-doc-badge-label';
   const input = document.getElementById(elId);
@@ -4197,10 +4192,10 @@ function enableManualDocBadge(isInline) {
   input.removeAttribute('readonly');
   input.focus();
   input.select();
-  input.style.borderColor = '#2563EB';
-  input.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.15)';
+  input.style.borderColor = '#FF2E63';
+  input.style.boxShadow = '0 0 0 3px rgba(255, 46, 99, 0.15)';
   if (typeof showToast === 'function') {
-    showToast('Silakan edit Badge Dokumen (muncul di Header Reader Dokumen) ✏️', 'info');
+    showToast('Silakan ketik Label / Badge Dokumen di CRM ✏️', 'info');
   }
 }
 
@@ -4216,8 +4211,117 @@ function saveManualDocBadge(isInline) {
     input.style.borderColor = '';
     input.style.boxShadow = '';
   }, 1200);
+
+  // Bila sedang mengedit modul di modal CRM, langsung sinkronkan ke penyimpanan dokumen
+  if (!isInline) {
+    const activeModId = document.getElementById('mod-form-id') ? document.getElementById('mod-form-id').value : '';
+    if (activeModId) {
+      const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
+      if (docMap[activeModId]) {
+        docMap[activeModId].badge = val;
+        DOCUMENT_FILES_MAP[activeModId] = docMap[activeModId];
+        try {
+          localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+        } catch (e) {}
+      }
+    }
+  }
   if (typeof showToast === 'function') {
-    showToast('Badge Dokumen "' + val + '" berhasil disimpan! 💾', 'info');
+    showToast('Label Badge Dokumen "' + val + '" berhasil disimpan di CRM! 💾', 'info');
+  }
+}
+
+function enableManualDocFilenameInline() {
+  const input = document.getElementById('inline-mod-doc-filename');
+  if (!input) return;
+  input.removeAttribute('readonly');
+  input.focus();
+  input.select();
+  input.style.borderColor = '#FF2E63';
+  input.style.boxShadow = '0 0 0 3px rgba(255, 46, 99, 0.15)';
+  if (typeof showToast === 'function') {
+    showToast('Silakan edit Nama File Dokumen (.md) di CRM ✏️', 'info');
+  }
+}
+
+function saveManualDocFilenameInline() {
+  const input = document.getElementById('inline-mod-doc-filename');
+  if (!input) return;
+  let val = input.value.trim() || 'Dokumen_Materi.md';
+  if (!val.includes('.')) val += '.md';
+  input.value = val;
+  input.style.borderColor = '#10B981';
+  input.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+  setTimeout(() => {
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
+  }, 1200);
+  if (typeof showToast === 'function') {
+    showToast('Nama File "' + val + '" berhasil disimpan di CRM! 💾', 'info');
+  }
+}
+
+function enableDocRowFieldEdit(btn, fieldType) {
+  const row = btn ? btn.closest('.crm-row-builder-item') : null;
+  if (!row) return;
+  const selector = fieldType === 'filename' ? '.doc-item-filename' : '.doc-item-badge';
+  const input = row.querySelector(selector);
+  if (!input) return;
+  input.removeAttribute('readonly');
+  input.focus();
+  input.select();
+  input.style.borderColor = '#FF2E63';
+  input.style.boxShadow = '0 0 0 3px rgba(255, 46, 99, 0.15)';
+  if (typeof showToast === 'function') {
+    showToast('Silakan edit ' + (fieldType === 'filename' ? 'Nama File Dokumen' : 'Label Badge Berkas') + ' ✏️', 'info');
+  }
+}
+
+function saveDocRowFieldEdit(btn, fieldType) {
+  const row = btn ? btn.closest('.crm-row-builder-item') : null;
+  if (!row) return;
+  const selector = fieldType === 'filename' ? '.doc-item-filename' : '.doc-item-badge';
+  const input = row.querySelector(selector);
+  if (!input) return;
+
+  let val = input.value.trim();
+  if (fieldType === 'filename') {
+    if (!val) val = 'Dokumen_Materi.md';
+    if (!val.includes('.')) val += '.md';
+  } else {
+    const mainBadge = document.getElementById('mod-doc-badge-label');
+    if (!val) val = (mainBadge && mainBadge.value.trim()) ? mainBadge.value.trim() : 'Dokumen Social Influence';
+  }
+  input.value = val;
+  input.style.borderColor = '#10B981';
+  input.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+  setTimeout(() => {
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
+  }, 1200);
+
+  // Langsung sinkronkan ke DOCUMENT_FILES_MAP & localStorage jika sedang mengedit modul
+  const activeModId = document.getElementById('mod-form-id') ? document.getElementById('mod-form-id').value : '';
+  const container = document.getElementById('mod-documents-container');
+  if (activeModId && container) {
+    const rows = Array.from(container.querySelectorAll('.crm-row-builder-item'));
+    const rowIdx = rows.indexOf(row);
+    const docMap = typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap() : DOCUMENT_FILES_MAP;
+    if (docMap[activeModId] && docMap[activeModId].files && docMap[activeModId].files[rowIdx]) {
+      if (fieldType === 'filename') {
+        docMap[activeModId].files[rowIdx].filename = val;
+      } else {
+        docMap[activeModId].files[rowIdx].badge = val;
+      }
+      DOCUMENT_FILES_MAP[activeModId] = docMap[activeModId];
+      try {
+        localStorage.setItem('etalaseku_document_files_map', JSON.stringify(docMap));
+      } catch (e) {}
+    }
+  }
+
+  if (typeof showToast === 'function') {
+    showToast((fieldType === 'filename' ? 'Nama File "' : 'Badge Dokumen "') + val + '" berhasil disimpan! 💾', 'info');
   }
 }
 
@@ -4345,28 +4449,51 @@ function addDocumentRowToForm(docData) {
   if (!container) return;
   const data = docData || {};
   const index = container.children.length + 1;
-  const name = data.name || ('PRD Model ' + index);
-  const filename = data.filename || ('PRD_' + index + '.md');
+  const name = data.name || ('Dokumen Materi ' + index);
+  const cleanDefaultName = name.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
+  const filename = data.filename || ('Dokumen_' + cleanDefaultName + '.md');
+  const mainBadgeInput = document.getElementById('mod-doc-badge-label');
+  const defaultBadge = (mainBadgeInput && mainBadgeInput.value.trim()) ? mainBadgeInput.value.trim() : ('Dokumen ' + name);
+  const badge = data.badge || defaultBadge;
   const size = data.size || '0.01 MB';
   const url = data.url || 'https://drive.google.com';
-  const content = data.content || ('# PRD: ' + name + '\n\n## 1. Ringkasan Eksekutif\nDokumen spesifikasi produk dan rancangan teknis.\n\n## 2. Fitur Utama\n- Arsitektur sistem Google Apps Script\n- Skema database Google Sheets\n- Endpoint REST API tanpa hosting bulanan.');
+  const rawContent = data.content || ('# Dokumen: ' + name + '\n\n## 1. Ringkasan Eksekutif\nDokumen spesifikasi produk dan panduan implementasi.\n\n## 2. Fitur Utama\n- Arsitektur sistem Google Apps Script\n- Skema database Google Sheets\n- Endpoint REST API modern.');
+  const content = rawContent.replace(/^#\s*PRD:\s*/i, '# Dokumen: ');
 
   const div = document.createElement('div');
   div.className = 'crm-row-builder-item';
   div.innerHTML = `
     <button type="button" class="crm-row-del-btn" onclick="this.closest('.crm-row-builder-item').remove(); updateFormCounters();" title="Hapus Dokumen">&times;</button>
-    <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
+    <div class="crm-doc-row-grid-top" style="display:grid; grid-template-columns: 3fr 1fr; gap:10px; margin-bottom:10px; padding-right:30px;">
       <div>
         <label class="form-label" style="font-size:10.5px; font-weight:700;">Judul Dokumen *</label>
-        <input type="text" class="form-input doc-item-name" value="${escapeHtml(name)}" placeholder="Contoh: E-TOKO Mini Commerce">
+        <input type="text" class="form-input doc-item-name" value="${escapeHtml(name)}" placeholder="Contoh: Social Influence / E-TOKO">
       </div>
       <div>
-        <label class="form-label" style="font-size:10.5px; font-weight:700;">Nama File</label>
-        <input type="text" class="form-input doc-item-filename" value="${escapeHtml(filename)}" placeholder="PRD_Toko.md">
-      </div>
-      <div>
-        <label class="form-label" style="font-size:10.5px; font-weight:700;">Ukuran</label>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Ukuran Berkas</label>
         <input type="text" class="form-input doc-item-size" value="${escapeHtml(size)}" placeholder="0.01 MB">
+      </div>
+    </div>
+    <div class="crm-doc-row-grid-mid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:8px 10px; border-radius:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
+          <label class="form-label" style="font-size:10.5px; font-weight:700; margin:0; color:#1E1B4B;">Nama File (Tampil di Reader)</label>
+          <div style="display:flex; gap:4px;">
+            <button type="button" class="btn-micro-edit" onclick="enableDocRowFieldEdit(this, 'filename')" title="Edit Nama File Dokumen">✏️ Edit</button>
+            <button type="button" class="btn-micro-save" onclick="saveDocRowFieldEdit(this, 'filename')" title="Simpan Nama File Dokumen">💾 Save</button>
+          </div>
+        </div>
+        <input type="text" class="form-input doc-item-filename" value="${escapeHtml(filename)}" placeholder="Contoh: Dokumen_Social_Influence.md" style="font-family:'Courier New', monospace; font-size:12px;">
+      </div>
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:8px 10px; border-radius:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
+          <label class="form-label" style="font-size:10.5px; font-weight:700; margin:0; color:#1E1B4B;">Label Badge (Header Reader)</label>
+          <div style="display:flex; gap:4px;">
+            <button type="button" class="btn-micro-edit" onclick="enableDocRowFieldEdit(this, 'badge')" title="Edit Label Badge Berkas">✏️ Edit</button>
+            <button type="button" class="btn-micro-save" onclick="saveDocRowFieldEdit(this, 'badge')" title="Simpan Label Badge Berkas">💾 Save</button>
+          </div>
+        </div>
+        <input type="text" class="form-input doc-item-badge" value="${escapeHtml(badge)}" placeholder="Contoh: Dokumen Social Influence">
       </div>
     </div>
     <div style="margin-bottom:8px;">
@@ -4375,7 +4502,7 @@ function addDocumentRowToForm(docData) {
     </div>
     <div>
       <label class="form-label" style="font-size:10.5px; font-weight:700;">Isi Teks Dokumen</label>
-      <textarea class="form-input doc-item-content" rows="3" placeholder="Teks lengkap PRD format markdown...">${escapeHtml(content)}</textarea>
+      <textarea class="form-input doc-item-content" rows="3" placeholder="Teks lengkap dokumen format markdown...">${escapeHtml(content)}</textarea>
     </div>
   `;
   container.appendChild(div);
@@ -4405,7 +4532,7 @@ function openAddModuleModal() {
 
   document.getElementById('mod-form-id').value = '';
   document.getElementById('mod-form-title').value = '';
-  document.getElementById('mod-form-order').value = ((STATE.modules || DEFAULT_MODULES).length + 1);
+  document.getElementById('mod-form-order').value = ((Array.isArray(STATE.modules) ? STATE.modules : loadStoredClassroomModules()).length + 1);
   document.getElementById('mod-form-badge').value = 'Kelas';
   document.getElementById('mod-form-duration').value = '30 Menit';
   document.getElementById('mod-form-banner').value = './assets/modules/thumb-metode3.jpg';
@@ -4433,14 +4560,15 @@ function openAddModuleModal() {
   addEpisodeRowToForm({ title: 'Step 1 - Pengenalan Modul', duration: '08:20', summary: 'Pengantar materi dan sasaran kompetensi.' });
   addEpisodeRowToForm({ title: 'Step 2 - Praktek Coding & Implementasi', duration: '15:40', summary: 'Hands-on koding langkah demi langkah.' });
   addMaterialRowToForm({ name: 'Starter Kit Source Code (Zip)', type: 'GitHub Zip', url: 'https://drive.google.com' });
-  addDocumentRowToForm({ name: 'PRD Model Aplikasi', filename: 'PRD_Aplikasi.md', size: '0.02 MB', url: 'https://drive.google.com' });
+  if (document.getElementById('mod-doc-badge-label')) document.getElementById('mod-doc-badge-label').value = 'Dokumen Social Influence';
+  addDocumentRowToForm({ name: 'Dokumen Referensi Utama', filename: 'Dokumen_Referensi_Utama.md', badge: 'Dokumen Social Influence', size: '0.02 MB', url: 'https://drive.google.com' });
 
   switchModuleEditorType('course');
   document.getElementById('modal-module-form').classList.add('active');
 }
 
 function openEditModuleModal(id) {
-  const modules = STATE.modules || DEFAULT_MODULES;
+  const modules = Array.isArray(STATE.modules) ? STATE.modules : loadStoredClassroomModules();
   const mod = modules.find(m => m.ID_Materi === id);
   if (!mod) return;
 
@@ -4658,13 +4786,23 @@ async function saveClassroomModuleForm(e, isInline) {
 
       const cleanInlineName = inlineTitle.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
       const inlineBadgeInput = document.getElementById('inline-mod-doc-badge-label');
-      const inlineBadgeVal = inlineBadgeInput ? inlineBadgeInput.value.trim() : ('Dokumen ' + inlineTitle);
+      const inlineBadgeVal = (inlineBadgeInput && inlineBadgeInput.value.trim()) ? inlineBadgeInput.value.trim() : ('Dokumen ' + inlineTitle);
+      const inlineFilenameInput = document.getElementById('inline-mod-doc-filename');
+      let inlineFilenameVal = (inlineFilenameInput && inlineFilenameInput.value.trim()) ? inlineFilenameInput.value.trim() : ('Dokumen_' + cleanInlineName + '.md');
+      if (!inlineFilenameVal.includes('.')) inlineFilenameVal += '.md';
+      const inlineSecHeadingInput = document.getElementById('inline-doc-sec-heading-input');
+      const inlineSecTitle = (inlineSecHeadingInput && inlineSecHeadingInput.value.trim()) ? inlineSecHeadingInput.value.trim() : 'Paket Dokumen & Berkas';
+      const inlineDocContentInput = document.getElementById('inline-mod-doc-content');
+      const inlineDocContentVal = (inlineDocContentInput && inlineDocContentInput.value.trim())
+        ? inlineDocContentInput.value.trim()
+        : ('# Dokumen: ' + inlineTitle + '\n\n## 1. Ringkasan Eksekutif\n' + (inlineDesc || 'Dokumen materi, panduan teknis, dan implementasi referensi lengkap.') + '\n\n## 2. Poin Utama Pembelajaran & Berkas\n- Modul Pembelajaran Terverifikasi\n- Repositori dan Berkas Referensi\n- Panduan Implementasi Langkah demi Langkah');
 
       const docObj = {
         title: inlineTitle,
         subtitle: inlineDocSubtitle,
         banner: inlineBanner,
-        badge: inlineBadgeVal || ('Dokumen ' + inlineTitle),
+        sectionTitle: inlineSecTitle,
+        badge: inlineBadgeVal,
         totalFiles: customMatCount,
         totalLinks: 0,
         pkgFilesText: inlinePkgFiles,
@@ -4672,11 +4810,11 @@ async function saveClassroomModuleForm(e, isInline) {
         files: [
           {
             name: inlineTitle,
-            filename: 'Dokumen_' + cleanInlineName + '.md',
-            badge: inlineBadgeVal || ('Dokumen ' + inlineTitle),
+            filename: inlineFilenameVal,
+            badge: inlineBadgeVal,
             size: '0.01 MB',
             url: inlineUrl,
-            content: '# Dokumen: ' + inlineTitle + '\n\n## 1. Ringkasan Eksekutif\n' + (inlineDesc || 'Dokumen materi, panduan teknis, dan implementasi referensi lengkap.') + '\n\n## 2. Poin Utama Pembelajaran & Berkas\n- Modul Pembelajaran Terverifikasi\n- Repositori dan Berkas Referensi\n- Panduan Implementasi Langkah demi Langkah'
+            content: inlineDocContentVal
           }
         ]
       };
@@ -4689,12 +4827,12 @@ async function saveClassroomModuleForm(e, isInline) {
       } catch (err) {}
     }
 
-    if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
+    if (!Array.isArray(STATE.modules)) STATE.modules = loadStoredClassroomModules();
+    // Pastikan ID baru tidak ada di daftar terhapus
+    saveDeletedModuleIds(getDeletedModuleIds().filter(delId => delId !== inlineId));
     STATE.modules.push(newMod);
     STATE.modules.sort((a, b) => (Number(a.Urutan) || 0) - (Number(b.Urutan) || 0));
-    try {
-      localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
-    } catch (err) {}
+    persistClassroomModules(STATE.modules);
 
     renderClassroomModulesAdmin();
     renderClassroomPortalModules('', 'ALL');
@@ -4809,17 +4947,22 @@ async function saveClassroomModuleForm(e, isInline) {
     } catch (err) {}
   } else {
     // Process Documents & PRD (Foto 2 - Akses Produk)
+    const mainBadgeVal = (document.getElementById('mod-doc-badge-label') ? document.getElementById('mod-doc-badge-label').value.trim() : '') || ('Dokumen ' + title);
     const docContainer = document.getElementById('mod-documents-container');
     const docRows = docContainer ? Array.from(docContainer.querySelectorAll('.crm-row-builder-item')) : [];
     const docFiles = docRows.map((row, idx) => {
-      const dName = (row.querySelector('.doc-item-name') ? row.querySelector('.doc-item-name').value.trim() : '') || ('Dokumen PRD ' + (idx + 1));
-      const dFilename = (row.querySelector('.doc-item-filename') ? row.querySelector('.doc-item-filename').value.trim() : '') || ('PRD_' + (idx + 1) + '.md');
+      const dName = (row.querySelector('.doc-item-name') ? row.querySelector('.doc-item-name').value.trim() : '') || ('Dokumen Materi ' + (idx + 1));
+      const cleanDName = dName.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
+      let dFilename = (row.querySelector('.doc-item-filename') ? row.querySelector('.doc-item-filename').value.trim() : '') || ('Dokumen_' + cleanDName + '.md');
+      if (!dFilename.includes('.')) dFilename += '.md';
+      const dBadge = (row.querySelector('.doc-item-badge') ? row.querySelector('.doc-item-badge').value.trim() : '') || mainBadgeVal;
       const dSize = (row.querySelector('.doc-item-size') ? row.querySelector('.doc-item-size').value.trim() : '') || '0.01 MB';
       const dUrl = (row.querySelector('.doc-item-url') ? row.querySelector('.doc-item-url').value.trim() : '') || 'https://drive.google.com';
-      const dContent = (row.querySelector('.doc-item-content') ? row.querySelector('.doc-item-content').value.trim() : '') || ('# ' + dName);
+      const dContent = (row.querySelector('.doc-item-content') ? row.querySelector('.doc-item-content').value.trim() : '') || ('# Dokumen: ' + dName);
       return {
         name: dName,
         filename: dFilename,
+        badge: dBadge,
         size: dSize,
         url: dUrl,
         content: dContent
@@ -4866,8 +5009,9 @@ async function saveClassroomModuleForm(e, isInline) {
     } catch (err) {}
   }
 
-  // Update STATE.modules
-  if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
+  // Update STATE.modules & simpan ke kedua key localStorage secara permanen
+  if (!Array.isArray(STATE.modules)) STATE.modules = loadStoredClassroomModules();
+  saveDeletedModuleIds(getDeletedModuleIds().filter(delId => delId !== id));
   const existingIdx = STATE.modules.findIndex(m => m.ID_Materi === id);
   if (existingIdx >= 0) {
     STATE.modules[existingIdx] = formattedModule;
@@ -4876,9 +5020,7 @@ async function saveClassroomModuleForm(e, isInline) {
   }
 
   STATE.modules.sort((a, b) => (Number(a.Urutan) || 0) - (Number(b.Urutan) || 0));
-  try {
-    localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
-  } catch (err) {}
+  persistClassroomModules(STATE.modules);
 
   // Sync non-blocking ke GAS jika backend tersedia
   if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
@@ -4906,12 +5048,41 @@ async function saveClassroomModuleForm(e, isInline) {
 }
 
 function deleteClassroomModuleAdmin(id) {
-  // Safe module delete without browser confirm
+  if (!id) return;
 
-  if (!STATE.modules) STATE.modules = [...DEFAULT_MODULES];
-  STATE.modules = STATE.modules.filter(m => m.ID_Materi !== id);
-  localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(STATE.modules));
+  // 1. Catat ID ke daftar terhapus permanen agar saat refresh tidak pernah muncul kembali
+  const deletedIds = getDeletedModuleIds();
+  if (!deletedIds.includes(id)) {
+    deletedIds.push(id);
+    saveDeletedModuleIds(deletedIds);
+  }
 
+  // 2. Filter dari STATE.modules & simpan sinkron ke etalaseku_classroom_modules DAN etalaseku_modules
+  const currentMods = Array.isArray(STATE.modules) ? STATE.modules : loadStoredClassroomModules();
+  const updatedMods = currentMods.filter(m => m && m.ID_Materi !== id);
+  persistClassroomModules(updatedMods);
+
+  // 3. Bersihkan data terkait di map episode & dokumen lokal
+  try {
+    const savedCourseRaw = localStorage.getItem('etalaseku_course_episodes_map');
+    if (savedCourseRaw) {
+      const cMap = JSON.parse(savedCourseRaw);
+      if (cMap && cMap[id]) {
+        delete cMap[id];
+        localStorage.setItem('etalaseku_course_episodes_map', JSON.stringify(cMap));
+      }
+    }
+    const savedDocRaw = localStorage.getItem('etalaseku_document_files_map');
+    if (savedDocRaw) {
+      const dMap = JSON.parse(savedDocRaw);
+      if (dMap && dMap[id]) {
+        delete dMap[id];
+        localStorage.setItem('etalaseku_document_files_map', JSON.stringify(dMap));
+      }
+    }
+  } catch (e) {}
+
+  // 4. Kirim penghapusan non-blocking ke backend GAS bila tersedia
   if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
     fetch(APP_CONFIG.GAS_URL, {
       method: 'POST',
@@ -4920,9 +5091,23 @@ function deleteClassroomModuleAdmin(id) {
     }).catch(err => console.warn('Gagal delete modul di GAS:', err));
   }
 
+  // 5. Render ulang seketika baik di CRM (Kartu Visual + Tabel + Badge) maupun di Portal Ruang BelajarKu Siswa!
   renderClassroomModulesAdmin();
-  showToast('Modul berhasil dihapus!', 'info');
+  renderClassroomPortalModules('', 'ALL');
+  showToast('Modul berhasil dihapus permanen dari CRM & Portal Ruang BelajarKu! 🗑️', 'info');
 }
+
+function previewModuleFromCrm(moduleId, isDoc) {
+  closeAdminPortal();
+  localStorage.setItem('etalaseku_is_in_crm', 'false');
+  openClassroomDashboard();
+  if (isDoc) {
+    openDocumentPackageView(moduleId);
+  } else {
+    openCourseClassroomView(moduleId);
+  }
+}
+window.previewModuleFromCrm = previewModuleFromCrm;
 
 // ============================================================================
 // 9. UTILITIES & MODAL HELPERS
@@ -5076,6 +5261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastTab = localStorage.getItem('etalaseku_admin_active_tab') || 'tab-dashboard';
     const navBtn = document.querySelector(`.admin-nav-item[onclick*="${lastTab}"]`);
     switchAdminTab(lastTab, navBtn);
+  } else if (localStorage.getItem('etalaseku_is_in_classroom') === 'true' && (savedOrderId || savedEmail)) {
+    openClassroomDashboard(savedOrderId, savedEmail);
   }
 });
 
@@ -6491,27 +6678,23 @@ function openDocReaderModal(idx) {
   const titleEl = document.getElementById('modal-doc-title');
   if (titleEl) titleEl.textContent = file.name || activeDocData.title;
 
-  // Badge handling: default to custom badge or 'Dokumen ' + title (e.g. Dokumen Social Influence)
+  // Badge diambil dari pengaturan CRM Portal Ruang BelajarKu (per berkas -> per paket -> default judul)
   const badgeEl = document.getElementById('modal-doc-badge');
-  const badgeInput = document.getElementById('modal-doc-badge-input');
   let badgeVal = file.badge || activeDocData.badge;
-  if (!badgeVal || badgeVal === 'DOKUMEN PRD' || badgeVal.toLowerCase().includes('prd')) {
+  if (!badgeVal || badgeVal === 'DOKUMEN PRD') {
     badgeVal = 'Dokumen ' + (activeDocData.title || file.name || 'Social Influence');
   }
   if (badgeEl) badgeEl.textContent = badgeVal;
-  if (badgeInput) badgeInput.value = badgeVal;
 
-  // Filename handling: clean filename without hardcoded PRD_
+  // Nama File diambil dari pengaturan CRM Portal Ruang BelajarKu (bersih tanpa PRD_MOD-...)
   let rawFilename = file.filename || '';
-  if (!rawFilename || rawFilename.startsWith('PRD_')) {
+  if (!rawFilename || rawFilename.startsWith('PRD_MOD-')) {
     const cleanName = (file.name || activeDocData.title || 'Dokumen').replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
     rawFilename = 'Dokumen_' + cleanName + '.md';
     file.filename = rawFilename;
   }
   const filenameEl = document.getElementById('modal-doc-meta-filename');
-  const filenameInput = document.getElementById('modal-doc-meta-filename-input');
   if (filenameEl) filenameEl.textContent = rawFilename;
-  if (filenameInput) filenameInput.value = rawFilename;
 
   const sizeEl = document.getElementById('modal-doc-meta-size');
   if (sizeEl) sizeEl.textContent = file.size || '0.01 MB';
@@ -6520,7 +6703,6 @@ function openDocReaderModal(idx) {
   if (driveLink && file.url) driveLink.href = file.url;
 
   let bodyContent = file.content || ('# Dokumen: ' + (file.name || activeDocData.title) + '\n\n## 1. Ringkasan Eksekutif\nDokumen referensi resmi siap digunakan.');
-  // Clean up any old '# PRD:' to '# Dokumen:'
   bodyContent = bodyContent.replace(/^#\s*PRD:\s*/i, '# Dokumen: ');
   const bodyEl = document.getElementById('modal-doc-body');
   if (bodyEl) bodyEl.textContent = bodyContent;
@@ -6629,7 +6811,8 @@ function renderClassroomCrmCards(query, filterTag) {
   const container = document.getElementById('crm-rb-cards-grid');
   if (!container) return;
 
-  let modules = (STATE.modules && STATE.modules.length > 0) ? STATE.modules : DEFAULT_MODULES;
+  const allModules = Array.isArray(STATE.modules) ? STATE.modules : loadStoredClassroomModules();
+  let modules = allModules;
 
   if (query && query.trim()) {
     const q = query.toLowerCase();
@@ -6653,7 +6836,7 @@ function renderClassroomCrmCards(query, filterTag) {
 
   // Update badge count in CRM sidebar
   const badgeEl = document.getElementById('badge-modules-count');
-  if (badgeEl) badgeEl.textContent = (STATE.modules || DEFAULT_MODULES).length;
+  if (badgeEl) badgeEl.textContent = allModules.length;
 
   if (modules.length === 0) {
     container.innerHTML = `
@@ -6713,7 +6896,7 @@ function renderClassroomCrmCards(query, filterTag) {
               ✏️ Edit Kartu Ruang BelajarKu
             </button>
             <div style="display:flex; gap:6px;">
-              <button type="button" class="crm-rb-btn-preview" style="flex:1;" onclick="${isDoc ? `openDocumentPackageView('${m.ID_Materi}')` : `openCourseClassroomView('${m.ID_Materi}')`}" title="Lihat Tampilan Siswa (Buka Ruang Belajar / Akses Produk)">
+              <button type="button" class="crm-rb-btn-preview" style="flex:1;" onclick="previewModuleFromCrm('${m.ID_Materi}', ${isDoc})" title="Lihat Tampilan Siswa (Buka Ruang Belajar / Akses Produk)">
                 👁️ Pratinjau Siswa
               </button>
               <button type="button" class="btn-secondary" style="padding:6px 12px; font-size:12px; color:#EF4444; border-color:#FCA5A5; border-radius:9999px; cursor:pointer;" onclick="deleteClassroomModuleAdmin('${m.ID_Materi}')" title="Hapus Modul">

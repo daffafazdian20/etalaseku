@@ -6470,3 +6470,63 @@ input:checked + .switch-slider:before {
     justify-content: center !important;
   }
 }
+
+
+/* ==========================================================================
+   DESKTOP & MOBILE RESPONSIVE POLISH (ALL BRANDS HP, LAPTOP & DESKTOP PC)
+   ========================================================================== */
+.doc-reader-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 769px) {
+  .doc-reader-meta-bar {
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  .doc-reader-meta-info {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .doc-reader-filename {
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .doc-reader-actions-group {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 1024px) {
+  .crm-grid-3 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .crm-grid-2,
+  .crm-grid-3,
+  .crm-doc-row-grid-top,
+  .crm-doc-row-grid-mid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .doc-reader-actions-group {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+  }
+  .doc-reader-filename {
+    word-break: break-all !important;
+    white-space: normal !important;
+  }
+}
