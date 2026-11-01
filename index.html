@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261101-03">
+  <link rel="stylesheet" href="css/style.css?v=20261101-04">
 </head>
 <body>
 
@@ -1976,58 +1976,16 @@
                 <button class="btn-secondary" style="padding:10px 16px; font-size:13px; font-weight:700;" onclick="toggleInlineModuleForm()">
                   ⚡ Form Cepat Inline
                 </button>
-                <button class="shimmer-btn" style="padding:10px 18px; font-size:13px; font-weight:800; background:linear-gradient(135deg, #FF2E63, #E11D48); color:#FFFFFF; border-radius:12px;" onclick="openNewModuleModal()">
+                <button class="shimmer-btn" style="padding:10px 18px; font-size:13px; font-weight:800; background:linear-gradient(135deg, #FF2E63, #E11D48); color:#FFFFFF; border-radius:12px;" onclick="openAddModuleModal()">
                   + Tambah Kartu / Modul Baru 🎓
                 </button>
               </div>
             </div>
 
-            <!-- Filter & Search Toolbar in CRM (Mirip Ruang BelajarKu) -->
-            <div class="rb-filter-toolbar" style="margin:16px 0 20px; background:#F8FAFC; padding:12px 16px; border-radius:16px; border:1px solid #E2E8F0;">
-              <div class="rb-search-wrap">
-                <input type="text" id="crm-portal-search-input" placeholder="🔍 Cari kartu modul atau kelas..." class="rb-search-input" oninput="filterCrmClassroomModules(this.value)">
-              </div>
-              <div class="rb-filter-pills" id="crm-portal-filter-pills">
-                <button class="rb-pill active" onclick="filterCrmClassroomByTag('ALL', this)">✨ Semua</button>
-                <button class="rb-pill" onclick="filterCrmClassroomByTag('Kelas', this)">🎓 Kelas</button>
-                <button class="rb-pill" onclick="filterCrmClassroomByTag('Dokumen', this)">📑 Dokumen</button>
-                <button class="rb-pill" onclick="filterCrmClassroomByTag('Aplikasi', this)">💻 Aplikasi</button>
-                <button class="rb-pill" onclick="filterCrmClassroomByTag('Code', this)">⚡ Source Code</button>
-              </div>
-            </div>
-
-            <!-- VIEW MODE 1: VISUAL CARDS GRID (Sesuai Foto 1 Ruang BelajarKu) -->
-            <div id="crm-rb-cards-view-wrap" style="margin-bottom:30px;">
-              <div id="crm-rb-cards-grid" class="rb-cards-grid">
-                <!-- Rendered dynamically by app.js -->
-              </div>
-            </div>
-
-            <!-- VIEW MODE 2: TABLE DATA VIEW -->
-            <div id="crm-rb-table-view-wrap" style="display:none; overflow-x:auto; margin-bottom:24px;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th style="width:50px; text-align:center;">Urutan</th>
-                    <th style="width:80px;">Foto Banner</th>
-                    <th>Judul &amp; Ringkasan Ruang BelajarKu</th>
-                    <th>Tipe &amp; Kategori</th>
-                    <th>Total Video &amp; Materi</th>
-                    <th>Tautan Drive / Video</th>
-                    <th>Status</th>
-                    <th style="width:140px;">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="classroom-admin-tbody">
-                  <!-- Rendered dynamically by app.js -->
-                </tbody>
-              </table>
-            </div>
-
             <div id="inline-module-form-box" class="crm-inline-box" style="display:none; background:#FFFFFF; border:1.5px solid #F1F5F9; border-radius:18px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,0.03); margin-bottom:20px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1.5px solid #F1F5F9;">
                 <div>
-                  <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 2px;">⚡ Form Cepat Modul Pembelajaran Inline</h4>
+                  <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 2px;">⚡ Form Cepat Kartu Ruang BelajarKu (Inline)</h4>
                   <p style="font-size:12px; color:var(--text-muted); margin:0;">Input modul baru langsung tanpa keluar dari halaman CRM, otomatis terhubung ke Ruang Belajar &amp; Akses Produk.</p>
                 </div>
                 <button type="button" class="btn-secondary" style="padding:6px 12px; font-size:12px; border-radius:8px;" onclick="toggleInlineModuleForm()">Tutup ✕</button>
@@ -2042,7 +2000,7 @@
                     🎓 Modul Kelas Video (Buka Ruang Belajar)
                   </button>
                   <button type="button" class="mod-type-pill" id="btn-inline-type-doc" onclick="switchInlineModuleType('document')">
-                    📁 Paket Dokumen &amp; PRD (Akses Produk)
+                    📁 Paket Dokumen &amp; Berkas (Akses Produk)
                   </button>
                 </div>
 
@@ -2213,6 +2171,50 @@
                 </button>
               </form>
             </div>
+
+            <!-- Filter & Search Toolbar in CRM (Mirip Ruang BelajarKu) -->
+            <div class="rb-filter-toolbar" style="margin:16px 0 20px; background:#F8FAFC; padding:12px 16px; border-radius:16px; border:1px solid #E2E8F0;">
+              <div class="rb-search-wrap">
+                <input type="text" id="crm-portal-search-input" placeholder="🔍 Cari kartu modul atau kelas..." class="rb-search-input" oninput="filterCrmClassroomModules(this.value)">
+              </div>
+              <div class="rb-filter-pills" id="crm-portal-filter-pills">
+                <button class="rb-pill active" onclick="filterCrmClassroomByTag('ALL', this)">✨ Semua</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Kelas', this)">🎓 Kelas</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Dokumen', this)">📑 Dokumen</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Aplikasi', this)">💻 Aplikasi</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Code', this)">⚡ Source Code</button>
+              </div>
+            </div>
+
+            <!-- VIEW MODE 1: VISUAL CARDS GRID (Sesuai Foto 1 Ruang BelajarKu) -->
+            <div id="crm-rb-cards-view-wrap" style="margin-bottom:30px;">
+              <div id="crm-rb-cards-grid" class="rb-cards-grid">
+                <!-- Rendered dynamically by app.js -->
+              </div>
+            </div>
+
+            <!-- VIEW MODE 2: TABLE DATA VIEW -->
+            <div id="crm-rb-table-view-wrap" style="display:none; overflow-x:auto; margin-bottom:24px;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width:50px; text-align:center;">Urutan</th>
+                    <th style="width:80px;">Foto Banner</th>
+                    <th>Judul &amp; Ringkasan Ruang BelajarKu</th>
+                    <th>Tipe &amp; Kategori</th>
+                    <th>Total Video &amp; Materi</th>
+                    <th>Tautan Drive / Video</th>
+                    <th>Status</th>
+                    <th style="width:140px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="classroom-admin-tbody">
+                  <!-- Rendered dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+
+            
 
             <!-- Table of Classroom Modules -->
             <div style="overflow-x:auto;">
@@ -2904,7 +2906,7 @@
               🎓 Modul Kelas Video (Buka Ruang Belajar)
             </button>
             <button type="button" class="mod-type-pill" id="btn-mod-type-doc" onclick="switchModuleEditorType('document')">
-              📁 Paket Dokumen &amp; PRD (Akses Produk)
+              📁 Paket Dokumen &amp; Berkas (Akses Produk)
             </button>
           </div>
 
@@ -3043,8 +3045,15 @@
 
           <!-- Section 3: Khusus PAKET DOKUMEN (Foto 2 - Akses Produk) -->
           <div id="crm-sec-doc-editor" class="crm-editor-section" style="display:none;">
-            <div class="crm-editor-sec-title">
-              <span>📄 Paket Dokumen &amp; 10 Berkas PRD</span>
+            <div class="crm-editor-sec-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div style="display:flex; align-items:center; gap:8px; flex:1;">
+                <span id="mod-doc-sec-heading-display">📄 Paket Dokumen &amp; Berkas</span>
+                <input type="text" id="mod-doc-sec-heading-input" class="form-input" style="display:none; max-width:260px; padding:3px 8px; font-size:12px; font-weight:700;" value="Paket Dokumen &amp; Berkas">
+              </div>
+              <div style="display:flex; gap:4px;">
+                <button type="button" class="btn-micro-edit" onclick="enableManualDocHeading('sec-heading', false)" title="Edit penamaan Paket Dokumen & Berkas">✏️ Edit</button>
+                <button type="button" class="btn-micro-save" onclick="saveManualDocHeading('sec-heading', false)" title="Simpan penamaan">💾 Save</button>
+              </div>
             </div>
 
             <!-- Info Paket -->
@@ -3065,12 +3074,19 @@
 
             <!-- Document Items Builder -->
             <div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <label class="form-label" style="font-size:12px; font-weight:800; color:#1E1B4B; margin:0;">
-                  Daftar Berkas Dokumen PRD (<span id="mod-form-doc-count">0</span> Dokumen)
-                </label>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                  <label class="form-label" style="font-size:12px; font-weight:800; color:#1E1B4B; margin:0;" id="mod-doc-list-heading-display">
+                    Daftar paket Dokumen (<span id="mod-form-doc-count">0</span> Berkas)
+                  </label>
+                  <input type="text" id="mod-doc-list-heading-input" class="form-input" style="display:none; max-width:220px; padding:3px 8px; font-size:11.5px; font-weight:700;" value="Daftar paket Dokumen">
+                  <div style="display:flex; gap:4px;">
+                    <button type="button" class="btn-micro-edit" onclick="enableManualDocHeading('list-heading', false)" title="Edit penamaan Daftar paket Dokumen">✏️ Edit</button>
+                    <button type="button" class="btn-micro-save" onclick="saveManualDocHeading('list-heading', false)" title="Simpan penamaan">💾 Save</button>
+                  </div>
+                </div>
                 <button type="button" class="btn-add-item-crm" onclick="addDocumentRowToForm()">
-                  + Tambah Dokumen PRD
+                  + Tambah Dokumen
                 </button>
               </div>
               <div id="mod-documents-container">
@@ -3341,8 +3357,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261101-03"></script>
-  <script src="js/app.js?v=20261101-03"></script>
+  <script src="js/config.js?v=20261101-04"></script>
+  <script src="js/app.js?v=20261101-04"></script>
 
   <!-- Modal Reader & Salin Dokumen PRD -->
   <div class="modal-overlay" id="modal-doc-reader">

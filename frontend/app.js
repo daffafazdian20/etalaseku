@@ -3826,6 +3826,8 @@ function renderClassroomModulesAdmin() {
   }).join('');
 }
 
+function openNewModuleModal() { openAddModuleModal(); }
+window.openNewModuleModal = openNewModuleModal;
 function toggleInlineModuleForm() {
   const box = document.getElementById('inline-module-form-box');
   if (!box) return;
@@ -4046,6 +4048,57 @@ function saveManualCountInput(field, isInline) {
   }
 }
 
+
+function enableManualDocHeading(type, isInline) {
+  const prefix = isInline ? 'inline-doc-' : 'mod-doc-';
+  const displayId = (type === 'sec-heading') ? (prefix + 'sec-heading-display') : (prefix + 'list-heading-display');
+  const inputId = (type === 'sec-heading') ? (prefix + 'sec-heading-input') : (prefix + 'list-heading-input');
+  const displayEl = document.getElementById(displayId);
+  const inputEl = document.getElementById(inputId);
+  if (displayEl && inputEl) {
+    displayEl.style.display = 'none';
+    inputEl.style.display = 'inline-block';
+    inputEl.removeAttribute('readonly');
+    inputEl.focus();
+    inputEl.select();
+    inputEl.style.borderColor = '#2563EB';
+    inputEl.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.15)';
+    if (typeof showToast === 'function') {
+      showToast('Silakan edit penamaan ' + (type === 'sec-heading' ? 'Paket Dokumen & Berkas' : 'Daftar paket Dokumen') + ' ✏️', 'info');
+    }
+  }
+}
+
+function saveManualDocHeading(type, isInline) {
+  const prefix = isInline ? 'inline-doc-' : 'mod-doc-';
+  const displayId = (type === 'sec-heading') ? (prefix + 'sec-heading-display') : (prefix + 'list-heading-display');
+  const inputId = (type === 'sec-heading') ? (prefix + 'sec-heading-input') : (prefix + 'list-heading-input');
+  const countSpan = document.getElementById('mod-form-doc-count');
+  const count = countSpan ? countSpan.textContent : '0';
+  const displayEl = document.getElementById(displayId);
+  const inputEl = document.getElementById(inputId);
+  if (displayEl && inputEl) {
+    const defaultVal = (type === 'sec-heading') ? 'Paket Dokumen & Berkas' : 'Daftar paket Dokumen';
+    const val = inputEl.value.trim() || defaultVal;
+    inputEl.value = val;
+    if (type === 'sec-heading') {
+      displayEl.innerHTML = `📄 ${escapeHtml(val)}`;
+    } else {
+      displayEl.innerHTML = `${escapeHtml(val)} (<span id="mod-form-doc-count">${count}</span> Berkas)`;
+    }
+    inputEl.style.display = 'none';
+    displayEl.style.display = 'inline-block';
+    inputEl.style.borderColor = '#10B981';
+    setTimeout(() => {
+      inputEl.style.borderColor = '';
+      inputEl.style.boxShadow = '';
+    }, 1200);
+    if (typeof showToast === 'function') {
+      showToast(`Penamaan "${val}" berhasil disimpan! 💾`, 'info');
+    }
+  }
+}
+
 function getActiveCourseEpisodesMap() {
   try {
     const saved = localStorage.getItem('etalaseku_course_episodes_map');
@@ -4182,7 +4235,7 @@ function addDocumentRowToForm(docData) {
     <button type="button" class="crm-row-del-btn" onclick="this.closest('.crm-row-builder-item').remove(); updateFormCounters();" title="Hapus Dokumen">&times;</button>
     <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px; margin-bottom:8px; padding-right:30px;">
       <div>
-        <label class="form-label" style="font-size:10.5px; font-weight:700;">Judul Dokumen PRD *</label>
+        <label class="form-label" style="font-size:10.5px; font-weight:700;">Judul Dokumen *</label>
         <input type="text" class="form-input doc-item-name" value="${escapeHtml(name)}" placeholder="Contoh: E-TOKO Mini Commerce">
       </div>
       <div>
@@ -4199,7 +4252,7 @@ function addDocumentRowToForm(docData) {
       <input type="text" class="form-input doc-item-url" value="${escapeHtml(url)}" placeholder="https://drive.google.com/...">
     </div>
     <div>
-      <label class="form-label" style="font-size:10.5px; font-weight:700;">Isi Teks PRD / Markdown (Untuk Fitur Lihat &amp; Salin 1-Klik)</label>
+      <label class="form-label" style="font-size:10.5px; font-weight:700;">Isi Teks Dokumen</label>
       <textarea class="form-input doc-item-content" rows="3" placeholder="Teks lengkap PRD format markdown...">${escapeHtml(content)}</textarea>
     </div>
   `;
@@ -4223,7 +4276,7 @@ function updateFormCounters() {
 
 function openAddModuleModal() {
   const titleEl = document.getElementById('module-form-modal-title');
-  if (titleEl) titleEl.textContent = 'Tambah Modul Materi Baru 🎓';
+  if (titleEl) titleEl.textContent = 'Tambah Kartu / Modul Baru Ruang BelajarKu 🎓';
 
   const btnSave = document.getElementById('btn-save-module-modal');
   if (btnSave) btnSave.textContent = 'Simpan & Hubungkan ke Dashboard Ruang Belajar & Akses Produk 🚀';
@@ -4270,7 +4323,7 @@ function openEditModuleModal(id) {
   if (!mod) return;
 
   const titleEl = document.getElementById('module-form-modal-title');
-  if (titleEl) titleEl.textContent = 'Edit Modul Pembelajaran & Konten Siswa ✏️';
+  if (titleEl) titleEl.textContent = 'Edit Kartu Modul Pembelajaran Ruang BelajarKu ✏️';
 
   const btnSave = document.getElementById('btn-save-module-modal');
   if (btnSave) btnSave.textContent = 'Simpan & Hubungkan ke Dashboard Ruang Belajar & Akses Produk 🚀';
@@ -4348,6 +4401,23 @@ function openEditModuleModal(id) {
     ];
     materials.forEach(mat => addMaterialRowToForm(mat));
   }
+
+  // Populate doc headings with custom saved names or defaults
+  const secHeadingDisplay = document.getElementById('mod-doc-sec-heading-display');
+  const secHeadingInput = document.getElementById('mod-doc-sec-heading-input');
+  const listHeadingDisplay = document.getElementById('mod-doc-list-heading-display');
+  const listHeadingInput = document.getElementById('mod-doc-list-heading-input');
+
+  const curSecTitle = (docData && docData.sectionTitle) ? docData.sectionTitle : 'Paket Dokumen & Berkas';
+  const curListTitle = (docData && docData.listTitle) ? docData.listTitle : 'Daftar paket Dokumen';
+
+  if (secHeadingDisplay) secHeadingDisplay.innerHTML = '📄 ' + escapeHtml(curSecTitle);
+  if (secHeadingInput) secHeadingInput.value = curSecTitle;
+  if (listHeadingDisplay) {
+    const curFilesCount = (docData && docData.files) ? docData.files.length : (docData && docData.totalFiles ? docData.totalFiles : 0);
+    listHeadingDisplay.innerHTML = escapeHtml(curListTitle) + ' (<span id="mod-form-doc-count">' + curFilesCount + '</span> Berkas)';
+  }
+  if (listHeadingInput) listHeadingInput.value = curListTitle;
 
   // Document fields
   const pkgFilesEl = document.getElementById('mod-doc-pkg-files');
@@ -4627,10 +4697,17 @@ async function saveClassroomModuleForm(e, isInline) {
     const pkgFormat = (document.getElementById('mod-doc-pkg-format') && document.getElementById('mod-doc-pkg-format').value) ? document.getElementById('mod-doc-pkg-format').value : ((inputMatCount || docFiles.length || 10) + ' Dokumen');
     const subTitle = (document.getElementById('mod-doc-subtitle') && document.getElementById('mod-doc-subtitle').value) ? document.getElementById('mod-doc-subtitle').value : (desc || 'Silahkan Download PRD yang dibutuhkan sebagai Referensi');
 
+    const secHeadingInput = document.getElementById(isInline ? 'inline-doc-sec-heading-input' : 'mod-doc-sec-heading-input');
+    const secTitle = secHeadingInput ? secHeadingInput.value.trim() : 'Paket Dokumen & Berkas';
+    const listHeadingInput = document.getElementById('mod-doc-list-heading-input');
+    const listTitle = listHeadingInput ? listHeadingInput.value.trim() : 'Daftar paket Dokumen';
+
     const docObj = {
       title: title,
       subtitle: subTitle,
       banner: bannerUrl,
+      sectionTitle: secTitle || 'Paket Dokumen & Berkas',
+      listTitle: listTitle || 'Daftar paket Dokumen',
       totalFiles: inputMatCount || docFiles.length || 10,
       totalLinks: 0,
       pkgFilesText: pkgFiles,
