@@ -1707,7 +1707,7 @@ function switchAdminTab(tabId, navEl) {
     'tab-crm': 'CRM Leads & Antrean Waitlist',
     'tab-testimonials': 'Manajemen Testimoni & Review Alumni',
     'tab-billing': 'Manajemen Tagihan & Cicilan Siswa (Installment Plan)',
-    'tab-classroom': 'Manajemen Modul Pembelajaran Siswa (Member Area)',
+    'tab-classroom': 'Editor & Manajemen Portal Ruang BelajarKu',
     'tab-settings': 'Metode Pembayaran Otomatis Server & Pengaturan Situs',
     'tab-account': 'Pengaturan Akun & Hak Akses Portal (Super Admin / Admin)'
   };
@@ -3778,6 +3778,9 @@ function renderClassroomStudentView(query) {
 }
 
 function renderClassroomModulesAdmin() {
+  if (typeof renderClassroomCrmCards === 'function') {
+    renderClassroomCrmCards(currentCrmRbQuery || '', currentCrmRbFilterTag || 'ALL');
+  }
   const tbody = document.getElementById('classroom-admin-tbody');
   if (!tbody) return;
 
@@ -6232,4 +6235,151 @@ function openWhatsAppDiscussionGroup() {
   const courseTitle = activeCourseData ? activeCourseData.title : 'Kelas Ruang BelajarKu';
   const url = 'https://wa.me/6287894602627?text=' + encodeURIComponent('Halo Admin EtalaseKu, saya siswa terverifikasi ingin bergabung ke Grup Diskusi untuk kelas: ' + courseTitle);
   window.open(url, '_blank');
+}
+
+
+// ============================================================================
+// PORTAL RUANG BELAJARKU LIVE CMS & VISUAL CARDS IN CRM (Foto 1 Reference)
+// ============================================================================
+
+let currentCrmRbFilterTag = 'ALL';
+let currentCrmRbQuery = '';
+
+function switchCrmClassroomViewMode(mode) {
+  const cardsWrap = document.getElementById('crm-rb-cards-view-wrap');
+  const tableWrap = document.getElementById('crm-rb-table-view-wrap');
+  const btnCards = document.getElementById('crm-rb-btn-view-cards');
+  const btnTable = document.getElementById('crm-rb-btn-view-table');
+
+  if (mode === 'table') {
+    if (cardsWrap) cardsWrap.style.display = 'none';
+    if (tableWrap) tableWrap.style.display = 'block';
+    if (btnCards) btnCards.classList.remove('active');
+    if (btnTable) btnTable.classList.add('active');
+  } else {
+    if (tableWrap) tableWrap.style.display = 'none';
+    if (cardsWrap) cardsWrap.style.display = 'block';
+    if (btnTable) btnTable.classList.remove('active');
+    if (btnCards) btnCards.classList.add('active');
+  }
+}
+
+function filterCrmClassroomModules(query) {
+  currentCrmRbQuery = query || '';
+  renderClassroomCrmCards(currentCrmRbQuery, currentCrmRbFilterTag);
+}
+
+function filterCrmClassroomByTag(tag, btnElement) {
+  currentCrmRbFilterTag = tag || 'ALL';
+  if (btnElement) {
+    const parent = btnElement.parentElement;
+    if (parent) {
+      const pills = parent.querySelectorAll('.rb-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+  }
+  renderClassroomCrmCards(currentCrmRbQuery, currentCrmRbFilterTag);
+}
+
+function renderClassroomCrmCards(query, filterTag) {
+  const container = document.getElementById('crm-rb-cards-grid');
+  if (!container) return;
+
+  let modules = (STATE.modules && STATE.modules.length > 0) ? STATE.modules : DEFAULT_MODULES;
+
+  if (query && query.trim()) {
+    const q = query.toLowerCase();
+    modules = modules.filter(m =>
+      (m.Judul_Modul && m.Judul_Modul.toLowerCase().includes(q)) ||
+      (m.Deskripsi && m.Deskripsi.toLowerCase().includes(q)) ||
+      (m.Tipe_Konten && m.Tipe_Konten.toLowerCase().includes(q)) ||
+      (m.Kategori && m.Kategori.toLowerCase().includes(q)) ||
+      (m.Tipe_Badge && m.Tipe_Badge.toLowerCase().includes(q))
+    );
+  }
+
+  if (filterTag && filterTag !== 'ALL') {
+    const t = filterTag.toLowerCase();
+    modules = modules.filter(m =>
+      (m.Tipe_Badge && m.Tipe_Badge.toLowerCase() === t) ||
+      (m.Kategori && m.Kategori.toLowerCase() === t) ||
+      (m.Tipe_Konten && m.Tipe_Konten.toLowerCase().includes(t))
+    );
+  }
+
+  // Update badge count in CRM sidebar
+  const badgeEl = document.getElementById('badge-modules-count');
+  if (badgeEl) badgeEl.textContent = (STATE.modules || DEFAULT_MODULES).length;
+
+  if (modules.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align:center; padding:50px 20px; background:#FFFFFF; border:1.5px dashed #CBD5E1; border-radius:20px; color:#64748B;">
+        <div style="font-size:36px; margin-bottom:10px;">🔍</div>
+        <p style="font-weight:800; font-size:16px; margin:0 0 6px; color:#0F172A;">Tidak ada kartu modul yang cocok.</p>
+        <p style="font-size:13px; margin:0 0 16px;">Klik tombol di bawah untuk menambahkan kartu baru ke Portal Ruang BelajarKu.</p>
+        <button class="shimmer-btn" style="padding:10px 18px; font-size:13px; border-radius:9999px;" onclick="openNewModuleModal()">
+          + Tambah Kartu Baru 🚀
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = modules.map((m, idx) => {
+    const tipeBadge = m.Tipe_Badge || (m.Kategori ? m.Kategori.toUpperCase() : 'KELAS');
+    const badgeTypeClass = (tipeBadge === 'DOKUMEN' ? 'type-dokumen' : (tipeBadge === 'APLIKASI' ? 'type-aplikasi' : 'type-kelas'));
+    const kategori = m.Kategori || (tipeBadge === 'DOKUMEN' ? 'Dokumen' : (tipeBadge === 'APLIKASI' ? 'Aplikasi' : 'Kelas'));
+    const catPillClass = (kategori.toLowerCase() === 'dokumen' ? 'cat-dokumen' : (kategori.toLowerCase() === 'aplikasi' ? 'cat-aplikasi' : ''));
+    const bannerUrl = m.Thumbnail_URL || m.Foto_URL || './assets/modules/thumb-metode3.jpg';
+    const isDoc = tipeBadge === 'DOKUMEN' || tipeBadge === 'APLIKASI';
+    const epCount = m.Episode || 1;
+    const matCount = m.Materi_Count || 1;
+
+    let metaText = '';
+    if (m.Episode && m.Materi_Count) {
+      metaText = `<span>🎬 ${m.Episode} episode</span> <span>•</span> <span>📚 ${m.Materi_Count} materi</span>`;
+    } else if (m.Materi_Count) {
+      metaText = `<span>📚 ${m.Materi_Count} materi</span>`;
+    } else {
+      metaText = `<span>🎬 ${epCount} episode</span> <span>•</span> <span>📚 ${matCount} materi</span>`;
+    }
+
+    return `
+      <div class="rb-card" style="box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); border: 1.5px solid #E2E8F0;">
+        <div class="rb-thumb-wrap">
+          <img src="${bannerUrl}" alt="${escapeHtml(m.Judul_Modul)}" class="rb-thumb-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-metode3.jpg';">
+          <div class="rb-badge-left ${badgeTypeClass}">${tipeBadge}</div>
+          <div class="rb-badge-right">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Dimiliki</span>
+          </div>
+        </div>
+        <div class="rb-card-content">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div class="rb-cat-pill ${catPillClass}">${kategori}</div>
+            <span style="font-size:11px; font-weight:700; color:#64748B;">Urutan #${m.Urutan || (idx + 1)}</span>
+          </div>
+          <h3 class="rb-card-title" title="${escapeHtml(m.Judul_Modul)}">${m.Judul_Modul}</h3>
+          <p class="rb-card-desc">${m.Deskripsi || 'Akses modul dan materi lengkap seumur hidup.'}</p>
+          <div class="rb-card-meta">
+            ${metaText}
+          </div>
+          <div class="crm-rb-card-actions">
+            <button type="button" class="crm-rb-btn-edit" onclick="openEditModuleModal('${m.ID_Materi}')" title="Edit Banner, Judul, Ringkasan, Video & Materi">
+              ✏️ Edit Kartu Ruang BelajarKu
+            </button>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="crm-rb-btn-preview" style="flex:1;" onclick="${isDoc ? `openDocumentPackageView('${m.ID_Materi}')` : `openCourseClassroomView('${m.ID_Materi}')`}" title="Lihat Tampilan Siswa (Buka Ruang Belajar / Akses Produk)">
+                👁️ Pratinjau Siswa
+              </button>
+              <button type="button" class="btn-secondary" style="padding:6px 12px; font-size:12px; color:#EF4444; border-color:#FCA5A5; border-radius:9999px; cursor:pointer;" onclick="deleteClassroomModuleAdmin('${m.ID_Materi}')" title="Hapus Modul">
+                🗑️
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }

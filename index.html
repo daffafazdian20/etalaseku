@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261101-01">
+  <link rel="stylesheet" href="css/style.css?v=20261101-02">
 </head>
 <body>
 
@@ -1594,8 +1594,8 @@
         </li>
         <li>
           <a class="admin-nav-item" onclick="switchAdminTab('tab-classroom', this)">
-            <span>🎓 <span class="nav-text">Modul Member Area</span></span>
-            <span class="admin-nav-badge" style="background:#0284C7;" id="badge-modules-count">6</span>
+            <span>🎓 <span class="nav-text">Portal Ruang BelajarKu</span></span>
+            <span class="admin-nav-badge" style="background:#E11D48;" id="badge-modules-count">6</span>
           </a>
         </li>
         <li>
@@ -1951,25 +1951,79 @@
           </div>
         </div>
 
-        <!-- Tab 8: Modul Member Area Classroom (tb_materi_kursus) -->
+        <!-- Tab 8: Portal Ruang BelajarKu (tb_materi_kursus) -->
         <div class="admin-tab-content" id="tab-classroom">
           <div class="admin-table-container">
-            <div class="admin-table-header">
+            <div class="admin-table-header" style="flex-wrap:wrap; gap:16px;">
               <div>
-                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Manajemen Modul Pembelajaran Siswa (Member Area Classroom)</h3>
-                <p style="font-size:12px; color:var(--text-muted);">Kelola video modul, link materi Google Drive, durasi, dan urutan materi yang tampil di Member Area.</p>
+                <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <span class="brand-motif-pill-dark" style="font-size:10px; padding:3px 10px; background:linear-gradient(135deg, #FF2E63, #E11D48); color:#FFFFFF;">EDITOR LIVE PORTAL</span>
+                  <span style="font-size:11px; color:#10B981; font-weight:700;">● Terhubung ke Ruang BelajarKu</span>
+                </div>
+                <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Portal Ruang BelajarKu (Editor &amp; Manajemen)</h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin:0;">Kelola foto banner (file folder / link URL), judul, ringkasan, serta isi video &amp; dokumen persis seperti yang dilihat siswa di Portal Ruang BelajarKu.</p>
               </div>
-              <div style="display:flex; gap:8px;">
-                <button class="btn-secondary" style="padding:10px 16px; font-size:13px;" onclick="toggleInlineModuleForm()">
-                  ⚡ Form Cepat Modul Inline
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <!-- View Switcher Toggle -->
+                <div class="mod-type-switcher" style="margin:0;">
+                  <button type="button" class="mod-type-pill active" id="crm-rb-btn-view-cards" onclick="switchCrmClassroomViewMode('cards')">
+                    🖼️ Tampilan Kartu Visual
+                  </button>
+                  <button type="button" class="mod-type-pill" id="crm-rb-btn-view-table" onclick="switchCrmClassroomViewMode('table')">
+                    📋 Tampilan Tabel Data
+                  </button>
+                </div>
+                <button class="btn-secondary" style="padding:10px 16px; font-size:13px; font-weight:700;" onclick="toggleInlineModuleForm()">
+                  ⚡ Form Cepat Inline
                 </button>
-                <button class="shimmer-btn" style="padding:10px 18px; font-size:13px;" onclick="openAddModuleModal()">
-                  + Tambah Modul Baru 🎓
+                <button class="shimmer-btn" style="padding:10px 18px; font-size:13px; font-weight:800; background:linear-gradient(135deg, #FF2E63, #E11D48); color:#FFFFFF; border-radius:12px;" onclick="openNewModuleModal()">
+                  + Tambah Kartu / Modul Baru 🎓
                 </button>
               </div>
             </div>
 
-                        <!-- Inline Quick Add Module Form -->
+            <!-- Filter & Search Toolbar in CRM (Mirip Ruang BelajarKu) -->
+            <div class="rb-filter-toolbar" style="margin:16px 0 20px; background:#F8FAFC; padding:12px 16px; border-radius:16px; border:1px solid #E2E8F0;">
+              <div class="rb-search-wrap">
+                <input type="text" id="crm-portal-search-input" placeholder="🔍 Cari kartu modul atau kelas..." class="rb-search-input" oninput="filterCrmClassroomModules(this.value)">
+              </div>
+              <div class="rb-filter-pills" id="crm-portal-filter-pills">
+                <button class="rb-pill active" onclick="filterCrmClassroomByTag('ALL', this)">✨ Semua</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Kelas', this)">🎓 Kelas</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Dokumen', this)">📑 Dokumen</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Aplikasi', this)">💻 Aplikasi</button>
+                <button class="rb-pill" onclick="filterCrmClassroomByTag('Code', this)">⚡ Source Code</button>
+              </div>
+            </div>
+
+            <!-- VIEW MODE 1: VISUAL CARDS GRID (Sesuai Foto 1 Ruang BelajarKu) -->
+            <div id="crm-rb-cards-view-wrap" style="margin-bottom:30px;">
+              <div id="crm-rb-cards-grid" class="rb-cards-grid">
+                <!-- Rendered dynamically by app.js -->
+              </div>
+            </div>
+
+            <!-- VIEW MODE 2: TABLE DATA VIEW -->
+            <div id="crm-rb-table-view-wrap" style="display:none; overflow-x:auto; margin-bottom:24px;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width:50px; text-align:center;">Urutan</th>
+                    <th style="width:80px;">Foto Banner</th>
+                    <th>Judul &amp; Ringkasan Ruang BelajarKu</th>
+                    <th>Tipe &amp; Kategori</th>
+                    <th>Total Video &amp; Materi</th>
+                    <th>Tautan Drive / Video</th>
+                    <th>Status</th>
+                    <th style="width:140px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="classroom-admin-tbody">
+                  <!-- Rendered dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+
             <div id="inline-module-form-box" class="crm-inline-box" style="display:none; background:#FFFFFF; border:1.5px solid #F1F5F9; border-radius:18px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,0.03); margin-bottom:20px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1.5px solid #F1F5F9;">
                 <div>
@@ -2072,8 +2126,7 @@
                   <div style="display:flex; gap:8px;">
                     <input type="text" id="inline-mod-banner" class="form-input" placeholder="https://... atau pilih berkas foto" value="./assets/modules/thumb-metode3.jpg" style="flex:1;">
                     <label class="btn-secondary" style="padding:8px 14px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin:0; white-space:nowrap; border-radius:10px;">
-                      📁 Pilih Foto
-                      <input type="file" accept="image/*" style="display:none;" onchange="handleInlineModuleBannerUpload(event)">
+                      📁 Pilih Foto dari File Folder <input type="file" accept="image/*" style="display:none;" onchange="handleInlineModuleBannerUpload(event)">
                     </label>
                   </div>
                 </div>
@@ -2880,8 +2933,7 @@
               <div style="display:flex; gap:8px;">
                 <input type="text" id="mod-form-banner" class="form-input" placeholder="https://... atau pilih berkas foto" style="flex:1;" oninput="updateModalBannerPreview(this.value)">
                 <label class="btn-secondary" style="padding:8px 14px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin:0; white-space:nowrap; border-radius:10px;">
-                  📁 Pilih Foto
-                  <input type="file" accept="image/*" style="display:none;" onchange="handleModalModuleBannerUpload(event)">
+                  📁 Pilih Foto dari File Folder <input type="file" accept="image/*" style="display:none;" onchange="handleModalModuleBannerUpload(event)">
                 </label>
               </div>
               <div id="modal-banner-preview-box" style="margin-top:8px; display:none;">
@@ -3265,8 +3317,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261101-01"></script>
-  <script src="js/app.js?v=20261101-01"></script>
+  <script src="js/config.js?v=20261101-02"></script>
+  <script src="js/app.js?v=20261101-02"></script>
 
   <!-- Modal Reader & Salin Dokumen PRD -->
   <div class="modal-overlay" id="modal-doc-reader">
