@@ -581,6 +581,98 @@ function persistClassroomModules(mods) {
   }
 }
 
+// ============================================================================
+// PERSISTENT SITE SETTINGS ENGINE (ANNOUNCEMENT BAR, WA CS & COMMUNITY LINK)
+// ============================================================================
+const DEFAULT_SITE_SETTINGS = {
+  announcement_bar_text: '🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!',
+  wa_cs_number: '6287894602627',
+  link_komunitas_tg: '' // Dikosongkan dulu karena grup belum dibuat; otomatis aktif di Halaman Utama saat diisi di CRM
+};
+
+function normalizeWaCsNumber(raw) {
+  if (!raw) return APP_CONFIG.DEFAULT_WA_CS || '6287894602627';
+  let digits = String(raw).replace(/[^0-9]/g, '');
+  if (!digits) return APP_CONFIG.DEFAULT_WA_CS || '6287894602627';
+  if (digits.startsWith('0')) {
+    digits = '62' + digits.slice(1);
+  }
+  return digits;
+}
+
+function isPlaceholderCommunityLink(raw) {
+  if (!raw) return true;
+  const lower = String(raw).trim().toLowerCase();
+  return (
+    lower === '' ||
+    lower.includes('t.me/etalaseku_community') ||
+    lower.includes('t.me/komunitas_etalaseku')
+  );
+}
+
+function normalizeCommunityLinkUrl(raw) {
+  if (isPlaceholderCommunityLink(raw)) return '';
+  const trimmed = String(raw).trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^(t\.me|telegram\.me|chat\.whatsapp\.com|wa\.me)\//i.test(trimmed) || trimmed.includes('.')) {
+    return 'https://' + trimmed.replace(/^\/+/, '');
+  }
+  return trimmed;
+}
+
+function loadStoredSiteSettings() {
+  try {
+    const raw = localStorage.getItem('etalaseku_site_settings');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        return {
+          announcement_bar_text: typeof parsed.announcement_bar_text === 'string'
+            ? parsed.announcement_bar_text
+            : DEFAULT_SITE_SETTINGS.announcement_bar_text,
+          wa_cs_number: parsed.wa_cs_number
+            ? normalizeWaCsNumber(parsed.wa_cs_number)
+            : DEFAULT_SITE_SETTINGS.wa_cs_number,
+          link_komunitas_tg: typeof parsed.link_komunitas_tg === 'string'
+            ? normalizeCommunityLinkUrl(parsed.link_komunitas_tg)
+            : '',
+          rekening_pembayaran: parsed.rekening_pembayaran || ''
+        };
+      }
+    }
+  } catch (e) {
+    console.warn('Gagal memuat etalaseku_site_settings:', e);
+  }
+  return Object.assign({}, DEFAULT_SITE_SETTINGS);
+}
+
+function persistSiteSettings(settingsObj) {
+  const clean = {
+    announcement_bar_text: typeof settingsObj.announcement_bar_text === 'string'
+      ? settingsObj.announcement_bar_text.trim()
+      : DEFAULT_SITE_SETTINGS.announcement_bar_text,
+    wa_cs_number: normalizeWaCsNumber(settingsObj.wa_cs_number || DEFAULT_SITE_SETTINGS.wa_cs_number),
+    link_komunitas_tg: normalizeCommunityLinkUrl(settingsObj.link_komunitas_tg || ''),
+    rekening_pembayaran: settingsObj.rekening_pembayaran || ''
+  };
+  STATE.settings = clean;
+  try {
+    localStorage.setItem('etalaseku_site_settings', JSON.stringify(clean));
+  } catch (e) {
+    console.warn('Gagal menyimpan etalaseku_site_settings:', e);
+  }
+  return clean;
+}
+
+function getActiveWaCsNumber() {
+  if (STATE && STATE.settings && STATE.settings.wa_cs_number) {
+    return normalizeWaCsNumber(STATE.settings.wa_cs_number);
+  }
+  const stored = loadStoredSiteSettings();
+  return normalizeWaCsNumber(stored.wa_cs_number || APP_CONFIG.DEFAULT_WA_CS);
+}
+
 const STATE = {
   products: [],
   testimonials: [],
@@ -608,7 +700,7 @@ const STATE = {
       }
     ];
   })(),
-  settings: {},
+  settings: loadStoredSiteSettings(),
   modules: loadStoredClassroomModules(),
   activeProductCheckout: null,
   selectedPaymentChannelKey: 'qris',
@@ -908,7 +1000,23 @@ async function loadPublicData() {
     } catch(e) {
       STATE.showcases = (data.showcases && data.showcases.length > 0) ? data.showcases : fallback.showcases;
     }
-    STATE.settings = (data.settings && Object.keys(data.settings).length > 0) ? data.settings : fallback.settings;
+    const hasLocalSiteSettings = localStorage.getItem('etalaseku_site_settings') !== null;
+    if (hasLocalSiteSettings) {
+      STATE.settings = loadStoredSiteSettings();
+    } else if (data.settings && Object.keys(data.settings).length > 0) {
+      STATE.settings = {
+        announcement_bar_text: typeof data.settings.announcement_bar_text === 'string' && data.settings.announcement_bar_text.trim()
+          ? data.settings.announcement_bar_text.trim()
+          : DEFAULT_SITE_SETTINGS.announcement_bar_text,
+        wa_cs_number: data.settings.wa_cs_number
+          ? normalizeWaCsNumber(data.settings.wa_cs_number)
+          : DEFAULT_SITE_SETTINGS.wa_cs_number,
+        link_komunitas_tg: normalizeCommunityLinkUrl(data.settings.link_komunitas_tg || ''),
+        rekening_pembayaran: data.settings.rekening_pembayaran || ''
+      };
+    } else {
+      STATE.settings = loadStoredSiteSettings();
+    }
     if (data.paymentChannels && Object.keys(data.paymentChannels).length > 0) {
       STATE.paymentChannels = Object.assign({}, DEFAULT_PAYMENT_CHANNELS, data.paymentChannels);
     }
@@ -959,6 +1067,7 @@ async function loadPublicData() {
     } catch(e) {
       STATE.showcases = mock.showcases;
     }
+    STATE.settings = loadStoredSiteSettings();
     renderAnnouncementBar();
     renderProducts();
     renderTestimonials();
@@ -969,9 +1078,108 @@ async function loadPublicData() {
 }
 
 function renderAnnouncementBar() {
+  if (!STATE.settings || Object.keys(STATE.settings).length === 0) {
+    STATE.settings = loadStoredSiteSettings();
+  }
+
+  // 1. Update Teks Promo Announcement Bar di Halaman Utama
+  const topBar = document.getElementById('top-announcement-bar') || document.querySelector('.announcement-bar');
   const barText = document.getElementById('announcement-text');
-  if (barText && STATE.settings.announcement_bar_text) {
-    barText.textContent = STATE.settings.announcement_bar_text;
+  const promoText = typeof STATE.settings.announcement_bar_text === 'string'
+    ? STATE.settings.announcement_bar_text.trim()
+    : DEFAULT_SITE_SETTINGS.announcement_bar_text;
+
+  if (barText) {
+    barText.textContent = promoText || DEFAULT_SITE_SETTINGS.announcement_bar_text;
+  }
+  if (topBar) {
+    topBar.style.display = 'flex';
+  }
+
+  // 2. Update Tombol Tautan Komunitas Telegram / WhatsApp Group di Halaman Utama
+  //    Jika kosong -> disembunyikan (display:none). Jika diisi di CRM -> langsung muncul & bisa diklik!
+  const rawCommunityUrl = STATE.settings.link_komunitas_tg || '';
+  const communityUrl = normalizeCommunityLinkUrl(rawCommunityUrl);
+  const hasCommunity = Boolean(communityUrl && communityUrl.length >= 5);
+
+  const isTelegram = /t\.me|telegram/i.test(communityUrl);
+  const isWhatsApp = /whatsapp\.com|wa\.me/i.test(communityUrl);
+  const platformLabel = isTelegram ? 'Telegram' : (isWhatsApp ? 'WhatsApp' : 'Komunitas');
+  const iconChar = isTelegram ? '✈️' : (isWhatsApp ? '💬' : '👥');
+
+  // 2a. Pill di Announcement Bar
+  const annBtn = document.getElementById('announcement-community-btn');
+  const annIcon = document.getElementById('announcement-community-icon');
+  const annLabel = document.getElementById('announcement-community-label');
+  if (annBtn) {
+    if (hasCommunity) {
+      annBtn.href = communityUrl;
+      annBtn.style.display = 'inline-flex';
+      if (annIcon) annIcon.textContent = iconChar;
+      if (annLabel) annLabel.textContent = 'Gabung Grup ' + platformLabel + ' ↗';
+    } else {
+      annBtn.style.display = 'none';
+      annBtn.removeAttribute('href');
+    }
+  }
+
+  // 2b. Tombol di Hero Section Halaman Utama
+  const heroBtn = document.getElementById('hero-community-btn');
+  const heroIcon = document.getElementById('hero-community-icon');
+  const heroLabel = document.getElementById('hero-community-label');
+  if (heroBtn) {
+    if (hasCommunity) {
+      heroBtn.href = communityUrl;
+      heroBtn.style.display = 'inline-flex';
+      if (heroIcon) heroIcon.textContent = iconChar;
+      if (heroLabel) heroLabel.textContent = 'Masuk Grup ' + platformLabel + ' ↗';
+    } else {
+      heroBtn.style.display = 'none';
+      heroBtn.removeAttribute('href');
+    }
+  }
+
+  // 2c. Tombol di Pre-Footer Banner Halaman Utama
+  const preBtn = document.getElementById('prefooter-community-btn');
+  const preIcon = document.getElementById('prefooter-community-icon');
+  const preLabel = document.getElementById('prefooter-community-label');
+  if (preBtn) {
+    if (hasCommunity) {
+      preBtn.href = communityUrl;
+      preBtn.style.display = 'inline-flex';
+      if (preIcon) preIcon.textContent = iconChar;
+      if (preLabel) preLabel.textContent = 'Masuk Grup ' + platformLabel + ' Resmi ↗';
+    } else {
+      preBtn.style.display = 'none';
+      preBtn.removeAttribute('href');
+    }
+  }
+
+  // 2d. Link di Footer Halaman Utama
+  const footerItem = document.getElementById('footer-community-item');
+  const footerLink = document.getElementById('footer-community-link');
+  if (footerItem && footerLink) {
+    if (hasCommunity) {
+      footerLink.href = communityUrl;
+      footerLink.textContent = iconChar + ' Gabung Grup ' + platformLabel + ' ↗';
+      footerItem.style.display = 'list-item';
+    } else {
+      footerItem.style.display = 'none';
+      footerLink.removeAttribute('href');
+    }
+  }
+
+  // 3. Sinkronkan seluruh link statis CS WhatsApp (wa.me/...) di Halaman Utama & Portal Siswa
+  const activeWaCs = getActiveWaCsNumber();
+  if (typeof document !== 'undefined' && document.querySelectorAll) {
+    document.querySelectorAll('a[href*="wa.me/"]').forEach(link => {
+      if (link.closest && link.closest('#admin-portal-section')) return;
+      const curHref = link.getAttribute('href') || '';
+      const updated = curHref.replace(/https:\/\/wa\.me\/[0-9]+/, 'https://wa.me/' + activeWaCs);
+      if (updated !== curHref) {
+        link.setAttribute('href', updated);
+      }
+    });
   }
 }
 
@@ -1501,7 +1709,7 @@ function showSuccessModal(orderId, nama, whatsapp, email, productName, amountToP
       `• *Total Bayar*: Rp ${Number(amountToPay || 0).toLocaleString('id-ID')}\n\n` +
       `Bukti transfer sudah saya upload di website. Mohon bantuannya untuk memverifikasi pesanan saya. Terima kasih!`
     );
-    waBtn.href = `https://wa.me/${APP_CONFIG.DEFAULT_WA_CS}?text=${waText}`;
+    waBtn.href = `https://wa.me/${getActiveWaCsNumber()}?text=${waText}`;
   }
 }
 
@@ -1616,7 +1824,7 @@ function toggleWhatsAppPopover() {
 function sendDirectWaMessage() {
   const input = document.getElementById('wa-custom-msg');
   const text = input ? input.value : 'Halo Admin, saya ingin konsultasi mengenai program EtalaseKu.';
-  window.open(`https://wa.me/${APP_CONFIG.DEFAULT_WA_CS}?text=${encodeURIComponent(text)}`, '_blank');
+  window.open(`https://wa.me/${getActiveWaCsNumber()}?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 // ============================================================================
@@ -1730,6 +1938,7 @@ function openAdminPortal() {
   // 2. Render cepat seketika agar tidak ada tab yang kosong
   renderFullOrdersTable(STATE.orders);
   renderAdminPaymentChannels();
+  populateAdminSiteSettingsForm();
   renderAdminAccountTab();
   renderStudentBillingTab(STATE.bills || []);
   renderClassroomModulesAdmin();
@@ -1775,6 +1984,7 @@ function switchAdminTab(tabId, navEl) {
   // Eksekusi render otomatis sesuai tab yang dibuka
   if (tabId === 'tab-settings') {
     renderAdminPaymentChannels();
+    populateAdminSiteSettingsForm();
   } else if (tabId === 'tab-account') {
     renderAdminAccountTab();
   } else if (tabId === 'tab-billing') {
@@ -1978,13 +2188,23 @@ function renderAdminPortalViews(data) {
   // 7. Testimonials Table in Tab Testimonials
   renderAdminTestimonialsTable(data.testimonials || STATE.testimonials);
 
-  // 8. Site Settings in Tab Settings
-  if (data.settings) {
-    if (document.getElementById('setting-announcement-text')) document.getElementById('setting-announcement-text').value = data.settings.announcement_bar_text || '';
-    if (document.getElementById('setting-wa-cs')) document.getElementById('setting-wa-cs').value = data.settings.wa_cs_number || APP_CONFIG.DEFAULT_WA_CS;
-    if (document.getElementById('setting-komunitas-link')) document.getElementById('setting-komunitas-link').value = data.settings.link_komunitas_tg || '';
-    if (document.getElementById('setting-bank-details')) document.getElementById('setting-bank-details').value = data.settings.rekening_pembayaran || '';
+  // 8. Site Settings in Tab Settings (Gunakan penyimpanan lokal terbaru & jangan timpa saat admin sedang mengetik!)
+  const hasStoredSettings = localStorage.getItem('etalaseku_site_settings') !== null;
+  if (!hasStoredSettings && data.settings && Object.keys(data.settings).length > 0) {
+    STATE.settings = {
+      announcement_bar_text: typeof data.settings.announcement_bar_text === 'string' && data.settings.announcement_bar_text.trim()
+        ? data.settings.announcement_bar_text.trim()
+        : DEFAULT_SITE_SETTINGS.announcement_bar_text,
+      wa_cs_number: data.settings.wa_cs_number
+        ? normalizeWaCsNumber(data.settings.wa_cs_number)
+        : DEFAULT_SITE_SETTINGS.wa_cs_number,
+      link_komunitas_tg: normalizeCommunityLinkUrl(data.settings.link_komunitas_tg || ''),
+      rekening_pembayaran: data.settings.rekening_pembayaran || ''
+    };
+  } else {
+    STATE.settings = loadStoredSiteSettings();
   }
+  populateAdminSiteSettingsForm(true);
 
   // 9. Automated Payment Channels in Tab Settings
   renderAdminPaymentChannels();
@@ -2672,27 +2892,168 @@ async function deleteTestimonialAdmin(id) {
   loadAdminPortalData();
 }
 
-async function saveAdminSettingsForm(e) {
-  e.preventDefault();
+function updateAdminCommunityStatusBadge(urlVal) {
+  const badge = document.getElementById('setting-komunitas-status-badge');
+  if (!badge) return;
+  const clean = normalizeCommunityLinkUrl(urlVal || '');
+  if (clean && clean.length >= 5) {
+    badge.textContent = '🟢 Aktif & Bisa Diklik di Halaman Utama';
+    badge.style.background = '#DCFCE7';
+    badge.style.color = '#15803D';
+  } else {
+    badge.textContent = '⚪ Dikosongkan Sementara';
+    badge.style.background = '#F1F5F9';
+    badge.style.color = '#64748B';
+  }
+}
+
+function populateAdminSiteSettingsForm(respectFocus = false) {
+  const s = (STATE.settings && Object.keys(STATE.settings).length > 0) ? STATE.settings : loadStoredSiteSettings();
+  const annEl = document.getElementById('setting-announcement-text');
+  const waEl = document.getElementById('setting-wa-cs');
+  const komEl = document.getElementById('setting-komunitas-link');
+
+  if (annEl && (!respectFocus || document.activeElement !== annEl)) {
+    annEl.removeAttribute('readonly');
+    annEl.removeAttribute('disabled');
+    annEl.value = typeof s.announcement_bar_text === 'string' ? s.announcement_bar_text : DEFAULT_SITE_SETTINGS.announcement_bar_text;
+  }
+  if (waEl && (!respectFocus || document.activeElement !== waEl)) {
+    waEl.removeAttribute('readonly');
+    waEl.removeAttribute('disabled');
+    waEl.value = s.wa_cs_number || DEFAULT_SITE_SETTINGS.wa_cs_number;
+  }
+  if (komEl && (!respectFocus || document.activeElement !== komEl)) {
+    komEl.removeAttribute('readonly');
+    komEl.removeAttribute('disabled');
+    komEl.value = typeof s.link_komunitas_tg === 'string' ? s.link_komunitas_tg : '';
+  }
+  updateAdminCommunityStatusBadge(komEl ? komEl.value : s.link_komunitas_tg);
+}
+
+function enableSiteSettingManual(field) {
+  const map = {
+    announcement: 'setting-announcement-text',
+    wa_cs: 'setting-wa-cs',
+    komunitas: 'setting-komunitas-link'
+  };
+  const labelMap = {
+    announcement: 'Teks Promo Announcement Bar',
+    wa_cs: 'Nomor WhatsApp CS Utama',
+    komunitas: 'Tautan Komunitas Telegram / WhatsApp Group'
+  };
+  const el = document.getElementById(map[field]);
+  if (!el) return;
+  el.removeAttribute('readonly');
+  el.removeAttribute('disabled');
+  el.focus();
+  if (el.value) el.select();
+  el.style.borderColor = '#FF2E63';
+  el.style.boxShadow = '0 0 0 3px rgba(255, 46, 99, 0.16)';
+  if (typeof showToast === 'function') {
+    showToast('Silakan ketik manual ' + (labelMap[field] || 'pengaturan') + ' ✏️', 'info', 2200);
+  }
+}
+window.enableSiteSettingManual = enableSiteSettingManual;
+
+function saveSiteSettingManual(field) {
+  const map = {
+    announcement: 'setting-announcement-text',
+    wa_cs: 'setting-wa-cs',
+    komunitas: 'setting-komunitas-link'
+  };
+  const el = document.getElementById(map[field]);
+  if (el) {
+    el.style.borderColor = '#10B981';
+    el.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.18)';
+    setTimeout(() => {
+      el.style.borderColor = '';
+      el.style.boxShadow = '';
+    }, 1200);
+  }
+  saveAdminSettingsForm(null, field);
+}
+window.saveSiteSettingManual = saveSiteSettingManual;
+
+function clearSiteCommunityLink() {
+  const komEl = document.getElementById('setting-komunitas-link');
+  if (komEl) {
+    komEl.value = '';
+  }
+  saveAdminSettingsForm(null, 'komunitas_cleared');
+}
+window.clearSiteCommunityLink = clearSiteCommunityLink;
+
+async function saveAdminSettingsForm(e, triggeredField) {
+  if (e && typeof e.preventDefault === 'function') e.preventDefault();
+
+  const annEl = document.getElementById('setting-announcement-text');
+  const waEl = document.getElementById('setting-wa-cs');
+  const komEl = document.getElementById('setting-komunitas-link');
+  const bankEl = document.getElementById('setting-bank-details');
+
+  const rawAnn = annEl ? annEl.value.trim() : DEFAULT_SITE_SETTINGS.announcement_bar_text;
+  const rawWa = waEl ? waEl.value.trim() : DEFAULT_SITE_SETTINGS.wa_cs_number;
+  const rawKom = komEl ? komEl.value.trim() : '';
+
   const payload = {
-    announcement_bar_text: document.getElementById('setting-announcement-text').value,
-    wa_cs_number: document.getElementById('setting-wa-cs').value,
-    link_komunitas_tg: document.getElementById('setting-komunitas-link').value,
-    rekening_pembayaran: document.getElementById('setting-bank-details').value
+    announcement_bar_text: rawAnn || DEFAULT_SITE_SETTINGS.announcement_bar_text,
+    wa_cs_number: normalizeWaCsNumber(rawWa),
+    link_komunitas_tg: normalizeCommunityLinkUrl(rawKom),
+    rekening_pembayaran: bankEl ? bankEl.value : (STATE.settings && STATE.settings.rekening_pembayaran ? STATE.settings.rekening_pembayaran : '')
   };
 
-  if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
-    await fetch(APP_CONFIG.GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'saveSiteSettings', token: STATE.adminToken, data: payload })
-    });
+  // Update input dengan nilai yang telah dirapikan (misal awalan 62 / https://)
+  if (annEl) annEl.value = payload.announcement_bar_text;
+  if (waEl) waEl.value = payload.wa_cs_number;
+  if (komEl) komEl.value = payload.link_komunitas_tg;
+  updateAdminCommunityStatusBadge(payload.link_komunitas_tg);
+
+  // 1. SIMPAN INSTAN KE STATE & LOCALSTORAGE + UPDATE HALAMAN UTAMA SEKETIKA (OPTIMISTIC UI)
+  persistSiteSettings(payload);
+  renderAnnouncementBar();
+
+  const btn = document.getElementById('btn-save-site-settings');
+  if (btn && !triggeredField) {
+    btn.disabled = true;
+    btn.textContent = 'Menyimpan & Menghubungkan... ⏳';
   }
 
-  STATE.settings = payload;
-  renderAnnouncementBar();
-  showToast('Pengaturan situs berhasil diperbarui di Google Sheets!', 'info');
+  // 2. SINKRONISASI KE GOOGLE SHEETS (GAS) SECARA AMAN TANPA MEMBLOKIR UI
+  if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
+    try {
+      await fetch(APP_CONFIG.GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'saveSiteSettings', token: STATE.adminToken, data: payload })
+      });
+    } catch (err) {
+      console.warn('Sync pengaturan situs ke Google Sheets berjalan offline/lokal:', err);
+    }
+  }
+
+  if (btn && !triggeredField) {
+    btn.disabled = false;
+    btn.textContent = 'Simpan Teks Banner, CS & Komunitas ke Halaman Utama & Google Sheets 💾';
+  }
+
+  if (triggeredField === 'komunitas_cleared') {
+    showToast('Tautan Grup Komunitas dikosongkan sementara & disembunyikan dari Halaman Utama! ✨', 'info', 3000);
+  } else if (triggeredField === 'announcement') {
+    showToast('📢 Teks Promo Announcement Bar berhasil disimpan & tampil di Halaman Utama!', 'success', 3000);
+  } else if (triggeredField === 'wa_cs') {
+    showToast('📱 Nomor WhatsApp CS (' + payload.wa_cs_number + ') berhasil disimpan & terhubung!', 'success', 3000);
+  } else if (triggeredField === 'komunitas') {
+    if (payload.link_komunitas_tg) {
+      showToast('👥 Tautan Grup Komunitas aktif! Sekarang pengunjung bisa klik masuk grup di Halaman Utama.', 'success', 3500);
+    } else {
+      showToast('⚪ Tautan Grup Komunitas dikosongkan sementara.', 'info', 2800);
+    }
+  } else {
+    showToast('✅ Teks Banner Promo, Nomor WA CS & Pengaturan Komunitas berhasil disimpan dan terhubung ke Halaman Utama!', 'success', 3500);
+  }
 }
+window.saveAdminSettingsForm = saveAdminSettingsForm;
 
 async function verifyOrderAdmin(orderId, status = 'Lunas') {
   try {
@@ -5131,7 +5492,9 @@ function readFileAsBase64(file) {
 function getFallbackMockData() {
   return {
     settings: {
-      announcement_bar_text: '🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!'
+      announcement_bar_text: '🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!',
+      wa_cs_number: '6287894602627',
+      link_komunitas_tg: ''
     },
     products: [
       {
@@ -5239,6 +5602,7 @@ document.addEventListener('DOMContentLoaded', () => {
   new ButterflyCursor();
   SlideshowManager.initHeroSlideshow();
   initAdminAccounts();
+  renderAnnouncementBar();
   loadPublicData();
 
   // 1. Cek sesi login siswa member classroom dari LocalStorage
@@ -6758,7 +7122,7 @@ function downloadDocFile(idx) {
 
 function openWhatsAppDiscussionGroup() {
   const courseTitle = activeCourseData ? activeCourseData.title : 'Kelas Ruang BelajarKu';
-  const url = 'https://wa.me/6287894602627?text=' + encodeURIComponent('Halo Admin EtalaseKu, saya siswa terverifikasi ingin bergabung ke Grup Diskusi untuk kelas: ' + courseTitle);
+  const url = 'https://wa.me/' + getActiveWaCsNumber() + '?text=' + encodeURIComponent('Halo Admin EtalaseKu, saya siswa terverifikasi ingin bergabung ke Grup Diskusi untuk kelas: ' + courseTitle);
   window.open(url, '_blank');
 }
 

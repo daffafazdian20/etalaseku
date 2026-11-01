@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261101-06">
+  <link rel="stylesheet" href="css/style.css?v=20261101-07">
 </head>
 <body>
 
@@ -39,9 +39,15 @@
   <!-- ========================================================================
        2. TOP STICKY ANNOUNCEMENT BAR
        ======================================================================== -->
-  <div class="announcement-bar">
-    <span class="badge-live">LIVE PROMO</span>
-    <span id="announcement-text">🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!</span>
+  <div class="announcement-bar" id="top-announcement-bar">
+    <div class="announcement-bar-inner">
+      <span class="badge-live">LIVE PROMO</span>
+      <span id="announcement-text">🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!</span>
+    </div>
+    <a href="#" id="announcement-community-btn" target="_blank" rel="noopener noreferrer" class="announcement-community-pill" style="display:none;" title="Klik untuk Masuk Grup Komunitas Resmi">
+      <span id="announcement-community-icon">💬</span>
+      <span id="announcement-community-label">Gabung Grup Komunitas ↗</span>
+    </a>
   </div>
 
   <!-- ========================================================================
@@ -117,6 +123,10 @@
         <button class="btn-secondary" id="hero-btn-classroom" onclick="openClassroomDashboardOrLogin()">
           Akses Member Area 🔑
         </button>
+        <a href="#" id="hero-community-btn" target="_blank" rel="noopener noreferrer" class="btn-community-join" style="display:none;">
+          <span id="hero-community-icon">💬</span>
+          <span id="hero-community-label">Masuk Grup Komunitas ↗</span>
+        </a>
       </div>
       <div style="font-size:12px; color:var(--text-muted); font-weight:600; display:flex; align-items:center; gap:8px;">
         <span>⚡ 100% Otomatisasi Terintegrasi:</span>
@@ -484,9 +494,15 @@
       <p style="color: var(--text-muted); max-width: 520px; margin: 0 auto 28px; font-size: 15px;">
         Konsultasikan kebutuhan pembuatan web app, template bisnis, atau sistem otomatisasi WhatsApp Anda langsung dengan tim mentor kami.
       </p>
-      <button class="shimmer-btn btn-primary" onclick="toggleWhatsAppPopover()" style="padding: 16px 36px; font-size: 16px;">
-        Konsultasi via WhatsApp Sekarang 💬
-      </button>
+      <div class="prefooter-cta-group" style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;">
+        <button class="shimmer-btn btn-primary" onclick="toggleWhatsAppPopover()" style="padding: 16px 32px; font-size: 15.5px;">
+          Konsultasi via WhatsApp Sekarang 💬
+        </button>
+        <a href="#" id="prefooter-community-btn" target="_blank" rel="noopener noreferrer" class="btn-community-join prefooter-community-cta" style="display:none; padding: 15px 28px; font-size: 15px;">
+          <span id="prefooter-community-icon">👥</span>
+          <span id="prefooter-community-label">Masuk Grup Komunitas Resmi ↗</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -511,6 +527,7 @@
           <li><a href="#produk" style="color:inherit; text-decoration:none;">Katalog Produk</a></li>
           <li><a href="#showcase" style="color:inherit; text-decoration:none;">Hasil Karya Siswa</a></li>
           <li><a href="#testimoni" style="color:inherit; text-decoration:none;">Testimoni Alumni</a></li>
+          <li id="footer-community-item" style="display:none;"><a href="#" id="footer-community-link" target="_blank" rel="noopener noreferrer" style="color:#38BDF8; text-decoration:none; font-weight:700;">💬 Gabung Grup Komunitas ↗</a></li>
         </ul>
       </div>
             <div>
@@ -2473,24 +2490,76 @@
               </form>
             </div>
 
-            <!-- Panel 2: Teks Promo & Informasi Situs -->
-            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:28px; box-shadow:var(--shadow-card);">
-              <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy); margin-bottom:16px;">Pengaturan Banner Promo & Kontak Situs</h3>
-              <form onsubmit="saveAdminSettingsForm(event)">
-                <div class="form-group">
-                  <label class="form-label">Teks Promo Announcement Bar (Atas Website)</label>
-                  <input type="text" id="setting-announcement-text" class="form-input" placeholder="🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas!">
+            <!-- Panel 2: Teks Promo & Informasi Situs (Terhubung Langsung ke Halaman Utama) -->
+            <div class="site-settings-panel-card" style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:28px; box-shadow:var(--shadow-card);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid #F1F5F9;">
+                <div>
+                  <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Pengaturan Banner Promo &amp; Kontak Situs</h3>
+                  <p style="font-size:12px; color:var(--text-muted); margin:0;">Atur teks promo paling atas website, nomor WhatsApp CS utama, dan tautan grup komunitas secara manual.</p>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Nomor WhatsApp CS Utama (Diawali 62)</label>
-                  <input type="text" id="setting-wa-cs" class="form-input" placeholder="628123456789">
+                <span class="pill-badge green" style="white-space:nowrap;">● Terhubung ke Halaman Utama</span>
+              </div>
+
+              <form novalidate onsubmit="saveAdminSettingsForm(event)">
+                <!-- Field 1: Teks Promo Announcement Bar -->
+                <div class="form-group site-setting-field-box">
+                  <div class="site-setting-label-row">
+                    <label class="form-label" for="setting-announcement-text" style="margin:0; font-weight:700; color:#1E1B4B;">
+                      📢 Teks Promo Announcement Bar (Atas Website)
+                    </label>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                      <button type="button" class="btn-micro-edit" onclick="enableSiteSettingManual('announcement')" title="Klik untuk ketik manual Teks Promo">✏️ Edit</button>
+                      <button type="button" class="btn-micro-save" onclick="saveSiteSettingManual('announcement')" title="Simpan & Hubungkan Teks Promo ke Halaman Utama">💾 Save</button>
+                    </div>
+                  </div>
+                  <input type="text" id="setting-announcement-text" class="form-input" autocomplete="off" value="🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!" placeholder="Contoh: 🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas!">
+                  <div style="font-size:11px; color:#64748B; margin-top:4px;">
+                    ✨ Teks ini langsung tampil pada bar pengumuman paling atas di Halaman Utama.
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Tautan Komunitas Telegram / WhatsApp Group</label>
-                  <input type="url" id="setting-komunitas-link" class="form-input" placeholder="https://t.me/komunitas_etalaseku">
+
+                <!-- Field 2: Nomor WhatsApp CS Utama -->
+                <div class="form-group site-setting-field-box">
+                  <div class="site-setting-label-row">
+                    <label class="form-label" for="setting-wa-cs" style="margin:0; font-weight:700; color:#1E1B4B;">
+                      📱 Nomor WhatsApp CS Utama (Diawali 62)
+                    </label>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                      <button type="button" class="btn-micro-edit" onclick="enableSiteSettingManual('wa_cs')" title="Klik untuk ketik manual Nomor WhatsApp CS">✏️ Edit</button>
+                      <button type="button" class="btn-micro-save" onclick="saveSiteSettingManual('wa_cs')" title="Simpan Nomor WhatsApp CS">💾 Save</button>
+                    </div>
+                  </div>
+                  <input type="text" inputmode="tel" id="setting-wa-cs" class="form-input" autocomplete="off" value="6287894602627" placeholder="Contoh: 6287894602627">
+                  <div style="font-size:11px; color:#64748B; margin-top:4px;">
+                    ✨ Terhubung langsung ke tombol Chat WhatsApp CS &amp; Konsultasi di Halaman Utama.
+                  </div>
                 </div>
-                <button type="submit" class="btn-secondary" style="padding:12px 24px; font-size:14px;">
-                  Simpan Teks Banner & CS ke Google Sheets 💾
+
+                <!-- Field 3: Tautan Komunitas Telegram / WhatsApp Group (Default Dikosongkan Dulu) -->
+                <div class="form-group site-setting-field-box" style="margin-bottom:20px;">
+                  <div class="site-setting-label-row">
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                      <label class="form-label" for="setting-komunitas-link" style="margin:0; font-weight:700; color:#1E1B4B;">
+                        👥 Tautan Komunitas Telegram / WhatsApp Group
+                      </label>
+                      <span id="setting-komunitas-status-badge" style="font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:99px; background:#F1F5F9; color:#64748B;">
+                        ⚪ Dikosongkan Sementara
+                      </span>
+                    </div>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                      <button type="button" class="btn-micro-edit" onclick="enableSiteSettingManual('komunitas')" title="Klik untuk input manual Tautan Grup Komunitas">✏️ Edit</button>
+                      <button type="button" class="btn-micro-save" onclick="saveSiteSettingManual('komunitas')" title="Simpan Tautan Grup Komunitas">💾 Save</button>
+                      <button type="button" class="btn-micro-edit" style="color:#EF4444; border-color:#FECACA; background:#FEF2F2;" onclick="clearSiteCommunityLink()" title="Kosongkan tautan grup sementara">✕ Kosongkan</button>
+                    </div>
+                  </div>
+                  <input type="text" id="setting-komunitas-link" class="form-input" autocomplete="off" value="" placeholder="Kosongkan jika belum ada grup, atau isi https://chat.whatsapp.com/... / https://t.me/...">
+                  <div style="font-size:11px; color:#64748B; margin-top:4px;">
+                    💡 Jika dikosongkan, tombol grup tidak muncul di Halaman Utama. Begitu diisi &amp; disimpan, pengunjung langsung bisa klik tombol <strong>Gabung Grup Komunitas</strong> di Halaman Utama.
+                  </div>
+                </div>
+
+                <button type="submit" id="btn-save-site-settings" class="shimmer-btn site-settings-submit-btn" style="padding:13px 24px; font-size:14px; font-weight:800;">
+                  Simpan Teks Banner, CS &amp; Komunitas ke Halaman Utama &amp; Google Sheets 💾
                 </button>
               </form>
             </div>
@@ -3391,8 +3460,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261101-06"></script>
-  <script src="js/app.js?v=20261101-06"></script>
+  <script src="js/config.js?v=20261101-07"></script>
+  <script src="js/app.js?v=20261101-07"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">

@@ -469,7 +469,7 @@ function seedDefaultSettings_() {
     announcement_bar_text: '🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!',
     wa_cs_number: '6287894602627',
     rekening_pembayaran: 'BCA: 123-456-7890 a/n EtalaseKu Hub\nMandiri: 987-654-3210 a/n EtalaseKu Hub',
-    link_komunitas_tg: 'https://t.me/etalaseku_community'
+    link_komunitas_tg: ''
   };
 
   try {
