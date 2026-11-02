@@ -2042,9 +2042,9 @@ input:checked + .switch-slider:before {
     gap: 4px;
   }
   .hero-section {
-    padding: 28px 16px 40px !important;
+    padding: 16px 14px 28px !important;
     grid-template-columns: 1fr !important;
-    gap: 28px;
+    gap: 18px !important;
     text-align: center;
   }
   .hero-tag {

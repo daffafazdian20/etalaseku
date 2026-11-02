@@ -1090,7 +1090,17 @@ class SlideshowManager {
   static goToHeroSlide(index) {
     const slides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.slideshow-dots .dot');
-    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    slides.forEach((s, i) => {
+      const isActive = i === index;
+      s.classList.toggle('active', isActive);
+      if (isActive) {
+        const lazyImg = s.querySelector('img[data-src]');
+        if (lazyImg) {
+          lazyImg.src = lazyImg.dataset.src;
+          lazyImg.removeAttribute('data-src');
+        }
+      }
+    });
     dots.forEach((d, i) => d.classList.toggle('active', i === index));
   }
 
