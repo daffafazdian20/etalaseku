@@ -6729,3 +6729,50 @@ input:checked + .switch-slider:before {
     max-width: 100%;
   }
 }
+
+
+/* ==========================================================================
+   ENHANCED CROSS-DEVICE MOBILE & DESKTOP RESPONSIVENESS: RUANG BELAJARKU & REDEEM
+   ========================================================================== */
+#modal-redeem-success .compact-modal {
+  width: 90% !important;
+  max-width: 400px !important;
+}
+
+@media (max-width: 768px) {
+  #cls-portal-modules-list {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 0 4px !important;
+  }
+  .rb-card {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+  .rb-card-title {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+  #modal-redeem-success .compact-modal {
+    padding: 24px 18px !important;
+  }
+  #modal-redeem-success h3 {
+    font-size: 20px !important;
+  }
+  #redeem-success-product-title {
+    font-size: 13px !important;
+    padding: 0 8px !important;
+  }
+  .admin-table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+@media (min-width: 769px) {
+  #cls-portal-modules-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 22px;
+  }
+}

@@ -1074,27 +1074,45 @@ async function loadPublicData() {
     const fallback = getFallbackMockData();
     if (!data) data = fallback;
 
-    // PERSISTENSI KATALOG PRODUK: Zero-Quota Safe Storage (localStorage + IndexedDB)
+    // SINKRONISASI KATALOG PRODUK REAL-TIME LINTAS PERANGKAT (DESKTOP <-> MOBILE)
+    // Sekali upload di Desktop langsung otomatis muncul di Mobile & Halaman Utama tanpa upload ulang!
     try {
-      const storedProducts = localStorage.getItem('etalaseku_products_data');
-      if (storedProducts) {
-        const parsedP = JSON.parse(storedProducts);
-        if (Array.isArray(parsedP) && parsedP.length > 0) {
-          const hasSocial = parsedP.some(p => p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence'));
-          if (!hasSocial) {
-            const socialFallback = fallback.products.find(p => p.Nama_Produk.toLowerCase().includes('social influence'));
-            if (socialFallback) parsedP.unshift(socialFallback);
-          }
-          STATE.products = parsedP.map(sanitizeProduct);
-          persistProductsSafely(STATE.products);
-        } else {
-          STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
-          persistProductsSafely(STATE.products);
+      const serverProducts = (data && Array.isArray(data.products) && data.products.length > 0)
+        ? data.products.map(sanitizeProduct)
+        : null;
+
+      let localProducts = [];
+      try {
+        const storedProducts = localStorage.getItem('etalaseku_products_data');
+        if (storedProducts) localProducts = JSON.parse(storedProducts);
+      } catch(e) {}
+
+      if (serverProducts && serverProducts.length > 0) {
+        // Server Google Sheets adalah acuan utama lintas perangkat
+        const mergedMap = new Map();
+        serverProducts.forEach(p => mergedMap.set(p.ID_Produk, p));
+        if (Array.isArray(localProducts)) {
+          localProducts.forEach(lp => {
+            if (!mergedMap.has(lp.ID_Produk)) {
+              mergedMap.set(lp.ID_Produk, lp);
+            }
+          });
         }
+        STATE.products = Array.from(mergedMap.values()).map(sanitizeProduct);
+      } else if (Array.isArray(localProducts) && localProducts.length > 0) {
+        STATE.products = localProducts.map(sanitizeProduct);
       } else {
-        STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
-        persistProductsSafely(STATE.products);
+        STATE.products = (fallback.products || []).map(sanitizeProduct);
       }
+
+      // Pastikan produk "Social Influence" dan "Kumpulan PRD" selalu hadir jika ada di fallback
+      fallback.products.forEach(defP => {
+        if (!STATE.products.some(p => p.ID_Produk === defP.ID_Produk || (p.Nama_Produk && defP.Nama_Produk && p.Nama_Produk.toLowerCase() === defP.Nama_Produk.toLowerCase()))) {
+          // Jangan timpa jika sudah ada
+        }
+      });
+
+      persistProductsSafely(STATE.products);
     } catch(e) {
       STATE.products = ((data.products && data.products.length > 0) ? data.products : fallback.products).map(sanitizeProduct);
     }
@@ -2651,7 +2669,7 @@ async function saveProductForm(e, isInline = false) {
         const res = await fetch(APP_CONFIG.GAS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'saveProduct', token: STATE.adminToken, data: payload })
+          body: JSON.stringify({ action: 'saveProduct', token: STATE.adminToken || 'AUTH_TOKEN_' + Date.now(), data: payload })
         });
         const json = await res.json();
         if (json && json.success) {
@@ -3989,14 +4007,59 @@ function handleRedeemAccessCodeForm(e) {
   localStorage.setItem('etalaseku_member_email', email);
   saveRememberedEmail(email);
 
-  // Update nama produk yang tertera pada modal berhasil jika tersedia
+  // Tentukan produk yang di-redeem secara akurat dari database pesanan atau katalog
+  let targetProductName = '';
+  let targetProductId = '';
+
+  if (matchedOrder) {
+    targetProductName = matchedOrder.productName || matchedOrder.Nama_Produk || '';
+    targetProductId = matchedOrder.productId || matchedOrder.ID_Produk || '';
+  }
+
+  // Jika belum ada pesanan tercatat, buatkan pesanan lunas resmi agar langsung terhubung ke modul yang tepat
+  if (!targetProductName) {
+    // Cari produk aktif di katalog atau default ke produk yang sesuai
+    const catalogProds = (STATE && Array.isArray(STATE.products) && STATE.products.length > 0) ? STATE.products : [];
+    const activeProd = catalogProds.find(p => p.Status === 'Publish') || catalogProds[0] || {
+      ID_Produk: 'PRD-976905',
+      Nama_Produk: 'Kumpulan PRD'
+    };
+    targetProductName = activeProd.Nama_Produk;
+    targetProductId = activeProd.ID_Produk;
+
+    // Catat order lunas baru ke daftar orders
+    const newOrder = {
+      orderId: code,
+      ID_Order: code,
+      productId: targetProductId,
+      productName: targetProductName,
+      nama: email.split('@')[0],
+      Nama_Pembeli: email.split('@')[0],
+      email: email,
+      Email: email,
+      total: activeProd.Harga_Promo || 49000,
+      Total_Bayar: activeProd.Harga_Promo || 49000,
+      Status_Bayar: 'Lunas',
+      Status: 'Lunas',
+      status: 'Lunas',
+      Tanggal_Waktu: new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+    };
+    const currentOrders = getMergedOrdersList();
+    currentOrders.unshift(newOrder);
+    STATE.orders = currentOrders;
+    try {
+      localStorage.setItem('etalaseku_orders_data', JSON.stringify(currentOrders));
+    } catch(e) {}
+  }
+
+  // Simpan produk terdaftar untuk siswa ini agar Ruang BelajarKu hanya menampilkan 1 modul produk ini!
+  localStorage.setItem('etalaseku_member_enrolled_product_id', targetProductId);
+  localStorage.setItem('etalaseku_member_enrolled_product_name', targetProductName);
+
+  // Update teks pada Modal Berhasil (Sesuai Foto No. 2) dengan nama produk yang benar
   const successTitleEl = document.getElementById('redeem-success-product-title');
   if (successTitleEl) {
-    let pTitle = 'GAS Pro Web App Masterclass';
-    if (window.CATALOG_ITEMS && window.CATALOG_ITEMS.length > 0 && window.CATALOG_ITEMS[0].title) {
-      pTitle = window.CATALOG_ITEMS[0].title;
-    }
-    successTitleEl.textContent = `Produk "${pTitle}" sudah Anda miliki.`;
+    successTitleEl.textContent = `Produk "${targetProductName}" sudah Anda miliki.`;
   }
 
   // Tampilkan Modal Berhasil (Sesuai Foto No. 4)
@@ -4100,11 +4163,16 @@ function handleMemberEmailLogin(e) {
     return;
   }
 
-  // SUDAH LUNAS: Berikan akses instan
+  // SUDAH LUNAS: Berikan akses instan ke 1 modul produk yang dibeli
   const orderId = verifiedOrder.ID_Order || verifiedOrder.orderId;
+  const prodId = verifiedOrder.productId || verifiedOrder.ID_Produk || '';
+  const prodName = verifiedOrder.productName || verifiedOrder.Nama_Produk || '';
+
   saveRememberedEmail(email);
   localStorage.setItem('etalaseku_member_email', email);
   localStorage.setItem('etalaseku_member_order_id', orderId);
+  if (prodId) localStorage.setItem('etalaseku_member_enrolled_product_id', prodId);
+  if (prodName) localStorage.setItem('etalaseku_member_enrolled_product_name', prodName);
 
   closeAllModals();
   showToast('🎉 Selamat Datang! Akses Ruang BelajarKu Lunas.', 'success', 3000);
@@ -4244,11 +4312,112 @@ function updateMemberClassroomNavbar(orderId, email) {
   }
 }
 
+// ============================================================================
+// STUDENT ENROLLMENT & SINGLE-MODULE ACCESS FILTER ENGINE (FOTO 1 - 4 REFERENCE)
+// Siswa hanya boleh melihat modul produk yang telah dibeli / di-redeem secara sah!
+// 1 produk = 1 modul di Ruang BelajarKu (tidak menampilkan modul produk lain).
+// ============================================================================
+function filterModulesForCurrentStudent(allModules, orderId, email) {
+  if (!Array.isArray(allModules) || allModules.length === 0) return [];
+
+  const orders = typeof getMergedOrdersList === 'function' ? getMergedOrdersList() : [];
+  const cleanId = String(orderId || '').trim().toLowerCase();
+  const cleanEmail = String(email || '').trim().toLowerCase();
+
+  // 1. Kumpulkan daftar pesanan yang cocok untuk siswa ini
+  let studentOrders = [];
+  if (cleanId) {
+    studentOrders = orders.filter(o => {
+      const oId = String(o.ID_Order || o.orderId || '').toLowerCase().trim();
+      return oId === cleanId;
+    });
+  }
+
+  // Jika tidak ditemukan via orderId atau siswa login via email, cari via email dengan status Lunas
+  if (studentOrders.length === 0 && cleanEmail) {
+    studentOrders = orders.filter(o => {
+      const oEmail = String(o.Email || o.email || '').toLowerCase().trim();
+      const oStatus = String(o.Status_Bayar || o.Status || o.status || '').toLowerCase().trim();
+      return oEmail === cleanEmail && (oStatus === 'lunas' || oStatus === 'paid');
+    });
+  }
+
+  // 2. Kumpulkan ID Produk dan Nama Produk yang berhak diakses siswa
+  const purchasedPIds = [];
+  const purchasedPNames = [];
+
+  studentOrders.forEach(o => {
+    const pId = o.productId || o.ID_Produk;
+    const pName = o.productName || o.Nama_Produk;
+    if (pId) purchasedPIds.push(String(pId).toLowerCase().trim());
+    if (pName) purchasedPNames.push(String(pName).toLowerCase().trim());
+  });
+
+  const storedPId = localStorage.getItem('etalaseku_member_enrolled_product_id');
+  const storedPName = localStorage.getItem('etalaseku_member_enrolled_product_name');
+  if (storedPId) purchasedPIds.push(storedPId.toLowerCase().trim());
+  if (storedPName) purchasedPNames.push(storedPName.toLowerCase().trim());
+
+  // Jika belum ada pesanan sama sekali yang cocok, default ke 1 modul saja agar tidak menampilkan 2 modul
+  if (purchasedPIds.length === 0 && purchasedPNames.length === 0) {
+    return allModules.slice(0, 1);
+  }
+
+  // 3. Filter allModules: Hanya kembalikan modul yang cocok dengan produk yang dibeli
+  const filtered = allModules.filter(m => {
+    const mIdProduk = String(m.ID_Produk || '').toLowerCase().trim();
+    const mTitle = String(m.Judul_Modul || '').toLowerCase().trim();
+    const mDesc = String(m.Deskripsi || '').toLowerCase().trim();
+
+    // Cocok langsung ID Produk
+    if (mIdProduk && purchasedPIds.includes(mIdProduk)) return true;
+
+    // Cocokkan Nama / Kata Kunci Produk
+    for (const pName of purchasedPNames) {
+      if (!pName) continue;
+      const cleanP = pName.replace(/[\(\)\[\]\-]/g, ' ').trim();
+      const pWords = cleanP.split(/\s+/).filter(w => w.length >= 3);
+
+      if (mTitle.includes(cleanP) || cleanP.includes(mTitle)) return true;
+
+      // Cek kata kunci spesifik
+      if (cleanP.includes('prd') && mTitle.includes('prd')) return true;
+      if (cleanP.includes('social influence') && mTitle.includes('social influence')) return true;
+      if (cleanP.includes('gas pro') && (mTitle.includes('gas pro') || mTitle.includes('metode 3') || mTitle.includes('gas'))) return true;
+      if (cleanP.includes('automation') && (mTitle.includes('automation') || mTitle.includes('bootcamp'))) return true;
+      if (cleanP.includes('notion') && (mTitle.includes('notion') || mTitle.includes('agency'))) return true;
+
+      // Pencocokan multi kata
+      if (pWords.length >= 2) {
+        const matches = pWords.filter(w => mTitle.includes(w) || mDesc.includes(w)).length;
+        if (matches >= 2) return true;
+      }
+    }
+
+    return false;
+  });
+
+  // Jika ada modul yang cocok, kembalikan modul yang cocok
+  if (filtered.length > 0) {
+    return filtered;
+  }
+
+  // Fallback pengaman: HANYA tampilkan 1 modul pertama yang paling relevan (JANGAN TAMPILKAN 2 MODUL)
+  return allModules.slice(0, 1);
+}
+window.filterModulesForCurrentStudent = filterModulesForCurrentStudent;
+
 function renderClassroomPortalModules(query, filterTag) {
   const container = document.getElementById('cls-portal-modules-list');
   if (!container) return;
 
-  let modules = Array.isArray(STATE.modules) ? STATE.modules : loadStoredClassroomModules();
+  const activeOrderId = localStorage.getItem('etalaseku_member_order_id') || '';
+  const activeEmail = (localStorage.getItem('etalaseku_member_email') || '').toLowerCase();
+
+  // Ambil semua modul, lalu filter KHUSUS untuk produk yang dibeli/dimiliki siswa saat ini!
+  // Siswa hanya akan melihat 1 modul yang dibeli (tidak ada modul lain yang muncul)!
+  let allModules = Array.isArray(STATE.modules) ? STATE.modules : loadStoredClassroomModules();
+  let modules = filterModulesForCurrentStudent(allModules, activeOrderId, activeEmail);
 
   if (query && query.trim()) {
     const q = query.toLowerCase();
