@@ -340,58 +340,59 @@ window.sanitizeProduct = sanitizeProduct;
 const DEFAULT_SHOWCASES_LIST = [
   {
     ID_Showcase: 'SHW-01',
-    Nama_Karya: 'Lawfirm Client Management CRM',
+    Nama_Karya: 'Trailer Web App CRM Lawfirm & Manajemen Klien',
     Nama_Member: 'Aditya Pratama',
     Profesi: 'Alumni Batch 2 • Freelance Developer',
     Kategori: 'CRM & Otomasi',
     Statistik_Pencapaian: '2.450+ Leads Tercatat',
-    Gambar_Preview_URL: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+    Gambar_Preview_URL: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+    Galeri_Karya: [
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80'
+    ],
     Foto_Profil: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80',
-    Testimoni_Kesan: 'Membangun sistem CRM kantor hukum klien tanpa beban biaya hosting dengan Google Apps Script & Sheets. Notifikasi WhatsApp otomatis ke klien langsung lancar!',
+    Testimoni_Kesan: 'Trailer video mendemonstrasikan sistem CRM Lawfirm tanpa hosting bulanan dengan Google Apps Script. WhatsApp otomatis berjalan real-time!',
     Link_Demo: 'https://etalaseku-gules.vercel.app',
     Video_Youtube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     Status_Tampil: 'Publish'
   },
   {
     ID_Showcase: 'SHW-02',
-    Nama_Karya: 'Sistem Kuitansi & Invoice Toko Online',
+    Nama_Karya: 'Multi-Slide Showcase Kasir & Billing Ber-QR Code',
     Nama_Member: 'Sarah Amanda',
     Profesi: 'Alumni Batch 1 • Online Store Owner',
     Kategori: 'Kasir & Billing',
     Statistik_Pencapaian: '10x Lebih Cepat',
-    Gambar_Preview_URL: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80',
+    Gambar_Preview_URL: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+    Galeri_Karya: [
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80'
+    ],
     Foto_Profil: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80',
-    Testimoni_Kesan: 'Kuitansi otomatis terbit ber-QR code HMAC ke WhatsApp pembeli saat transfer dicek. Tidak perlu lagi ketik manual satu per satu setiap hari.',
-    Link_Demo: 'https://etalaseku-gules.vercel.app',
-    Video_Youtube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    Status_Tampil: 'Publish'
-  },
-  {
-    ID_Showcase: 'SHW-03',
-    Nama_Karya: 'Aplikasi Absensi & Nilai Siswa Realtime',
-    Nama_Member: 'Khoirul Fajar',
-    Profesi: 'Alumni Batch 2 • Guru IT & Pengembang',
-    Kategori: 'Web App GAS',
-    Statistik_Pencapaian: '500+ Siswa Terdata',
-    Gambar_Preview_URL: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80',
-    Foto_Profil: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80',
-    Testimoni_Kesan: 'Aplikasi absensi berbasis QR code dan Google Sheets. Sangat cepat, hemat anggaran sekolah, dan rekap nilai otomatis terhitung tanpa error.',
+    Testimoni_Kesan: 'Menampilkan galeri tangkapan layar otomatis (slideshow 4 foto). Kuitansi QR code otomatis terbit ke WhatsApp pelanggan!',
     Link_Demo: 'https://etalaseku-gules.vercel.app',
     Video_Youtube: '',
     Status_Tampil: 'Publish'
   },
   {
-    ID_Showcase: 'SHW-04',
-    Nama_Karya: 'Sistem Kasir POS & Pengingat Cicilan WA',
-    Nama_Member: 'Budi Santoso',
-    Profesi: 'Alumni Batch 3 • UMKM Founder',
-    Kategori: 'Kasir & Billing',
-    Statistik_Pencapaian: '1.200 Transaksi / Bulan',
-    Gambar_Preview_URL: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=600&q=80',
-    Foto_Profil: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=100&q=80',
-    Testimoni_Kesan: 'Mencatat transaksi harian dan mengirimkan pesan tagihan berkala ke pelanggan secara otomatis via Fonnte API dan Sheets Database.',
+    ID_Showcase: 'SHW-03',
+    Nama_Karya: 'Aplikasi Absensi & Nilai Siswa Realtime 16:9',
+    Nama_Member: 'Khoirul Fajar',
+    Profesi: 'Alumni Batch 2 • Guru IT & Pengembang',
+    Kategori: 'Web App GAS',
+    Statistik_Pencapaian: '500+ Siswa Terdata',
+    Gambar_Preview_URL: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80',
+    Galeri_Karya: [
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80'
+    ],
+    Foto_Profil: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80',
+    Testimoni_Kesan: 'Aplikasi absensi sekolah responsif dengan QR scan instan. Rekap nilai dan kehadiran otomatis terhitung di Google Sheets.',
     Link_Demo: 'https://etalaseku-gules.vercel.app',
-    Video_Youtube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    Video_Youtube: '',
     Status_Tampil: 'Publish'
   }
 ];
@@ -816,8 +817,63 @@ function getActiveWaCsNumber() {
 
 const STATE = {
   products: [],
-  testimonials: [],
-  showcases: (function() {
+  testimonials: [
+      {
+        ID_Testimoni: 'TST-001',
+        Nama_Member: 'Aditya Pratama',
+        Profesi: 'Freelance Developer',
+        Rating: 5,
+        Isi_Ulasan: 'Materi GAS Pro Masterclass sangat aplikatif! Saya berhasil membuat sistem CRM Lawfirm untuk klien dan langsung dibayar 15 juta dalam 2 minggu.',
+        Hasil_Pencapaian: 'Closing Proyek Rp 15 Jt',
+        Foto_Avatar_URL: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        ID_Testimoni: 'TST-002',
+        Nama_Member: 'Sarah Amalia',
+        Profesi: 'Digital Agency Owner',
+        Rating: 5,
+        Isi_Ulasan: 'Sistem otomatisasi pengiriman kuitansi dan WhatsApp ini menghemat waktu tim CS kami hingga 90%. Tidak ada lagi komplain akses lambat!',
+        Hasil_Pencapaian: 'Hemat 90% Waktu CS',
+        Foto_Avatar_URL: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        ID_Testimoni: 'TST-003',
+        Nama_Member: 'Rian Hidayat',
+        Profesi: 'Pemilik UMKM Retail',
+        Rating: 5,
+        Isi_Ulasan: 'Template Notion OS dan modul penagihan siswa sangat rapi. Penagihan SPP bulanan di tempat bimbel saya jadi 100% otomatis tercatat di Spreadsheet.',
+        Hasil_Pencapaian: '100% Otomatisasi SPP',
+        Foto_Avatar_URL: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        ID_Testimoni: 'TST-004',
+        Nama_Member: 'Budi Santoso',
+        Profesi: 'Senior Product Manager',
+        Rating: 5,
+        Isi_Ulasan: 'Kumpulan PRD riil ini menyelamatkan sprint tim kami! Formatnya standar industri tech unicorn dan sangat mudah disesuaikan.',
+        Hasil_Pencapaian: 'Dokumentasi Produk 5x Cepat',
+        Foto_Avatar_URL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        ID_Testimoni: 'TST-005',
+        Nama_Member: 'Dewi Lestari',
+        Profesi: 'E-Commerce Specialist',
+        Rating: 5,
+        Isi_Ulasan: 'Setelah ikut modul Social Influence & Sales Web App, conversion rate toko meningkat drastis. Desainnya sangat meyakinkan pembeli!',
+        Hasil_Pencapaian: 'Omset Naik 3x Lipat',
+        Foto_Avatar_URL: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        ID_Testimoni: 'TST-006',
+        Nama_Member: 'Dimas Prasetyo',
+        Profesi: 'Fullstack Creator',
+        Rating: 5,
+        Isi_Ulasan: 'Arsitektur decoupled GAS dengan Google Sheets ini jenius. Bebas biaya langganan bulanan selamanya dan langsung jalan tanpa server rumit.',
+        Hasil_Pencapaian: 'Hemat Hosting 100%',
+        Foto_Avatar_URL: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80'
+      }
+    ],
+    showcases: (function() {
     try {
       const stored = localStorage.getItem('etalaseku_showcases_data');
       if (stored) return JSON.parse(stored);
@@ -892,22 +948,6 @@ class ButterflyCursor {
     this.el = document.getElementById('butterfly-container');
     this.canvas = document.getElementById('sparkle-canvas');
     if (!this.el || !this.canvas) return;
-
-    // Deteksi smartphone / touch screen: Matikan total di HP agar scrolling 60/120 FPS lancar dan baterai hemat
-    const isMobileDevice = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    if (isMobileDevice) {
-      if (this.el) this.el.style.display = 'none';
-      if (this.canvas) this.canvas.style.display = 'none';
-      return;
-    }
-
-    // Deteksi smartphone / touch screen: Matikan total di HP agar scrolling 60/120 FPS lancar dan baterai hemat
-    const isMobileDevice = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    if (isMobileDevice) {
-      if (this.el) this.el.style.display = 'none';
-      if (this.canvas) this.canvas.style.display = 'none';
-      return;
-    }
 
     // Deteksi smartphone / touch screen: Matikan total di HP agar scrolling 60/120 FPS lancar dan baterai hemat
     const isMobileDevice = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
@@ -1071,29 +1111,114 @@ class SlideshowManager {
 // 3. 3D FLIP INTERACTIVE TESTIMONIALS (AUTO-FLIP & DETAIL POPUP)
 // ============================================================================
 class TestimonialFlipManager {
+  static timer = null;
+  static isPaused = false;
+  static currentSlot = 0;
+  static queueIndex = 4;
+  static activeSlots = [];
+
   static init() {
+    if (this.timer) clearInterval(this.timer);
+    const list = (STATE.testimonials && STATE.testimonials.length > 0) ? STATE.testimonials : [];
+    if (!list.length) return;
+
     const cards = document.querySelectorAll('.flip-card-wrapper');
     if (!cards.length) return;
 
-    // Sequential auto-flip cycling
-    let activeIndex = 0;
-    setInterval(() => {
-      cards.forEach(c => c.classList.remove('flipped'));
-      if (cards[activeIndex]) {
-        cards[activeIndex].classList.add('flipped');
+    // Attach hover pause & resume
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => { TestimonialFlipManager.isPaused = true; });
+      card.addEventListener('mouseleave', () => { TestimonialFlipManager.isPaused = false; });
+    });
+
+    // Jika testimoni > 4, jalankan pergantian satu per satu dengan transisi flip 3D halus
+    if (list.length > 4) {
+      this.queueIndex = 4 % list.length;
+      this.currentSlot = 0;
+
+      this.timer = setInterval(() => {
+        if (TestimonialFlipManager.isPaused) return;
+
+        const currentCards = document.querySelectorAll('.flip-card-wrapper');
+        if (!currentCards.length) return;
+
+        const slotToFlip = TestimonialFlipManager.currentSlot % currentCards.length;
+        const targetCard = currentCards[slotToFlip];
+        if (!targetCard) return;
+
+        const nextTesti = list[TestimonialFlipManager.queueIndex];
+        TestimonialFlipManager.queueIndex = (TestimonialFlipManager.queueIndex + 1) % list.length;
+        TestimonialFlipManager.currentSlot = (TestimonialFlipManager.currentSlot + 1) % currentCards.length;
+
+        // Step 1: Flip out (90deg)
+        targetCard.classList.add('flipping-out');
+        targetCard.classList.remove('flipping-in');
+
         setTimeout(() => {
-          if (cards[activeIndex]) cards[activeIndex].classList.remove('flipped');
-        }, 3200);
-      }
-      activeIndex = (activeIndex + 1) % cards.length;
-    }, 6000);
+          // Step 2: Swap content at 90deg
+          TestimonialFlipManager.updateCardDom(targetCard, nextTesti);
+
+          // Step 3: Flip back in (0deg)
+          targetCard.classList.remove('flipping-out');
+          targetCard.classList.add('flipping-in');
+
+          setTimeout(() => {
+            targetCard.classList.remove('flipping-in');
+          }, 350);
+        }, 350);
+
+      }, 4000);
+    } else {
+      // Jika <= 4, sequential 3D peek flip
+      let activeIdx = 0;
+      this.timer = setInterval(() => {
+        if (TestimonialFlipManager.isPaused) return;
+        const cList = document.querySelectorAll('.flip-card-wrapper');
+        if (!cList.length) return;
+        cList.forEach(c => c.classList.remove('flipped'));
+        if (cList[activeIdx]) {
+          cList[activeIdx].classList.add('flipped');
+          setTimeout(() => {
+            if (cList[activeIdx]) cList[activeIdx].classList.remove('flipped');
+          }, 3000);
+        }
+        activeIdx = (activeIdx + 1) % cList.length;
+      }, 5500);
+    }
+  }
+
+  static updateCardDom(card, t) {
+    if (!card || !t) return;
+    card.onclick = () => TestimonialFlipManager.showDetailModal(t);
+
+    const initialEl = card.querySelector('.testi-header > div:first-child');
+    if (initialEl) initialEl.textContent = (t.Nama_Member || 'S').charAt(0).toUpperCase();
+
+    const nameEl = card.querySelector('.testi-header h4');
+    if (nameEl) nameEl.textContent = t.Nama_Member || 'Alumni Member';
+
+    const roleEl = card.querySelector('.testi-header p');
+    if (roleEl) roleEl.textContent = t.Profesi || 'Member Siswa';
+
+    const quoteEl = card.querySelector('.testi-quote');
+    if (quoteEl) quoteEl.textContent = '"' + (t.Isi_Ulasan || '').slice(0, 110) + '..."';
+
+    const badgeEl = card.querySelector('.testi-result-badge');
+    if (badgeEl) badgeEl.textContent = '🚀 ' + (t.Hasil_Pencapaian || 'Verified Result');
+
+    const backTitle = card.querySelector('.flip-card-back h4');
+    if (backTitle) backTitle.textContent = t.Hasil_Pencapaian || 'Hasil Maksimal';
+
+    const backQuote = card.querySelector('.flip-card-back p');
+    if (backQuote) backQuote.textContent = '"' + (t.Isi_Ulasan || '') + '"';
   }
 
   static showDetailModal(testi) {
     const modal = document.getElementById('modal-testi-detail');
     if (!modal) return;
 
-    document.getElementById('testi-modal-avatar').src = testi.Foto_Avatar_URL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+    const initialEl = document.getElementById('testi-modal-initial');
+    if (initialEl) initialEl.textContent = (testi.Nama_Member || 'S').charAt(0).toUpperCase();
     document.getElementById('testi-modal-name').textContent = testi.Nama_Member || 'Alumni Member';
     document.getElementById('testi-modal-role').textContent = testi.Profesi || 'Digital Creator';
     document.getElementById('testi-modal-quote').textContent = testi.Isi_Ulasan || '-';
@@ -1307,7 +1432,12 @@ function renderAnnouncementBar() {
     : DEFAULT_SITE_SETTINGS.announcement_bar_text;
 
   if (barText) {
-    barText.textContent = promoText || DEFAULT_SITE_SETTINGS.announcement_bar_text;
+    const rawTxt = promoText || DEFAULT_SITE_SETTINGS.announcement_bar_text;
+    if (rawTxt && /DISKON\s*\d+%?/i.test(rawTxt)) {
+      barText.innerHTML = rawTxt.replace(/(🔥?\s*DISKON\s*\d+%?)/gi, '<span class="neon-discount-glow">$1</span>');
+    } else {
+      barText.textContent = rawTxt;
+    }
   }
   if (topBar) {
     topBar.style.display = 'flex';
@@ -1442,18 +1572,31 @@ function renderProducts() {
     const isSoldOut = Number(p.Maks_Kuota_Batch || 50) <= 0;
     const badgeText = isSoldOut ? 'Batch Penuh' : `Batch ${p.Batch_Aktif || 1}: Kuota Terbatas`;
 
+    const normalPrice = Number(p.Harga_Normal || 0);
+    const promoPrice = Number(p.Harga_Promo || 0);
+    let discountPct = 0;
+    if (normalPrice > promoPrice && normalPrice > 0) {
+      discountPct = Math.round(((normalPrice - promoPrice) / normalPrice) * 100);
+    }
+
     const card = document.createElement('div');
     card.className = 'glow-card product-card';
     card.innerHTML = `
       <div class="product-carousel">
         <span class="product-badge-batch" style="background: ${isSoldOut ? '#EF4444' : '#0F172A'}">${badgeText}</span>
+        ${discountPct > 0 ? `
+          <span class="product-thumb-discount-badge" title="Diskon Spesial Terbatas!">
+            <span class="badge-fire-anim">🔥</span> DISKON ${discountPct}%
+          </span>
+        ` : ''}
         ${slidesHtml}
       </div>
       <h3 class="product-title">${escapeHtml(p.Nama_Produk)}</h3>
       <p class="product-desc">${escapeHtml(p.Deskripsi || '')}</p>
-      <div class="product-pricing">
-        <span class="price-normal">Rp ${Number(p.Harga_Normal || 0).toLocaleString('id-ID')}</span>
-        <span class="price-promo">Rp ${Number(p.Harga_Promo || 0).toLocaleString('id-ID')}</span>
+      <div class="product-pricing" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <span class="price-normal">Rp ${normalPrice.toLocaleString('id-ID')}</span>
+        <span class="price-promo price-promo-neon">Rp ${promoPrice.toLocaleString('id-ID')}</span>
+        ${discountPct > 0 ? `<span class="discount-pill-glow">Hemat ${discountPct}%</span>` : ''}
       </div>
       <button class="shimmer-btn btn-card-buy" onclick="handleProductAction('${p.ID_Produk}')">
         ${isSoldOut ? 'Batch Penuh — Masuk Waitlist ⏳' : 'Daftar & Akses Instan →'}
@@ -1468,9 +1611,14 @@ function renderTestimonials() {
   if (!grid) return;
   grid.innerHTML = '';
 
-  STATE.testimonials.forEach((t, index) => {
+  const list = (STATE.testimonials && STATE.testimonials.length > 0) ? STATE.testimonials : [];
+  // Jika testimoni > 4, tampilkan 4 slot awal yang akan bergantian secara dinamis
+  const displayList = list.length > 4 ? list.slice(0, 4) : list;
+
+  displayList.forEach((t, index) => {
     const card = document.createElement('div');
     card.className = 'flip-card-wrapper';
+    card.title = 'Klik untuk membaca cerita ulasan lengkap';
     card.onclick = () => TestimonialFlipManager.showDetailModal(t);
 
     card.innerHTML = `
@@ -1487,12 +1635,12 @@ function renderTestimonials() {
                 <p style="font-size:12px; color:var(--text-muted); margin:0;">${t.Profesi || 'Member Siswa'}</p>
               </div>
             </div>
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-quote">"${(t.Isi_Ulasan || '').slice(0, 110)}..."</p>
+            <div class="testi-stars" style="color:#F59E0B; margin:10px 0 6px;">★★★★★</div>
+            <p class="testi-quote" style="font-size:13px; color:#334155; line-height:1.5;">"${(t.Isi_Ulasan || '').slice(0, 110)}..."</p>
           </div>
           <div>
-            <span class="testi-result-badge">📈 ${t.Hasil_Pencapaian || 'Verified Result'}</span>
-            <div class="flip-hint">Hover / Tap to flip ↺</div>
+            <span class="testi-result-badge">🚀 ${t.Hasil_Pencapaian || 'Verified Result'}</span>
+            <div class="testi-click-hint">🔍 Klik untuk baca cerita lengkap →</div>
           </div>
         </div>
 
@@ -1500,17 +1648,51 @@ function renderTestimonials() {
         <div class="flip-card-back">
           <div>
             <div style="font-size:12px; text-transform:uppercase; color:#FF2E63; font-weight:700; margin-bottom:8px;">Pencapaian Siswa</div>
-            <h4 style="font-size:18px; font-weight:800; margin-bottom:12px;">${t.Hasil_Pencapaian || 'Hasil Maksimal'}</h4>
-            <p style="font-size:13px; opacity:0.9; line-height:1.5;">"${t.Isi_Ulasan}"</p>
+            <h4 style="font-size:18px; font-weight:800; margin-bottom:12px; color:#FFFFFF;">${t.Hasil_Pencapaian || 'Hasil Maksimal'}</h4>
+            <p style="font-size:13px; opacity:0.95; line-height:1.5; color:#F8FAFC;">"${t.Isi_Ulasan}"</p>
           </div>
           <div>
-            <button class="shimmer-btn" style="width:100%; padding:8px; font-size:12px;">Lihat Cerita Lengkap ↗</button>
+            <button class="shimmer-btn" style="width:100%; padding:9px; font-size:12px; justify-content:center;" onclick="event.stopPropagation(); TestimonialFlipManager.showDetailModal(STATE.testimonials[${index}])">
+              Lihat Cerita Lengkap ↗
+            </button>
           </div>
         </div>
       </div>
     `;
     grid.appendChild(card);
   });
+}
+
+function getYouTubeEmbedUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  const clean = url.trim();
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = clean.match(regExp);
+  if (match && match[2] && match[2].length === 11) {
+    return 'https://www.youtube-nocookie.com/embed/' + match[2] + '?rel=0&modestbranding=1';
+  }
+  if (clean.includes('embed/')) return clean;
+  return '';
+}
+
+function extractShowcaseImages(s) {
+  let imgs = [];
+  if (Array.isArray(s.Galeri_Karya) && s.Galeri_Karya.length > 0) {
+    imgs = s.Galeri_Karya.map(formatImageUrl);
+  } else if (s.Galeri_Karya && typeof s.Galeri_Karya === 'string' && s.Galeri_Karya.trim()) {
+    imgs = s.Galeri_Karya.split(/\s*,\s*(?=https?:\/\/|data:image\/)/i).map(u => formatImageUrl(u.trim())).filter(Boolean);
+  } else if (s.Gambar_Preview_URL && typeof s.Gambar_Preview_URL === 'string' && s.Gambar_Preview_URL.trim()) {
+    if (s.Gambar_Preview_URL.includes(',')) {
+      imgs = s.Gambar_Preview_URL.split(/\s*,\s*(?=https?:\/\/|data:image\/)/i).map(u => formatImageUrl(u.trim())).filter(Boolean);
+    } else {
+      imgs = [formatImageUrl(s.Gambar_Preview_URL.trim())];
+    }
+  }
+  if (!imgs.length) {
+    imgs = ['https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'];
+  }
+  // Maksimal 5 gambar sesuai permintaan pengguna
+  return imgs.slice(0, 5);
 }
 
 function renderShowcases() {
@@ -1520,30 +1702,89 @@ function renderShowcases() {
 
   const list = (STATE.showcases && STATE.showcases.length > 0) ? STATE.showcases : DEFAULT_SHOWCASES_LIST;
 
-  list.slice(0, 4).forEach(s => {
+  list.slice(0, 6).forEach((s, idx) => {
     const card = document.createElement('div');
     card.className = 'pameran-card';
-    
+
+    const ytEmbedUrl = getYouTubeEmbedUrl(s.Video_Youtube);
+    const images = extractShowcaseImages(s);
+
+    let mediaHtml = '';
+
+    // A. Embed URL YouTube Video Trailer (Landscape 16:9)
+    if (ytEmbedUrl) {
+      mediaHtml = `
+        <div class="showcase-yt-wrapper" style="aspect-ratio: 16 / 9 !important; width: 100%; position: relative; background: #0F172A;">
+          <iframe 
+            src="${ytEmbedUrl}" 
+            title="${escapeHtml(s.Nama_Karya)}" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen 
+            loading="lazy" 
+            style="width: 100%; height: 100%; aspect-ratio: 16 / 9; border: none; display: block;">
+          </iframe>
+          <span style="position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); color: #FFFFFF; padding: 4px 10px; border-radius: 99px; font-size: 10.5px; font-weight: 800; border: 1px solid rgba(255,255,255,0.2); pointer-events: none; z-index: 2;">
+            ${escapeHtml(s.Statistik_Pencapaian || 'Hasil Karya')}
+          </span>
+          <span style="position: absolute; top: 10px; right: 10px; background: #EF4444; color: #FFFFFF; padding: 4px 10px; border-radius: 99px; font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; z-index: 2;">
+            ▶ Video Trailer 16:9
+          </span>
+        </div>
+      `;
+    } 
+    // B. Multi-Gambar Slideshow Otomatis (Maksimal 5 Gambar, Landscape 16:9)
+    else if (images.length > 1) {
+      mediaHtml = `
+        <div class="pameran-card-thumb-wrap showcase-carousel-box" id="showcase-card-carousel-${idx}" style="aspect-ratio: 16 / 9 !important; width: 100%; position: relative; background: #0F172A; overflow: hidden;">
+          <span style="position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); color: #FFFFFF; padding: 4px 10px; border-radius: 99px; font-size: 10.5px; font-weight: 800; border: 1px solid rgba(255,255,255,0.2); z-index: 5;">
+            ${escapeHtml(s.Statistik_Pencapaian || 'Hasil Karya')}
+          </span>
+          <span style="position: absolute; top: 10px; right: 10px; background: rgba(37, 99, 235, 0.9); color: #FFFFFF; padding: 3px 8px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 5;">
+            🖼 ${images.length} Foto Slideshow
+          </span>
+          ${images.map((img, i) => `
+            <div class="showcase-slide ${i === 0 ? 'active' : ''}" style="position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: 16 / 9; opacity: ${i === 0 ? '1' : '0'}; transition: opacity 0.6s ease-in-out;">
+              <img src="${img}" alt="${escapeHtml(s.Nama_Karya)}" style="width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover;" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';">
+            </div>
+          `).join('')}
+          <div class="showcase-dots" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 6; background: rgba(15, 23, 42, 0.5); padding: 4px 8px; border-radius: 99px;">
+            ${images.map((_, i) => `
+              <span class="showcase-dot ${i === 0 ? 'active' : ''}" style="width: ${i === 0 ? '16px' : '6px'}; height: 6px; border-radius: 99px; background: ${i === 0 ? '#FFFFFF' : 'rgba(255,255,255,0.5)'}; transition: all 0.25s ease;"></span>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    } 
+    // C. Single Image (Landscape 16:9)
+    else {
+      mediaHtml = `
+        <div class="pameran-card-thumb-wrap" style="aspect-ratio: 16 / 9 !important; width: 100%; position: relative; background: #0F172A; overflow: hidden;">
+          <img src="${images[0]}" class="pameran-card-thumb" alt="${escapeHtml(s.Nama_Karya)}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';" style="width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover;">
+          <span style="position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); color: #FFFFFF; padding: 4px 10px; border-radius: 99px; font-size: 10.5px; font-weight: 800; border: 1px solid rgba(255,255,255,0.2);">
+            ${escapeHtml(s.Statistik_Pencapaian || 'Hasil Karya')}
+          </span>
+        </div>
+      `;
+    }
+
     const demoBtn = s.Link_Demo ? `
       <a href="${s.Link_Demo}" target="_blank" rel="noopener noreferrer" class="btn-pameran-demo" title="Buka Live Demo">
         🌐 Demo Live ↗
       </a>` : '';
 
-    const ytBtn = s.Video_Youtube ? `
+    const ytBtn = (s.Video_Youtube && !ytEmbedUrl) ? `
       <button type="button" class="btn-pameran-yt" onclick="openYouTubeShowcaseModal('${s.Video_Youtube}', '${escapeHtml(s.Nama_Karya)}', '${escapeHtml(s.Nama_Member)}')" title="Tonton Video Demo YouTube">
-        ▶️ Video YouTube
+        ▶ Video YouTube
       </button>` : '';
 
     card.innerHTML = `
-      <div class="pameran-card-thumb-wrap">
-        <img src="${formatImageUrl(s.Gambar_Preview_URL)}" class="pameran-card-thumb" alt="${escapeHtml(s.Nama_Karya)}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80';">
-        <span style="position:absolute; top:12px; left:12px; background:var(--deep-navy); color:#FFFFFF; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:800; box-shadow:0 2px 8px rgba(0,0,0,0.3);">
-          ${escapeHtml(s.Statistik_Pencapaian || 'Hasil Karya')}
-        </span>
-      </div>
+      ${mediaHtml}
       <div class="pameran-card-content">
         <div class="pameran-card-author-row">
-          
+          <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #FF2E63, #E11D48); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0;">
+            ${(s.Nama_Member || 'A').charAt(0).toUpperCase()}
+          </div>
           <div>
             <div style="font-size:12.5px; font-weight:800; color:var(--deep-navy);">${s.Nama_Member}</div>
             <div style="font-size:10.5px; color:#64748B;">${s.Profesi || 'Alumni Member'}</div>
@@ -1558,6 +1799,39 @@ function renderShowcases() {
       </div>
     `;
     container.appendChild(card);
+  });
+
+  // Jalankan slideshow otomatis untuk kartu yang memiliki banyak gambar
+  initShowcaseCardSlideshows();
+}
+
+function initShowcaseCardSlideshows() {
+  const boxes = document.querySelectorAll('.showcase-carousel-box');
+  boxes.forEach(box => {
+    const slides = box.querySelectorAll('.showcase-slide');
+    const dots = box.querySelectorAll('.showcase-dot');
+    if (slides.length <= 1) return;
+
+    let cur = 0;
+    setInterval(() => {
+      slides[cur].classList.remove('active');
+      slides[cur].style.opacity = '0';
+      if (dots[cur]) {
+        dots[cur].classList.remove('active');
+        dots[cur].style.width = '6px';
+        dots[cur].style.background = 'rgba(255,255,255,0.5)';
+      }
+
+      cur = (cur + 1) % slides.length;
+
+      slides[cur].classList.add('active');
+      slides[cur].style.opacity = '1';
+      if (dots[cur]) {
+        dots[cur].classList.add('active');
+        dots[cur].style.width = '16px';
+        dots[cur].style.background = '#FFFFFF';
+      }
+    }, 3500);
   });
 }
 
