@@ -41,9 +41,11 @@ window.handleOrderProofFileChange = handleOrderProofFileChange;
 // DEFAULT ORDERS & MERGED LOCAL STORAGE ENGINE
 // ============================================================================
 const DEFAULT_RECENT_ORDERS = [
-  { ID_Order: 'ORD-1028-01', Tanggal_Waktu: '2026-10-28 16:30', Nama_Pembeli: 'Budi Santoso', No_WhatsApp: '08123456789', Email: 'budi@gmail.com', ID_Produk: 'PRD-001', Total_Bayar: 99000, Status_Bayar: 'Pending', Bukti_Transfer_URL: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80' },
-  { ID_Order: 'ORD-1028-02', Tanggal_Waktu: '2026-10-28 15:10', Nama_Pembeli: 'Anita Wijaya', No_WhatsApp: '08198765432', Email: 'anita@gmail.com', ID_Produk: 'PRD-002', Total_Bayar: 79000, Status_Bayar: 'Lunas', Bukti_Transfer_URL: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80' },
-  { ID_Order: 'ORD-1028-03', Tanggal_Waktu: '2026-10-28 14:05', Nama_Pembeli: 'Dimas Prasetyo', No_WhatsApp: '08134567890', Email: 'dimas@gmail.com', ID_Produk: 'PRD-001', Total_Bayar: 99000, Status_Bayar: 'Lunas', Bukti_Transfer_URL: '' }
+  { ID_Order: 'ORD-20261102-170907-2186', Tanggal_Waktu: '2026-11-02 17:09', Nama_Pembeli: 'Daffa Fazdian', No_WhatsApp: '087894602627', Email: 'daffafazdian50@gmail.com', ID_Produk: 'PRD-1028-02', Produk: 'Kumpulan PRD', Nama_Produk: 'Kumpulan PRD', Total_Bayar: 49000, Status_Bayar: 'Lunas', Bukti_Transfer_URL: '' },
+  { ID_Order: 'ORD-20261030-152053-9581', Tanggal_Waktu: '2026-10-30 15:20', Nama_Pembeli: 'Bmuda Member', No_WhatsApp: '081234567890', Email: 'bmuda6838@gmail.com', ID_Produk: 'PRD-000', Produk: 'Social Influence', Nama_Produk: 'Social Influence', Total_Bayar: 25000, Status_Bayar: 'Lunas', Bukti_Transfer_URL: '' },
+  { ID_Order: 'ORD-1028-01', Tanggal_Waktu: '2026-10-28 16:30', Nama_Pembeli: 'Budi Santoso', No_WhatsApp: '08123456789', Email: 'budi@gmail.com', ID_Produk: 'PRD-000', Produk: 'Social Influence', Nama_Produk: 'Social Influence', Total_Bayar: 25000, Status_Bayar: 'Lunas', Bukti_Transfer_URL: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80' },
+  { ID_Order: 'ORD-1028-02', Tanggal_Waktu: '2026-10-28 15:10', Nama_Pembeli: 'Anita Wijaya', No_WhatsApp: '08198765432', Email: 'anita@gmail.com', ID_Produk: 'PRD-1028-02', Produk: 'Kumpulan PRD', Nama_Produk: 'Kumpulan PRD', Total_Bayar: 49000, Status_Bayar: 'Lunas', Bukti_Transfer_URL: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80' },
+  { ID_Order: 'ORD-1028-03', Tanggal_Waktu: '2026-10-28 14:05', Nama_Pembeli: 'Dimas Prasetyo', No_WhatsApp: '08134567890', Email: 'dimas@gmail.com', ID_Produk: 'PRD-000', Produk: 'Social Influence', Nama_Produk: 'Social Influence', Total_Bayar: 25000, Status_Bayar: 'Lunas', Bukti_Transfer_URL: '' }
 ];
 
 function getMergedOrdersList() {
@@ -299,15 +301,33 @@ window.formatImageUrl = formatImageUrl;
 
 function sanitizeProduct(p) {
   if (!p) return p;
-  if (p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence')) {
+  const pName = String(p.Nama_Produk || '').toLowerCase();
+  if (pName.includes('social influence')) {
     // Gunakan file banner aset lokal terkompresi resmi yang sangat ringan & tajam
     if (!p.Banner_URL || p.Banner_URL.includes('unsplash') || p.Banner_URL.length < 50 || p.Banner_URL.startsWith('data:image/')) {
       p.Banner_URL = 'social-influence-banner.jpg';
     }
+    // Pastikan harga promo selalu akurat Rp 25.000 jika sebelumnya tersimpan demo Rp 99.000
+    if (p.Harga_Promo === 99000 || !p.Harga_Promo) {
+      p.Harga_Promo = 25000;
+    }
+    p.Harga_Normal = 259000;
+  } else if (pName.includes('kumpulan prd')) {
+    // Gunakan file banner aset lokal terkompresi resmi yang sangat ringan & tajam
+    if (!p.Banner_URL || p.Banner_URL.includes('unsplash') || p.Banner_URL.length < 50 || p.Banner_URL.startsWith('data:image/')) {
+      p.Banner_URL = 'kumpulan-prd-banner.jpg';
+    }
+    if (!p.Harga_Promo || p.Harga_Promo === 0) {
+      p.Harga_Promo = 49000;
+    }
+    if (!p.Harga_Normal || p.Harga_Normal === 0) {
+      p.Harga_Normal = 149000;
+    }
   }
+
   if (!p.Banner_URL || typeof p.Banner_URL !== 'string' || p.Banner_URL.trim() === '' || 
       (p.Banner_URL.startsWith('data:image/') && (!p.Banner_URL.includes(',') || p.Banner_URL.split(',')[1].length < 30))) {
-    p.Banner_URL = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+    p.Banner_URL = pName.includes('prd') ? 'kumpulan-prd-banner.jpg' : 'social-influence-banner.jpg';
   } else {
     p.Banner_URL = formatImageUrl(p.Banner_URL);
   }
@@ -1087,13 +1107,28 @@ async function loadPublicData() {
         if (storedProducts) localProducts = JSON.parse(storedProducts);
       } catch(e) {}
 
+      function isObsoleteDemoProduct(p) {
+        if (!p || !p.Nama_Produk) return false;
+        const n = String(p.Nama_Produk).toLowerCase();
+        return n.includes('gas pro web app masterclass') ||
+               n.includes('notion os') ||
+               n.includes('bootcamp');
+      }
+
+      // Hapus produk demo usang dari localProducts
+      if (Array.isArray(localProducts)) {
+        localProducts = localProducts.filter(lp => !isObsoleteDemoProduct(lp));
+      }
+
       if (serverProducts && serverProducts.length > 0) {
         // Server Google Sheets adalah acuan utama lintas perangkat
         const mergedMap = new Map();
-        serverProducts.forEach(p => mergedMap.set(p.ID_Produk, p));
+        serverProducts.forEach(p => {
+          if (!isObsoleteDemoProduct(p)) mergedMap.set(p.ID_Produk, p);
+        });
         if (Array.isArray(localProducts)) {
           localProducts.forEach(lp => {
-            if (!mergedMap.has(lp.ID_Produk)) {
+            if (!mergedMap.has(lp.ID_Produk) && !isObsoleteDemoProduct(lp)) {
               mergedMap.set(lp.ID_Produk, lp);
             }
           });
@@ -1105,12 +1140,28 @@ async function loadPublicData() {
         STATE.products = (fallback.products || []).map(sanitizeProduct);
       }
 
-      // Pastikan produk "Social Influence" dan "Kumpulan PRD" selalu hadir jika ada di fallback
+      // Pastikan kedua produk utama ("Kumpulan PRD" dan "Social Influence") selalu hadir di semua perangkat HP & Desktop
       fallback.products.forEach(defP => {
-        if (!STATE.products.some(p => p.ID_Produk === defP.ID_Produk || (p.Nama_Produk && defP.Nama_Produk && p.Nama_Produk.toLowerCase() === defP.Nama_Produk.toLowerCase()))) {
-          // Jangan timpa jika sudah ada
+        const idx = STATE.products.findIndex(p => 
+          p.ID_Produk === defP.ID_Produk || 
+          (p.Nama_Produk && defP.Nama_Produk && p.Nama_Produk.toLowerCase().includes(defP.Nama_Produk.toLowerCase()))
+        );
+        if (idx === -1) {
+          STATE.products.push(Object.assign({}, defP));
+        } else {
+          // Sinkronkan harga promo & banner yang paling baru
+          if (defP.Nama_Produk.toLowerCase().includes('social influence') && STATE.products[idx].Harga_Promo === 99000) {
+            STATE.products[idx].Harga_Promo = 25000;
+          }
+          if (defP.Nama_Produk.toLowerCase().includes('kumpulan prd')) {
+            STATE.products[idx].Harga_Promo = 49000;
+            STATE.products[idx].Banner_URL = 'kumpulan-prd-banner.jpg';
+          }
         }
       });
+
+      // Bersihkan total dari STATE.products produk usang agar tidak muncul di HP manapun
+      STATE.products = STATE.products.filter(p => !isObsoleteDemoProduct(p)).map(sanitizeProduct);
 
       persistProductsSafely(STATE.products);
     } catch(e) {
@@ -1121,8 +1172,12 @@ async function loadPublicData() {
     if (typeof StorageHub !== 'undefined' && StorageHub.idbGet) {
       StorageHub.idbGet('etalaseku_products_data').then(idbProds => {
         if (Array.isArray(idbProds) && idbProds.length > 0) {
-          if (idbProds.length >= STATE.products.length) {
-            STATE.products = idbProds.map(sanitizeProduct);
+          const cleanedIdb = idbProds.filter(p => {
+            const n = String(p.Nama_Produk || '').toLowerCase();
+            return !n.includes('gas pro web app masterclass') && !n.includes('notion os') && !n.includes('bootcamp');
+          });
+          if (cleanedIdb.length >= STATE.products.length) {
+            STATE.products = cleanedIdb.map(sanitizeProduct);
             renderProducts();
             if (typeof renderAdminProductsTable === 'function') {
               renderAdminProductsTable(STATE.products);
@@ -1185,23 +1240,8 @@ async function loadPublicData() {
     console.warn('Gagal load live GAS, menggunakan fallback mock data:', err);
     const mock = getFallbackMockData();
     try {
-      const storedProducts = localStorage.getItem('etalaseku_products_data');
-      if (storedProducts) {
-        const parsedP = JSON.parse(storedProducts);
-        if (Array.isArray(parsedP) && parsedP.length > 0) {
-          const hasSocial = parsedP.some(p => p.Nama_Produk && p.Nama_Produk.toLowerCase().includes('social influence'));
-          if (!hasSocial) {
-            const socialFallback = mock.products.find(p => p.Nama_Produk.toLowerCase().includes('social influence'));
-            if (socialFallback) parsedP.unshift(socialFallback);
-          }
-          STATE.products = parsedP.map(sanitizeProduct);
-          persistProductsSafely(STATE.products);
-        } else {
-          STATE.products = mock.products.map(sanitizeProduct);
-        }
-      } else {
-        STATE.products = mock.products.map(sanitizeProduct);
-      }
+      STATE.products = mock.products.map(sanitizeProduct);
+      persistProductsSafely(STATE.products);
     } catch(e) {
       STATE.products = mock.products.map(sanitizeProduct);
     }
@@ -5840,61 +5880,37 @@ function getFallbackMockData() {
     settings: {
       announcement_bar_text: '🔥 DISKON 50% - Akses Seumur Hidup Batch 3 Terbatas Hanya 50 Orang!',
       wa_cs_number: '6287894602627',
-      link_komunitas_tg: ''
+      link_komunitas_tg: '',
+      rekening_pembayaran: 'BCA: 5540732461 a/n Muhammad Daffa Fazdian'
     },
     products: [
+      {
+        ID_Produk: 'PRD-1028-02',
+        Nama_Produk: 'Kumpulan PRD',
+        Kategori: 'Template Bisnis',
+        Deskripsi: 'Kumpulan template & contoh riil Product Requirement Document (PRD) siap pakai untuk Product Manager, UI/UX, dan Developer. Dilengkapi struktur standar industri untuk mempercepat pembuatan dokumentasi produk digital.',
+        Harga_Normal: 149000,
+        Harga_Promo: 49000,
+        Banner_URL: 'kumpulan-prd-banner.jpg',
+        Galeri_URLs: '',
+        Batch_Aktif: 1,
+        Maks_Kuota_Batch: 1000,
+        Status: 'Publish',
+        Link_Akses_Materi: 'https://drive.google.com/file/d/19LUSJgmNJo7pbdUsn4-6r-tNQFEUjzgZ/view?usp=sharing'
+      },
       {
         ID_Produk: 'PRD-000',
         Nama_Produk: 'Social Influence',
         Kategori: 'Template Bisnis',
         Deskripsi: 'Pemateri: Dr. Dasep Suryanto, AT., SH., MM., MIKom., PhD. (Inisiatif Kemnaker & GNIK) Ringkasan: Dalam lanskap karier modern, kompetensi teknis (hard skills) membuka pintu kesempatan, namun kecakapan pengaruh sosial (social influence) yang menentukan seberapa jauh Anda mampu melangkah dan memimpin. Modul panduan ini merangkum strategi esensial bagaimana membangun pengaruh positif tanpa bergantung semata pada jabatan hierarki.',
         Harga_Normal: 259000,
-        Harga_Promo: 99000,
+        Harga_Promo: 25000,
         Banner_URL: 'social-influence-banner.jpg',
         Galeri_URLs: '',
         Batch_Aktif: 1,
         Maks_Kuota_Batch: 50,
         Status: 'Publish',
         Link_Akses_Materi: 'https://drive.google.com/file/d/1BeH_fPc2UEY5gFmjpi4dnuLzmiTernOR/view'
-      },
-      {
-        ID_Produk: 'PRD-001',
-        Nama_Produk: 'GAS Pro Web App Masterclass',
-        Kategori: 'Kursus Video',
-        Deskripsi: 'Bangun web app skala industri dengan Google Apps Script, Google Sheets, & Tailwind CSS tanpa server eksternal.',
-        Harga_Normal: 249000,
-        Harga_Promo: 99000,
-        Banner_URL: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
-        Galeri_URLs: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80',
-        Batch_Aktif: 3,
-        Maks_Kuota_Batch: 8,
-        Status: 'Publish'
-      },
-      {
-        ID_Produk: 'PRD-002',
-        Nama_Produk: 'Digital Agency Notion OS',
-        Kategori: 'Template Bisnis',
-        Deskripsi: 'Template Notion terlengkap untuk manajemen klien agency, pipeline penjualan, dan invoice otomatis terpusat.',
-        Harga_Normal: 199000,
-        Harga_Promo: 79000,
-        Banner_URL: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80',
-        Galeri_URLs: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80',
-        Batch_Aktif: 1,
-        Maks_Kuota_Batch: 999,
-        Status: 'Publish'
-      },
-      {
-        ID_Produk: 'PRD-003',
-        Nama_Produk: 'Fullstack Automation Bootcamp',
-        Kategori: 'Mentoring Eksklusif',
-        Deskripsi: 'Mentoring intensif 4 minggu membangun otomasi bisnis dari nol hingga menghasilkan omset pertama.',
-        Harga_Normal: 499000,
-        Harga_Promo: 249000,
-        Banner_URL: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80',
-        Galeri_URLs: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80',
-        Batch_Aktif: 2,
-        Maks_Kuota_Batch: 0, // Simulates sold-out batch for waitlist
-        Status: 'Publish'
       }
     ],
     testimonials: [
