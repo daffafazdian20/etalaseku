@@ -6847,3 +6847,377 @@ input:checked + .switch-slider:before {
     padding: 12px !important;
   }
 }
+
+
+/* ==========================================================================
+   UPGRADE SYSTEM: MOBILE BOTTOM NAV, SMART CTA, 16:9 LANDSCAPE,
+   CINEMA PLAYER, PULSING GLOW, AND COMPACT CRM CARDS
+   ========================================================================== */
+
+/* 1. PULSING GLOW KEYFRAMES (DISCOUNT & CTA) */
+@keyframes discountPulseGlow {
+  0% {
+    text-shadow: 0 0 4px #FF2E63, 0 0 10px #FF2E63;
+    color: #FFFFFF;
+    transform: scale(1);
+  }
+  50% {
+    text-shadow: 0 0 14px #FBBF24, 0 0 28px #FF2E63, 0 0 36px #FF2E63;
+    color: #FFFBEB;
+    transform: scale(1.02);
+  }
+  100% {
+    text-shadow: 0 0 4px #FF2E63, 0 0 10px #FF2E63;
+    color: #FFFFFF;
+    transform: scale(1);
+  }
+}
+
+.announcement-discount-glow {
+  display: inline-block;
+  animation: discountPulseGlow 2s infinite ease-in-out;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+@keyframes badgePulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 46, 99, 0.7), 0 4px 12px rgba(0,0,0,0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 46, 99, 0), 0 0 16px rgba(255, 46, 99, 0.85);
+    transform: scale(1.04);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 46, 99, 0), 0 4px 12px rgba(0,0,0,0.3);
+    transform: scale(1);
+  }
+}
+
+.product-badge.glow-badge,
+.badge-glow-anim {
+  animation: badgePulseGlow 2s infinite ease-in-out !important;
+  background: linear-gradient(135deg, #FF2E63, #E11D48) !important;
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+@keyframes ctaPulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 46, 99, 0.4), 0 4px 15px rgba(255, 46, 99, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 46, 99, 0.85), 0 0 45px rgba(251, 191, 36, 0.4);
+    transform: scale(1.03);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 46, 99, 0.4), 0 4px 15px rgba(255, 46, 99, 0.2);
+    transform: scale(1);
+  }
+}
+
+.cta-pulse-glow {
+  animation: ctaPulseGlow 2.2s infinite ease-in-out !important;
+}
+
+/* 2. LANDSCAPE 16:9 THUMBNAILS (UPGRADE 8) */
+.product-carousel,
+.product-slide,
+.product-slide img,
+.pameran-card-thumb-wrap,
+.pameran-card-thumb,
+.rb-card-thumb-wrap,
+.rb-card-thumb {
+  aspect-ratio: 16 / 9 !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+/* 3. CINEMA VIDEO PLAYER 16:9 (UPGRADE 4) */
+.rb-video-wrapper,
+#rb-video-player-box,
+.cinema-video-frame {
+  aspect-ratio: 16 / 9 !important;
+  width: 100% !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  background: #0B1120 !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45) !important;
+  position: relative !important;
+}
+
+.cinema-ambient-glow {
+  position: relative;
+}
+.cinema-ambient-glow::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, rgba(255,46,99,0.15) 0%, transparent 70%);
+  filter: blur(14px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 4. SILABUS EPISODE STATUS INDICATORS (UPGRADE 4) */
+.rb-ep-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  margin-left: auto;
+}
+.rb-ep-status-badge.playing {
+  background: #FFF1F4;
+  color: #FF2E63;
+  border: 1px solid rgba(255, 46, 99, 0.3);
+  animation: badgePulseGlow 1.8s infinite;
+}
+.rb-ep-status-badge.completed {
+  background: #ECFDF5;
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.rb-ep-status-badge.upcoming {
+  background: #F1F5F9;
+  color: #64748B;
+  border: 1px solid #CBD5E1;
+}
+
+/* Equalizer Wave Animation */
+@keyframes eqBar {
+  0%, 100% { height: 4px; }
+  50% { height: 12px; }
+}
+.equalizer-anim {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.equalizer-anim span {
+  width: 2px;
+  background: #FF2E63;
+  border-radius: 1px;
+  animation: eqBar 0.8s infinite ease-in-out;
+}
+.equalizer-anim span:nth-child(2) { animation-delay: 0.2s; }
+.equalizer-anim span:nth-child(3) { animation-delay: 0.4s; }
+
+/* 5. FLOATING MOBILE BOTTOM NAVIGATION BAR (UPGRADE 1) */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+  z-index: 9999;
+  padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 0px));
+  justify-content: space-around;
+  align-items: center;
+}
+
+.mobile-bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #64748B;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+.mobile-bottom-nav-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: #64748B;
+  transition: all 0.2s ease;
+}
+.mobile-bottom-nav-item.active {
+  color: #FF2E63;
+}
+.mobile-bottom-nav-item.active svg {
+  stroke: #FF2E63;
+  transform: translateY(-1px);
+}
+.mobile-bottom-nav-item:active {
+  transform: scale(0.92);
+}
+
+.bottom-nav-dot {
+  position: absolute;
+  top: 4px;
+  right: 14px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  border: 1.5px solid #FFFFFF;
+}
+
+/* 6. MOBILE HEADER & SCREEN ADJUSTMENTS (< 768px) */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 74px !important;
+  }
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+  /* Sembunyikan deretan 5 tombol navigasi atas di layar HP */
+  .navbar .nav-actions {
+    display: none !important;
+  }
+  .navbar {
+    padding: 10px 16px !important;
+    justify-content: space-between !important;
+  }
+  .mobile-header-right-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* Nonaktifkan partikel kupu-kupu di HP (UPGRADE 2) */
+  #butterfly-container,
+  #sparkle-canvas,
+  .butterfly-cursor-canvas {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Checkout Bottom-Sheet Modal (UPGRADE 3) */
+  #modal-checkout .modal-card {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 90vh !important;
+    border-radius: 24px 24px 0 0 !important;
+    margin: 0 !important;
+    padding: 20px 18px !important;
+    animation: slideUpBottomSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .bottom-sheet-handle {
+    width: 44px;
+    height: 4px;
+    background: #CBD5E1;
+    border-radius: 99px;
+    margin: 0 auto 14px;
+  }
+
+  .checkout-submit-sticky-wrap {
+    position: sticky !important;
+    bottom: 0 !important;
+    background: #FFFFFF !important;
+    padding: 12px 0 4px !important;
+    border-top: 1px solid #F1F5F9 !important;
+    z-index: 10 !important;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  /* Mobile CRM Table Transformation (UPGRADE 6) */
+  .admin-table thead {
+    display: none !important;
+  }
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .admin-table tr {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 14px !important;
+    margin-bottom: 12px !important;
+    padding: 14px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  }
+  .admin-table td {
+    border: none !important;
+    padding: 4px 0 !important;
+    font-size: 12.5px !important;
+  }
+  .admin-table td:last-child {
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+    border-top: 1px solid #F1F5F9 !important;
+    display: flex !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+  .admin-table td:last-child button,
+  .admin-table td:last-child a {
+    flex: 1 !important;
+    min-height: 42px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12.5px !important;
+  }
+}
+
+@keyframes slideUpBottomSheet {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 7. DIGITAL CASHIER RECEIPT FORMAT (UPGRADE 7) */
+.receipt-cashier-card {
+  border: 2px dashed #CBD5E1 !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  position: relative !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+}
+
+.paid-stamp-watermark {
+  position: absolute;
+  top: 40%;
+  right: 18px;
+  transform: rotate(-15deg);
+  border: 3px solid #10B981;
+  color: #10B981;
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 8px;
+  opacity: 0.85;
+  pointer-events: none;
+  text-transform: uppercase;
+}

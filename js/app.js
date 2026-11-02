@@ -23,8 +23,10 @@ async function handleOrderProofFileChange(input) {
       dropzone.style.borderColor = '#10B981';
       dropzone.style.background = '#F0FDF4';
     }
-    if (titleEl) titleEl.textContent = '✓ ' + file.name;
-    showToast('✓ Bukti transfer berhasil dipilih! Siap diverifikasi.', 'success', 2500);
+    if (titleEl) {
+      titleEl.innerHTML = '<span style="color:#10B981; font-weight:800;">✅ Bukti Terlampir</span> (' + (file.size / 1024).toFixed(1) + ' KB) <button type="button" onclick="document.getElementById(\x27order-proof-file\x27).click()" style="margin-left:8px; padding:2px 8px; font-size:11px; border-radius:6px; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; cursor:pointer;">Ganti Foto</button>';
+    }
+    showToast('✅ Bukti transfer berhasil dilampirkan!', 'success', 2500);
   } catch (err) {
     console.error('Error reading proof preview:', err);
     try {
@@ -890,6 +892,30 @@ class ButterflyCursor {
     this.el = document.getElementById('butterfly-container');
     this.canvas = document.getElementById('sparkle-canvas');
     if (!this.el || !this.canvas) return;
+
+    // Deteksi smartphone / touch screen: Matikan total di HP agar scrolling 60/120 FPS lancar dan baterai hemat
+    const isMobileDevice = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isMobileDevice) {
+      if (this.el) this.el.style.display = 'none';
+      if (this.canvas) this.canvas.style.display = 'none';
+      return;
+    }
+
+    // Deteksi smartphone / touch screen: Matikan total di HP agar scrolling 60/120 FPS lancar dan baterai hemat
+    const isMobileDevice = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isMobileDevice) {
+      if (this.el) this.el.style.display = 'none';
+      if (this.canvas) this.canvas.style.display = 'none';
+      return;
+    }
+
+    // Deteksi smartphone / touch screen: Matikan total di HP agar scrolling 60/120 FPS lancar dan baterai hemat
+    const isMobileDevice = window.innerWidth <= 768 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isMobileDevice) {
+      if (this.el) this.el.style.display = 'none';
+      if (this.canvas) this.canvas.style.display = 'none';
+      return;
+    }
     this.ctx = this.canvas.getContext('2d');
     this.particles = [];
     this.resize();
@@ -5972,6 +5998,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initAdminAccounts();
   renderAnnouncementBar();
   loadPublicData();
+  updateHeroCtaButtons();
+  updateHeroCtaButtons();
+  updateHeroCtaButtons();
 
   // 1. Cek sesi login siswa member classroom dari LocalStorage
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
@@ -7178,14 +7207,38 @@ function renderCourseEpisodesSidebar(course) {
 
   container.innerHTML = course.episodes.map((ep, idx) => {
     const isActive = idx === activeCourseEpisodeIndex;
+    const isCompleted = idx < activeCourseEpisodeIndex;
+
+    let statusBadgeHtml = '';
+    if (isActive) {
+      statusBadgeHtml = `
+        <span class="rb-ep-status-badge playing">
+          <div class="equalizer-anim"><span></span><span></span><span></span></div>
+          Sedang Diputar
+        </span>`;
+    } else if (isCompleted) {
+      statusBadgeHtml = `
+        <span class="rb-ep-status-badge completed">
+          ✓ Selesai
+        </span>`;
+    } else {
+      statusBadgeHtml = `
+        <span class="rb-ep-status-badge upcoming">
+          ▶ Step ${idx + 1}
+        </span>`;
+    }
+
     return `
-      <div class="rb-ep-item ${isActive ? 'active' : ''}" id="rb-ep-item-${idx}" onclick="selectEpisode(${idx})">
-        <div class="rb-ep-num">
-          ${isActive ? '▶' : (idx + 1)}
+      <div class="rb-ep-item ${isActive ? 'active' : ''}" id="rb-ep-item-${idx}" onclick="selectEpisode(${idx})" style="display:flex; align-items:center; gap:10px;">
+        <div class="rb-ep-num" style="${isActive ? 'background:linear-gradient(135deg, #FF2E63, #E11D48); color:#FFFFFF; border-color:#FF2E63;' : (isCompleted ? 'background:#ECFDF5; color:#10B981; border-color:#A7F3D0;' : '')}">
+          ${isActive ? '▶' : (isCompleted ? '✓' : (idx + 1))}
         </div>
-        <div class="rb-ep-info">
-          <div class="rb-ep-item-title">${ep.title}</div>
-          <div class="rb-ep-item-meta">${ep.duration} ${isActive ? '• Sedang diputar' : ''}</div>
+        <div class="rb-ep-info" style="flex:1; min-width:0;">
+          <div class="rb-ep-item-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(ep.title)}</div>
+          <div class="rb-ep-item-meta" style="display:flex; align-items:center; gap:6px;">
+            <span>${ep.duration}</span>
+            ${statusBadgeHtml}
+          </div>
         </div>
       </div>
     `;
@@ -7716,3 +7769,169 @@ function fallbackCopyText(text) {
   }
   document.body.removeChild(ta);
 }
+
+
+function updateHeroCtaButtons() {
+  const primaryBtn = document.getElementById('hero-btn-primary');
+  const secondaryBtn = document.getElementById('hero-btn-secondary');
+  const mobileTopPill = document.getElementById('mobile-top-user-pill');
+  const mobileTopLabel = document.getElementById('mobile-top-user-label');
+  const bnavClassroomDot = document.getElementById('bnav-classroom-dot');
+
+  const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
+  const savedEmail = localStorage.getItem('etalaseku_member_email');
+  const savedName = localStorage.getItem('etalaseku_member_name') || (savedEmail ? savedEmail.split('@')[0] : '');
+
+  const isLoggedIn = !!(savedOrderId || savedEmail);
+
+  if (isLoggedIn) {
+    if (primaryBtn) {
+      primaryBtn.href = 'javascript:void(0)';
+      primaryBtn.onclick = () => openClassroomDashboard();
+      primaryBtn.innerHTML = '<span>🎓 Lanjutkan Belajar (' + escapeHtml(savedName || 'Siswa') + ') ➔</span>';
+      primaryBtn.className = 'shimmer-btn btn-primary cta-pulse-glow';
+    }
+    if (secondaryBtn) {
+      secondaryBtn.textContent = 'Jelajahi Katalog Produk ➔';
+      secondaryBtn.onclick = () => {
+        const el = document.getElementById('produk');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      };
+    }
+    if (mobileTopLabel) mobileTopLabel.textContent = (savedName ? savedName.slice(0, 10) : 'Belajar');
+    if (bnavClassroomDot) bnavClassroomDot.style.display = 'block';
+  } else {
+    if (primaryBtn) {
+      primaryBtn.href = '#produk';
+      primaryBtn.onclick = null;
+      primaryBtn.innerHTML = '<span>Jelajahi Katalog Produk ➔</span>';
+      primaryBtn.className = 'shimmer-btn btn-primary cta-pulse-glow';
+    }
+    if (secondaryBtn) {
+      secondaryBtn.textContent = 'Masuk Member Area 🔑';
+      secondaryBtn.onclick = () => openMemberLoginModal();
+    }
+    if (mobileTopLabel) mobileTopLabel.textContent = 'Ruang Belajar';
+    if (bnavClassroomDot) bnavClassroomDot.style.display = 'none';
+  }
+}
+window.updateHeroCtaButtons = updateHeroCtaButtons;
+
+
+function handleBottomNavTab(tab) {
+  // Update active states
+  const tabs = ['home', 'classroom', 'bills', 'cs'];
+  tabs.forEach(t => {
+    const el = document.getElementById('bnav-' + t);
+    if (el) el.classList.remove('active');
+  });
+
+  const curEl = document.getElementById('bnav-' + (tab === 'beranda' ? 'home' : tab));
+  if (curEl) curEl.classList.add('active');
+
+  if (tab === 'beranda') {
+    closeAllModals();
+    const classroomWrapper = document.getElementById('classroom-dashboard-portal');
+    if (classroomWrapper && classroomWrapper.classList.contains('active')) {
+      closeClassroomPortal();
+    }
+    const hero = document.getElementById('hero');
+    if (hero) hero.scrollIntoView({ behavior: 'smooth' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (tab === 'classroom') {
+    openClassroomDashboardOrLogin();
+  } else if (tab === 'tagihan') {
+    closeAllModals();
+    const billsModal = document.getElementById('modal-student-bills');
+    if (billsModal) billsModal.classList.add('active');
+  } else if (tab === 'cs') {
+    const wa = getActiveWaCsNumber();
+    const url = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Halo Admin EtalaseKu Hub, saya butuh bantuan terkait produk & pembelajaran.');
+    window.open(url, '_blank');
+  }
+}
+window.handleBottomNavTab = handleBottomNavTab;
+
+
+function openProductDetailModal(productId) {
+  const prod = (STATE.products || []).find(p => p.ID_Produk === productId) || 
+               (getFallbackMockData().products || []).find(p => p.ID_Produk === productId);
+  if (!prod) return;
+
+  const modal = document.getElementById('modal-product-detail-preview');
+  if (!modal) return;
+
+  const imgEl = document.getElementById('prod-preview-modal-img');
+  const titleEl = document.getElementById('prod-preview-modal-title');
+  const catEl = document.getElementById('prod-preview-modal-cat');
+  const descEl = document.getElementById('prod-preview-modal-desc');
+  const normalPriceEl = document.getElementById('prod-preview-modal-price-normal');
+  const promoPriceEl = document.getElementById('prod-preview-modal-price-promo');
+  const badgeEl = document.getElementById('prod-preview-modal-badge');
+  const ctaBtn = document.getElementById('prod-preview-modal-cta');
+
+  if (imgEl) imgEl.src = formatImageUrl(prod.Banner_URL);
+  if (titleEl) titleEl.textContent = prod.Nama_Produk;
+  if (catEl) catEl.textContent = prod.Kategori || 'Produk Digital';
+  if (descEl) descEl.textContent = prod.Deskripsi;
+  if (normalPriceEl) normalPriceEl.textContent = 'Rp ' + Number(prod.Harga_Normal || 0).toLocaleString('id-ID');
+  if (promoPriceEl) promoPriceEl.textContent = 'Rp ' + Number(prod.Harga_Promo || 0).toLocaleString('id-ID');
+  if (badgeEl) badgeEl.textContent = 'Batch ' + (prod.Batch_Aktif || 1) + ': Kuota Terbatas';
+
+  if (ctaBtn) {
+    ctaBtn.onclick = () => {
+      closeAllModals();
+      openCheckoutModal(prod.ID_Produk);
+    };
+  }
+
+  modal.classList.add('active');
+}
+window.openProductDetailModal = openProductDetailModal;
+
+
+function sendMagicLinkToWhatsApp() {
+  const order = STATE.activeReceiptOrder;
+  if (!order) {
+    showToast('Pesanan tidak ditemukan.', 'error');
+    return;
+  }
+  const phone = (order.No_WhatsApp || order.NoWhatsApp || '').replace(/[^0-9]/g, '');
+  const name = order.Nama_Pembeli || order.nama || 'Siswa';
+  const prod = order.productName || order.Nama_Produk || order.Produk || 'Produk Digital';
+  const orderId = order.ID_Order || order.orderId || '';
+
+  const siteUrl = window.location.origin + window.location.pathname;
+  const magicLink = siteUrl + '?redeem=' + encodeURIComponent(orderId) + '&email=' + encodeURIComponent(order.Email || '');
+
+  const msg = encodeURIComponent(
+    'Halo Kak ' + name + ', terima kasih! Pembayaran untuk ' + prod + ' telah LUNAS terverifikasi.\n\n' +
+    '🔑 Order ID: ' + orderId + '\n' +
+    '🎓 Akses Ruang Belajar Anda langsung di sini:\n' + magicLink + '\n\n' +
+    'Selamat belajar & sukses selalu bersama EtalaseKu Digital Hub!'
+  );
+
+  const waUrl = 'https://wa.me/' + (phone.startsWith('0') ? ('62' + phone.slice(1)) : phone) + '?text=' + msg;
+  window.open(waUrl, '_blank');
+  showToast('Membuka WhatsApp untuk mengirim tautan belajar... 📲', 'success');
+}
+window.sendMagicLinkToWhatsApp = sendMagicLinkToWhatsApp;
+
+function copyClassroomPortalLink() {
+  const order = STATE.activeReceiptOrder;
+  const orderId = order ? (order.ID_Order || order.orderId || '') : '';
+  const email = order ? (order.Email || '') : '';
+  const siteUrl = window.location.origin + window.location.pathname;
+  const fullLink = orderId ? (siteUrl + '?redeem=' + encodeURIComponent(orderId) + '&email=' + encodeURIComponent(email)) : siteUrl;
+
+  if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(fullLink).then(() => {
+      showToast('Tautan Ruang BelajarKu berhasil disalin! 📋', 'success', 2500);
+    }).catch(() => {
+      prompt('Salin tautan Ruang BelajarKu:', fullLink);
+    });
+  } else {
+    prompt('Salin tautan Ruang BelajarKu:', fullLink);
+  }
+}
+window.copyClassroomPortalLink = copyClassroomPortalLink;
