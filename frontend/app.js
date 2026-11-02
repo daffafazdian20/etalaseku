@@ -558,8 +558,8 @@ const DEFAULT_MODULES = [
     Kategori: 'Dokumen',
     Tipe_Konten: 'PDF & Template',
     Episode: 1,
-    Materi_Count: 10,
-    URL_Konten: 'https://drive.google.com',
+    Materi_Count: 1,
+    URL_Konten: 'https://drive.google.com/drive/folders/1lzVZt5E57RzmQ8ipcBgraukC8YIwYWwR/',
     Durasi_Menit: 20,
     Status: 'Publish',
     Thumbnail_URL: './assets/modules/thumb-prd.jpg',
@@ -5725,16 +5725,22 @@ async function saveClassroomModuleForm(e, isInline) {
     const listHeadingInput = document.getElementById('mod-doc-list-heading-input');
     const listTitle = listHeadingInput ? listHeadingInput.value.trim() : 'Daftar paket Dokumen';
 
+    const validLinksCount = docFiles.filter(f => f.url && f.url.trim() && f.url !== '#' && !f.url.startsWith('javascript:')).length;
+    const finalLinksCount = validLinksCount > 0 ? validLinksCount : (docFiles[0] && docFiles[0].url ? 1 : 1);
+    const mainDocUrl = (docFiles[0] && docFiles[0].url) ? docFiles[0].url : 'https://drive.google.com/drive/folders/1lzVZt5E57RzmQ8ipcBgraukC8YIwYWwR/';
+    formattedModule.URL_Konten = mainDocUrl;
+
     const docObj = {
       title: title,
       subtitle: subTitle,
       banner: bannerUrl,
       sectionTitle: secTitle || 'Paket Dokumen & Berkas',
       listTitle: listTitle || 'Daftar paket Dokumen',
-      totalFiles: inputMatCount || docFiles.length || 10,
-      totalLinks: 0,
-      pkgFilesText: pkgFiles,
+      totalFiles: docFiles.length || inputMatCount || 1,
+      totalLinks: finalLinksCount,
+      pkgFilesText: (docFiles.length || inputMatCount || 1) + ' berkas',
       pkgFormatText: pkgFormat,
+      url: mainDocUrl,
       badge: (document.getElementById('mod-doc-badge-label') ? document.getElementById('mod-doc-badge-label').value.trim() : '') || ('Dokumen ' + title),
       files: docFiles.length > 0 ? docFiles : [
         {
@@ -6898,71 +6904,25 @@ const COURSE_EPISODES_MAP = {
 
 const DOCUMENT_FILES_MAP = {
   'MOD-02': {
-    title: 'Kumpulan PRD (GRATIS)',
+    title: 'Kumpulan PRD',
     subtitle: 'Silahkan Download PRD yang dibutuhkan sebagai Referensi',
-    banner: './assets/modules/banner-doc-prd.jpg',
-    totalFiles: 10,
-    totalLinks: 0,
+    banner: 'kumpulan-prd-banner.jpg',
+    sectionTitle: 'Paket Dokumen & Berkas',
+    listTitle: 'Daftar paket Dokumen',
+    totalFiles: 1,
+    totalLinks: 1,
+    pkgFilesText: '1 berkas',
+    pkgFormatText: '1 Dokumen',
+    url: 'https://drive.google.com/drive/folders/1lzVZt5E57RzmQ8ipcBgraukC8YIwYWwR/',
+    badge: 'Dokumen PRD',
     files: [
       {
-        name: 'E-TOKO (Referensi AppWeb E-COMMERCE Mini)',
-        filename: '20261021_150037_PRD-6-TOKO.md',
-        size: '0.01 MB',
-        content: '# PRD: E-TOKO (Aplikasi Web E-COMMERCE Mini)\n\n## 1. Executive Summary\nAplikasi web e-commerce minimalis decoupled berbasis Google Sheets REST API dan frontend modern tanpa hosting bulanan.\n\n## 2. Fitur Utama\n- Katalog produk responsif dengan filter kategori real-time\n- Keranjang belanja instan & integrasi WhatsApp Checkout otomatis\n- Notifikasi kuitansi verifikasi pembayaran ber-HMAC\n\n## 3. Skema Data Database (Sheets)\n- Sheet Produk: ID_Produk, Nama, Kategori, Harga, Stok, Foto_URL\n- Sheet Order: Order_ID, Nama_Pembeli, Total, Status, Bukti_Transfer, Timestamp\n\n## 4. Panduan Deployment\nDeploy frontend ke GitHub Pages atau Vercel dan script backend sebagai Web App Google Apps Script.'
-      },
-      {
-        name: 'PRD Final Landing Page Portofolio Diri',
-        filename: '20261025_232343_PRD Final Landing Page Portofolio Diri.md',
-        size: '0.01 MB',
-        content: '# PRD: Personal Branding & Portfolio Showcase\n\n## 1. Latar Belakang\nWebsite portofolio interaktif untuk memamerkan proyek digital, testimoni klien, dan layanan profesional bagi freelancer & kreator.\n\n## 2. Fitur Kunci\n- Hero section dengan mikro-interaksi 3D dan CTA ganda\n- Galeri studi kasus proyek dengan modal detail showcase\n- Form kontak terintegrasi langsung ke WhatsApp & Email Admin'
-      },
-      {
-        name: 'PRD SURAT DIGITAL',
-        filename: '20261025_232348_PRD SURAT DIGITAL.md',
-        size: '0.05 MB',
-        content: '# PRD: Sistem Manajemen Surat & Dokumen Digital\n\n## 1. Tujuan\nOtomasi pencatatan surat masuk, disposisi persetujuan berjenjang, dan penerbitan nomor surat resmi ber-QR Code HMAC verifikasi publik.\n\n## 2. Modul Sistem\n- Generator nomor surat berurutan anti-duplikat\n- Digital signature approval dengan verifikasi PIN pejabat\n- Export PDF instan ke Google Drive terpusat'
-      },
-      {
-        name: 'PRD_Keuangan_Digital',
-        filename: '20261025_232353_PRD_Keuangan_Digital.md',
+        name: 'Dokumen PRD',
+        filename: 'Kumpulan_PRD.md',
+        badge: 'Dokumen PRD',
         size: '0.02 MB',
-        content: '# PRD: Aplikasi Pencatatan Keuangan & Arus Kas Digital\n\n## 1. Ringkasan\nDashboard pencatatan debit, kredit, laba-rugi, dan laporan arus kas bulanan real-time tanpa langganan software akuntansi mahal.\n\n## 2. Fitur Utama\n- Multi-kategori pengeluaran dan pemasukan\n- Analitik grafik cashflow interaktif bulanan\n- Rekonsiliasi mutasi rekening bank dan export laporan Excel'
-      },
-      {
-        name: 'PRD_SIM_KELAS KULIAH',
-        filename: '20261025_232358_PRD_SIM_KELAS KULIAH.md',
-        size: '0.02 MB',
-        content: '# PRD: Sistem Informasi Manajemen Kelas Perkuliahan\n\n## 1. Modul Aplikasi\n- Absensi perkuliahan real-time berbasis QR Code & GPS validator\n- Pengumpulan tugas mahasiswa langsung ke folder Google Drive terstruktur\n- Rekapitulasi nilai otomatis berbobot persentase tugas, UTS, dan UAS'
-      },
-      {
-        name: 'PRD Landing Page Produk Digital',
-        filename: '20261025_232401_PRD-Landing-Page-Produk-Digital.md',
-        size: '0.02 MB',
-        content: '# PRD: Landing Page Konversi Tinggi Penjualan Produk Digital\n\n## 1. Komponen Utama\n- Sticky announcement bar promo terbatas dengan countdown timer\n- Kartu katalog produk dengan shimmer glowing CTA\n- Instant checkout modal 1-layar terhubung ke QRIS, Virtual Account, & WhatsApp'
-      },
-      {
-        name: 'PRD Landing Page Sekolah',
-        filename: '20261025_232406_PRD-Landing-Page-Sekolah.md',
-        size: '0.02 MB',
-        content: '# PRD: Portal Web Profil Sekolah & PPDB Online\n\n## 1. Fitur Utama\n- Formulir pendaftaran siswa baru online dengan verifikasi data mandiri\n- Validasi berkas upload rapor & akta kelahiran langsung ke Drive sekolah\n- Pengumuman kelulusan berbasis pencarian nomor induk siswa'
-      },
-      {
-        name: 'PRD UjianKu Pro TES CBT',
-        filename: '20261025_232410_PRD-UjianKu-Pro TES CBT.md',
-        size: '0.01 MB',
-        content: '# PRD: Computer Based Test (CBT) Online Anti-Curang\n\n## 1. Proteksi Ujian\n- Fullscreen lock & deteksi otomatis jika membuka tab peramban lain\n- Pengacakan urutan soal dan opsi jawaban per peserta ujian\n- Auto-submit jawaban seketika saat hitungan mundur ujian berakhir'
-      },
-      {
-        name: 'PRD E-TOKO / eCommerce Mini',
-        filename: '20261026_114501_PRD-6-TOKO.md',
-        size: '0.01 MB',
-        content: '# PRD: E-Commerce Multi-Kategori & WhatsApp Cart\n\n## 1. Alur Transaksi\nPembeli memilih varian produk -> menambahkan ke keranjang -> submit checkout -> ringkasan pesanan & invoice dikirim otomatis via WhatsApp Gateway.'
-      },
-      {
-        name: 'PRD SIMRS Mini (Sistem Informasi Manajemen Klinik)',
-        filename: '20261029_214838_PRD_SIMRS_Mini.md',
-        size: '0.08 MB',
-        content: '# PRD: SIMRS & Klinik Rawat Jalan Mini\n\n## 1. Modul Lengkap\n- Pendaftaran antrean poliklinik online\n- Rekam Medis Elektronik (RME) dokter sesuai standar Kemenkes\n- Resep obat elektronik ke instalasi farmasi & billing kasir terpadu'
+        url: 'https://drive.google.com/drive/folders/1lzVZt5E57RzmQ8ipcBgraukC8YIwYWwR/',
+        content: '# Dokumen PRD\n\nKumpulan PRD Website Keuangan Digital,Produk Digital,Portofolio,Toko Website,E-Toko,'
       }
     ]
   },
@@ -7167,11 +7127,15 @@ function openDocumentPackageView(moduleId) {
   const bannerText = document.getElementById('doc-banner-items-text');
   if (bannerText) bannerText.textContent = 'Lihat ' + (docPkg.files ? docPkg.files.length : 10) + ' Berkas';
 
+  const extLinks = (docPkg.files || []).filter(f => f.url && f.url.trim() && f.url !== '#' && !f.url.startsWith('javascript:'));
+  const finalExtCount = extLinks.length > 0 ? extLinks.length : (typeof docPkg.totalLinks === 'number' && docPkg.totalLinks > 0 ? docPkg.totalLinks : (docPkg.url ? 1 : 1));
+  const finalFilesCount = (docPkg.files ? docPkg.files.length : (docPkg.totalFiles || 1));
+
   const pkgFilesVal = document.getElementById('doc-pkg-files-val');
-  if (pkgFilesVal) pkgFilesVal.textContent = (docPkg.files ? docPkg.files.length : 10) + ' berkas';
+  if (pkgFilesVal) pkgFilesVal.textContent = finalFilesCount + ' berkas';
 
   const pkgLinksVal = document.getElementById('doc-pkg-links-val');
-  if (pkgLinksVal) pkgLinksVal.textContent = (docPkg.totalLinks || 0) + ' tautan';
+  if (pkgLinksVal) pkgLinksVal.textContent = finalExtCount + ' tautan';
 
   const filesCountBadge = document.getElementById('doc-files-count-badge');
   if (filesCountBadge) filesCountBadge.textContent = (docPkg.files ? docPkg.files.length : 10) + ' Item';
@@ -7378,12 +7342,17 @@ function renderDocumentFilesList(docPkg) {
           <p class="rb-doc-file-sub">${file.filename} • ${file.size} • bisa disalin langsung</p>
         </div>
       </div>
-      <div class="rb-doc-row-right">
+      <div class="rb-doc-row-right" style="display:flex; align-items:center; gap:8px;">
         <button class="btn-doc-view" onclick="openDocReaderModal(${idx})">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           <span>Lihat &amp; Salin</span>
         </button>
-        <button class="btn-doc-dl" title="Buka / Download Dokumen" onclick="downloadDocFile(${idx})">
+        ${file.url && file.url !== '#' && !file.url.startsWith('javascript:') ? `
+        <a href="${escapeHtml(file.url)}" target="_blank" rel="noopener noreferrer" class="btn-doc-drive-pill" title="Buka Tautan Google Drive" onclick="event.stopPropagation();">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y3="3"/></svg>
+          <span>Drive ↗</span>
+        </a>` : ''}
+        <button class="btn-doc-dl" title="Unduh File Markdown" onclick="downloadDocFile(${idx})">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         </button>
       </div>
@@ -7634,4 +7603,116 @@ function renderClassroomCrmCards(query, filterTag) {
       </div>
     `;
   }).join('');
+}
+
+
+// ============================================================================
+// MODAL TAUTAN EKSTERNAL & GOOGLE DRIVE (FOTO 2 AKSES PRODUK)
+// ============================================================================
+function openExternalLinksModal() {
+  const modal = document.getElementById('modal-external-links');
+  if (!modal) return;
+
+  const titleEl = document.getElementById('ext-links-modal-title');
+  const countBadge = document.getElementById('ext-links-count-badge');
+  const container = document.getElementById('ext-links-list-container');
+
+  const docPkg = activeDocData || (typeof getActiveDocumentFilesMap === 'function' ? getActiveDocumentFilesMap()['MOD-02'] : null);
+  const title = (docPkg && docPkg.title) ? docPkg.title : 'Kumpulan PRD';
+
+  if (titleEl) titleEl.textContent = title;
+
+  let links = [];
+  if (docPkg && Array.isArray(docPkg.files)) {
+    docPkg.files.forEach((f, idx) => {
+      const url = f.url ? f.url.trim() : '';
+      if (url && url !== '#' && !url.startsWith('javascript:')) {
+        links.push({
+          title: f.name || ('Dokumen ' + (idx + 1)),
+          filename: f.filename || '',
+          url: url,
+          size: f.size || '0.02 MB'
+        });
+      }
+    });
+  }
+
+  // Jika di file tidak ada tetapi di objek paket ada URL Drive utama
+  if (links.length === 0 && docPkg && docPkg.url && docPkg.url.trim() && docPkg.url !== '#') {
+    links.push({
+      title: docPkg.title || 'Folder Google Drive',
+      filename: 'Google Drive',
+      url: docPkg.url.trim(),
+      size: ''
+    });
+  }
+
+  // Fallback ke Google Drive PRD jika belum ada
+  if (links.length === 0) {
+    links.push({
+      title: 'Folder Google Drive Kumpulan PRD',
+      filename: 'Kumpulan_PRD_Drive',
+      url: 'https://drive.google.com/drive/folders/1lzVZt5E57RzmQ8ipcBgraukC8YIwYWwR/',
+      size: 'Folder'
+    });
+  }
+
+  if (countBadge) countBadge.textContent = links.length + ' Tautan';
+
+  if (container) {
+    container.innerHTML = links.map((lnk, i) => `
+      <div class="ext-link-card" style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:14px; padding:14px 16px; margin-bottom:12px; display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+            <div style="width:38px; height:38px; border-radius:10px; background:#EFF6FF; border:1.5px solid #BFDBFE; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:18px;">
+              📁
+            </div>
+            <div style="min-width:0;">
+              <h4 style="font-size:14px; font-weight:700; color:#0F172A; margin:0 0 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(lnk.title)}</h4>
+              <p style="font-size:11.5px; color:#2563EB; margin:0; word-break:break-all; font-weight:600;">${escapeHtml(lnk.url)}</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:2px; flex-wrap:wrap;">
+          <a href="${escapeHtml(lnk.url)}" target="_blank" rel="noopener noreferrer" class="shimmer-btn" style="flex:1; justify-content:center; padding:10px 16px; font-size:13px; text-decoration:none; border-radius:10px;" onclick="closeAllModals()">
+            <span>🚀</span> Buka di Google Drive
+          </a>
+          <button class="btn-secondary" style="padding:10px 14px; font-size:12.5px; font-weight:700; border-radius:10px; background:#FFFFFF; border:1.5px solid #CBD5E1; color:#334155; cursor:pointer;" onclick="copyExtLinkToClipboard('${escapeHtml(lnk.url)}')">
+            📋 Salin Link
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  modal.classList.add('active');
+}
+window.openExternalLinksModal = openExternalLinksModal;
+
+function copyExtLinkToClipboard(url) {
+  if (!url) return;
+  if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('Tautan berhasil disalin ke clipboard! 📋', 'success', 2500);
+    }).catch(() => {
+      fallbackCopyText(url);
+    });
+  } else {
+    fallbackCopyText(url);
+  }
+}
+window.copyExtLinkToClipboard = copyExtLinkToClipboard;
+
+function fallbackCopyText(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('Tautan berhasil disalin ke clipboard! 📋', 'success', 2500);
+  } catch(e) {
+    showToast('Silakan salin tautan secara manual.', 'info', 2500);
+  }
+  document.body.removeChild(ta);
 }

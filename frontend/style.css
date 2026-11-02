@@ -6776,3 +6776,74 @@ input:checked + .switch-slider:before {
     gap: 22px;
   }
 }
+
+/* ==========================================================================
+   ISI PAKET & TAUTAN EKSTERNAL INTERACTIVE CARDS & MODAL (DESKTOP & MOBILE)
+   ========================================================================== */
+.rb-doc-package-item.clickable {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  user-select: none;
+}
+.rb-doc-package-item.clickable:hover {
+  background: #EFF6FF !important;
+  border-color: #BFDBFE !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+.rb-doc-package-item.clickable:hover .rb-pkg-lbl {
+  color: #1D4ED8 !important;
+}
+.rb-doc-package-item.clickable:hover .rb-pkg-action-hint {
+  transform: translateX(3px);
+}
+.rb-doc-package-item.clickable:active {
+  transform: scale(0.98);
+}
+.rb-pkg-action-hint {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  transition: transform 0.2s ease;
+}
+
+.btn-doc-drive-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #1D4ED8;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.btn-doc-drive-pill:hover {
+  background: #DBEAFE;
+  color: #1E40AF;
+  border-color: #93C5FD;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .rb-doc-package-item.clickable {
+    padding: 14px 12px !important;
+    min-height: 48px;
+  }
+  .ext-links-dialog {
+    padding: 18px 14px !important;
+    border-radius: 16px !important;
+  }
+  .ext-link-card {
+    padding: 12px !important;
+  }
+}

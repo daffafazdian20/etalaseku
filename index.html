@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261102-02">
+  <link rel="stylesheet" href="css/style.css?v=20261102-03">
 </head>
 <body>
 
@@ -1345,19 +1345,21 @@
             <!-- Isi Paket Box -->
             <div class="rb-doc-package-card">
               <div class="rb-doc-package-head">ISI PAKET</div>
-              <div class="rb-doc-package-item">
+              <div class="rb-doc-package-item clickable" onclick="scrollToDocList()" title="Klik untuk melihat daftar berkas">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                <div>
+                <div style="flex:1;">
                   <div class="rb-pkg-lbl">Berkas tambahan</div>
-                  <div class="rb-pkg-val" id="doc-pkg-files-val">10 berkas</div>
+                  <div class="rb-pkg-val" id="doc-pkg-files-val">1 berkas</div>
                 </div>
+                <span class="rb-pkg-action-hint">Lihat ↓</span>
               </div>
-              <div class="rb-doc-package-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                <div>
+              <div class="rb-doc-package-item clickable" id="doc-pkg-links-item" onclick="openExternalLinksModal()" title="Klik untuk membuka tautan eksternal / Google Drive">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <div style="flex:1;">
                   <div class="rb-pkg-lbl">Tautan eksternal</div>
-                  <div class="rb-pkg-val" id="doc-pkg-links-val">0 tautan</div>
+                  <div class="rb-pkg-val" id="doc-pkg-links-val">1 tautan</div>
                 </div>
+                <span class="rb-pkg-action-hint" style="color:#2563EB; font-weight:700;">Buka ↗</span>
               </div>
             </div>
           </div>
@@ -3460,8 +3462,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261102-02"></script>
-  <script src="js/app.js?v=20261102-02"></script>
+  <script src="js/config.js?v=20261102-03"></script>
+  <script src="js/app.js?v=20261102-03"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
@@ -3509,6 +3511,39 @@
       <div class="doc-reader-footer">
         <span style="font-size:11.5px; color:#64748B;">✨ Dokumen terverifikasi resmi untuk member Ruang BelajarKu.</span>
         <button class="btn-secondary" onclick="closeAllModals()" style="padding:8px 20px; font-size:12.5px; font-weight:700; border-radius:10px; background:#FFFFFF; border:1.5px solid #CBD5E1; color:#475569; cursor:pointer;">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tautan Eksternal & Google Drive (Foto 2 Akses Produk) -->
+  <div class="modal-overlay" id="modal-external-links">
+    <div class="modal-card ext-links-dialog" style="max-width: 520px; width: 92%; border-radius: 20px; padding: 24px; background: #FFFFFF; box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2); animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+      <!-- Header Modal -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #EFF6FF, #DBEAFE); border: 1.5px solid #93C5FD; display: flex; align-items: center; justify-content: center; color: #2563EB; font-size: 20px; flex-shrink: 0;">
+            🔗
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <h3 style="font-size: 17px; font-weight: 800; color: #0F172A; margin: 0;">Tautan Eksternal &amp; Drive</h3>
+              <span id="ext-links-count-badge" style="font-size: 11px; font-weight: 800; background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; padding: 2px 8px; border-radius: 999px;">1 Tautan</span>
+            </div>
+            <p id="ext-links-modal-title" style="font-size: 12px; color: #64748B; margin: 3px 0 0; font-weight: 600;">Kumpulan PRD</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeAllModals()" style="color: #94A3B8; font-size: 24px; background: transparent; border: none; cursor: pointer; padding: 4px 8px;" title="Tutup">&times;</button>
+      </div>
+
+      <!-- Links Container -->
+      <div id="ext-links-list-container" style="max-height: 380px; overflow-y: auto; padding-right: 4px;">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Footer Modal -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid #F1F5F9; flex-wrap: wrap; gap: 10px;">
+        <span style="font-size: 11.5px; color: #64748B;">⚡ Tautan resmi terverifikasi untuk member Ruang BelajarKu.</span>
+        <button class="btn-secondary" onclick="closeAllModals()" style="padding: 8px 18px; font-size: 12.5px; font-weight: 700; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #CBD5E1; color: #475569; cursor: pointer;">Tutup</button>
       </div>
     </div>
   </div>
