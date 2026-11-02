@@ -1737,24 +1737,22 @@ function renderShowcases() {
 
     let mediaHtml = '';
 
-    // A. Embed URL YouTube Video Trailer (Landscape 16:9)
+    // A. Embed URL YouTube Video Trailer (Landscape 16:9 Facade - Fast Mobile & Desktop)
     if (ytEmbedUrl) {
+      const posterImg = (images && images.length > 0) ? images[0] : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80';
       mediaHtml = `
-        <div class="showcase-yt-wrapper" style="aspect-ratio: 16 / 9 !important; width: 100%; position: relative; background: #0F172A;">
-          <iframe 
-            src="${ytEmbedUrl}" 
-            title="${escapeHtml(s.Nama_Karya)}" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen 
-            loading="lazy" 
-            style="width: 100%; height: 100%; aspect-ratio: 16 / 9; border: none; display: block;">
-          </iframe>
+        <div class="showcase-yt-wrapper" onclick="this.innerHTML='<iframe src=\\'${ytEmbedUrl}?autoplay=1\\' title=\\'${escapeHtml(s.Nama_Karya)}\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'width:100%; height:100%; aspect-ratio:16/9; border:none; display:block;\\'></iframe>'" style="aspect-ratio: 16 / 9 !important; width: 100%; position: relative; background: #0F172A; cursor: pointer; overflow: hidden; border-radius: 18px 18px 0 0;" title="Klik untuk memutar video trailer">
+          <img src="${posterImg}" alt="${escapeHtml(s.Nama_Karya)}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; opacity:0.88; transition:transform 0.3s ease;">
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(15,23,42,0.35);">
+            <div style="width: 54px; height: 38px; background: #FF0000; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(255,0,0,0.6); transition: transform 0.2s ease;">
+              <svg viewBox="0 0 24 24" fill="#FFFFFF" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
           <span style="position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); color: #FFFFFF; padding: 4px 10px; border-radius: 99px; font-size: 10.5px; font-weight: 800; border: 1px solid rgba(255,255,255,0.2); pointer-events: none; z-index: 2;">
             ${escapeHtml(s.Statistik_Pencapaian || 'Hasil Karya')}
           </span>
           <span style="position: absolute; top: 10px; right: 10px; background: #EF4444; color: #FFFFFF; padding: 4px 10px; border-radius: 99px; font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; z-index: 2;">
-            ▶ Video Trailer 16:9
+            ▶ Putar Video 16:9
           </span>
         </div>
       `;
