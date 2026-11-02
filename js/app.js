@@ -1233,16 +1233,42 @@ class TestimonialFlipManager {
 // ============================================================================
 async function loadPublicData() {
   try {
-    let data = null;
+    const fallback = getFallbackMockData();
 
-    if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
-      const res = await fetch(`${APP_CONFIG.GAS_URL}?action=getPublicData&_t=${Date.now()}`, { cache: 'no-store' });
-      const json = await res.json();
-      if (json.success && json.data) data = json.data;
+    // ⚡ 1. INSTANT RENDERING (0ms Core Web Vitals Optimization):
+    // Render produk, testimoni, dan showcase dari cache/fallback seketika agar LCP & FCP < 500ms
+    if (!STATE.products || STATE.products.length === 0) {
+      let cached = null;
+      try {
+        const stored = localStorage.getItem('etalaseku_products_data');
+        if (stored) cached = JSON.parse(stored);
+      } catch(e) {}
+      STATE.products = (Array.isArray(cached) && cached.length > 0 ? cached : fallback.products).map(sanitizeProduct);
+    }
+    if (!STATE.testimonials || STATE.testimonials.length === 0) {
+      STATE.testimonials = fallback.testimonials || [];
+    }
+    if (!STATE.showcases || STATE.showcases.length === 0) {
+      STATE.showcases = (typeof DEFAULT_SHOWCASES_LIST !== 'undefined' ? DEFAULT_SHOWCASES_LIST : (fallback.showcases || []));
     }
 
-    // Pastikan jika database live masih kosong, tetap gunakan data default berkualitas tinggi!
-    const fallback = getFallbackMockData();
+    renderProducts();
+    renderTestimonials();
+    TestimonialFlipManager.init();
+    renderShowcases();
+
+    // ⚡ 2. BACKGROUND REVALIDATION (Non-blocking):
+    // Tarik data terbaru dari server Google Sheets di latar belakang
+    let data = null;
+    if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
+      try {
+        const res = await fetch(`${APP_CONFIG.GAS_URL}?action=getPublicData&_t=${Date.now()}`, { cache: 'no-store' });
+        const json = await res.json();
+        if (json.success && json.data) data = json.data;
+      } catch (netErr) {
+        console.warn('Background sync offline, using local cache:', netErr);
+      }
+    }
     if (!data) data = fallback;
 
     // SINKRONISASI KATALOG PRODUK REAL-TIME LINTAS PERANGKAT (DESKTOP <-> MOBILE)
@@ -6267,14 +6293,19 @@ function getFallbackMockData() {
 
 // Inisialisasi Aplikasi saat DOM Siap
 document.addEventListener('DOMContentLoaded', () => {
-  new ButterflyCursor();
-  SlideshowManager.initHeroSlideshow();
-  initAdminAccounts();
+  // 1. Prioritaskan render konten kritis (FCP & LCP)
   renderAnnouncementBar();
   loadPublicData();
+  SlideshowManager.initHeroSlideshow();
+  initAdminAccounts();
   updateHeroCtaButtons();
-  updateHeroCtaButtons();
-  updateHeroCtaButtons();
+
+  // 2. Tunda animasi kursor 3D ke waktu senggang (idle) agar Total Blocking Time (TBT) = 0ms
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => new ButterflyCursor());
+  } else {
+    setTimeout(() => new ButterflyCursor(), 300);
+  }
 
   // 1. Cek sesi login siswa member classroom dari LocalStorage
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');

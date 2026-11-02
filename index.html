@@ -14,13 +14,26 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="shortcut icon" href="favicon.png">
   
-  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <!-- High-Performance Preconnects & Resource Preloads for 100% Core Web Vitals -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+
+  <!-- Preload LCP Hero Image with high priority to eliminate LCP delay -->
+  <link rel="preload" as="image" href="assets/hero/hero-slide-1.jpg" fetchpriority="high">
+
+  <!-- Preload primary font file to eliminate font-shift CLS -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yygg_vb.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Non-render-blocking Web Fonts: Loads asynchronously without blocking FCP/LCP -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+  </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261102-05">
+  <link rel="stylesheet" href="css/style.css?v=20261102-06">
 </head>
 <body>
 
@@ -62,11 +75,11 @@
       <li><a href="#hero">Beranda</a></li>
       <li><a href="#kategori">Kategori</a></li>
       <li><a href="#produk">Katalog Produk</a></li>
-      <li><a href="javascript:void(0)" onclick="openPameranKaryaPortal()">Hasil Karya Nyata</a></li>
+      <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Nyata</a></li>
       <li><a href="#testimoni">Testimoni</a></li>
       <!-- Navigasi Khusus Member Classroom (Otomatis Muncul Ketika Siswa Sudah Memiliki Order ID) -->
       <li id="nav-item-member-classroom" style="display:none;">
-        <a href="javascript:void(0)" onclick="openClassroomDashboard()" style="color:var(--coral-pink); font-weight:800; background:#FFF1F4; padding:6px 14px; border-radius:20px; display:inline-flex; align-items:center; gap:6px;">
+        <a href="#classroom" onclick="openClassroomDashboard(); return false;" style="color:var(--coral-pink); font-weight:800; background:#FFF1F4; padding:6px 14px; border-radius:20px; display:inline-flex; align-items:center; gap:6px;">
           🎓 Ruang BelajarKu
         </a>
       </li>
@@ -149,7 +162,7 @@
       <div class="hero-slideshow-container">
         <!-- Slide 1 -->
         <div class="hero-slide active">
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=700&q=80" alt="Masterclass Web App">
+          <img src="assets/hero/hero-slide-1.jpg" alt="Masterclass Web App" width="700" height="380" fetchpriority="high" decoding="async">
           <div class="hero-slide-caption">
             <h4>GAS Pro Web App Masterclass</h4>
             <p>Membangun web app skala industri bebas biaya hosting dengan Google Apps Script & Sheets.</p>
@@ -157,7 +170,7 @@
         </div>
         <!-- Slide 2 -->
         <div class="hero-slide">
-          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=700&q=80" alt="Notion OS Agency">
+          <img src="assets/hero/hero-slide-2.jpg" alt="Notion OS Agency" width="700" height="380" loading="lazy" decoding="async">
           <div class="hero-slide-caption">
             <h4>Digital Agency Notion OS</h4>
             <p>Sistem manajemen bisnis & CRM agency terlengkap dengan pipeline closing otomatis.</p>
@@ -165,7 +178,7 @@
         </div>
         <!-- Slide 3 -->
         <div class="hero-slide">
-          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=700&q=80" alt="Mentoring Bootcamp">
+          <img src="assets/hero/hero-slide-3.jpg" alt="Mentoring Bootcamp" width="700" height="380" loading="lazy" decoding="async">
           <div class="hero-slide-caption">
             <h4>Live Mentoring & Group Support</h4>
             <p>Bimbingan langsung via WhatsApp & private webinar hingga mahir menghasilkan omset.</p>
@@ -359,7 +372,7 @@
       <!-- Showcase 1 -->
       <div class="glow-card" style="padding:24px; cursor:pointer;" onclick="openPameranKaryaPortal()" title="Klik untuk membuka Pameran Karya">
         <div style="border-radius:16px; overflow:hidden; margin-bottom:16px; height:200px;">
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" style="width:100%; height:100%; object-fit:cover;">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Showcase Preview" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;">
         </div>
         <span style="background:var(--deep-navy); color:white; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:700;">2.450+ Leads Tercatat</span>
         <h3 style="font-size:18px; font-weight:800; margin:10px 0 4px; color:var(--deep-navy);">Lawfirm Client Management CRM</h3>
@@ -369,7 +382,7 @@
       <!-- Showcase 2 -->
       <div class="glow-card" style="padding:24px; cursor:pointer;" onclick="openPameranKaryaPortal()" title="Klik untuk membuka Pameran Karya">
         <div style="border-radius:16px; overflow:hidden; margin-bottom:16px; height:200px;">
-          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" style="width:100%; height:100%; object-fit:cover;">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Showcase Preview" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;">
         </div>
         <span style="background:var(--deep-navy); color:white; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:700;">10x Lebih Cepat</span>
         <h3 style="font-size:18px; font-weight:800; margin:10px 0 4px; color:var(--deep-navy);">Sistem Kuitansi & Invoice Toko Online</h3>
@@ -541,10 +554,10 @@
             <div>
         <h4 style="font-size:15px; font-weight:700; margin-bottom:14px; color:#FFFFFF;">Akses Member &amp; Siswa</h4>
         <ul style="list-style:none; font-size:13px; color:#94A3B8; display:flex; flex-direction:column; gap:8px;">
-          <li><a href="javascript:void(0)" onclick="openRedeemModal()" style="color:#FF2E63; text-decoration:none; font-weight:700;">🔑 Tukar Kode Akses (Redeem)</a></li>
-          <li><a href="javascript:void(0)" onclick="openMemberLoginModal()" style="color:inherit; text-decoration:none;">🎓 Login Member Classroom</a></li>
+          <li><a href="#redeem" onclick="openRedeemModal(); return false;" style="color:#FF2E63; text-decoration:none; font-weight:700;">🔑 Tukar Kode Akses (Redeem)</a></li>
+          <li><a href="#member-login" onclick="openMemberLoginModal(); return false;" style="color:inherit; text-decoration:none;">🎓 Login Member Classroom</a></li>
           <li><a href="javascript:void(0)" onclick="document.getElementById('modal-student-bills').classList.add('active')" style="color:inherit; text-decoration:none;">💳 Cek &amp; Bayar Tagihan Siswa</a></li>
-          <li><a href="javascript:void(0)" onclick="openAdminModal()" style="color:inherit; text-decoration:none;">👑 Portal Super Admin &amp; CRM</a></li>
+          <li><a href="#admin" onclick="openAdminModal(); return false;" style="color:inherit; text-decoration:none;">👑 Portal Super Admin &amp; CRM</a></li>
         </ul>
       </div>
       <div>
@@ -2331,7 +2344,7 @@
                         <button type="button" class="btn-secondary" style="padding:8px 12px; font-size:11px; white-space:nowrap;" onclick="document.getElementById('cfg-qris-file-upload').click()">📁 Upload Barcode</button>
                       </div>
                       <div id="qris-admin-preview-box" style="margin-top:8px; text-align:center;">
-                        <img id="qris-admin-preview-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F" style="width:110px; height:110px; border-radius:8px; border:1px solid #E2E8F0; padding:4px; background:white;">
+                        <img id="qris-admin-preview-img" alt="QRIS Pembayaran" loading="lazy" decoding="async" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F" style="width:110px; height:110px; border-radius:8px; border:1px solid #E2E8F0; padding:4px; background:white;">
                       </div>
                     </div>
                     <div>
@@ -3468,7 +3481,7 @@
       <p id="proof-modal-subtitle" style="font-size:12px; color:#64748B; margin:0 0 14px;">Memuat detail pesanan...</p>
       
       <div style="background:#0F172A; border-radius:14px; padding:10px; margin-bottom:16px; max-height:420px; overflow:auto; display:flex; align-items:center; justify-content:center; border:1px solid #1E293B;">
-        <img id="proof-modal-img" src="" style="max-width:100%; max-height:380px; border-radius:8px; object-fit:contain;" alt="Bukti Transfer">
+        <img id="proof-modal-img" src="" style="max-width:100%; max-height:380px; border-radius:8px; object-fit:contain;" alt="Bukti Transfer" loading="lazy" decoding="async">
       </div>
       
       <div id="proof-modal-actions" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
@@ -3477,8 +3490,8 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20261102-05"></script>
-  <script src="js/app.js?v=20261102-05"></script>
+  <script defer src="js/config.js?v=20261102-06"></script>
+  <script defer src="js/app.js?v=20261102-06"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
