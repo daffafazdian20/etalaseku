@@ -7478,3 +7478,36 @@ input:checked + .switch-slider:before {
     height: auto !important;
   }
 }
+
+
+/* ==========================================================================
+   CONTENT-VISIBILITY & OFFSCREEN DEFERRAL (100% LIGHTHOUSE OPTIMIZATION)
+   ========================================================================== */
+.modal-overlay:not(.active),
+.classroom-portal-fullscreen:not(.active),
+.admin-fullscreen-portal:not(.active),
+#pameran-karya-portal:not(.active) {
+  content-visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#kategori,
+#produk,
+#testimoni,
+footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 600px;
+}
+
+@media (max-width: 768px) {
+  .hero-slideshow-container {
+    max-width: 100% !important;
+    border-radius: 18px !important;
+    margin: 0 auto !important;
+  }
+  .hero-slide img {
+    height: 220px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+  }
+}
