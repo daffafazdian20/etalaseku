@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * ETALASEKU DIGITAL HUB & ACADEMY — FRONTEND CONFIGURATION
+ * NEXSTORE PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID — FRONTEND CONFIGURATION
  * ============================================================================
  * Standar: gas-pro-api & gas-rahasia-script-properties
  * File ini hanya memuat URL endpoint GAS dan konfigurasi publik.
@@ -14,7 +14,7 @@ const APP_CONFIG = {
   GAS_URL: 'https://script.google.com/macros/s/AKfycbw8uzOamJtwPIq3kd8DGIIiWtNWu-xHfBs1rU4DOhvDQ42awELmVYn3elAh2aJP5x4SSQ/exec',
 
   // Nama Brand & Default Contact
-  BRAND_NAME: 'EtalaseKu Digital Hub & Academy',
+  BRAND_NAME: 'NexStore Produk Digital - by @daffafazdian.id',
   DEFAULT_WA_CS: '6287894602627',
   DEFAULT_CS_NAME: 'Admin Daffa (Support)',
   

@@ -398,7 +398,7 @@ const DEFAULT_SHOWCASES_LIST = [
 ];
 /**
  * ============================================================================
- * ETALASEKU DIGITAL HUB & ACADEMY — FRONTEND APPLICATION ENGINE
+ * NEXSTORE PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID — FRONTEND APPLICATION ENGINE
  * ============================================================================
  * Fitur Utama:
  *   1. 3D Realistic Butterfly Cursor Follower (Inertia + Velocity-based Banking + Sparkle Dust)
@@ -471,7 +471,7 @@ const DEFAULT_PAYMENT_CHANNELS = {
     badge: 'Otomatis',
     tipe: 'qris',
     rekening: 'Scan QRIS Dinamis',
-    atasNama: 'EtalaseKu Hub',
+    atasNama: 'NexStore / Daffa Fazdian',
     qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F',
     instruksi: 'Scan barcode QRIS di atas via BCA Mobile, Mandiri Livin, BNI Mobile, GoPay, OVO, atau ShopeePay.',
     aktif: true
@@ -483,7 +483,7 @@ const DEFAULT_PAYMENT_CHANNELS = {
     badge: 'Bank',
     tipe: 'bank',
     rekening: '123-456-7890',
-    atasNama: 'EtalaseKu Hub / Daffa Fazdian',
+    atasNama: 'NexStore / Daffa Fazdian',
     instruksi: 'Transfer melalui m-BCA, ATM BCA, atau KlikBCA ke rekening di atas.',
     aktif: true
   },
@@ -494,7 +494,7 @@ const DEFAULT_PAYMENT_CHANNELS = {
     badge: 'Bank',
     tipe: 'bank',
     rekening: '987-654-3210',
-    atasNama: 'EtalaseKu Hub / Daffa Fazdian',
+    atasNama: 'NexStore / Daffa Fazdian',
     instruksi: 'Transfer melalui Livin by Mandiri atau ATM Mandiri ke rekening di atas.',
     aktif: true
   },
@@ -505,7 +505,7 @@ const DEFAULT_PAYMENT_CHANNELS = {
     badge: 'Bank',
     tipe: 'bank',
     rekening: '112-233-4455',
-    atasNama: 'EtalaseKu Hub / Daffa Fazdian',
+    atasNama: 'NexStore / Daffa Fazdian',
     instruksi: 'Transfer via BNI Mobile Banking atau ATM BNI ke rekening di atas.',
     aktif: true
   },
@@ -516,7 +516,7 @@ const DEFAULT_PAYMENT_CHANNELS = {
     badge: 'e-Wallet',
     tipe: 'ewallet',
     rekening: '0878-9460-2627',
-    atasNama: 'EtalaseKu Hub',
+    atasNama: 'NexStore / Daffa Fazdian',
     instruksi: 'Buka Gojek / GoPay > Pilih Bayar / Transfer Saldo > Masukkan nomor HP di atas.',
     aktif: true
   },
@@ -527,7 +527,7 @@ const DEFAULT_PAYMENT_CHANNELS = {
     badge: 'e-Wallet',
     tipe: 'ewallet',
     rekening: '0878-9460-2627',
-    atasNama: 'EtalaseKu Hub',
+    atasNama: 'NexStore / Daffa Fazdian',
     instruksi: 'Buka aplikasi OVO > Pilih Transfer > Sesama OVO > Masukkan nomor HP di atas.',
     aktif: true
   }
@@ -6889,7 +6889,7 @@ function sendReceiptToStudentWhatsApp() {
   if (!phone.startsWith('62')) phone = '62' + phone;
 
   const waMsg = encodeURIComponent(
-    `*KUITANSI PEMBAYARAN RESMI - ETALASEKU DIGITAL HUB & ACADEMY*\n` +
+    `*KUITANSI PEMBAYARAN RESMI - NEXSTORE PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID*\n` +
     `======================================\n` +
     `Status: *PAYMENT SUCCESSFUL (LUNAS)* ✅\n\n` +
     `Halo kak *${order.Nama_Pembeli || order.nama || 'Siswa'}*,\n` +
@@ -6933,7 +6933,7 @@ function sendReceiptToStudentGmail() {
     `Halo ${destName},\n\n` +
     `Pembayaran Anda untuk ${prodName} telah BERHASIL DIVERIFIKASI LUNAS oleh Super Admin & Admin EtalaseKu.\n\n` +
     `==========================================\n` +
-    `KUITANSI RESMI - ETALASEKU DIGITAL HUB & ACADEMY\n` +
+    `KUITANSI RESMI - NEXSTORE PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID\n` +
     `==========================================\n` +
     `Status: PAYMENT SUCCESSFUL (LUNAS)\n` +
     `Order ID (Produk): ${order.ID_Order}\n` +

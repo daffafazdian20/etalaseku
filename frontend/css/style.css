@@ -1,3 +1,86 @@
+
+/* ==========================================================================
+   WARM PASTEL TECH DESIGN SYSTEM PALETTE
+   Sesuai Folder: Desain UI UX / stitch_etalaseku_digital_hub_ui_ux / warm_pastel_tech / DESIGN.md
+   Brand: NexStore Produk Digital - by @daffafazdian.id
+   ========================================================================== */
+:root {
+  /* Warm Pastel Tech Named Color Tokens */
+  --color-primary: #FF2E63;
+  --color-primary-container: #E51152;
+  --color-cta-hover: #E11D48;
+  --color-secondary: #0F172A;
+  --color-midnight-indigo: #1E1B4B;
+  --color-background: #FBF9F5;
+  --color-surface: #FBF9F5;
+  --color-surface-card: #FFFFFF;
+  --color-surface-container: #EFEEEA;
+  --color-surface-container-high: #EAE8E4;
+  --color-surface-container-highest: #E4E2DE;
+  --color-on-background: #1B1C1A;
+  --color-on-surface: #1B1C1A;
+  --color-on-surface-variant: #5C3F42;
+  --color-outline: #906E71;
+  --color-outline-variant: #E5BDC0;
+  --color-pastel-pink: #FDEEF1;
+  --color-pastel-lavender: #F3EDFD;
+  --color-pastel-mint: #E8F8F5;
+  --color-text-muted: #64748B;
+  --color-error: #BA1A1A;
+  --color-error-container: #FFDAD6;
+  --color-amber-gold: #F59E0B;
+  --color-success-green: #10B981;
+
+  /* Aliases for Full Compatibility */
+  --canvas-bg: var(--color-background);
+  --wave-pink: var(--color-pastel-pink);
+  --wave-lavender: var(--color-pastel-lavender);
+  --wave-mint: var(--color-pastel-mint);
+  --primary-pink: var(--color-primary);
+  --coral-pink: var(--color-primary);
+  --primary-hover: var(--color-cta-hover);
+  --deep-navy: var(--color-secondary);
+  --card-surface: var(--color-surface-card);
+  --text-main: var(--color-on-surface);
+  --text-muted: var(--color-text-muted);
+  --border-subtle: #E2E8F0;
+  --success-green: var(--color-success-green);
+  --amber-gold: var(--color-amber-gold);
+}
+
+/* NexStore Modern App Icon & Brand Byline Styling */
+.brand-app-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+  border: 1.5px solid rgba(255, 46, 99, 0.4);
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-logo:hover .brand-app-icon {
+  transform: scale(1.06) rotate(-2deg);
+  box-shadow: 0 6px 20px rgba(255, 46, 99, 0.45);
+  border-color: #FF2E63;
+}
+
+.brand-byline {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748B;
+  letter-spacing: 0.3px;
+  transition: color 0.2s ease;
+}
+
+.brand-logo:hover .brand-byline {
+  color: #FF2E63;
+}
+
 /* ==========================================================================
    ETALASEKU DIGITAL HUB & ACADEMY — HIGH CONVERTING STYLESHEET
    Desain Visual: Modern Playful-Professional (Wavy Pastel + 3D Interactive)
