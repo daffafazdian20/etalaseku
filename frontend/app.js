@@ -1207,7 +1207,7 @@ class TestimonialFlipManager {
     const initialEl = card.querySelector('.testi-header > div:first-child');
     if (initialEl) initialEl.textContent = (t.Nama_Member || 'S').charAt(0).toUpperCase();
 
-    const nameEl = card.querySelector('.testi-header h4');
+    const nameEl = card.querySelector('.testi-header h3, .testi-header h4, .testi-author');
     if (nameEl) nameEl.textContent = t.Nama_Member || 'Alumni Member';
 
     const roleEl = card.querySelector('.testi-header p');
@@ -1670,7 +1670,7 @@ function renderTestimonials() {
                 ${(t.Nama_Member || 'S').charAt(0).toUpperCase()}
               </div>
               <div>
-                <h4 style="font-weight:700; color:var(--deep-navy); margin:0; font-size:15px;">${t.Nama_Member}</h4>
+                <h3 class="testi-author" style="font-weight:700; color:var(--deep-navy); margin:0 0 2px 0; font-size:15px;">${t.Nama_Member}</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin:0;">${t.Profesi || 'Member Siswa'}</p>
               </div>
             </div>
