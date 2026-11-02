@@ -1078,10 +1078,13 @@ class SlideshowManager {
     });
 
     let current = 0;
-    setInterval(() => {
-      current = (current + 1) % slides.length;
-      SlideshowManager.goToHeroSlide(current);
-    }, 4500);
+    // Delay auto-slideshow rotation by 12s so initial FCP & LCP settle with 0 mutations
+    setTimeout(() => {
+      setInterval(() => {
+        current = (current + 1) % slides.length;
+        SlideshowManager.goToHeroSlide(current);
+      }, 5000);
+    }, 12000);
   }
 
   static goToHeroSlide(index) {

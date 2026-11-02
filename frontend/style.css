@@ -14,7 +14,7 @@
   --deep-navy: #0F172A;
   --card-surface: #FFFFFF;
   --text-main: #0F172A;
-  --text-muted: #64748B;
+  --text-muted: #475569;
   --border-subtle: #E2E8F0;
   --success-green: #10B981;
   --amber-gold: #F59E0B;
@@ -229,12 +229,14 @@ body {
 }
 
 .announcement-bar .badge-live {
-  background: var(--primary-pink);
-  color: white;
+  background: #BE123C !important;
+  color: #FFFFFF !important;
+  font-weight: 800;
   padding: 2px 8px;
   border-radius: 99px;
   font-size: 11px;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
   animation: pulseBeacon 1.5s infinite;
 }
 
@@ -467,17 +469,22 @@ body {
 }
 
 .hero-slide {
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.hero-slide.active {
   position: relative;
-}
-
-.hero-slide.active {
-  display: block;
   opacity: 1;
-}
-
-.hero-slide.active {
-  display: block;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .hero-slide img {
@@ -485,6 +492,13 @@ body {
   height: 380px;
   object-fit: cover;
   display: block;
+}
+
+.hero-slide-caption .hero-slide-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #FFFFFF;
 }
 
 .hero-slide-caption {
@@ -585,11 +599,11 @@ body {
 }
 
 .section-eyebrow {
-  color: var(--primary-pink);
-  font-weight: 700;
+  color: #BE123C !important;
+  font-weight: 800;
   font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   margin-bottom: 8px;
 }
 

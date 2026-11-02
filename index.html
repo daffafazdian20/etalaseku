@@ -10,9 +10,9 @@
   <meta name="description" content="Platform e-commerce produk digital, kelas online, dan sistem otomasi penjualan instan berbasis Google Apps Script & Sheets.">
   
   <!-- App Favicon & Web Icons -->
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="shortcut icon" href="favicon.png">
   
   <!-- High-Performance Preconnects & Resource Preloads for 100% Core Web Vitals -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261102-08">
+  <link rel="stylesheet" href="css/style.css?v=20261102-09">
 </head>
 <body>
 
@@ -67,7 +67,7 @@
        3. TOP NAVIGATION BAR
        ======================================================================== -->
   <nav class="navbar">
-    <a href="#" class="brand-logo" title="EtalaseKu DIGITAL HUB & ACADEMY">
+    <a href="/" class="brand-logo" title="EtalaseKu DIGITAL HUB & ACADEMY">
       <span class="brand-name-text">Etalase<span class="brand-accent">Ku</span></span>
       <span class="brand-motif-pill">DIGITAL HUB &amp; ACADEMY</span>
     </a>
@@ -164,7 +164,7 @@
         <div class="hero-slide active">
           <img src="assets/hero/hero-slide-1.jpg" alt="Masterclass Web App" width="700" height="380" fetchpriority="high" decoding="async">
           <div class="hero-slide-caption">
-            <h4>GAS Pro Web App Masterclass</h4>
+            <div class="hero-slide-title">GAS Pro Web App Masterclass</div>
             <p>Membangun web app skala industri bebas biaya hosting dengan Google Apps Script & Sheets.</p>
           </div>
         </div>
@@ -172,7 +172,7 @@
         <div class="hero-slide">
           <img src="assets/hero/hero-slide-2.jpg" alt="Notion OS Agency" width="700" height="380" loading="lazy" decoding="async">
           <div class="hero-slide-caption">
-            <h4>Digital Agency Notion OS</h4>
+            <div class="hero-slide-title">Digital Agency Notion OS</div>
             <p>Sistem manajemen bisnis & CRM agency terlengkap dengan pipeline closing otomatis.</p>
           </div>
         </div>
@@ -180,7 +180,7 @@
         <div class="hero-slide">
           <img src="assets/hero/hero-slide-3.jpg" alt="Mentoring Bootcamp" width="700" height="380" loading="lazy" decoding="async">
           <div class="hero-slide-caption">
-            <h4>Live Mentoring & Group Support</h4>
+            <div class="hero-slide-title">Live Mentoring & Group Support</div>
             <p>Bimbingan langsung via WhatsApp & private webinar hingga mahir menghasilkan omset.</p>
           </div>
         </div>
@@ -556,7 +556,7 @@
         <ul style="list-style:none; font-size:13px; color:#94A3B8; display:flex; flex-direction:column; gap:8px;">
           <li><a href="#redeem" onclick="openRedeemModal(); return false;" style="color:#FF2E63; text-decoration:none; font-weight:700;">🔑 Tukar Kode Akses (Redeem)</a></li>
           <li><a href="#member-login" onclick="openMemberLoginModal(); return false;" style="color:inherit; text-decoration:none;">🎓 Login Member Classroom</a></li>
-          <li><a href="javascript:void(0)" onclick="document.getElementById('modal-student-bills').classList.add('active')" style="color:inherit; text-decoration:none;">💳 Cek &amp; Bayar Tagihan Siswa</a></li>
+          <li><a href="#action" onclick="document.getElementById('modal-student-bills').classList.add('active')" style="color:inherit; text-decoration:none;">💳 Cek &amp; Bayar Tagihan Siswa</a></li>
           <li><a href="#admin" onclick="openAdminModal(); return false;" style="color:inherit; text-decoration:none;">👑 Portal Super Admin &amp; CRM</a></li>
         </ul>
       </div>
@@ -889,7 +889,7 @@
       
       <!-- Avatar User Header -->
       <div style="width:52px; height:52px; border-radius:50%; background:#F1F5F9; border:2px solid var(--deep-navy); margin:0 auto 10px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.06);">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar Siswa" style="width:100%; height:100%; object-fit:cover;">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar Siswa" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;">
       </div>
 
       <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Selamat Datang Member Siswa 🎓</h3>
@@ -908,7 +908,7 @@
           <div class="auth-device-history-box" id="auth-recent-devices-box" style="margin:8px 0 16px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
               <span style="font-size:11px; color:#64748B;">Pernah masuk di perangkat ini</span>
-              <a href="javascript:void(0)" onclick="clearDeviceHistory()" style="font-size:11px; color:#64748B; text-decoration:none;">Hapus</a>
+              <a href="#action" onclick="clearDeviceHistory()" style="font-size:11px; color:#64748B; text-decoration:none;">Hapus</a>
             </div>
             <div id="auth-chips-container">
               <span class="auth-device-chip" onclick="fillMemberLoginEmail('daffafazdian50@gmail.com')">
@@ -937,7 +937,7 @@
 
       <!-- Back to Landing Page Link -->
       <div style="margin-top:14px; text-align:center;">
-        <a href="javascript:void(0)" onclick="closeAllModals()" style="color:#64748B; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+        <a href="#action" onclick="closeAllModals()" style="color:#64748B; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
           ← Kembali ke beranda
         </a>
       </div>
@@ -1174,9 +1174,9 @@
         <div class="rb-detail-topbar">
           <div class="rb-detail-crumbs-wrap">
             <nav class="rb-detail-breadcrumbs">
-              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Member Portal</a>
+              <a href="#action" onclick="closeClassroomDetailView()">Member Portal</a>
               <span class="crumb-sep">&gt;</span>
-              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Kelas Saya</a>
+              <a href="#action" onclick="closeClassroomDetailView()">Kelas Saya</a>
               <span class="crumb-sep">&gt;</span>
               <span class="crumb-current" id="course-crumb-title">METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL...</span>
             </nav>
@@ -1204,7 +1204,7 @@
             <!-- Video Player Box -->
             <div class="rb-video-container" id="rb-video-container">
               <div class="rb-video-poster" id="rb-video-poster" onclick="playCurrentCourseVideo()">
-                <img src="./assets/modules/banner-video-metode3.jpg" id="rb-video-poster-img" alt="Video Cover" class="rb-video-poster-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-metode3.jpg';">
+                <img src="./assets/modules/banner-video-metode3.jpg" id="rb-video-poster-img" loading="lazy" decoding="async" alt="Video Cover" class="rb-video-poster-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-metode3.jpg';">
                 <div class="rb-youtube-play-btn" title="Putar Video Materi">
                   <svg width="34" height="34" viewBox="0 0 24 24" fill="#FFFFFF"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                 </div>
@@ -1333,9 +1333,9 @@
         <div class="rb-detail-topbar">
           <div class="rb-detail-crumbs-wrap">
             <nav class="rb-detail-breadcrumbs">
-              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Member Portal</a>
+              <a href="#action" onclick="closeClassroomDetailView()">Member Portal</a>
               <span class="crumb-sep">&gt;</span>
-              <a href="javascript:void(0)" onclick="closeClassroomDetailView()">Kelas Saya</a>
+              <a href="#action" onclick="closeClassroomDetailView()">Kelas Saya</a>
               <span class="crumb-sep">&gt;</span>
               <span class="crumb-current" id="doc-crumb-title">Kumpulan PRD (GRATIS)</span>
             </nav>
@@ -1357,7 +1357,7 @@
           <div class="rb-doc-top-row">
             <!-- Banner with Centered Overlay Button -->
             <div class="rb-doc-banner-wrap">
-              <img src="./assets/modules/banner-doc-prd.jpg" id="doc-active-banner-img" alt="Cover Dokumen" class="rb-doc-banner-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-prd.jpg';">
+              <img src="./assets/modules/banner-doc-prd.jpg" id="doc-active-banner-img" loading="lazy" decoding="async" alt="Cover Dokumen" class="rb-doc-banner-img" onerror="this.onerror=null;this.src='./assets/modules/thumb-prd.jpg';">
               <button class="rb-doc-banner-overlay-btn" onclick="scrollToDocList()">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 <span id="doc-banner-items-text">Lihat 10 Berkas</span>
@@ -1558,7 +1558,7 @@
       </form>
 
       <div style="margin-top:14px; text-align:center;">
-        <a href="javascript:void(0)" onclick="closeAllModals()" style="color:#64748B; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+        <a href="#action" onclick="closeAllModals()" style="color:#64748B; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
           ← Kembali ke beranda
         </a>
       </div>
@@ -1596,56 +1596,56 @@
       </div>
       <ul class="admin-nav-list">
         <li>
-          <a class="admin-nav-item active" onclick="switchAdminTab('tab-dashboard', this)">
+          <a class="admin-nav-item active" href="#tab-dashboard" onclick="switchAdminTab('tab-dashboard', this); return false;">
             <span>📊 <span class="nav-text">Dashboard & Analitik</span></span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-orders', this)">
+          <a class="admin-nav-item" href="#tab-orders" onclick="switchAdminTab('tab-orders', this); return false;">
             <span>🛍️ <span class="nav-text">Pesanan & Verifikasi</span></span>
             <span class="admin-nav-badge" id="badge-pending-orders">0</span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-products', this)">
+          <a class="admin-nav-item" href="#tab-products" onclick="switchAdminTab('tab-products', this); return false;">
             <span>📦 <span class="nav-text">Katalog Produk</span></span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-showcase', this)">
+          <a class="admin-nav-item" href="#tab-showcase" onclick="switchAdminTab('tab-showcase', this); return false;">
             <span>🌟 <span class="nav-text">Hasil Karya Member</span></span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-crm', this)">
+          <a class="admin-nav-item" href="#tab-crm" onclick="switchAdminTab('tab-crm', this); return false;">
             <span>👥 <span class="nav-text">CRM Leads & Waitlist</span></span>
             <span class="admin-nav-badge" style="background:#F59E0B;" id="badge-leads-count">0</span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-testimonials', this)">
+          <a class="admin-nav-item" href="#tab-testimonials" onclick="switchAdminTab('tab-testimonials', this); return false;">
             <span>⭐ <span class="nav-text">Testimoni Alumni</span></span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-billing', this)">
+          <a class="admin-nav-item" href="#tab-billing" onclick="switchAdminTab('tab-billing', this); return false;">
             <span>💳 <span class="nav-text">Tagihan & Cicilan Siswa</span></span>
             <span class="admin-nav-badge" style="background:#8B5CF6;" id="badge-bills-count">0</span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-classroom', this)">
+          <a class="admin-nav-item" href="#tab-classroom" onclick="switchAdminTab('tab-classroom', this); return false;">
             <span>🎓 <span class="nav-text">Portal Ruang BelajarKu</span></span>
             <span class="admin-nav-badge" style="background:#E11D48;" id="badge-modules-count">6</span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-settings', this)">
+          <a class="admin-nav-item" href="#tab-settings" onclick="switchAdminTab('tab-settings', this); return false;">
             <span>⚙️ <span class="nav-text">Metode Bayar & Situs</span></span>
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" onclick="switchAdminTab('tab-account', this)">
+          <a class="admin-nav-item" href="#tab-account" onclick="switchAdminTab('tab-account', this); return false;">
             <span>🔐 <span class="nav-text">Akun & Hak Akses</span></span>
           </a>
         </li>
@@ -3490,8 +3490,8 @@
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261102-08"></script>
-  <script defer src="js/app.js?v=20261102-08"></script>
+  <script defer src="js/config.js?v=20261102-09"></script>
+  <script defer src="js/app.js?v=20261102-09"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
