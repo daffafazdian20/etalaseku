@@ -33,7 +33,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261103-04">
+  <link rel="stylesheet" href="css/style.css?v=20261103-05">
 </head>
 <body>
 
@@ -214,7 +214,7 @@
           <div class="welcome-hero-actions">
             <button type="button" class="btn-hero-classes" onclick="openClassroomDashboard()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-              Kelas Saya
+              Ruang BelajarKu
             </button>
             <button type="button" class="btn-hero-catalog" onclick="scrollToSection('katalog-produk')">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -1465,7 +1465,7 @@
       <!-- Quick Nav Links Siswa (Item 4: Source Code & Drive serta Tanya Mentor VIP Dihilangkan Sesuai Permintaan) -->
       <ul class="classroom-top-links" id="cls-portal-tabs-nav">
         <li><a href="#member-home" class="cls-tab-link active" id="tab-link-home" onclick="switchMemberPortalView('home'); return false;">Beranda</a></li>
-        <li><a href="#member-kelas" class="cls-tab-link" id="tab-link-kelas" onclick="switchMemberPortalView('grid'); return false;">Kelas Saya</a></li>
+        <li><a href="#member-kelas" class="cls-tab-link" id="tab-link-kelas" onclick="switchMemberPortalView('grid'); return false;">Ruang BelajarKu</a></li>
         <li><a href="#member-jalur" class="cls-tab-link" id="tab-link-jalur" onclick="switchMemberPortalView('jalur'); return false;">Jalur Belajar</a></li>
         <li><a href="#bootcamp" class="cls-tab-link" id="tab-link-bootcamp" onclick="openBootcampDetailModal(); return false;">Bootcamp</a></li>
         <li><a href="#pameran" class="cls-tab-link" id="tab-link-pameran" onclick="openKaryaFromMember(); return false;">Pameran Karya</a></li>
@@ -1475,27 +1475,11 @@
 
       <!-- User Profile Badge & Action (Item 5: Icon Google Berisi Email Pembeli & Order ID Kunci Masuk Modul) -->
       <div class="classroom-user-actions-group">
-        <div class="google-verified-card" title="Akun Google & Order ID Resmi untuk Membuka Modul Pembelajaran">
-          <!-- Google Official Multi-Color 'G' SVG Icon -->
-          <div class="google-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-            </svg>
-          </div>
-          <div class="google-user-details">
-            <div class="google-email-line">
-              <span id="cls-active-student-email">daffafazdian50@gmail.com</span>
-              <span class="google-sso-badge">Google Verified ✓</span>
-            </div>
-            <div class="google-order-line">
-              <span>Order ID: <strong id="cls-active-order-id">ORD-20261028-211630-4012</strong></span>
-              <span class="badge-status-green">Akses Aktif 🟢</span>
-            </div>
-          </div>
-        </div>
+        <button type="button" class="btn-secondary member-profile-nav-chip" onclick="openMemberProfileModal()" title="Pengaturan Akun &amp; Profil Member" style="padding:6px 14px; font-size:12px; font-weight:700; color:#FFFFFF; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:20px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;">
+          <span class="member-avatar-initial" style="width:20px; height:20px; border-radius:50%; background:#FF2E63; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">D</span>
+          <span class="member-display-name">Daffa</span>
+          <span style="font-size:11px; opacity:0.8;">⚙️</span>
+        </button>
 
         <div class="classroom-btn-actions desktop-only-actions">
           <button class="btn-secondary" onclick="openRedeemModal()" style="padding:8px 14px; font-size:12px; font-weight:700; color:#2563EB; border-color:rgba(37,99,235,0.35); background:rgba(37,99,235,0.06); display:inline-flex; align-items:center; gap:6px;" title="Redeem Kode Akses Baru">
@@ -1542,9 +1526,9 @@
             <h1 class="welcome-hero-title">Selamat datang kembali, <span id="member-display-name">Daffa</span>!</h1>
             <p class="welcome-hero-subtitle">Kelola pembelajaran Anda, cek jadwal bootcamp, atau jelajahi katalog produk digital terbaru.</p>
             <div class="welcome-hero-actions">
-              <button type="button" class="btn-hero-classes" onclick="switchMemberPortalView('grid')">
+              <button type="button" class="btn-hero-classes" onclick="openClassroomDashboard()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                Kelas Saya
+                Ruang BelajarKu
               </button>
               <button type="button" class="btn-hero-catalog" onclick="closeClassroomDashboard(); scrollToSection('katalog-produk');">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -4376,8 +4360,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261103-04"></script>
-  <script defer src="js/app.js?v=20261103-04"></script>
+  <script defer src="js/config.js?v=20261103-05"></script>
+  <script defer src="js/app.js?v=20261103-05"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
@@ -4688,8 +4672,35 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     <div class="modal-complete-profile-dialog" style="position:relative;">
       <button type="button" class="modal-close-btn" onclick="closeMemberProfileModal()" style="position:absolute; top:16px; right:16px; color:#94A3B8; background:none; border:none; font-size:22px; cursor:pointer; line-height:1; z-index:5;" title="Tutup">&times;</button>
       <div class="modal-cp-header">
-        <h2 class="modal-cp-title">Lengkapi Data Member</h2>
-        <p class="modal-cp-desc">Data wajib diisi dengan benar. Satu nomor WhatsApp hanya untuk satu akun.</p>
+        <h2 class="modal-cp-title" style="color:#FFFFFF; font-size:20px; font-weight:800; margin:0 0 6px;">Pengaturan Akun &amp; Lisensi Member</h2>
+        <p class="modal-cp-desc" style="color:#94A3B8; font-size:12.5px; margin:0 0 16px;">Kelola profil, nomor WhatsApp terdaftar, dan data lisensi resmi produk digital Anda.</p>
+        
+        <!-- Google Verified & Order ID Card (Item 2 & 3: Dimasukkan ke dalam Pengaturan Akun Sesuai Permintaan) -->
+        <div class="account-verified-order-badge" style="background:#0B132B; border:1px solid rgba(255,46,99,0.3); border-radius:14px; padding:12px 16px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:12px; text-align:left;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:36px; height:36px; border-radius:10px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+              </svg>
+            </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <span style="font-size:13px; font-weight:700; color:#FFFFFF;" id="setting-modal-email">daffafazdian50@gmail.com</span>
+                <span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 7px; border-radius:99px;">Google Verified ✓</span>
+              </div>
+              <div style="font-size:11.5px; color:#94A3B8; margin-top:3px;">
+                Order ID: <strong id="setting-modal-order-id" style="color:#FF2E63;">ORD-20261102-214204-9617</strong>
+                <span style="background:#10B981; color:#FFFFFF; font-size:9.5px; font-weight:800; padding:1px 6px; border-radius:99px; margin-left:4px;">Akses Aktif 🟢</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-secondary" onclick="copyVipOrderId()" style="padding:6px 12px; font-size:11px; border-radius:8px; color:#FFFFFF; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); cursor:pointer;" title="Salin Order ID">
+            📋 Salin
+          </button>
+        </div>
       </div>
 
       <form id="form-complete-profile" onsubmit="handleSaveMemberProfile(event)">
@@ -4714,8 +4725,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
 
         <!-- Actions -->
         <div class="modal-cp-actions">
-          <button type="submit" class="btn-cp-save">Simpan &amp; Buka Akses</button>
-          <button type="button" class="btn-cp-cancel" onclick="closeMemberProfileModal()">Nanti</button>
+          <button type="submit" class="btn-cp-save" style="background:linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important; color:#FFFFFF; font-weight:700; padding:12px; border-radius:10px; border:none; cursor:pointer;">Simpan Perubahan</button>
+          <button type="button" class="btn-cp-cancel" onclick="closeMemberProfileModal()" style="padding:12px 18px; border-radius:10px; color:#94A3B8; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); cursor:pointer;">Tutup</button>
         </div>
       </form>
     </div>

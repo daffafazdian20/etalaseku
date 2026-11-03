@@ -9391,3 +9391,56 @@ footer {
   pointer-events: auto !important;
   visibility: visible !important;
 }
+
+
+/* ==========================================================================
+   DESAIN UI/UX COLOR ALIGNMENT (Warm Pastel Tech / Hot Pink Accent #FF2E63)
+   ========================================================================== */
+.tab-pill-btn.active,
+#main-member-area-dashboard .tab-pill-btn.active,
+.member-tab-pills .tab-pill-btn.active {
+  background: #FF2E63 !important;
+  color: #FFFFFF !important;
+  border-color: #FF2E63 !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+.cls-tab-link.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+}
+
+.btn-hero-classes,
+.btn-announcement-view,
+.mp-btn-primary {
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.35) !important;
+}
+
+.btn-hero-classes:hover,
+.btn-announcement-view:hover,
+.mp-btn-primary:hover {
+  background: #E11D48 !important;
+  transform: translateY(-1px);
+}
+
+.member-announcement-card {
+  border-color: rgba(255, 46, 99, 0.35) !important;
+}
+
+.modal-cp-input:focus {
+  border-color: #FF2E63 !important;
+  box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.25) !important;
+}
+
+.btn-cp-save {
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+.btn-cp-save:hover {
+  background: #E11D48 !important;
+}

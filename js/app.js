@@ -2366,13 +2366,16 @@ let ADMIN_STATE = {
 function openMemberLoginModal() {
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
   const savedEmail = localStorage.getItem('etalaseku_member_email');
-  const savedProfile = localStorage.getItem('nexstore_member_profile');
-  if (savedOrderId || savedEmail || savedProfile) {
+  // Hanya buka member dashboard jika ADA order id atau email aktif
+  if (savedOrderId || savedEmail) {
     showMemberAreaDashboard(savedOrderId, savedEmail);
   } else {
     closeAllModals();
     const modal = document.getElementById('modal-member-login') || document.getElementById('modal-unified-auth');
-    if (modal) modal.classList.add('active');
+    if (modal) {
+      modal.classList.add('active');
+      modal.style.display = 'flex';
+    }
     if (typeof renderRecentDeviceChips === 'function') renderRecentDeviceChips();
   }
 }
@@ -4343,12 +4346,16 @@ function openRedeemModal() {
   const modal = document.getElementById('modal-redeem-code');
   if (modal) {
     modal.classList.add('active');
+    modal.style.display = 'flex';
   } else {
     switchAuthTab('member');
     switchMemberSubView('redeem');
     renderRecentDeviceChips();
     const authModal = document.getElementById('modal-unified-auth');
-    if (authModal) authModal.classList.add('active');
+    if (authModal) {
+      authModal.classList.add('active');
+      authModal.style.display = 'flex';
+    }
   }
 }
 
@@ -4670,14 +4677,35 @@ function closeClassroomDashboard() {
 }
 
 function handleClassroomLogout() {
+  // 1. Bersihkan seluruh sesi member
   localStorage.removeItem('etalaseku_member_order_id');
   localStorage.removeItem('etalaseku_member_email');
+  localStorage.removeItem('etalaseku_member_name');
+  localStorage.removeItem('etalaseku_member_profile');
+  localStorage.removeItem('nexstore_member_profile');
   localStorage.removeItem('nexstore_profile_completed');
+  localStorage.removeItem('etalaseku_is_in_classroom');
+  localStorage.removeItem('etalaseku_member_enrolled_product_id');
+  localStorage.removeItem('etalaseku_member_enrolled_product_name');
+
+  // 2. Sembunyikan dashboard member & VIP welcome card
   if (typeof hideMemberAreaDashboard === 'function') hideMemberAreaDashboard();
-  closeClassroomDashboard();
+  if (typeof checkAndRenderVipWelcomeCard === 'function') checkAndRenderVipWelcomeCard();
+  const vipCard = document.getElementById('vip-member-welcome-card');
+  if (vipCard) vipCard.style.display = 'none';
+
+  // 3. Tutup classroom & bersihkan modals
+  if (typeof closeClassroomDashboard === 'function') closeClassroomDashboard();
   closeAllModals();
-  updateMemberClassroomNavbar(null, null);
-  showToast('Anda telah keluar dari Ruang BelajarKu 🎓', 'logout');
+
+  // 4. Update navbar & hero buttons ke mode pengunjung publik
+  if (typeof updateMemberClassroomNavbar === 'function') updateMemberClassroomNavbar(null, null);
+  if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
+
+  // 5. Scroll ke atas
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  showToast('Anda telah keluar dari sesi member 👋', 'logout');
 }
 
 function updateMemberClassroomNavbar(orderId, email) {
@@ -6238,7 +6266,7 @@ window.previewModuleFromCrm = previewModuleFromCrm;
 function closeAllModals() {
   document.querySelectorAll('.modal-overlay').forEach(m => {
     m.classList.remove('active');
-    m.style.display = 'none';
+    m.style.display = '';
   });
 }
 
@@ -8312,28 +8340,14 @@ function checkAndRenderVipWelcomeCard() {
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
   const savedEmail = localStorage.getItem('etalaseku_member_email');
 
-  let orders = [];
-  try {
-    orders = JSON.parse(localStorage.getItem('etalaseku_orders_data') || '[]');
-  } catch (e) {}
-
-  const hasPurchased = Boolean(savedOrderId || savedEmail || (orders && orders.some(o => o.Status_Bayar === 'LUNAS')));
-
-  if (hasPurchased) {
+  // Hanya tampilkan jika member benar-benar sedang login aktif!
+  if (savedOrderId || savedEmail) {
     card.style.display = 'block';
 
-    const activeEmail = savedEmail || (orders.length > 0 ? orders[0].Email_Pembeli : 'daffafazdian50@gmail.com');
-    const activeOrderId = savedOrderId || (orders.length > 0 ? orders[0].ID_Order : 'ORD-20261028-211630-4012');
-
-    let displayName = 'Daffa';
-    if (activeEmail) {
-      const emailPrefix = activeEmail.split('@')[0];
-      if (/daffa/i.test(emailPrefix)) {
-        displayName = 'Daffa';
-      } else {
-        displayName = emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
-      }
-    }
+    const profile = typeof getMemberProfile === 'function' ? getMemberProfile() : { name: 'Daffa' };
+    const displayName = profile.name || (savedEmail ? savedEmail.split('@')[0] : 'Daffa');
+    const activeEmail = savedEmail || 'daffafazdian50@gmail.com';
+    const activeOrderId = savedOrderId || 'ORD-20261102-214204-9617';
 
     const nameEl = document.getElementById('vip-user-display-name');
     if (nameEl) nameEl.textContent = displayName;
@@ -8801,9 +8815,17 @@ function openMemberProfileModal() {
   const inputName = document.getElementById('cp-input-name');
   const inputPhone = document.getElementById('cp-input-whatsapp');
 
-  if (inputEmail) inputEmail.value = profile.email || 'daffafazdian50@gmail.com';
+  const activeEmail = profile.email || localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+  const activeOrderId = localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
+
+  if (inputEmail) inputEmail.value = activeEmail;
   if (inputName) inputName.value = profile.name || 'Daffa';
   if (inputPhone) inputPhone.value = profile.whatsapp || '087894602627';
+
+  const badgeEmail = document.getElementById('setting-modal-email');
+  if (badgeEmail) badgeEmail.textContent = activeEmail;
+  const badgeOrderId = document.getElementById('setting-modal-order-id');
+  if (badgeOrderId) badgeOrderId.textContent = activeOrderId;
 
   const modal = document.getElementById('modal-complete-profile');
   if (modal) {
@@ -8950,6 +8972,7 @@ window.openPanduanModal = openPanduanModal;
 // MAIN DASHBOARD MEMBER AREA ENGINE (FOTO 3 & FOTO 2 REFERENCE)
 // ============================================================================
 function showMemberAreaDashboard(orderId, email) {
+  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
   const activeId = orderId || localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
   const activeEmail = email || localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
   
@@ -9065,3 +9088,98 @@ function filterMainMemberSearch(query) {
   });
 }
 window.filterMainMemberSearch = filterMainMemberSearch;
+
+
+// ============================================================================
+// DYNAMIC CRM MODULE SYNC ENGINE (ITEM 5 REFERENCE)
+// Menghubungkan Beranda Member Area secara otomatis dengan Modul Portal Ruang Belajar CRM
+// ============================================================================
+function renderMainMemberDashboardModules(filterCategory, searchQuery) {
+  const container = document.getElementById('main-member-home-cards-grid');
+  const containerAlt = document.getElementById('member-home-cards-grid');
+
+  let allModules = [];
+  if (typeof loadStoredClassroomModules === 'function') {
+    allModules = loadStoredClassroomModules();
+  }
+  if (!Array.isArray(allModules) || allModules.length === 0) {
+    allModules = (typeof DEFAULT_MODULES !== 'undefined' && Array.isArray(DEFAULT_MODULES)) ? DEFAULT_MODULES : [];
+  }
+
+  const totalCount = allModules.length;
+  let kelasCount = 0;
+  let dokumenCount = 0;
+
+  allModules.forEach(m => {
+    const isDoc = (m.Tipe_Badge || m.Kategori || '').toLowerCase().includes('dokumen') ||
+                  (m.Tipe_Konten || '').toLowerCase().includes('pdf') ||
+                  (m.Tipe_Konten || '').toLowerCase().includes('template') ||
+                  (m.Tipe_Konten || '').toLowerCase().includes('dokumen');
+    if (isDoc) dokumenCount++;
+    else kelasCount++;
+  });
+
+  // Sinkronkan Kartu KPI & Badge Jumlah
+  const kpiEl = document.getElementById('main-kpi-owned-count');
+  if (kpiEl) kpiEl.textContent = `${totalCount} Produk Dimiliki`;
+  const kpiAltEl = document.getElementById('kpi-owned-count');
+  if (kpiAltEl) kpiAltEl.textContent = `${totalCount} Produk Dimiliki`;
+
+  const countAll = document.getElementById('main-count-home-all');
+  if (countAll) countAll.textContent = totalCount;
+  const countKelas = document.getElementById('main-count-home-kelas');
+  if (countKelas) countKelas.textContent = kelasCount;
+  const countDokumen = document.getElementById('main-count-home-dokumen');
+  if (countDokumen) countDokumen.textContent = dokumenCount;
+
+  const countAllAlt = document.getElementById('count-home-all');
+  if (countAllAlt) countAllAlt.textContent = totalCount;
+  const countKelasAlt = document.getElementById('count-home-kelas');
+  if (countKelasAlt) countKelasAlt.textContent = kelasCount;
+  const countDokumenAlt = document.getElementById('count-home-dokumen');
+  if (countDokumenAlt) countDokumenAlt.textContent = dokumenCount;
+
+  // Render HTML kartu dinamis dari database modul CRM
+  const generateCardsHtml = () => {
+    return allModules.map(m => {
+      const isDoc = (m.Tipe_Badge || m.Kategori || '').toLowerCase().includes('dokumen') ||
+                    (m.Tipe_Konten || '').toLowerCase().includes('pdf') ||
+                    (m.Tipe_Konten || '').toLowerCase().includes('template') ||
+                    (m.Tipe_Konten || '').toLowerCase().includes('dokumen');
+      const cat = isDoc ? 'dokumen' : 'kelas';
+      const badgeText = isDoc ? 'DOKUMEN' : 'KELAS';
+      const thumb = m.Thumbnail_URL || m.Banner_URL || 'assets/hero/hero-slide-1.jpg';
+      const episodes = m.Episode || (m.Durasi_Menit ? Math.ceil(m.Durasi_Menit / 15) : 6);
+      const materiCount = m.Materi_Count || (m.Durasi_Menit ? Math.ceil(m.Durasi_Menit / 2) : 27);
+      const metaText = isDoc ? `${materiCount} materi • Template & Berkas Dokumen` : `${episodes} episode • ${materiCount} materi`;
+
+      const actionBtn = isDoc
+        ? `<button type="button" class="mp-card-action-btn mp-btn-doc" onclick="openClassroomDashboard(); if(typeof openDocumentPackageView==='function') openDocumentPackageView('${m.ID_Materi}');">📑 Akses Produk</button>`
+        : `<button type="button" class="mp-card-action-btn mp-btn-primary" onclick="openClassroomDashboard(); if(typeof openCourseView==='function') openCourseView('${m.ID_Materi}');">📖 Buka Ruang Belajar</button>`;
+
+      return `
+        <div class="member-product-card" data-category="${cat}">
+          <div class="mp-card-thumb-wrap">
+            <img src="${thumb}" alt="${escapeHtml(m.Judul_Modul)}" class="mp-card-img" onerror="this.onerror=null; this.src='assets/hero/hero-slide-1.jpg';">
+            <span class="mp-badge-category">${badgeText}</span>
+            <span class="mp-badge-status mp-badge-dimiliki">Dimiliki</span>
+          </div>
+          <div class="mp-card-body">
+            <h3 class="mp-card-title">${escapeHtml(m.Judul_Modul)}</h3>
+            <p class="mp-card-desc">${escapeHtml(m.Deskripsi || 'Modul kurikulum pembelajaran resmi dari CRM.')}</p>
+            <div class="mp-card-meta">${metaText}</div>
+            ${actionBtn}
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  const cardsHtml = generateCardsHtml();
+  if (container) container.innerHTML = cardsHtml;
+  if (containerAlt) containerAlt.innerHTML = cardsHtml;
+
+  if (filterCategory) filterMainMemberCategory(filterCategory);
+  if (searchQuery) filterMainMemberSearch(searchQuery);
+}
+window.renderMainMemberDashboardModules = renderMainMemberDashboardModules;
