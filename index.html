@@ -33,7 +33,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261103-05">
+  <link rel="stylesheet" href="css/style.css?v=20261103-06">
 </head>
 <body>
 
@@ -116,6 +116,11 @@
       </div>
 
       <!-- Tombol Redeem Kode Akses (Sesuai Referensi Gambar) -->
+      <!-- Theme Toggle (Mode Terang / Gelap Sesuai DESAIN UI/UX) -->
+      <button type="button" class="btn-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme">
+        <span class="theme-toggle-icon">☀️</span>
+        <span class="theme-toggle-label">Mode Terang</span>
+      </button>
       <button class="btn-secondary" id="nav-btn-redeem" onclick="openRedeemModal()" style="padding:9px 15px; font-size:13px; color:var(--deep-navy); font-weight:700;">
         🔑 Redeem
       </button>
@@ -1475,6 +1480,10 @@
 
       <!-- User Profile Badge & Action (Item 5: Icon Google Berisi Email Pembeli & Order ID Kunci Masuk Modul) -->
       <div class="classroom-user-actions-group">
+        <button type="button" class="btn-theme-toggle btn-cls-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme">
+          <span class="theme-toggle-icon">☀️</span>
+          <span class="theme-toggle-label">Mode Terang</span>
+        </button>
         <button type="button" class="btn-secondary member-profile-nav-chip" onclick="openMemberProfileModal()" title="Pengaturan Akun &amp; Profil Member" style="padding:6px 14px; font-size:12px; font-weight:700; color:#FFFFFF; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:20px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;">
           <span class="member-avatar-initial" style="width:20px; height:20px; border-radius:50%; background:#FF2E63; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">D</span>
           <span class="member-display-name">Daffa</span>
@@ -2085,24 +2094,31 @@
     <!-- Sticky Top Navigation Bar -->
     <header class="pameran-portal-nav">
       <div class="pameran-nav-top-row">
-        <div class="pameran-brand" onclick="closePameranKaryaPortal()" style="cursor:pointer;">
-          <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, #FF2E63, #E11D48); display:flex; align-items:center; justify-content:center; color:white; font-size:18px; box-shadow:0 4px 12px rgba(255,46,99,0.3); flex-shrink:0;">
-            🚀
+        <div class="pameran-brand" onclick="closePameranKaryaPortal()" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
+          <div class="brand-app-icon" style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, #0B132B 0%, #1E293B 100%); border:1.5px solid rgba(255,46,99,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 4px 12px rgba(11,19,43,0.25);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19V5L15 19V5" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="19" cy="5" r="2.5" fill="#FFE600"/>
+            </svg>
           </div>
-          <div style="display:flex; flex-direction:column; align-items:flex-start; min-width:0;">
-            <div style="display:inline-flex; align-items:center; gap:8px; line-height:1.2; flex-wrap:wrap;">
-              <span class="brand-name-text" style="font-size:17px; font-weight:800; color:#0B132B; white-space:nowrap;">
-                Etalase<span class="brand-accent" style="color:#FF2E63; background:linear-gradient(135deg, #FF2E63 0%, #E11D48 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Ku</span>
+          <div style="display:flex; flex-direction:column; align-items:flex-start; min-width:0; line-height:1.15;">
+            <div style="display:inline-flex; align-items:center; gap:7px; flex-wrap:wrap;">
+              <span class="brand-name-text" style="font-size:18px; font-weight:800; color:var(--deep-navy, #0F172A); white-space:nowrap;">
+                Nex<span class="brand-accent" style="color:#FF2E63;">Store</span>
               </span>
-              <span class="brand-motif-pill" style="font-size:9.5px; padding:3px 8px; color:#FF2E63; background:linear-gradient(135deg, #FFF1F4 0%, #FFE4E6 100%); border:1px solid rgba(255,46,99,0.4); font-weight:800;">
-                DIGITAL HUB &amp; ACADEMY
+              <span class="brand-motif-pill" style="font-size:9.5px; padding:3px 8px; color:#FF2E63; background:linear-gradient(135deg, #FFF1F4 0%, #FFE4E6 100%); border:1px solid rgba(255,46,99,0.4); font-weight:800; border-radius:99px;">
+                PRODUK DIGITAL
               </span>
             </div>
-            <span style="font-size:11px; color:#64748B; font-weight:600; margin-top:3px; display:block; white-space:nowrap;">Showcase Portofolio &amp; Pameran Karya</span>
+            <span class="brand-byline" style="font-size:11px; color:#64748B; font-weight:600; margin-top:2px;">by @daffafazdian.id &bull; Pameran Karya</span>
           </div>
         </div>
 
         <div class="pameran-btn-actions">
+          <button type="button" class="btn-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme">
+            <span class="theme-toggle-icon">☀️</span>
+            <span class="theme-toggle-label">Mode Terang</span>
+          </button>
           <button class="btn-secondary" onclick="closePameranKaryaPortal()" title="Kembali ke Dashboard Utama">
             ⬅️ Kembali ke Beranda
           </button>
@@ -4188,7 +4204,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
             🛡️ Pengajuan akan ditinjau &amp; diverifikasi oleh <strong>Super Admin &amp; Admin</strong> pada sistem CRM sebelum diterbitkan ke pameran.
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <button type="submit" id="btn-submit-user-showcase" class="shimmer-btn" style="flex:1; padding:12px; font-size:14px; font-weight:800; background:#2563EB; justify-content:center; border-radius:10px; color:#FFFFFF;" title="Akan ditinjau oleh Super Admin & Admin pada sistem CRM">
+            <button type="submit" id="btn-submit-user-showcase" class="shimmer-btn" style="flex:1; padding:12px; font-size:14px; font-weight:800; background:linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important; box-shadow:0 4px 14px rgba(255,46,99,0.4) !important; border:none; justify-content:center; border-radius:10px; color:#FFFFFF;" title="Akan ditinjau oleh Super Admin & Admin pada sistem CRM">
               Kirim Pengajuan
             </button>
             <button type="button" class="btn-secondary" onclick="closeAllModals()" style="padding:12px 22px; font-size:13px; font-weight:700; border-radius:10px;">
@@ -4360,8 +4376,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261103-05"></script>
-  <script defer src="js/app.js?v=20261103-05"></script>
+  <script defer src="js/config.js?v=20261103-06"></script>
+  <script defer src="js/app.js?v=20261103-06"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">

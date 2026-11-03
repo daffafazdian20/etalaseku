@@ -9106,11 +9106,32 @@ function renderMainMemberDashboardModules(filterCategory, searchQuery) {
     allModules = (typeof DEFAULT_MODULES !== 'undefined' && Array.isArray(DEFAULT_MODULES)) ? DEFAULT_MODULES : [];
   }
 
-  const totalCount = allModules.length;
+  // Point 2: Filter modul berdasarkan Order ID & Email Member yang sedang aktif
+  // Siswa dengan Order ID Kumpulan PRD hanya menampilkan 1 modul miliknya (Sesuai Alur Sistem Foto 1 & 2)
+  const activeOrderId = localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
+  const activeEmail = localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+
+  let memberModules = [];
+  if (typeof filterModulesForCurrentStudent === 'function') {
+    memberModules = filterModulesForCurrentStudent(allModules, activeOrderId, activeEmail);
+  }
+  if (!Array.isArray(memberModules) || memberModules.length === 0) {
+    // Fallback: Jika member memiliki order PRD, filter modul PRD
+    memberModules = allModules.filter(m => {
+      const title = (m.Judul_Modul || '').toLowerCase();
+      const desc = (m.Deskripsi || '').toLowerCase();
+      return title.includes('prd') || desc.includes('prd');
+    });
+    if (memberModules.length === 0) {
+      memberModules = allModules.slice(0, 1);
+    }
+  }
+
+  const totalCount = memberModules.length;
   let kelasCount = 0;
   let dokumenCount = 0;
 
-  allModules.forEach(m => {
+  memberModules.forEach(m => {
     const isDoc = (m.Tipe_Badge || m.Kategori || '').toLowerCase().includes('dokumen') ||
                   (m.Tipe_Konten || '').toLowerCase().includes('pdf') ||
                   (m.Tipe_Konten || '').toLowerCase().includes('template') ||
@@ -9141,7 +9162,7 @@ function renderMainMemberDashboardModules(filterCategory, searchQuery) {
 
   // Render HTML kartu dinamis dari database modul CRM
   const generateCardsHtml = () => {
-    return allModules.map(m => {
+    return memberModules.map(m => {
       const isDoc = (m.Tipe_Badge || m.Kategori || '').toLowerCase().includes('dokumen') ||
                     (m.Tipe_Konten || '').toLowerCase().includes('pdf') ||
                     (m.Tipe_Konten || '').toLowerCase().includes('template') ||
@@ -9183,3 +9204,62 @@ function renderMainMemberDashboardModules(filterCategory, searchQuery) {
   if (searchQuery) filterMainMemberSearch(searchQuery);
 }
 window.renderMainMemberDashboardModules = renderMainMemberDashboardModules;
+
+
+// ============================================================================
+// THEME MANAGER ENGINE (MODE TERANG & GELAP SESUAI DESAIN UI/UX)
+// Mendukung Mode Terang (Default Warm Pastel Tech) & Mode Gelap
+// ============================================================================
+function initAppTheme() {
+  const savedTheme = localStorage.getItem('nexstore_theme') || 'light';
+  applyAppTheme(savedTheme);
+}
+
+function applyAppTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  if (isDark) {
+    document.body.classList.add('dark-theme');
+    document.body.classList.remove('light-theme');
+  } else {
+    document.body.classList.remove('dark-theme');
+    document.body.classList.add('light-theme');
+  }
+
+  // Update seluruh tombol toggle mode terang & gelap di semua navbar
+  document.querySelectorAll('.btn-theme-toggle').forEach(btn => {
+    const icon = btn.querySelector('.theme-toggle-icon');
+    const label = btn.querySelector('.theme-toggle-label');
+    if (isDark) {
+      if (icon) icon.textContent = '🌙';
+      if (label) label.textContent = 'Mode Gelap';
+      btn.title = 'Beralih ke Mode Terang (Warm Pastel Tech)';
+    } else {
+      if (icon) icon.textContent = '☀️';
+      if (label) label.textContent = 'Mode Terang';
+      btn.title = 'Beralih ke Mode Gelap';
+    }
+  });
+}
+
+function toggleAppTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || (document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+  const next = current === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('nexstore_theme', next);
+  applyAppTheme(next);
+  if (typeof showToast === 'function') {
+    showToast(next === 'dark' ? '🌙 Beralih ke Mode Gelap' : '☀️ Beralih ke Mode Terang (Warm Pastel Tech)', 'info', 2200);
+  }
+}
+window.initAppTheme = initAppTheme;
+window.applyAppTheme = applyAppTheme;
+window.toggleAppTheme = toggleAppTheme;
+
+// Inisialisasi tema saat skrip dimuat agar bebas kedip
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAppTheme);
+  } else {
+    initAppTheme();
+  }
+}
