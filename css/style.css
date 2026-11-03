@@ -9858,160 +9858,75 @@ body,
 
 
 /* ==========================================================================
-   TURN 25 COMPREHENSIVE 100% FULL-SITE THEME ENGINE (MODE TERANG & GELAP MENYELURUH)
+   TURN 26 COMPREHENSIVE 100% FULL-SITE THEME ENGINE (FIX SEMUA 3 FOTO USER)
    Sesuai Permintaan: Mode Terang & Gelap Berjalan Otomatis ke Seluruh Halaman Website!
    Mengikuti Panduan Desain UI/UX (Warm Pastel Tech #FF2E63, #0F172A, #FBF9F5 & Deep Navy #0B132B, #131F37)
-   Mencakup: Landing Page, Hero, Portals, Dashboard Member Area, dan Semua Modal Dialog
+   Mencakup:
+   - Foto 1: Ruang BelajarKu (rb-card & 2 kartu perk download & mentor tidak lagi putih di dark mode)
+   - Foto 2: Member Area (member-quick-access-card tidak lagi gelap/hitam di light mode)
+   - Foto 3: Landing Page Hero Counters (4 metric-card tidak lagi putih di dark mode)
+   - Serta seluruh Portals, Modals, Sections, dan Footer
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. PORTAL RUANG BELAJARKU & PAMERAN KARYA (MODE TERANG & MODE GELAP)
+   1. LANDING PAGE HERO COUNTERS (FOTO 3 USER REFERENCE)
+   Mode Terang: #FFFFFF Card, #0F172A Text
+   Mode Gelap: #131F37 Card, #FFFFFF Text
    -------------------------------------------------------------------------- */
-/* Mode Terang (Default Warm Pastel Tech) */
-.classroom-portal-wrapper,
-[data-theme="light"] .classroom-portal-wrapper,
-body.light-theme .classroom-portal-wrapper {
-  background: #F8FAFC !important;
-  color: #0F172A !important;
-}
-
-.classroom-portal-nav,
-[data-theme="light"] .classroom-portal-nav,
-body.light-theme .classroom-portal-nav {
-  background: rgba(255, 255, 255, 0.96) !important;
-  border-bottom: 1px solid #E2E8F0 !important;
-  color: #0F172A !important;
-}
-
-.classroom-brand .brand-name-text,
-.pameran-brand-name-text,
-[data-theme="light"] .classroom-brand .brand-name-text,
-[data-theme="light"] .pameran-brand-name-text,
-body.light-theme .classroom-brand .brand-name-text,
-body.light-theme .pameran-brand-name-text {
-  color: #0F172A !important;
-}
-
-.cls-tab-link,
-[data-theme="light"] .cls-tab-link,
-body.light-theme .cls-tab-link {
-  color: #64748B !important;
-  background: transparent !important;
-}
-
-.cls-tab-link:hover:not(.active),
-[data-theme="light"] .cls-tab-link:hover:not(.active),
-body.light-theme .cls-tab-link:hover:not(.active) {
-  color: #FF2E63 !important;
-  background: rgba(255, 46, 99, 0.08) !important;
-}
-
-.pameran-portal-wrapper,
-[data-theme="light"] .pameran-portal-wrapper,
-body.light-theme .pameran-portal-wrapper {
-  background: #FBF9F5 !important;
-  color: #0F172A !important;
-}
-
-.pameran-portal-nav,
-[data-theme="light"] .pameran-portal-nav,
-body.light-theme .pameran-portal-nav {
+.metric-card,
+[data-theme="light"] .metric-card,
+body.light-theme .metric-card {
   background: #FFFFFF !important;
-  border-bottom: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05), 0 4px 10px -2px rgba(15, 23, 42, 0.02) !important;
+}
+
+.metric-card .metric-number,
+[data-theme="light"] .metric-card .metric-number,
+body.light-theme .metric-card .metric-number {
   color: #0F172A !important;
 }
 
-.pameran-hero-card,
-[data-theme="light"] .pameran-hero-card,
-body.light-theme .pameran-hero-card {
-  background: #FFFFFF !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
-}
-
-.pameran-hero-card h1,
-[data-theme="light"] .pameran-hero-card h1,
-body.light-theme .pameran-hero-card h1 {
+.metric-card .metric-label,
+[data-theme="light"] .metric-card .metric-label,
+body.light-theme .metric-card .metric-label {
   color: #0F172A !important;
 }
 
-/* Mode Gelap Portals */
-[data-theme="dark"] .classroom-portal-wrapper,
-body.dark-theme .classroom-portal-wrapper {
-  background: #0B132B !important;
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .classroom-portal-nav,
-body.dark-theme .classroom-portal-nav {
-  background: rgba(11, 19, 43, 0.96) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .classroom-brand .brand-name-text,
-[data-theme="dark"] .pameran-brand-name-text,
-body.dark-theme .classroom-brand .brand-name-text,
-body.dark-theme .pameran-brand-name-text {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .cls-tab-link,
-body.dark-theme .cls-tab-link {
-  color: #CBD5E1 !important;
-}
-
-[data-theme="dark"] .cls-tab-link:hover:not(.active),
-body.dark-theme .cls-tab-link:hover:not(.active) {
-  color: #FF2E63 !important;
-  background: rgba(255, 46, 99, 0.15) !important;
-}
-
-[data-theme="dark"] .pameran-portal-wrapper,
-body.dark-theme .pameran-portal-wrapper {
-  background: #0B132B !important;
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .pameran-portal-nav,
-body.dark-theme .pameran-portal-nav {
-  background: rgba(11, 19, 43, 0.96) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .pameran-hero-card,
-body.dark-theme .pameran-hero-card {
+[data-theme="dark"] .metric-card,
+body.dark-theme .metric-card {
   background: #131F37 !important;
+  color: #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .metric-card .metric-number,
+body.dark-theme .metric-card .metric-number {
   color: #FFFFFF !important;
 }
 
-[data-theme="dark"] .pameran-hero-card h1,
-body.dark-theme .pameran-hero-card h1 {
+[data-theme="dark"] .metric-card .metric-label,
+body.dark-theme .metric-card .metric-label {
   color: #FFFFFF !important;
 }
 
-/* Active Tab Link (Selalu Putih #FFFFFF di Atas Hot Pink #FF2E63) */
-.classroom-top-links a.active,
-.classroom-top-links li a.active,
-.cls-tab-link.active,
-#tab-link-home.active,
-#tab-link-kelas.active {
-  background: #FF2E63 !important;
-  border-color: #FF2E63 !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-  font-weight: 700 !important;
-  box-shadow: 0 4px 12px rgba(255, 46, 99, 0.35) !important;
+[data-theme="dark"] .metric-card div[style*="color:#64748B"],
+body.dark-theme .metric-card div[style*="color:#64748B"] {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] div[style*="background: var(--wave-pink)"],
+body.dark-theme div[style*="background: var(--wave-pink)"] {
+  background: #0B132B !important;
 }
 
 
 /* --------------------------------------------------------------------------
-   2. DASHBOARD MEMBER AREA VIEW (FOTO 1 USER REFERENCE)
-   Mode Terang: Bersih, Warm Pastel Tech (#FBF9F5 & Card #FFFFFF)
-   Mode Gelap: Mewah, Deep Navy Tech (#0B132B & Card #131F37)
+   2. DASHBOARD MEMBER AREA & AKSES CEPAT (FOTO 2 USER REFERENCE)
+   Mode Terang: Bersih, Warm Pastel Tech (#FBF9F5, Card #FFFFFF)
+   Mode Gelap: Mewah, Deep Navy Tech (#0B132B, Card #131F37)
    -------------------------------------------------------------------------- */
 /* Mode Terang Dashboard Member Area */
 .main-member-area-dashboard,
@@ -10241,6 +10156,56 @@ body.light-theme .member-profile-widget-card .btn-account-settings:hover {
   color: #FF2E63 !important;
 }
 
+/* KARTU AKSES CEPAT MEMBER (FOTO 2) */
+.member-quick-access-card,
+[data-theme="light"] .member-quick-access-card,
+body.light-theme .member-quick-access-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05) !important;
+  color: #0F172A !important;
+}
+
+.quick-access-title,
+[data-theme="light"] .quick-access-title,
+body.light-theme .quick-access-title {
+  color: #64748B !important;
+}
+
+.quick-access-item,
+[data-theme="light"] .quick-access-item,
+body.light-theme .quick-access-item {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.quick-access-item:hover,
+[data-theme="light"] .quick-access-item:hover,
+body.light-theme .quick-access-item:hover {
+  background: #FFF1F4 !important;
+  border-color: #FF2E63 !important;
+  transform: translateX(3px) !important;
+}
+
+.qa-item-title,
+[data-theme="light"] .qa-item-title,
+body.light-theme .qa-item-title {
+  color: #0F172A !important;
+}
+
+.qa-item-subtitle,
+[data-theme="light"] .qa-item-subtitle,
+body.light-theme .qa-item-subtitle {
+  color: #64748B !important;
+}
+
+.qa-chevron,
+[data-theme="light"] .qa-chevron,
+body.light-theme .qa-chevron {
+  color: #94A3B8 !important;
+}
+
 /* Mode Gelap Dashboard Member Area */
 [data-theme="dark"] .main-member-area-dashboard,
 body.dark-theme .main-member-area-dashboard {
@@ -10412,9 +10377,427 @@ body.dark-theme .member-profile-widget-card .btn-account-settings:hover {
   border-color: #FF2E63 !important;
 }
 
+[data-theme="dark"] .member-quick-access-card,
+body.dark-theme .member-quick-access-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .quick-access-title,
+body.dark-theme .quick-access-title {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .quick-access-item,
+body.dark-theme .quick-access-item {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .quick-access-item:hover,
+body.dark-theme .quick-access-item:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+[data-theme="dark"] .qa-item-title,
+body.dark-theme .qa-item-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .qa-item-subtitle,
+body.dark-theme .qa-item-subtitle {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .qa-chevron,
+body.dark-theme .qa-chevron {
+  color: #94A3B8 !important;
+}
+
 
 /* --------------------------------------------------------------------------
-   3. SEMUA MODAL DIALOG (FOTO 2 USER REFERENCE & ALL MODALS)
+   3. PORTAL RUANG BELAJARKU (FOTO 1 USER REFERENCE)
+   Mode Terang: #FFFFFF Card, #0F172A Text
+   Mode Gelap: #131F37 Card, #FFFFFF Text (Termasuk rb-card & perk cards!)
+   -------------------------------------------------------------------------- */
+/* Mode Terang Ruang BelajarKu */
+.classroom-portal-wrapper,
+[data-theme="light"] .classroom-portal-wrapper,
+body.light-theme .classroom-portal-wrapper {
+  background: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+.classroom-portal-nav,
+[data-theme="light"] .classroom-portal-nav,
+body.light-theme .classroom-portal-nav {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.classroom-brand .brand-name-text,
+[data-theme="light"] .classroom-brand .brand-name-text,
+body.light-theme .classroom-brand .brand-name-text {
+  color: #0F172A !important;
+}
+
+.cls-tab-link,
+[data-theme="light"] .cls-tab-link,
+body.light-theme .cls-tab-link {
+  color: #64748B !important;
+  background: transparent !important;
+}
+
+.cls-tab-link:hover:not(.active),
+[data-theme="light"] .cls-tab-link:hover:not(.active),
+body.light-theme .cls-tab-link:hover:not(.active) {
+  color: #FF2E63 !important;
+  background: rgba(255, 46, 99, 0.08) !important;
+}
+
+.rb-card,
+[data-theme="light"] .rb-card,
+body.light-theme .rb-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05) !important;
+  color: #0F172A !important;
+}
+
+.rb-card .rb-card-title,
+[data-theme="light"] .rb-card .rb-card-title,
+body.light-theme .rb-card .rb-card-title {
+  color: #0F172A !important;
+}
+
+.rb-card .rb-card-desc,
+[data-theme="light"] .rb-card .rb-card-desc,
+body.light-theme .rb-card .rb-card-desc {
+  color: #64748B !important;
+}
+
+.classroom-perk-card,
+[data-theme="light"] .classroom-perk-card,
+body.light-theme .classroom-perk-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05) !important;
+  color: #0F172A !important;
+}
+
+.classroom-perk-card h4,
+[data-theme="light"] .classroom-perk-card h4,
+body.light-theme .classroom-perk-card h4 {
+  color: #0F172A !important;
+}
+
+.classroom-perk-card p,
+[data-theme="light"] .classroom-perk-card p,
+body.light-theme .classroom-perk-card p {
+  color: #64748B !important;
+}
+
+.rb-pill,
+[data-theme="light"] .rb-pill,
+body.light-theme .rb-pill {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #64748B !important;
+}
+
+.rb-pill.active,
+[data-theme="light"] .rb-pill.active,
+body.light-theme .rb-pill.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+/* Mode Gelap Ruang BelajarKu (rb-card & perk cards 100% GELAP ELEGAN) */
+[data-theme="dark"] .classroom-portal-wrapper,
+body.dark-theme .classroom-portal-wrapper {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-portal-nav,
+body.dark-theme .classroom-portal-nav {
+  background: rgba(11, 19, 43, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-brand .brand-name-text,
+body.dark-theme .classroom-brand .brand-name-text {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .cls-tab-link,
+body.dark-theme .cls-tab-link {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .cls-tab-link:hover:not(.active),
+body.dark-theme .cls-tab-link:hover:not(.active) {
+  color: #FF2E63 !important;
+  background: rgba(255, 46, 99, 0.15) !important;
+}
+
+[data-theme="dark"] .rb-card,
+body.dark-theme .rb-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rb-card .rb-card-title,
+body.dark-theme .rb-card .rb-card-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rb-card .rb-card-desc,
+body.dark-theme .rb-card .rb-card-desc {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .rb-card .rb-card-meta,
+body.dark-theme .rb-card .rb-card-meta {
+  color: #64748B !important;
+}
+
+[data-theme="dark"] .rb-badge-right,
+body.dark-theme .rb-badge-right {
+  background: #1E293B !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .classroom-perk-card,
+body.dark-theme .classroom-perk-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-perk-card h4,
+body.dark-theme .classroom-perk-card h4 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-perk-card p,
+body.dark-theme .classroom-perk-card p {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .classroom-perk-card .btn-secondary,
+body.dark-theme .classroom-perk-card .btn-secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .rb-pill,
+body.dark-theme .rb-pill {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .rb-pill.active,
+body.dark-theme .rb-pill.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+/* Active Tab Link (Selalu Putih #FFFFFF di Atas Hot Pink #FF2E63) */
+.classroom-top-links a.active,
+.classroom-top-links li a.active,
+.cls-tab-link.active,
+#tab-link-home.active,
+#tab-link-kelas.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(255, 46, 99, 0.35) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. PORTAL PAMERAN KARYA NYATA
+   Mode Terang: #FFFFFF Card, #0F172A Text
+   Mode Gelap: #131F37 Card, #FFFFFF Text
+   -------------------------------------------------------------------------- */
+.pameran-portal-wrapper,
+[data-theme="light"] .pameran-portal-wrapper,
+body.light-theme .pameran-portal-wrapper {
+  background: #FBF9F5 !important;
+  color: #0F172A !important;
+}
+
+.pameran-portal-nav,
+[data-theme="light"] .pameran-portal-nav,
+body.light-theme .pameran-portal-nav {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.pameran-brand-name-text,
+[data-theme="light"] .pameran-brand-name-text,
+body.light-theme .pameran-brand-name-text {
+  color: #0F172A !important;
+}
+
+.pameran-hero-card,
+[data-theme="light"] .pameran-hero-card,
+body.light-theme .pameran-hero-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  color: #0F172A !important;
+}
+
+.pameran-hero-card h1,
+[data-theme="light"] .pameran-hero-card h1,
+body.light-theme .pameran-hero-card h1 {
+  color: #0F172A !important;
+}
+
+.pameran-section-block,
+[data-theme="light"] .pameran-section-block,
+body.light-theme .pameran-section-block {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05) !important;
+  color: #0F172A !important;
+}
+
+.pameran-card,
+[data-theme="light"] .pameran-card,
+body.light-theme .pameran-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  color: #0F172A !important;
+}
+
+.pameran-filter-btn,
+[data-theme="light"] .pameran-filter-btn,
+body.light-theme .pameran-filter-btn {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #64748B !important;
+}
+
+.pameran-filter-btn.active,
+[data-theme="light"] .pameran-filter-btn.active,
+body.light-theme .pameran-filter-btn.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+}
+
+/* Mode Gelap Pameran Karya */
+[data-theme="dark"] .pameran-portal-wrapper,
+body.dark-theme .pameran-portal-wrapper {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-portal-nav,
+body.dark-theme .pameran-portal-nav {
+  background: rgba(11, 19, 43, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-brand-name-text,
+body.dark-theme .pameran-brand-name-text {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-hero-card,
+body.dark-theme .pameran-hero-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-hero-card h1,
+body.dark-theme .pameran-hero-card h1 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-section-block,
+body.dark-theme .pameran-section-block {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-card,
+body.dark-theme .pameran-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-banner-open,
+body.dark-theme .pameran-banner-open {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-banner-open p,
+body.dark-theme .pameran-banner-open p {
+  color: #A7F3D0 !important;
+}
+
+[data-theme="dark"] .pameran-banner-reward,
+body.dark-theme .pameran-banner-reward {
+  background: rgba(255, 46, 99, 0.15) !important;
+  border: 1px solid rgba(255, 46, 99, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-banner-reward p,
+body.dark-theme .pameran-banner-reward p {
+  color: #FDA4AF !important;
+}
+
+[data-theme="dark"] .pameran-filter-btn,
+body.dark-theme .pameran-filter-btn {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .pameran-filter-btn.active,
+body.dark-theme .pameran-filter-btn.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. SEMUA MODAL DIALOG
    Mode Terang: Permukaan Putih Bersih (#FFFFFF), Teks Kontras (#0F172A)
    Mode Gelap: Permukaan Deep Navy (#131F37), Teks Putih Bersih (#FFFFFF)
    -------------------------------------------------------------------------- */
@@ -10789,7 +11172,7 @@ body.dark-theme .doc-reader-pre {
 
 
 /* --------------------------------------------------------------------------
-   4. MEMBER PROFILE CHIP & GENERAL SECONDARY BUTTONS
+   6. MEMBER PROFILE CHIP & GENERAL SECONDARY BUTTONS
    -------------------------------------------------------------------------- */
 [data-theme="dark"] .member-profile-nav-chip,
 body.dark-theme .member-profile-nav-chip {
