@@ -561,36 +561,37 @@
        BOOTCAMP & KELAS LIVE (Sesuai Foto 4)
        ======================================================================== -->
   <section class="section-wrapper" id="bootcamp" style="background: var(--canvas-bg); padding-top:40px;">
-    <div class="section-title-wrap">
-      <div class="section-eyebrow" style="color:#FF2E63; font-weight:800; letter-spacing:1px;">PROGRAM INTENSIF</div>
-      <h2 class="section-heading" style="color:var(--deep-navy);">Bootcamp &amp; Kelas Live 🔥</h2>
-      <p style="color:var(--text-muted); margin-top:8px; max-width:640px; margin-left:auto; margin-right:auto;">
+    <!-- Judul & Subtitle Sesuai Permintaan User: Ramping, Proporsional, Pojok Sebelah Kiri -->
+    <div class="section-title-wrap" style="text-align: left; margin: 0 0 20px 0; max-width: 680px;">
+      <div class="section-eyebrow" style="color:#FF2E63; font-weight:800; letter-spacing:1px; font-size:11.5px; margin-bottom:4px;">PROGRAM INTENSIF</div>
+      <h2 style="color:var(--deep-navy); font-size:24px; font-weight:800; margin:0 0 8px; line-height:1.25;">Bootcamp &amp; Kelas Live 🔥</h2>
+      <p style="color:var(--text-muted); margin:0; font-size:13.5px; line-height:1.5; max-width:620px;">
         Belajar terjadwal bersama mentor. Daftar lewat Lynk.id / WhatsApp, lalu masuk dengan token akses yang Anda terima.
       </p>
     </div>
 
-    <!-- Centered Card matching Photo 4 (Ukuran Ramping & Proporsional) -->
-    <div class="bootcamp-card-wrap">
-      <div class="bootcamp-card">
+    <!-- Kartu Bootcamp Sesuai Permintaan User: Pojok Sebelah Kiri, Ukuran Ramping Proporsional -->
+    <div class="bootcamp-card-wrap" style="justify-content: flex-start; margin-left: 0; margin-right: auto;">
+      <div class="bootcamp-card" style="margin: 0; max-width: 380px;">
         <div class="bootcamp-thumb-box">
           <img id="front-bc-banner-img" src="assets/hero/hero-slide-3.jpg" alt="BootCamp Batch 1" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80';">
           <span class="bootcamp-badge-gold" id="front-bc-badge-txt">⚡ Pendaftaran Dibuka</span>
-          <span class="bootcamp-badge-duration" id="front-bc-duration-txt">⏱️ 4 pertemuan</span>
+          <span class="bootcamp-badge-duration" id="front-bc-duration-txt">🎓 4 pertemuan</span>
         </div>
         <div class="bootcamp-content">
-          <h3 class="bootcamp-title" id="front-bc-title-txt">BootCamp Batch 1 (NOVEMBER)</h3>
-          <div class="bootcamp-meta-row" id="front-bc-schedule-txt">
+          <h3 class="bootcamp-title" id="front-bc-title-txt" style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">BootCamp Batch 1 (NOVEMBER)</h3>
+          <div class="bootcamp-meta-row" id="front-bc-schedule-txt" style="font-size: 12px; margin-bottom: 10px;">
             <span>🕒 Mulai Minggu, 8 Nov 2026 • 19.30 WIB</span>
           </div>
-          <div class="bootcamp-price-tag" id="front-bc-price-txt">
+          <div class="bootcamp-price-tag" id="front-bc-price-txt" style="font-size: 18px; font-weight: 800; margin-bottom: 14px;">
             Rp 299.000
           </div>
-          <!-- Tombol Lihat Detail & Beli Sekarang! Sesuai Permintaan Foto 3 & 4 -->
+          <!-- Tombol Lihat Detail & Beli Sekarang! Sesuai Permintaan User -->
           <div style="display:flex; gap:10px; margin-top:auto;">
-            <button class="btn-secondary" style="flex:1; padding:10px 14px; font-size:12.5px; font-weight:700; border-radius:10px; justify-content:center;" onclick="openBootcampDetailModal()">
+            <button type="button" class="btn-secondary" style="flex:1; padding:9px 12px; font-size:12px; font-weight:700; border-radius:10px; justify-content:center; cursor:pointer;" onclick="openBootcampDetailModal()">
               🔍 Lihat Detail
             </button>
-            <button class="shimmer-btn" style="flex:1.2; padding:10px 16px; font-size:12.5px; font-weight:800; border-radius:10px; justify-content:center;" onclick="handleBootcampBuyNow()">
+            <button type="button" class="shimmer-btn" style="flex:1.2; padding:9px 14px; font-size:12px; font-weight:800; border-radius:10px; justify-content:center; cursor:pointer;" onclick="handleBootcampBuyNow()">
               Beli Sekarang! 🚀
             </button>
           </div>
@@ -4550,8 +4551,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
   <!-- ========================================================================
        MODAL DETAIL BOOTCAMP (Persis Tampilan Foto 5)
        ======================================================================== -->
-  <div class="modal-overlay" id="modal-bootcamp-detail" style="display:none; align-items:center; justify-content:center; z-index:9999;">
-    <div class="modal-bootcamp-detail-dialog">
+  <div class="modal-overlay" id="modal-bootcamp-detail" style="display:none; align-items:center; justify-content:center; z-index:20000;" onclick="if(event.target === this) closeBootcampDetailModal()">
+    <div class="modal-bootcamp-detail-dialog" onclick="event.stopPropagation()">
       <!-- Left Column: Blurred aesthetic backdrop & banner preview -->
       <div class="modal-bc-left">
         <div class="modal-bc-left-blur" id="modal-bc-blur-bg" style="background-image:url('assets/hero/hero-slide-3.jpg');"></div>
@@ -4564,7 +4565,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
       <div class="modal-bc-right">
         <div class="modal-bc-header-row">
           <span class="modal-bc-status-pill" id="modal-bc-status-badge">Pendaftaran dibuka</span>
-          <button onclick="closeBootcampDetailModal()" style="background:none; border:none; color:#94A3B8; font-size:22px; cursor:pointer; padding:4px; line-height:1;">✕</button>
+          <button type="button" class="modal-close-btn" onclick="closeBootcampDetailModal()" style="background:none; border:none; color:#94A3B8; font-size:22px; cursor:pointer; padding:4px; line-height:1;" title="Tutup">&times;</button>
         </div>
 
         <h2 class="modal-bc-title" id="modal-bc-title">BootCamp Batch 1 (NOVEMBER)</h2>
@@ -4660,10 +4661,10 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
 
         <!-- Action Buttons (Foto 5) -->
         <div class="modal-bc-actions">
-          <button class="shimmer-btn" style="flex:1.4; padding:12px; font-size:13.5px; font-weight:800; justify-content:center; border-radius:10px;" onclick="handleBootcampBuyNow()">
-            🛍️ Beli Token di Lynk.id / Beli Sekarang!
+          <button type="button" class="shimmer-btn" style="flex:1.4; padding:12px; font-size:13.5px; font-weight:800; justify-content:center; border-radius:10px; cursor:pointer;" onclick="handleBootcampBuyNow()">
+            🛍️ Beli Token di Lynk.id
           </button>
-          <button class="btn-secondary" style="flex:1; padding:12px; font-size:12.5px; font-weight:700; border-radius:10px; color:#FFFFFF; border-color:rgba(255,255,255,0.25);" onclick="closeBootcampDetailModal(); openRedeemModal();">
+          <button type="button" class="btn-secondary" style="flex:1; padding:12px; font-size:12.5px; font-weight:700; border-radius:10px; cursor:pointer;" onclick="closeBootcampDetailModal(); openRedeemModal();">
             Sudah punya token? Daftar
           </button>
         </div>

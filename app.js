@@ -8580,7 +8580,7 @@ function saveThumballSettings(e) {
 }
 
 // ----------------------------------------------------------------------------
-// BOOTCAMP SETTINGS & MODAL ENGINE
+// BOOTCAMP SETTINGS & MODAL ENGINE (SESUAI FOTO 1 & 2 REFERENCE)
 // ----------------------------------------------------------------------------
 function getBootcampData() {
   try {
@@ -8598,13 +8598,13 @@ function applyBootcampDataToDom() {
   if (frontBadge) frontBadge.textContent = bc.badge || '⚡ Pendaftaran Dibuka';
 
   const frontDuration = document.getElementById('front-bc-duration-txt');
-  if (frontDuration) frontDuration.textContent = bc.duration || '⏱️ 4 pertemuan';
+  if (frontDuration) frontDuration.textContent = bc.duration || '🎓 4 pertemuan';
 
   const frontTitle = document.getElementById('front-bc-title-txt');
-  if (frontTitle) frontTitle.textContent = bc.title;
+  if (frontTitle) frontTitle.textContent = bc.title || DEFAULT_BOOTCAMP_DATA.title;
 
   const frontSchedule = document.getElementById('front-bc-schedule-txt');
-  if (frontSchedule) frontSchedule.innerHTML = '<span>' + escapeHtml(bc.schedule) + '</span>';
+  if (frontSchedule) frontSchedule.innerHTML = '<span>' + escapeHtml(bc.schedule || DEFAULT_BOOTCAMP_DATA.schedule) + '</span>';
 
   const frontPrice = document.getElementById('front-bc-price-txt');
   if (frontPrice) frontPrice.textContent = 'Rp ' + Number(bc.pricePromo || 299000).toLocaleString('id-ID');
@@ -8612,15 +8612,18 @@ function applyBootcampDataToDom() {
   const frontBanner = document.getElementById('front-bc-banner-img');
   if (frontBanner && bc.bannerUrl) frontBanner.src = formatImageUrl(bc.bannerUrl);
 
-  // Detail Modal Elements
+  // Detail Modal Elements (Foto 2 Reference)
   const modalTitle = document.getElementById('modal-bc-title');
-  if (modalTitle) modalTitle.textContent = bc.title;
+  if (modalTitle) modalTitle.textContent = bc.title || DEFAULT_BOOTCAMP_DATA.title;
 
   const modalBadge = document.getElementById('modal-bc-status-badge');
-  if (modalBadge) modalBadge.textContent = bc.badge.replace(/[⚡🔥]/g, '').trim() || 'Pendaftaran dibuka';
+  if (modalBadge) {
+    const rawBadge = (bc.badge || 'Pendaftaran dibuka').replace(/[⚡✨⭐💻🚀🎓]/gu, '').trim();
+    modalBadge.textContent = rawBadge || 'Pendaftaran dibuka';
+  }
 
   const modalInvest = document.getElementById('modal-bc-investasi');
-  if (modalInvest) modalInvest.textContent = bc.pricePromo;
+  if (modalInvest) modalInvest.textContent = bc.pricePromo || 299000;
 
   const modalMeetings = document.getElementById('modal-bc-pertemuan');
   if (modalMeetings) modalMeetings.textContent = bc.meetings || '4x live (WIB)';
@@ -8634,10 +8637,11 @@ function applyBootcampDataToDom() {
   const modalBlur = document.getElementById('modal-bc-blur-bg');
   if (modalBlur && bc.bannerUrl) modalBlur.style.backgroundImage = 'url("' + formatImageUrl(bc.bannerUrl) + '")';
 
-  // Classes list
+  // Classes list (Foto 2 Reference)
   const classListEl = document.getElementById('modal-bc-class-list');
-  if (classListEl && Array.isArray(bc.classes)) {
-    classListEl.innerHTML = bc.classes.map(c => `
+  const classItems = (Array.isArray(bc.classes) && bc.classes.length > 0) ? bc.classes : DEFAULT_BOOTCAMP_DATA.classes;
+  if (classListEl && classItems) {
+    classListEl.innerHTML = classItems.map(c => `
       <li class="modal-bc-class-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         <span>${escapeHtml(c)}</span>
@@ -8645,30 +8649,50 @@ function applyBootcampDataToDom() {
     `).join('');
   }
 
+  // Curriculum list (Foto 2 Reference)
+  const scheduleListEl = document.getElementById('modal-bc-schedule-list');
+  const curriculumItems = (Array.isArray(bc.curriculum) && bc.curriculum.length > 0) ? bc.curriculum : DEFAULT_BOOTCAMP_DATA.curriculum;
+  if (scheduleListEl && curriculumItems) {
+    scheduleListEl.innerHTML = curriculumItems.map((curr, idx) => `
+      <div class="modal-bc-schedule-box">
+        <div class="modal-bc-schedule-num">${curr.num || (idx + 1)}</div>
+        <div class="modal-bc-schedule-details">
+          <div class="modal-bc-schedule-title">${escapeHtml(curr.title || ('Pertemuan ' + (idx + 1)))}</div>
+          <div class="modal-bc-schedule-time">${escapeHtml(curr.time || '')}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
   // Populate CRM Bootcamp Form if present
   const crmBadge = document.getElementById('crm-bc-badge');
-  if (crmBadge) crmBadge.value = bc.badge;
+  if (crmBadge && !crmBadge.value) crmBadge.value = bc.badge || DEFAULT_BOOTCAMP_DATA.badge;
   const crmTitle = document.getElementById('crm-bc-title');
-  if (crmTitle) crmTitle.value = bc.title;
+  if (crmTitle && !crmTitle.value) crmTitle.value = bc.title || DEFAULT_BOOTCAMP_DATA.title;
   const crmPricePromo = document.getElementById('crm-bc-price-promo');
-  if (crmPricePromo) crmPricePromo.value = bc.pricePromo;
+  if (crmPricePromo && !crmPricePromo.value) crmPricePromo.value = bc.pricePromo || DEFAULT_BOOTCAMP_DATA.pricePromo;
   const crmPriceNormal = document.getElementById('crm-bc-price-normal');
-  if (crmPriceNormal) crmPriceNormal.value = bc.priceNormal;
+  if (crmPriceNormal && !crmPriceNormal.value) crmPriceNormal.value = bc.priceNormal || DEFAULT_BOOTCAMP_DATA.priceNormal;
   const crmQuota = document.getElementById('crm-bc-quota');
-  if (crmQuota) crmQuota.value = bc.quota;
+  if (crmQuota && !crmQuota.value) crmQuota.value = bc.quota || DEFAULT_BOOTCAMP_DATA.quota;
   const crmMeetings = document.getElementById('crm-bc-meetings');
-  if (crmMeetings) crmMeetings.value = bc.meetings;
+  if (crmMeetings && !crmMeetings.value) crmMeetings.value = bc.meetings || DEFAULT_BOOTCAMP_DATA.meetings;
   const crmSchedule = document.getElementById('crm-bc-schedule');
-  if (crmSchedule) crmSchedule.value = bc.schedule;
+  if (crmSchedule && !crmSchedule.value) crmSchedule.value = bc.schedule || DEFAULT_BOOTCAMP_DATA.schedule;
   const crmBuyUrl = document.getElementById('crm-bc-buy-url');
-  if (crmBuyUrl) crmBuyUrl.value = bc.buyUrl;
+  if (crmBuyUrl && !crmBuyUrl.value) crmBuyUrl.value = bc.buyUrl || DEFAULT_BOOTCAMP_DATA.buyUrl;
   const crmBannerUrl = document.getElementById('crm-bc-banner-url');
-  if (crmBannerUrl) crmBannerUrl.value = bc.bannerUrl;
+  if (crmBannerUrl && !crmBannerUrl.value) crmBannerUrl.value = bc.bannerUrl || DEFAULT_BOOTCAMP_DATA.bannerUrl;
   const crmBannerPrev = document.getElementById('crm-bc-banner-preview');
-  if (crmBannerPrev) crmBannerPrev.src = formatImageUrl(bc.bannerUrl);
+  if (crmBannerPrev) crmBannerPrev.src = formatImageUrl(bc.bannerUrl || DEFAULT_BOOTCAMP_DATA.bannerUrl);
 
   const crmClasses = document.getElementById('crm-bc-classes');
-  if (crmClasses && Array.isArray(bc.classes)) crmClasses.value = bc.classes.join('\n');
+  if (crmClasses && !crmClasses.value) crmClasses.value = classItems.join('\n');
+
+  const crmCurriculum = document.getElementById('crm-bc-curriculum');
+  if (crmCurriculum && !crmCurriculum.value) {
+    crmCurriculum.value = curriculumItems.map(c => `${c.title} | ${c.time}`).join('\n');
+  }
 }
 
 function handleBootcampUrlInput(val) {
@@ -8697,10 +8721,20 @@ function saveBootcampSettings(e) {
   const rawClasses = document.getElementById('crm-bc-classes')?.value || '';
   const classes = rawClasses.split('\n').map(s => s.trim()).filter(Boolean);
 
+  const rawCurriculum = document.getElementById('crm-bc-curriculum')?.value || '';
+  let curriculum = rawCurriculum.split('\n').map(s => s.trim()).filter(Boolean).map((line, idx) => {
+    const parts = line.split('|');
+    if (parts.length >= 2) {
+      return { num: idx + 1, title: parts[0].trim(), time: parts.slice(1).join('|').trim() };
+    }
+    return { num: idx + 1, title: 'Pertemuan ' + (idx + 1), time: line };
+  });
+  if (curriculum.length === 0) curriculum = DEFAULT_BOOTCAMP_DATA.curriculum;
+
   const data = {
     badge: document.getElementById('crm-bc-badge')?.value || DEFAULT_BOOTCAMP_DATA.badge,
     title: document.getElementById('crm-bc-title')?.value || DEFAULT_BOOTCAMP_DATA.title,
-    duration: '⏱️ 4 pertemuan',
+    duration: '🎓 4 pertemuan',
     schedule: document.getElementById('crm-bc-schedule')?.value || DEFAULT_BOOTCAMP_DATA.schedule,
     pricePromo: Number(document.getElementById('crm-bc-price-promo')?.value || 299000),
     priceNormal: Number(document.getElementById('crm-bc-price-normal')?.value || 700000),
@@ -8709,25 +8743,31 @@ function saveBootcampSettings(e) {
     buyUrl: document.getElementById('crm-bc-buy-url')?.value || DEFAULT_BOOTCAMP_DATA.buyUrl,
     bannerUrl: document.getElementById('crm-bc-banner-url')?.value || DEFAULT_BOOTCAMP_DATA.bannerUrl,
     classes: classes.length > 0 ? classes : DEFAULT_BOOTCAMP_DATA.classes,
-    curriculum: DEFAULT_BOOTCAMP_DATA.curriculum
+    curriculum: curriculum
   };
 
   localStorage.setItem('nexstore_bootcamp_data', JSON.stringify(data));
   applyBootcampDataToDom();
-  showToast('Data Bootcamp & Kelas Live berhasil disimpan ke website! ⚡');
+  showToast('Data Bootcamp & Kelas Live berhasil disimpan ke website! 🚀');
 }
 
 function openBootcampDetailModal() {
   const modal = document.getElementById('modal-bootcamp-detail');
   if (modal) {
     applyBootcampDataToDom();
+    modal.classList.add('active');
     modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
   }
 }
 
 function closeBootcampDetailModal() {
   const modal = document.getElementById('modal-bootcamp-detail');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
 }
 
 function handleBootcampBuyNow() {
@@ -8736,6 +8776,15 @@ function handleBootcampBuyNow() {
   window.open(targetUrl, '_blank');
 }
 
+// Global window exposure for inline onclick handlers
+if (typeof window !== 'undefined') {
+  window.openBootcampDetailModal = openBootcampDetailModal;
+  window.closeBootcampDetailModal = closeBootcampDetailModal;
+  window.handleBootcampBuyNow = handleBootcampBuyNow;
+  window.saveBootcampSettings = saveBootcampSettings;
+  window.handleBootcampUrlInput = handleBootcampUrlInput;
+  window.handleBootcampFileInput = handleBootcampFileInput;
+}
 
 // ============================================================================
 // 15. MEMBER AREA HOME & PROFILE MANAGEMENT ENGINE (FOTO 2 & 3 REFERENCE)
@@ -9294,6 +9343,8 @@ if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
   initAppTheme();
   if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules(); // On DOM ready
+  if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
+  if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom();
 });
   } else {
     initAppTheme();

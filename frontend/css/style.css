@@ -8045,16 +8045,18 @@ footer {
   border-radius: 99px !important;
 }
 
-/* 2. BOOTCAMP CARD (Sesuai Ukuran Ramping Foto 4) */
+/* 2. BOOTCAMP CARD (Sesuai Ukuran Ramping & Pojok Kiri Foto 1) */
 .bootcamp-card-wrap {
   display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  margin-top: 20px !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  margin-top: 18px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
   width: 100% !important;
 }
 .bootcamp-card {
-  max-width: 400px !important;
+  max-width: 380px !important;
   width: 100% !important;
   background: #FFFFFF !important;
   border: 1.5px solid rgba(15, 23, 42, 0.1) !important;
@@ -8062,6 +8064,7 @@ footer {
   overflow: hidden !important;
   box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.07) !important;
   transition: all 0.25s ease !important;
+  margin: 0 !important;
 }
 .bootcamp-card:hover {
   transform: translateY(-4px) !important;
@@ -9381,7 +9384,8 @@ footer {
 }
 
 #modal-complete-profile.active,
-#modal-bootcamp-announcement.active {
+#modal-bootcamp-announcement.active,
+#modal-bootcamp-detail.active {
   display: flex !important;
   content-visibility: visible !important;
   opacity: 1 !important;
@@ -11202,4 +11206,127 @@ body.light-theme .btn-vip-order {
   background: #F8FAFC !important;
   color: #0F172A !important;
   border: 1px solid #CBD5E1 !important;
+}
+
+/* ==========================================================================
+   TURN 27: MODAL BOOTCAMP DETAIL THEME STYLES (SESUAI FOTO 2 & DESAIN UI/UX)
+   ========================================================================== */
+[data-theme="light"] .modal-bootcamp-detail-dialog,
+body:not(.dark-theme) .modal-bootcamp-detail-dialog {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25) !important;
+}
+[data-theme="light"] .modal-bc-right,
+body:not(.dark-theme) .modal-bc-right {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+}
+[data-theme="light"] .modal-bc-title,
+body:not(.dark-theme) .modal-bc-title {
+  color: #0F172A !important;
+}
+[data-theme="light"] .modal-bc-metric-item,
+body:not(.dark-theme) .modal-bc-metric-item {
+  background: #F8FAFC !important;
+  border-color: #E2E8F0 !important;
+}
+[data-theme="light"] .modal-bc-metric-label,
+body:not(.dark-theme) .modal-bc-metric-label {
+  color: #64748B !important;
+}
+[data-theme="light"] .modal-bc-metric-val,
+body:not(.dark-theme) .modal-bc-metric-val {
+  color: #0F172A !important;
+}
+[data-theme="light"] .modal-bc-section-title,
+body:not(.dark-theme) .modal-bc-section-title {
+  color: #64748B !important;
+}
+[data-theme="light"] .modal-bc-class-item,
+body:not(.dark-theme) .modal-bc-class-item {
+  background: #F8FAFC !important;
+  color: #334155 !important;
+}
+[data-theme="light"] .modal-bc-schedule-box,
+body:not(.dark-theme) .modal-bc-schedule-box {
+  background: #F8FAFC !important;
+  border-color: #E2E8F0 !important;
+}
+[data-theme="light"] .modal-bc-schedule-title,
+body:not(.dark-theme) .modal-bc-schedule-title {
+  color: #0F172A !important;
+}
+[data-theme="light"] .modal-bc-schedule-time,
+body:not(.dark-theme) .modal-bc-schedule-time {
+  color: #64748B !important;
+}
+[data-theme="light"] .modal-bc-perks-box,
+body:not(.dark-theme) .modal-bc-perks-box {
+  color: #334155 !important;
+}
+[data-theme="light"] .modal-bc-actions .btn-secondary,
+body:not(.dark-theme) .modal-bc-actions .btn-secondary {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .modal-bootcamp-detail-dialog,
+body.dark-theme .modal-bootcamp-detail-dialog {
+  background: #0B1120 !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75) !important;
+}
+[data-theme="dark"] .modal-bc-right,
+body.dark-theme .modal-bc-right {
+  background: #0B1120 !important;
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .modal-bc-title,
+body.dark-theme .modal-bc-title {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .modal-bc-metric-item,
+body.dark-theme .modal-bc-metric-item {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .modal-bc-metric-label,
+body.dark-theme .modal-bc-metric-label {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .modal-bc-metric-val,
+body.dark-theme .modal-bc-metric-val {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .modal-bc-class-item,
+body.dark-theme .modal-bc-class-item {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #CBD5E1 !important;
+}
+[data-theme="dark"] .modal-bc-schedule-box,
+body.dark-theme .modal-bc-schedule-box {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+[data-theme="dark"] .modal-bc-schedule-title,
+body.dark-theme .modal-bc-schedule-title {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .modal-bc-schedule-time,
+body.dark-theme .modal-bc-schedule-time {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .modal-bc-perks-box,
+body.dark-theme .modal-bc-perks-box {
+  color: #CBD5E1 !important;
+}
+[data-theme="dark"] .modal-bc-actions .btn-secondary,
+body.dark-theme .modal-bc-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
