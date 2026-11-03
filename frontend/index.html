@@ -933,22 +933,13 @@
         </div>
         <h3 class="footer-v2-card-title">Daftar Member</h3>
         <p class="footer-v2-card-desc">Belum punya akun? Daftar dan tunggu persetujuan Admin.</p>
-        <button type="button" class="footer-v2-btn footer-v2-btn-outline" onclick="openRedeemModal()">
+        <button type="button" class="footer-v2-btn footer-v2-btn-outline" onclick="openDaftarMemberModal()">
           👤 Daftar Sekarang
         </button>
       </div>
     </div>
 
-    <!-- Testimonial Teaser Card (Foto 2 Reference) -->
-    <div class="footer-v2-testi-box">
-      <div class="footer-v2-stars">★★★★★</div>
-      <h4 class="footer-v2-testi-title">Apa kata member kami?</h4>
-      <p class="footer-v2-testi-desc">Baca pengalaman nyata para member yang sudah belajar &amp; memakai produk kami.</p>
-      <button type="button" class="footer-v2-testi-btn" onclick="scrollToSection('testimoni')">
-        💬 Lihat Testimoni Member
-      </button>
-      <div class="footer-v2-quote-watermark">❝</div>
-    </div>
+
 
     <!-- Contact Row (Foto 2 Reference: Masih ragu? Tanya langsung ke Admin) -->
     <div class="footer-v2-contact-bar">
@@ -4577,10 +4568,13 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
        Desain Warna Mengikuti Panduan DESAIN UI/UX
        ======================================================================== -->
   <div class="modal-overlay" id="modal-bantuan-admin" style="display:none; align-items:center; justify-content:center; z-index:20000;" onclick="if(event.target === this) closeBantuanModal()">
-    <div class="modal-bantuan-dialog" onclick="event.stopPropagation()">
+    <div class="modal-bantuan-dialog" onclick="event.stopPropagation()" style="position:relative;">
+      <!-- Tombol Silang Tutup Modal (Tanda Silang) -->
+      <button type="button" class="modal-close-btn" onclick="closeBantuanModal()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:22px; cursor:pointer; line-height:1; opacity:0.7; z-index:5;" title="Tutup">&times;</button>
+      
       <div style="text-align:center; margin-bottom:18px;">
-        <h3 style="font-size:19px; font-weight:800; margin:0 0 6px;">Tanya Admin</h3>
-        <p style="font-size:12px; color:#94A3B8; margin:0;">Isi data singkat agar Admin bisa membantu Anda lebih cepat.</p>
+        <h3 class="modal-dialog-title" style="font-size:19px; font-weight:800; margin:0 0 6px;">Tanya Admin</h3>
+        <p class="modal-dialog-subtitle" style="font-size:12px; color:#94A3B8; margin:0;">Isi data singkat agar Admin bisa membantu Anda lebih cepat.</p>
       </div>
 
       <form id="form-tanya-admin" onsubmit="event.preventDefault(); submitBantuanToWhatsApp();">
@@ -4605,11 +4599,64 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
           <textarea id="bantuan-pertanyaan" class="form-input" rows="3" style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px; resize:vertical;">Halo Admin, saya tertarik dengan Bantuan.</textarea>
         </div>
 
-        <div style="display:flex; gap:10px;">
-          <button type="submit" class="btn-primary" style="flex:1.4; padding:11px; font-size:13px; font-weight:800; border-radius:10px; background:#3B82F6; color:#FFFFFF; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+        <div class="modal-form-actions" style="display:flex; gap:12px; margin-top:22px;">
+          <button type="submit" class="btn-primary modal-action-btn-submit" style="flex:1.4; padding:12px; font-size:13.5px; font-weight:800; border-radius:10px; background:#3B82F6; color:#FFFFFF; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
             Lanjut ke WhatsApp
           </button>
-          <button type="button" class="btn-secondary" style="flex:1; padding:11px; font-size:13px; font-weight:700; border-radius:10px; cursor:pointer;" onclick="closeBantuanModal()">
+          <button type="button" class="btn-secondary modal-action-btn-cancel" style="flex:1; padding:12px; font-size:13.5px; font-weight:700; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onclick="closeBantuanModal()">
+            Batal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+  <!-- ========================================================================
+       MODAL DAFTAR SEBAGAI MEMBER (PERSIS FOTO 3 REFERENCE)
+       Dilengkapi Tanda Silang, Mode Terang & Gelap Otomatis, dan Tombol Responsif
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-daftar-member" style="display:none; align-items:center; justify-content:center; z-index:20000;" onclick="if(event.target === this) closeDaftarMemberModal()">
+    <div class="modal-bantuan-dialog" onclick="event.stopPropagation()" style="position:relative;">
+      <!-- Tombol Silang Tutup Modal (Tanda Silang) -->
+      <button type="button" class="modal-close-btn" onclick="closeDaftarMemberModal()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:22px; cursor:pointer; line-height:1; opacity:0.7; z-index:5;" title="Tutup">&times;</button>
+
+      <div style="text-align:center; margin-bottom:18px;">
+        <h3 class="modal-dialog-title" style="font-size:19px; font-weight:800; margin:0 0 6px;">Daftar sebagai Member</h3>
+        <p class="modal-dialog-subtitle" style="font-size:12px; color:#94A3B8; margin:0; line-height:1.4;">Isi data berikut. Akun aktif setelah disetujui Admin — kabar dikirim lewat email/WhatsApp.</p>
+      </div>
+
+      <form id="form-daftar-member" onsubmit="event.preventDefault(); submitDaftarMember();">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="modal-form-label" style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">Nama Lengkap *</label>
+          <input type="text" id="reg-nama" class="form-input" placeholder="Nama Lengkap Anda" required style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="modal-form-label" style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">Email *</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="nama@email.com" required style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="modal-form-label" style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">No. WhatsApp *</label>
+          <input type="tel" id="reg-wa" class="form-input" placeholder="0878... atau +60..." required style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="modal-form-label" style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">Profesi *</label>
+          <input type="text" id="reg-profesi" class="form-input" placeholder="mis. Guru, Pemilik Usaha" required style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="modal-form-label" style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">Keperluan (opsional)</label>
+          <input type="text" id="reg-keperluan" class="form-input" placeholder="mis. Ingin pesan aplikasi custom" style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+        </div>
+
+        <div class="modal-form-actions" style="display:flex; gap:12px; margin-top:22px;">
+          <button type="submit" class="btn-primary modal-action-btn-submit" style="flex:1.4; padding:12px; font-size:13.5px; font-weight:800; border-radius:10px; background:#3B82F6; color:#FFFFFF; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+            Kirim Pendaftaran
+          </button>
+          <button type="button" class="btn-secondary modal-action-btn-cancel" style="flex:1; padding:12px; font-size:13.5px; font-weight:700; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onclick="closeDaftarMemberModal()">
             Batal
           </button>
         </div>

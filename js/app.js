@@ -9428,3 +9428,74 @@ if (typeof window !== 'undefined') {
   window.closeBantuanModal = closeBantuanModal;
   window.submitBantuanToWhatsApp = submitBantuanToWhatsApp;
 }
+
+
+// ============================================================================
+// TURN 29: DAFTAR MEMBER ENGINE (FOTO 3 REFERENCE)
+// ============================================================================
+function openDaftarMemberModal() {
+  const modal = document.getElementById('modal-daftar-member');
+  if (modal) {
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    const nameEl = document.getElementById('reg-nama');
+    if (nameEl) nameEl.focus();
+  }
+}
+
+function closeDaftarMemberModal() {
+  const modal = document.getElementById('modal-daftar-member');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function submitDaftarMember() {
+  const nameEl = document.getElementById('reg-nama');
+  const emailEl = document.getElementById('reg-email');
+  const waEl = document.getElementById('reg-wa');
+  const profEl = document.getElementById('reg-profesi');
+  const reqEl = document.getElementById('reg-keperluan');
+
+  const name = nameEl ? nameEl.value.trim() : '';
+  const email = emailEl ? emailEl.value.trim() : '';
+  const wa = waEl ? waEl.value.trim() : '';
+  const prof = profEl ? profEl.value.trim() : '';
+  const req = reqEl ? reqEl.value.trim() : '';
+
+  if (!name || !email || !wa || !prof) {
+    if (typeof showToast === 'function') showToast('Mohon lengkapi seluruh field berbintang (*).', 'warning');
+    return;
+  }
+
+  // Save to pending registrations in localStorage
+  try {
+    const list = JSON.parse(localStorage.getItem('nexstore_pending_members') || '[]');
+    list.push({ name, email, wa, prof, req, date: new Date().toISOString() });
+    localStorage.setItem('nexstore_pending_members', JSON.stringify(list));
+  } catch (e) {}
+
+  const adminWa = (STATE.settings && STATE.settings.wa_cs_number) || (DEFAULT_SITE_SETTINGS && DEFAULT_SITE_SETTINGS.wa_cs_number) || '6287894602627';
+
+  let msg = 'Halo Super Admin & Admin NexStore (@daffafazdian.id),\n\n';
+  msg += 'Saya ingin mendaftar sebagai Member baru:\n';
+  msg += '• Nama Lengkap: ' + name + '\n';
+  msg += '• Email: ' + email + '\n';
+  msg += '• No. WhatsApp: ' + wa + '\n';
+  msg += '• Profesi: ' + prof + '\n';
+  if (req) msg += '• Keperluan: ' + req + '\n';
+  msg += '\nMohon persetujuan dan aktivasinya. Terima kasih!';
+
+  closeDaftarMemberModal();
+  if (typeof showToast === 'function') showToast('Pendaftaran dikirim! Menghubungkan ke Admin via WhatsApp...', 'success');
+  window.open('https://wa.me/' + adminWa + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+if (typeof window !== 'undefined') {
+  window.openDaftarMemberModal = openDaftarMemberModal;
+  window.closeDaftarMemberModal = closeDaftarMemberModal;
+  window.submitDaftarMember = submitDaftarMember;
+}
