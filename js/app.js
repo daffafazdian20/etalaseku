@@ -2368,7 +2368,7 @@ function openMemberLoginModal() {
   const savedEmail = localStorage.getItem('etalaseku_member_email');
   const savedProfile = localStorage.getItem('nexstore_member_profile');
   if (savedOrderId || savedEmail || savedProfile) {
-    openClassroomDashboard();
+    showMemberAreaDashboard(savedOrderId, savedEmail);
   } else {
     closeAllModals();
     const modal = document.getElementById('modal-member-login') || document.getElementById('modal-unified-auth');
@@ -4462,7 +4462,7 @@ function proceedToClassroomPortalFromSuccess() {
   const code = localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261028-211630-4012';
   const email = localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
   updateMemberClassroomNavbar(code, email);
-  openClassroomDashboard(code, email);
+  showMemberAreaDashboard(code, email);
 }
 
 function openClassroomLoginModal() {
@@ -4473,7 +4473,7 @@ function openClassroomDashboardOrLogin() {
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
   const savedEmail = localStorage.getItem('etalaseku_member_email');
   if (savedOrderId || savedEmail) {
-    openClassroomDashboard(savedOrderId, savedEmail);
+    showMemberAreaDashboard(savedOrderId, savedEmail);
   } else {
     openUnifiedAuthModal('member');
   }
@@ -4672,6 +4672,8 @@ function closeClassroomDashboard() {
 function handleClassroomLogout() {
   localStorage.removeItem('etalaseku_member_order_id');
   localStorage.removeItem('etalaseku_member_email');
+  localStorage.removeItem('nexstore_profile_completed');
+  if (typeof hideMemberAreaDashboard === 'function') hideMemberAreaDashboard();
   closeClassroomDashboard();
   closeAllModals();
   updateMemberClassroomNavbar(null, null);
@@ -6352,8 +6354,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Cek sesi login siswa member classroom dari LocalStorage
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
   const savedEmail = localStorage.getItem('etalaseku_member_email');
+  const isInClassroom = localStorage.getItem('etalaseku_is_in_classroom') === 'true';
   if (savedOrderId || savedEmail) {
     updateMemberClassroomNavbar(savedOrderId, savedEmail);
+    if (isInClassroom) {
+      openClassroomDashboard(savedOrderId, savedEmail);
+    } else {
+      showMemberAreaDashboard(savedOrderId, savedEmail);
+    }
   }
 
   // 2. Cek sesi CRM Admin saat refresh browser agar tetap berada di Portal CRM
@@ -8857,10 +8865,13 @@ function handleSaveMemberProfile(event) {
     showToast('Profil member berhasil disimpan! Akses telah terbuka 🚀', 'success');
   }
 
-  const portal = document.getElementById('classroom-dashboard-portal');
-  if (!portal || !portal.classList.contains('active')) {
-    openClassroomDashboard();
-  }
+  document.querySelectorAll('.member-display-name').forEach(el => el.textContent = name);
+  document.querySelectorAll('.widget-profile-name').forEach(el => el.textContent = name);
+  document.querySelectorAll('.widget-profile-email').forEach(el => el.textContent = email);
+  document.querySelectorAll('.member-profile-whatsapp').forEach(el => el.textContent = whatsapp);
+  document.querySelectorAll('.member-avatar-initial').forEach(el => el.textContent = name.charAt(0).toUpperCase());
+
+  showMemberAreaDashboard();
 }
 window.handleSaveMemberProfile = handleSaveMemberProfile;
 
@@ -8917,3 +8928,129 @@ function openPanduanModal() {
   scrollToSection('features');
 }
 window.openPanduanModal = openPanduanModal;
+
+
+// ============================================================================
+// MAIN DASHBOARD MEMBER AREA ENGINE (FOTO 3 & FOTO 2 REFERENCE)
+// ============================================================================
+function showMemberAreaDashboard(orderId, email) {
+  const activeId = orderId || localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
+  const activeEmail = email || localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+  
+  localStorage.setItem('etalaseku_member_order_id', activeId);
+  localStorage.setItem('etalaseku_member_email', activeEmail);
+
+  // Tutup portal kelas fullscreen jika sedang aktif
+  const classPortal = document.getElementById('classroom-dashboard-portal');
+  if (classPortal) classPortal.classList.remove('active');
+  localStorage.removeItem('etalaseku_is_in_classroom');
+
+  // Sembunyikan Hero publik dan VIP welcome banner kecil
+  const heroEl = document.getElementById('hero');
+  if (heroEl) heroEl.style.display = 'none';
+
+  const vipWelcomeCard = document.getElementById('vip-member-welcome-card');
+  if (vipWelcomeCard) vipWelcomeCard.style.display = 'none';
+
+  // Tampilkan View Member Area di Dashboard Utama (Foto 3)
+  const mainDash = document.getElementById('main-member-area-dashboard');
+  if (mainDash) {
+    mainDash.style.display = 'block';
+  }
+
+  // Sinkronkan data profil member
+  const profile = typeof getMemberProfile === 'function' ? getMemberProfile() : {
+    name: 'Daffa',
+    whatsapp: '087894602627',
+    email: activeEmail
+  };
+
+  // Update semua elemen nama member di halaman
+  document.querySelectorAll('.member-display-name').forEach(el => el.textContent = profile.name || 'Daffa');
+  document.querySelectorAll('.widget-profile-name').forEach(el => el.textContent = profile.name || 'Daffa');
+  document.querySelectorAll('.widget-profile-email').forEach(el => el.textContent = profile.email || activeEmail);
+  document.querySelectorAll('.member-profile-whatsapp').forEach(el => el.textContent = profile.whatsapp || '087894602627');
+  document.querySelectorAll('.member-avatar-initial').forEach(el => el.textContent = (profile.name || 'Daffa').charAt(0).toUpperCase());
+
+  const memberNameEl = document.getElementById('member-display-name');
+  if (memberNameEl) memberNameEl.textContent = profile.name || 'Daffa';
+
+  // Perbarui status navbar
+  updateMemberClassroomNavbar(activeId, activeEmail);
+
+  // Scroll ke atas dengan halus agar melihat dashboard member
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Jika member belum melengkapi data profil, tampilkan modal Lengkapi Data Member (Foto 2)
+  const profileCompleted = localStorage.getItem('nexstore_profile_completed');
+  if (!profileCompleted) {
+    setTimeout(() => {
+      openMemberProfileModal();
+    }, 400);
+  }
+}
+window.showMemberAreaDashboard = showMemberAreaDashboard;
+
+function hideMemberAreaDashboard() {
+  const mainDash = document.getElementById('main-member-area-dashboard');
+  if (mainDash) mainDash.style.display = 'none';
+
+  const heroEl = document.getElementById('hero');
+  if (heroEl) heroEl.style.display = '';
+
+  updateMemberClassroomNavbar(null, null);
+}
+window.hideMemberAreaDashboard = hideMemberAreaDashboard;
+
+function openMemberAreaOrLogin() {
+  const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
+  const savedEmail = localStorage.getItem('etalaseku_member_email');
+  if (savedOrderId || savedEmail) {
+    showMemberAreaDashboard(savedOrderId, savedEmail);
+  } else {
+    // Pengunjung belum login, buka auth modal
+    closeAllModals();
+    const modal = document.getElementById('modal-member-login') || document.getElementById('modal-unified-auth');
+    if (modal) modal.classList.add('active');
+  }
+}
+window.openMemberAreaOrLogin = openMemberAreaOrLogin;
+
+function filterMainMemberCategory(category, btn) {
+  // Update active pill button
+  const pills = document.querySelectorAll('#main-member-area-dashboard .tab-pill-btn');
+  pills.forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const grid = document.getElementById('main-member-home-cards-grid');
+  if (!grid) return;
+  const cards = grid.querySelectorAll('.member-product-card');
+
+  cards.forEach(card => {
+    const cardCat = card.getAttribute('data-category');
+    if (category === 'all' || cardCat === category) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+window.filterMainMemberCategory = filterMainMemberCategory;
+
+function filterMainMemberSearch(query) {
+  const q = (query || '').toLowerCase().trim();
+  const grid = document.getElementById('main-member-home-cards-grid');
+  if (!grid) return;
+  const cards = grid.querySelectorAll('.member-product-card');
+
+  cards.forEach(card => {
+    const title = (card.querySelector('.mp-card-title')?.textContent || '').toLowerCase();
+    const desc = (card.querySelector('.mp-card-desc')?.textContent || '').toLowerCase();
+    if (!q || title.includes(q) || desc.includes(q)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+window.filterMainMemberSearch = filterMainMemberSearch;
