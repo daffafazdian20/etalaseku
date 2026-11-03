@@ -6236,7 +6236,10 @@ window.previewModuleFromCrm = previewModuleFromCrm;
 // 9. UTILITIES & MODAL HELPERS
 // ============================================================================
 function closeAllModals() {
-  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.classList.remove('active');
+    m.style.display = 'none';
+  });
 }
 
 function readFileAsBase64(file) {
@@ -6351,7 +6354,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => new ButterflyCursor(), 300);
   }
 
-  // 1. Cek sesi login siswa member classroom dari LocalStorage
+  // 1. Bersihkan semua overlay modal saat inisialisasi agar layar tidak buram
+  closeAllModals();
+
+  // 2. Cek sesi login siswa member classroom dari LocalStorage
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
   const savedEmail = localStorage.getItem('etalaseku_member_email');
   const isInClassroom = localStorage.getItem('etalaseku_is_in_classroom') === 'true';
@@ -6359,8 +6365,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMemberClassroomNavbar(savedOrderId, savedEmail);
     if (isInClassroom) {
       openClassroomDashboard(savedOrderId, savedEmail);
-    } else {
-      showMemberAreaDashboard(savedOrderId, savedEmail);
     }
   }
 
@@ -8802,13 +8806,19 @@ function openMemberProfileModal() {
   if (inputPhone) inputPhone.value = profile.whatsapp || '087894602627';
 
   const modal = document.getElementById('modal-complete-profile');
-  if (modal) modal.style.display = 'flex';
+  if (modal) {
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+  }
 }
 window.openMemberProfileModal = openMemberProfileModal;
 
 function closeMemberProfileModal() {
   const modal = document.getElementById('modal-complete-profile');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
 }
 window.closeMemberProfileModal = closeMemberProfileModal;
 
@@ -8877,13 +8887,19 @@ window.handleSaveMemberProfile = handleSaveMemberProfile;
 
 function openBootcampAnnouncementModal() {
   const modal = document.getElementById('modal-bootcamp-announcement');
-  if (modal) modal.style.display = 'flex';
+  if (modal) {
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+  }
 }
 window.openBootcampAnnouncementModal = openBootcampAnnouncementModal;
 
 function closeBootcampAnnouncementModal() {
   const modal = document.getElementById('modal-bootcamp-announcement');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
 }
 window.closeBootcampAnnouncementModal = closeBootcampAnnouncementModal;
 
@@ -8981,13 +8997,8 @@ function showMemberAreaDashboard(orderId, email) {
   // Scroll ke atas dengan halus agar melihat dashboard member
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Jika member belum melengkapi data profil, tampilkan modal Lengkapi Data Member (Foto 2)
-  const profileCompleted = localStorage.getItem('nexstore_profile_completed');
-  if (!profileCompleted) {
-    setTimeout(() => {
-      openMemberProfileModal();
-    }, 400);
-  }
+  // Sesi profil dimuat tanpa memblokir layar dengan popup otomatis
+  closeMemberProfileModal();
 }
 window.showMemberAreaDashboard = showMemberAreaDashboard;
 

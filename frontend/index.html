@@ -33,7 +33,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261103-03">
+  <link rel="stylesheet" href="css/style.css?v=20261103-04">
 </head>
 <body>
 
@@ -4376,8 +4376,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261103-03"></script>
-  <script defer src="js/app.js?v=20261103-03"></script>
+  <script defer src="js/config.js?v=20261103-04"></script>
+  <script defer src="js/app.js?v=20261103-04"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
@@ -4684,8 +4684,9 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
        MODAL LENGKAPI DATA MEMBER (FOTO 2 REFERENCE)
        Satu nomor WhatsApp hanya untuk satu akun. Disimpan ke LocalStorage.
        ======================================================================== -->
-  <div class="modal-overlay" id="modal-complete-profile" style="display:none; align-items:center; justify-content:center; z-index:10010;">
-    <div class="modal-complete-profile-dialog">
+  <div class="modal-overlay" id="modal-complete-profile" style="display:none; align-items:center; justify-content:center; z-index:10010;" onclick="if(event.target === this) closeMemberProfileModal()">
+    <div class="modal-complete-profile-dialog" style="position:relative;">
+      <button type="button" class="modal-close-btn" onclick="closeMemberProfileModal()" style="position:absolute; top:16px; right:16px; color:#94A3B8; background:none; border:none; font-size:22px; cursor:pointer; line-height:1; z-index:5;" title="Tutup">&times;</button>
       <div class="modal-cp-header">
         <h2 class="modal-cp-title">Lengkapi Data Member</h2>
         <p class="modal-cp-desc">Data wajib diisi dengan benar. Satu nomor WhatsApp hanya untuk satu akun.</p>
@@ -4723,7 +4724,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
   <!-- ========================================================================
        MODAL PENGUMUMAN BOOTCAMP DENGAN KODE REDEEM (FOTO SCREENSHOT REFERENSI)
        ======================================================================== -->
-  <div class="modal-overlay" id="modal-bootcamp-announcement" style="display:none; align-items:center; justify-content:center; z-index:10011;">
+  <div class="modal-overlay" id="modal-bootcamp-announcement" style="display:none; align-items:center; justify-content:center; z-index:10011;" onclick="if(event.target === this) closeBootcampAnnouncementModal()">
     <div class="modal-bc-announcement-dialog">
       <div class="modal-bca-header">
         <span class="modal-bca-tag">📢 Pengumuman</span>

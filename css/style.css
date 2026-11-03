@@ -9366,3 +9366,28 @@ footer {
   flex-direction: column;
   gap: 20px;
 }
+
+
+/* ==========================================================================
+   MODAL OVERLAY STRICT SAFETY RULES (PREVENTS STUCK BLURS & INVISIBLE DIALOGS)
+   ========================================================================== */
+.modal-overlay:not(.active) {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.modal-complete-profile-dialog {
+  position: relative !important;
+  content-visibility: visible !important;
+}
+
+#modal-complete-profile.active,
+#modal-bootcamp-announcement.active {
+  display: flex !important;
+  content-visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
