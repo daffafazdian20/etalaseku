@@ -87,7 +87,7 @@
       <li><a href="#bootcamp">Bootcamp &amp; Kelas Live</a></li>
       <li><a href="#kategori">Kategori</a></li>
       <li><a href="#produk">Katalog Produk</a></li>
-      <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Nyata</a></li>
+      <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Member</a></li>
       <li><a href="#testimoni">Testimoni</a></li>
       <!-- Navigasi Khusus Member Classroom (Otomatis Muncul Ketika Siswa Sudah Memiliki Order ID) -->
       <li id="nav-item-member-classroom" style="display:none;">
@@ -387,6 +387,23 @@
                 </button>
               </div>
             </div>
+          
+            <!-- Showcase Hasil Karya Member dengan Jarak Luas (Aman dari Upload CRM) -->
+            <section class="member-showcase-section" style="margin-top:64px; padding-top:32px; border-top:1px solid rgba(255,255,255,0.08); clear:both;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+                <div>
+                  <div class="section-eyebrow" style="color:#FF2E63; font-size:11px; font-weight:800; letter-spacing:1px; margin-bottom:6px;">HASIL KARYA MEMBER 🌟</div>
+                  <h2 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Hasil Karya Member</h2>
+                  <p style="font-size:13px; color:#64748B; margin:0;">Inspirasi karya aplikasi nyata yang dibangun oleh para member dan siswa.</p>
+                </div>
+                <button type="button" class="btn-secondary" onclick="openKaryaFromMember()" style="padding:8px 16px; font-size:12px; font-weight:700; color:#FF2E63; border-color:rgba(255,46,99,0.35); background:rgba(255,46,99,0.06); border-radius:10px; cursor:pointer;">
+                  Lihat Semua Karya Member →
+                </button>
+              </div>
+              <div class="member-showcase-cards-grid" id="main-member-showcase-grid">
+                <!-- Rendered dynamically by app.js -->
+              </div>
+            </section>
           </div>
         </div>
 
@@ -746,7 +763,7 @@
        ======================================================================== -->
   <section class="section-wrapper" id="showcase" style="background: var(--canvas-bg);">
     <div class="section-title-wrap">
-      <div class="section-eyebrow">HASIL KARYA NYATA</div>
+      <div class="section-eyebrow">HASIL KARYA MEMBER</div>
       <h2 class="section-heading" style="cursor:pointer;" onclick="openPameranKaryaPortal()" title="Buka Dashboard Pameran Karya Lengkap">
         Showcase Proyek Siswa &amp; Alumni 🚀
       </h2>
@@ -1481,7 +1498,7 @@
         <li><a href="#member-kelas" class="cls-tab-link" id="tab-link-kelas" onclick="switchMemberPortalView('grid'); return false;">Ruang BelajarKu</a></li>
         <li><a href="#member-jalur" class="cls-tab-link" id="tab-link-jalur" onclick="switchMemberPortalView('jalur'); return false;">Jalur Belajar</a></li>
         <li><a href="#bootcamp" class="cls-tab-link" id="tab-link-bootcamp" onclick="openBootcampDetailModal(); return false;">Bootcamp</a></li>
-        <li><a href="#pameran" class="cls-tab-link" id="tab-link-pameran" onclick="openKaryaFromMember(); return false;">Pameran Karya</a></li>
+        <li><a href="#pameran" class="cls-tab-link" id="tab-link-pameran" onclick="openKaryaFromMember(); return false;">Hasil Karya Member</a></li>
         <li><a href="#panduan" class="cls-tab-link" id="tab-link-panduan" onclick="openPanduanModal(); return false;">Panduan</a></li>
         <li><a href="https://wa.me/6287894602627?text=Halo%20Admin%20NexStore%2C%20saya%20member%20ingin%20order%20aplikasi%20custom" target="_blank" rel="noopener noreferrer" class="cls-tab-link" id="tab-link-custom">Aplikasi Custom</a></li>
       </ul>
@@ -1742,8 +1759,8 @@
               <div class="quick-access-list">
                 <a href="#karya-member" class="quick-access-item" onclick="openKaryaFromMember(); return false;">
                   <div class="qa-item-info">
-                    <span class="qa-item-title">Ajukan Karya</span>
-                    <span class="qa-item-subtitle">Pamerkan portofolio Anda</span>
+                    <span class="qa-item-title">Hasil Karya Member</span>
+                    <span class="qa-item-subtitle">Lihat &amp; ajukan karya portofolio member</span>
                   </div>
                   <span class="qa-chevron">&gt;</span>
                 </a>
@@ -1820,28 +1837,22 @@
           <!-- Rendered dynamically by app.js -->
         </div>
 
-        <!-- 4. Extra Perks (Download & Mentor VIP) -->
-        <div class="classroom-perks-grid" style="grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));">
-          <!-- Resource Hub -->
-          <div class="classroom-perk-card" id="cls-resources-anchor">
-            <div style="width:40px; height:40px; border-radius:12px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">📦</div>
-            <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Download Source Code &amp; Project</h4>
-            <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Unduh repositori lengkap boilerplate web app, template spreadsheet database, dan snippet JavaScript siap pakai.</p>
-            <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:#2563EB; border-color:#93C5FD;">
-              📁 Buka Master Folder Google Drive ↗
-            </a>
+        <!-- Showcase Hasil Karya Member dengan Jarak Luas (Aman dari Upload CRM) -->
+        <section class="member-showcase-section" style="margin-top:64px; padding-top:32px; border-top:1px solid rgba(255,255,255,0.08); clear:both;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+            <div>
+              <div class="section-eyebrow" style="color:#FF2E63; font-size:11px; font-weight:800; letter-spacing:1px; margin-bottom:6px;">HASIL KARYA MEMBER 🌟</div>
+              <h2 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Hasil Karya Member</h2>
+              <p style="font-size:13px; color:#64748B; margin:0;">Inspirasi karya aplikasi nyata yang dibangun oleh para member dan siswa.</p>
+            </div>
+            <button type="button" class="btn-secondary" onclick="openKaryaFromMember()" style="padding:8px 16px; font-size:12px; font-weight:700; color:#FF2E63; border-color:rgba(255,46,99,0.35); background:rgba(255,46,99,0.06); border-radius:10px; cursor:pointer;">
+              Lihat Semua Karya Member →
+            </button>
           </div>
-
-          <!-- Tanya Mentor VIP -->
-          <div class="classroom-perk-card" id="cls-mentor-anchor">
-            <div style="width:40px; height:40px; border-radius:12px; background:#ECFDF5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px;">💬</div>
-            <h4 style="font-size:16px; font-weight:800; color:var(--deep-navy); margin:0 0 6px;">Bimbingan Langsung Mentor &amp; Tanya Jawab</h4>
-            <p style="font-size:12px; color:#64748B; margin-bottom:16px; line-height:1.5;">Mengalami kendala saat coding? Tanyakan langsung ke tim instruktur via WhatsApp VIP (0878-9460-2627) dengan respon cepat.</p>
-            <a href="https://wa.me/6287894602627?text=Halo%20Mentor%20VIP%20NexStore%2C%20saya%20siswa%20terverifikasi%20ingin%20konsultasi%20materi" target="_blank" rel="noopener noreferrer" class="shimmer-btn" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#10B981;">
-              📲 Chat Mentor WhatsApp VIP ↗
-            </a>
+          <div class="member-showcase-cards-grid" id="rb-kategori-showcase-grid">
+            <!-- Rendered dynamically by app.js -->
           </div>
-        </div>
+        </section>
       </div>
 
       <!-- ======================================================================
@@ -2115,7 +2126,7 @@
                 PRODUK DIGITAL
               </span>
             </div>
-            <span class="brand-byline" style="font-size:11px; color:#64748B; font-weight:600; margin-top:2px;">by @daffafazdian.id &bull; Pameran Karya</span>
+            <span class="brand-byline" style="font-size:11px; color:#64748B; font-weight:600; margin-top:2px;">by @daffafazdian.id &bull; Hasil Karya Member</span>
           </div>
         </div>
 
@@ -2139,7 +2150,7 @@
           <div style="max-width:680px;">
             <div class="section-eyebrow" style="color:var(--coral-pink, #FF2E63); font-size:11.5px; font-weight:800; letter-spacing:1px; margin-bottom:6px;">SHOWCASE PORTOFOLIO</div>
             <h1 style="font-size:clamp(22px, 3.2vw, 32px); font-weight:800; color:var(--deep-navy); margin:0 0 10px; line-height:1.2;">
-              Pameran Karya Siswa &amp; Alumni 🌟
+              Hasil Karya Member &amp; Alumni 🌟
             </h1>
             <p style="font-size:13.5px; color:#64748B; line-height:1.6; margin:0;">
               Bagikan karya terbaik Anda! Unggah foto profil, gambar aplikasi/karya atau video Aplikasi kalian, dan ceritakan pengalaman Anda. Karya yang disetujui tampil di halaman utama.
@@ -2189,7 +2200,7 @@
       <div class="pameran-section-block" style="margin-top:28px;">
         <div style="margin-bottom:16px;">
           <div style="font-size:11px; font-weight:800; color:var(--coral-pink, #FF2E63); letter-spacing:0.8px; text-transform:uppercase;">GALERI</div>
-          <h2 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:4px 0 6px;">Pameran Karya Member</h2>
+          <h2 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin:4px 0 6px;">Hasil Karya Member</h2>
           <p style="font-size:13px; color:#64748B; margin:0;">Inspirasi dari karya member lain — gambar dan video portofolio nyata hasil karya siswa.</p>
         </div>
 
@@ -3722,7 +3733,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
       <div style="padding:18px 22px 14px; border-bottom:1px solid #F1F5F9; position:relative; background:#FFFFFF; flex-shrink:0;">
         <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
         <h3 id="showcase-modal-heading" style="font-size:19px; font-weight:800; color:var(--deep-navy); margin:0 0 3px;">Input Manual Hasil Karya Siswa 🌟</h3>
-        <p style="font-size:11.5px; color:#64748B; margin:0;">Input manual hasil karya siswa atau edit pengajuan dari Portal Hasil Karya Nyata.</p>
+        <p style="font-size:11.5px; color:#64748B; margin:0;">Input manual hasil karya siswa atau edit pengajuan dari Portal Hasil Karya Member.</p>
       </div>
 
       <form onsubmit="saveShowcaseForm(event)" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">

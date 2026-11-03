@@ -3240,6 +3240,7 @@ function approveShowcaseItem(id) {
   renderAdminShowcaseTable(STATE.showcases);
   renderShowcases();
   renderPameranKaryaPortal();
+  if (typeof renderMainMemberShowcases === "function") renderMainMemberShowcases();
   showToast('🎉 Hasil karya member berhasil disetujui & langsung tayang di pameran!', 'success', 3500);
 }
 window.approveShowcaseItem = approveShowcaseItem;
@@ -9499,3 +9500,78 @@ if (typeof window !== 'undefined') {
   window.closeDaftarMemberModal = closeDaftarMemberModal;
   window.submitDaftarMember = submitDaftarMember;
 }
+
+// ============================================================================
+// RENDER HASIL KARYA MEMBER DI BAWAH PENEMPATAN MODUL DASHBOARD (FOTO 2)
+// Aman dari penambahan modul CRM karena terpisah dengan margin-top: 64px
+// ============================================================================
+function renderMainMemberShowcases() {
+  const containers = [
+    document.getElementById('main-member-showcase-grid'),
+    document.getElementById('rb-kategori-showcase-grid')
+  ].filter(Boolean);
+
+  if (!containers.length) return;
+
+  const list = (STATE.showcases && STATE.showcases.length > 0)
+    ? STATE.showcases
+    : (typeof DEFAULT_SHOWCASES_LIST !== 'undefined' ? DEFAULT_SHOWCASES_LIST : []);
+
+  if (!list.length) return;
+
+  // Tampilkan hingga 4 karya member terbaik
+  const displayItems = list.slice(0, 4);
+
+  const html = displayItems.map(s => {
+    const demoBtn = s.Link_Demo ? `
+      <a href="${s.Link_Demo}" target="_blank" rel="noopener noreferrer" class="btn-pameran-demo" title="Buka Live Demo" style="padding:6px 12px; font-size:11.5px; text-decoration:none; display:inline-flex; align-items:center; gap:5px; border-radius:8px; background:rgba(37,99,235,0.08); color:#2563EB; font-weight:700; border:1px solid rgba(37,99,235,0.25);">
+        🌐 Demo Live ↗
+      </a>` : '';
+
+    const ytBtn = s.Video_Youtube ? `
+      <button type="button" class="btn-pameran-yt" onclick="openYouTubeShowcaseModal('${s.Video_Youtube}', '${escapeHtml(s.Nama_Karya)}', '${escapeHtml(s.Nama_Member)}')" title="Tonton Video Demo YouTube" style="padding:6px 12px; font-size:11.5px; border-radius:8px; background:rgba(239,68,68,0.08); color:#EF4444; font-weight:700; border:1px solid rgba(239,68,68,0.25); cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+        ▶️ Video YouTube
+      </button>` : '';
+
+    const imgUrl = (typeof formatImageUrl === 'function')
+      ? formatImageUrl(s.Gambar_Preview_URL || (s.Gambar_Showcase ? s.Gambar_Showcase[0] : 'assets/hero/hero-slide-1.jpg'))
+      : (s.Gambar_Preview_URL || 'assets/hero/hero-slide-1.jpg');
+
+    return `
+      <div class="pameran-card" style="margin:0; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); background:var(--card-bg, #FFFFFF); display:flex; flex-direction:column;">
+        <div class="pameran-card-thumb-wrap" style="position:relative; aspect-ratio:16/9; overflow:hidden; background:#0F172A; cursor:pointer;" onclick="openKaryaFromMember()">
+          <img src="${imgUrl}" class="pameran-card-thumb" alt="${escapeHtml(s.Nama_Karya)}" onerror="this.onerror=null; this.src='assets/hero/hero-slide-2.jpg';" style="width:100%; height:100%; object-fit:cover; transition:transform 0.3s ease;">
+          <span style="position:absolute; top:10px; left:10px; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); color:#FFFFFF; padding:3px 9px; border-radius:99px; font-size:10.5px; font-weight:800; border:1px solid rgba(255,255,255,0.2);">
+            ${escapeHtml(s.Statistik_Pencapaian || 'Hasil Karya')}
+          </span>
+        </div>
+        <div class="pameran-card-content" style="padding:14px; display:flex; flex-direction:column; flex:1;">
+          <div class="pameran-card-author-row" style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #FF2E63, #FF6584); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800;">
+              ${(s.Nama_Member || 'M').charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <div style="font-size:12px; font-weight:800; color:var(--deep-navy);">${escapeHtml(s.Nama_Member || 'Member')}</div>
+              <div style="font-size:10px; color:#64748B;">${escapeHtml(s.Profesi || 'Alumni Member')}</div>
+            </div>
+          </div>
+          <h4 style="font-size:14px; font-weight:800; margin:0 0 6px; color:var(--deep-navy); line-height:1.3; cursor:pointer;" onclick="openKaryaFromMember()">
+            ${escapeHtml(s.Nama_Karya)}
+          </h4>
+          <p style="font-size:11.5px; color:#64748B; margin:0 0 12px; line-height:1.45; flex:1;">
+            ${escapeHtml(s.Testimoni_Kesan || 'Sistem bisnis dan web app yang dibangun dengan standar profesional.')}
+          </p>
+          <div class="pameran-card-actions" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:auto;">
+            ${demoBtn}
+            ${ytBtn}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  containers.forEach(c => {
+    c.innerHTML = html;
+  });
+}
+window.renderMainMemberShowcases = renderMainMemberShowcases;
