@@ -1266,6 +1266,7 @@ async function loadPublicData() {
     }
 
     renderProducts();
+  checkAndRenderVipWelcomeCard();
     renderTestimonials();
     TestimonialFlipManager.init();
     renderShowcases();
@@ -8251,3 +8252,114 @@ function copyClassroomPortalLink() {
   }
 }
 window.copyClassroomPortalLink = copyClassroomPortalLink;
+
+
+// ============================================================================
+// VIP MEMBER WELCOME & ANNOUNCEMENT VOUCHER CONTROLS (Items 1, 2, 6)
+// ============================================================================
+function checkAndRenderVipWelcomeCard() {
+  const card = document.getElementById('vip-member-welcome-card');
+  if (!card) return;
+
+  const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
+  const savedEmail = localStorage.getItem('etalaseku_member_email');
+
+  let orders = [];
+  try {
+    orders = JSON.parse(localStorage.getItem('etalaseku_orders_data') || '[]');
+  } catch (e) {}
+
+  const hasPurchased = Boolean(savedOrderId || savedEmail || (orders && orders.some(o => o.Status_Bayar === 'LUNAS')));
+
+  if (hasPurchased) {
+    card.style.display = 'block';
+
+    const activeEmail = savedEmail || (orders.length > 0 ? orders[0].Email_Pembeli : 'daffafazdian50@gmail.com');
+    const activeOrderId = savedOrderId || (orders.length > 0 ? orders[0].ID_Order : 'ORD-20261028-211630-4012');
+
+    let displayName = 'Daffa';
+    if (activeEmail) {
+      const emailPrefix = activeEmail.split('@')[0];
+      if (/daffa/i.test(emailPrefix)) {
+        displayName = 'Daffa';
+      } else {
+        displayName = emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
+      }
+    }
+
+    const nameEl = document.getElementById('vip-user-display-name');
+    if (nameEl) nameEl.textContent = displayName;
+
+    const orderEl = document.getElementById('vip-user-order-id');
+    if (orderEl) orderEl.textContent = activeOrderId;
+
+    const emailEl = document.getElementById('vip-user-email-text');
+    if (emailEl) emailEl.textContent = activeEmail;
+  } else {
+    card.style.display = 'none';
+  }
+}
+
+function copyVipOrderId() {
+  const orderEl = document.getElementById('vip-user-order-id');
+  const text = orderEl ? orderEl.textContent.trim() : (localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261028-211630-4012');
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Order ID berhasil disalin ke clipboard! 📋');
+  }).catch(() => {
+    showToast('Order ID: ' + text);
+  });
+}
+
+function openAnnouncementVoucherModal(code, title, desc) {
+  const modal = document.getElementById('modal-announcement-voucher');
+  if (!modal) return;
+
+  const activeCode = code || 'BOOT-5J6T3T';
+  const activeTitle = title || 'KODE REEDEM BOOTCAMP [ CATAT !! ]';
+  const activeDesc = desc || 'Silahkan salin kode voucher resmi di bawah untuk membuka akses Bootcamp & Kelas di Portal:';
+
+  const titleEl = document.getElementById('modal-voucher-title');
+  if (titleEl) titleEl.textContent = activeTitle;
+
+  const descEl = document.getElementById('modal-voucher-desc');
+  if (descEl) descEl.textContent = activeDesc;
+
+  const codeEl = document.getElementById('modal-voucher-code');
+  if (codeEl) codeEl.textContent = activeCode;
+
+  modal.style.display = 'flex';
+}
+
+function closeAnnouncementVoucherModal() {
+  const modal = document.getElementById('modal-announcement-voucher');
+  if (modal) modal.style.display = 'none';
+}
+
+function copyModalVoucherCode() {
+  const codeEl = document.getElementById('modal-voucher-code');
+  const code = codeEl ? codeEl.textContent.trim() : 'BOOT-5J6T3T';
+  navigator.clipboard.writeText(code).then(() => {
+    showToast('Kode ' + code + ' berhasil disalin! 🚀');
+  }).catch(() => {
+    showToast('Kode: ' + code);
+  });
+}
+
+function redeemModalVoucherNow() {
+  const codeEl = document.getElementById('modal-voucher-code');
+  const code = codeEl ? codeEl.textContent.trim() : 'BOOT-5J6T3T';
+  closeAnnouncementVoucherModal();
+  openRedeemModal();
+  const inputCode = document.getElementById('redeem-input-code');
+  if (inputCode) {
+    inputCode.value = code;
+    inputCode.focus();
+  }
+  showToast('Kode ' + code + ' otomatis terisi! Masukkan email Anda.');
+}
+
+function handleBootcampRegistration() {
+  const wa = (DEFAULT_SITE_SETTINGS && DEFAULT_SITE_SETTINGS.wa_cs_number) || '6287894602627';
+  const msg = encodeURIComponent('Halo Admin NexStore, saya ingin mendaftar BootCamp Batch 1 (NOVEMBER) : Dari Ide di Kepala Jadi AppWeb Nyata. Mohon info pembayaran & aksesnya.');
+  window.open('https://wa.me/' + wa + '?text=' + msg, '_blank');
+}

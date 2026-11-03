@@ -84,6 +84,7 @@
     </a>
     <ul class="nav-links" id="main-nav-links">
       <li><a href="#hero">Beranda</a></li>
+      <li><a href="#bootcamp">Bootcamp &amp; Kelas Live</a></li>
       <li><a href="#kategori">Kategori</a></li>
       <li><a href="#produk">Katalog Produk</a></li>
       <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Nyata</a></li>
@@ -136,35 +137,77 @@
   </nav>
 
   <!-- ========================================================================
+       VIP MEMBER WELCOME THUMBNAIL (Item 6: Khusus yang sudah beli produk)
+       ======================================================================== -->
+  <div id="vip-member-welcome-card" class="vip-welcome-container" style="display:none;">
+    <div class="vip-welcome-card">
+      <div class="vip-welcome-left">
+        <div class="vip-avatar-badge">
+          <div class="vip-google-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+            </svg>
+          </div>
+          <span class="vip-online-dot"></span>
+        </div>
+        <div>
+          <div class="vip-welcome-eyebrow">
+            <span class="vip-tag-pill">✦ VIP MEMBER TERVERIFIKASI</span>
+            <span class="vip-order-tag">Order ID: <strong id="vip-user-order-id">ORD-20261028-211630-4012</strong></span>
+          </div>
+          <h2 class="vip-welcome-title">
+            Selamat Datang kembali, <span id="vip-user-display-name" class="vip-name-highlight">Daffa</span>! 👋
+          </h2>
+          <p class="vip-welcome-desc">
+            Kamu memiliki akses resmi ke modul pembelajaran &amp; produk digital NexStore (<span id="vip-user-email-text" style="font-weight:700; color:#0F172A;">daffafazdian50@gmail.com</span>). Lanjutkan belajarmu sekarang!
+          </p>
+        </div>
+      </div>
+      <div class="vip-welcome-actions">
+        <button class="shimmer-btn btn-vip-classroom" onclick="openClassroomDashboardOrLogin()">
+          🎓 Buka Ruang BelajarKu Saya →
+        </button>
+        <button class="btn-secondary btn-vip-order" onclick="copyVipOrderId()" title="Salin Order ID Anda">
+          📋 Salin Order ID
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
        4. HERO SECTION WITH AUTO SLIDESHOW & METRIC COUNTERS
        ======================================================================== -->
   <section class="hero-section" id="hero">
     <!-- Left Hero Column -->
     <div>
-      <span class="hero-tag">Hi, Digital Creator 👋</span>
+      <span class="hero-tag" style="background:#FFF1F4; color:#FF2E63; border:1px solid rgba(255,46,99,0.3); font-weight:800; font-size:12px; padding:5px 14px; border-radius:99px; display:inline-flex; align-items:center; gap:6px;">✦ PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID</span>
       <h1 class="hero-title">
-        Kuasai Skill Digital & Miliki Produk Siap Jual yang <span class="highlight">Banyak Disukai</span>
+        Aplikasi &amp; Kelas <span class="highlight">Siap Pakai</span>
       </h1>
       <p class="hero-desc">
-        Akses 45+ video modul praktis, template bisnis siap pakai, dan otomatisasi pengiriman kuitansi serta link akses materi seketika ke WhatsApp & Email Anda.
+        Lihat hasil aplikasi kami, ikuti kelas &amp; bootcamp intensif, lalu akses materinya langsung di portal member siswa tanpa hambatan.
       </p>
       <div class="hero-btn-group" id="hero-smart-btn-group">
-        <a href="#produk" class="shimmer-btn btn-primary cta-pulse-glow" id="hero-btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
-          <span>Jelajahi Katalog Produk →</span>
+        <a href="#bootcamp" class="shimmer-btn btn-primary cta-pulse-glow" id="hero-btn-bootcamp" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+          <span>🚀 Lihat Bootcamp &amp; Kelas Live</span>
+        </a>
+        <a href="#produk" class="btn-secondary" id="hero-btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700;">
+          <span>🛍️ Katalog Produk</span>
         </a>
         <button class="btn-secondary" id="hero-btn-secondary" onclick="openClassroomDashboardOrLogin()">
           Masuk Member Area 🔑
         </button>
-        <a href="#" id="hero-community-btn" target="_blank" rel="noopener noreferrer" class="btn-community-join" style="display:none;">
-          <span id="hero-community-icon">💬</span>
-          <span id="hero-community-label">Masuk Grup Komunitas ↗</span>
-        </a>
+        <button class="btn-secondary" onclick="openAnnouncementVoucherModal()" style="color:#FF2E63; border-color:rgba(255,46,99,0.3); background:#FFF1F4;">
+          📢 Kode Promo
+        </button>
       </div>
-      <div style="font-size:12px; color:var(--text-muted); font-weight:600; display:flex; align-items:center; gap:8px;">
-        <span>⚡ 100% Otomatisasi Terintegrasi:</span>
-        <span style="background:#FFF; padding:2px 8px; border-radius:6px; border:1px solid #E2E8F0;">Google Drive</span>
-        <span style="background:#FFF; padding:2px 8px; border-radius:6px; border:1px solid #E2E8F0;">Sheets</span>
-        <span style="background:#FFF; padding:2px 8px; border-radius:6px; border:1px solid #E2E8F0;">WhatsApp Fonnte</span>
+      <div style="font-size:12px; color:var(--text-muted); font-weight:700; display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:14px;">
+        <span style="display:inline-flex; align-items:center; gap:5px; color:#059669;">✓ Akses instan setelah redeem kode</span>
+        <span style="display:inline-flex; align-items:center; gap:5px; color:#059669;">✓ Materi &amp; source code bisa diunduh</span>
+        <span style="display:inline-flex; align-items:center; gap:5px; color:#059669;">✓ Dibantu Admin via WhatsApp</span>
       </div>
     </div>
 
@@ -204,21 +247,29 @@
   <!-- Metric Counters Row -->
   <div style="padding: 0 5%; background: var(--wave-pink); padding-bottom: 50px;">
     <div class="metrics-row">
-      <div class="metric-card">
-        <div class="metric-number">1.200+</div>
-        <div class="metric-label">Member Aktif Terdaftar</div>
+      <div class="metric-card" style="cursor:pointer;" onclick="openClassroomDashboardOrLogin()">
+        <div style="font-size:24px; margin-bottom:4px;">👥</div>
+        <div class="metric-number">861+</div>
+        <div class="metric-label" style="font-weight:800; color:#0F172A;">Member Aktif</div>
+        <div style="font-size:11px; color:#64748B;">Bergabung di portal</div>
       </div>
-      <div class="metric-card">
-        <div class="metric-number">45+</div>
-        <div class="metric-label">Modul Video & Template</div>
+      <div class="metric-card" style="cursor:pointer;" onclick="location.href='#produk'">
+        <div style="font-size:24px; margin-bottom:4px;">📦</div>
+        <div class="metric-number">8+</div>
+        <div class="metric-label" style="font-weight:800; color:#0F172A;">Produk Digital</div>
+        <div style="font-size:11px; color:#64748B;">Kelas, aplikasi &amp; dokumen</div>
       </div>
-      <div class="metric-card">
-        <div class="metric-number">98%</div>
-        <div class="metric-label">Tingkat Kepuasan Belajar</div>
+      <div class="metric-card" style="cursor:pointer;" onclick="location.href='#bootcamp'">
+        <div style="font-size:24px; margin-bottom:4px;">📅</div>
+        <div class="metric-number">1</div>
+        <div class="metric-label" style="font-weight:800; color:#0F172A;">Program Bootcamp</div>
+        <div style="font-size:11px; color:#64748B;">Kelas live terjadwal</div>
       </div>
-      <div class="metric-card">
-        <div class="metric-number">24/7</div>
-        <div class="metric-label">Pengiriman Akses Instan</div>
+      <div class="metric-card" style="cursor:pointer;" onclick="openPameranKaryaPortal()">
+        <div style="font-size:24px; margin-bottom:4px;">🏆</div>
+        <div class="metric-number">54+</div>
+        <div class="metric-label" style="font-weight:800; color:#0F172A;">Karya Dipamerkan</div>
+        <div style="font-size:11px; color:#64748B;">Hasil nyata para member</div>
       </div>
     </div>
   </div>
@@ -226,6 +277,56 @@
   <!-- ========================================================================
        5. KATEGORI PRODUK & LAYANAN UNGGULAN
        ======================================================================== -->
+  
+  <!-- ========================================================================
+       BOOTCAMP & KELAS LIVE (Sesuai Foto 4)
+       ======================================================================== -->
+  <section class="section-wrapper" id="bootcamp" style="background: var(--canvas-bg); padding-top:40px;">
+    <div class="section-title-wrap">
+      <div class="section-eyebrow" style="color:#FF2E63; font-weight:800; letter-spacing:1px;">PROGRAM INTENSIF</div>
+      <h2 class="section-heading" style="color:var(--deep-navy);">Bootcamp &amp; Kelas Live 🔥</h2>
+      <p style="color:var(--text-muted); margin-top:8px; max-width:640px; margin-left:auto; margin-right:auto;">
+        Belajar terjadwal bersama mentor. Daftar lewat website/WhatsApp, lalu masuk dengan token akses yang Anda terima.
+      </p>
+    </div>
+
+    <div class="bootcamp-card-wrap">
+      <!-- Bootcamp Card 1 (Batch 1 November) -->
+      <div class="bootcamp-card">
+        <div class="bootcamp-thumb-box">
+          <img src="assets/hero/hero-slide-3.jpg" alt="BootCamp Batch 1" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80';">
+          <span style="position:absolute; top:12px; left:12px;" class="bootcamp-badge-hot">⚡ Pendaftaran Dibuka</span>
+          <span style="position:absolute; bottom:12px; right:12px; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); color:#FFF; font-size:11px; font-weight:800; padding:4px 10px; border-radius:99px;">⏱️ 4 Pertemuan</span>
+        </div>
+        <div class="bootcamp-content">
+          <div style="font-size:11px; color:#FF2E63; font-weight:800; text-transform:uppercase; margin-bottom:6px;">LIVE INTENSIF VIA WEBINAR</div>
+          <h3 class="bootcamp-title">BootCamp Batch 1 (NOVEMBER) : Dari Ide di Kepala, Jadi AppWeb Nyata</h3>
+          <div class="bootcamp-meta-row">
+            <span>📅 Mulai Minggu, 8 Nov 2026 • 19.30 WIB</span>
+            <span>•</span>
+            <span>👨‍🏫 Mentor: Daffa Fazdian &amp; Team</span>
+          </div>
+          <p style="font-size:13px; color:#64748B; line-height:1.5; margin:0 0 16px;">
+            Pelatihan membuat AppWeb lengkap dengan Claude AI + Antigravity Gemini + Google Apps Script + Google Stitch. Langsung praktek sampai aplikasi Anda terbit ke Vercel!
+          </p>
+          <div class="bootcamp-price-box">
+            <span class="bootcamp-price-strike">Rp 700.000</span>
+            <span class="bootcamp-price-active">Rp 299.000</span>
+            <span style="font-size:11px; font-weight:800; color:#059669; background:#ECFDF5; padding:2px 8px; border-radius:99px;">Hemat 57%</span>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:auto;">
+            <button class="btn-secondary" style="flex:1; padding:10px; font-size:12.5px; font-weight:700;" onclick="openAnnouncementVoucherModal()">
+              🎁 Kode Redeem
+            </button>
+            <button class="shimmer-btn" style="flex:1.5; padding:10px; font-size:13px; font-weight:800; justify-content:center;" onclick="handleBootcampRegistration()">
+              Daftar Bootcamp 🚀
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
   <section class="section-wrapper" id="kategori" style="background: var(--canvas-bg);">
     <div class="section-title-wrap">
       <div class="section-eyebrow">PILIHAN KATEGORI</div>
@@ -1059,18 +1160,28 @@
     <!-- Sticky Top Navigation Bar Khusus Member Classroom -->
     <header class="classroom-portal-nav">
       <div class="classroom-nav-top-row">
+        <!-- Brand Title (Item 3: Rapih, Modern & Sangat Profesional) -->
         <div class="classroom-brand">
-          <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, #FF2E63, #E11D48); display:flex; align-items:center; justify-content:center; color:white; font-size:18px; box-shadow:0 4px 12px rgba(255,46,99,0.3); flex-shrink:0;">🎓</div>
-          <div style="display:flex; flex-direction:column; align-items:flex-start; min-width:0;">
-            <div style="display:inline-flex; align-items:center; gap:8px; line-height:1.2; flex-wrap:wrap;">
-              <span class="brand-name-text" style="font-size:17px; font-weight:800; color:#0B132B; white-space:nowrap;">Nex<span class="brand-accent" style="color:#FF2E63; background:linear-gradient(135deg, #FF2E63 0%, #E11D48 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Store</span></span>
-              <span class="brand-motif-pill" style="font-size:9.5px; padding:3px 8px; color:#FF2E63; background:linear-gradient(135deg, #FFF1F4 0%, #FFE4E6 100%); border:1px solid rgba(255,46,99,0.4); font-weight:800;">PRODUK DIGITAL • by @daffafazdian.id</span>
+          <div class="brand-app-icon" style="width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%); border:1.5px solid rgba(255,46,99,0.4); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(255,46,99,0.25); flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19V5L15 19V5" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="19" cy="5" r="2.5" fill="#FFE600"/>
+            </svg>
+          </div>
+          <div style="display:flex; flex-direction:column; line-height:1.2;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="brand-name-text" style="font-size:18px; font-weight:800; color:var(--deep-navy);">Nex<span class="brand-accent" style="color:#FF2E63;">Store</span></span>
+              <span class="brand-motif-pill" style="font-size:9.5px; padding:2px 8px; border-radius:99px; background:#FFF1F4; color:#FF2E63; border:1px solid rgba(255,46,99,0.25); font-weight:800;">PRODUK DIGITAL</span>
             </div>
-            <span style="font-size:11px; color:#64748B; font-weight:600; margin-top:3px; display:block; white-space:nowrap;">Ruang BelajarKu</span>
+            <div style="font-size:10.5px; color:#64748B; font-weight:700; display:flex; align-items:center; gap:5px; margin-top:2px;">
+              <span>by @daffafazdian.id</span>
+              <span style="color:#CBD5E1;">•</span>
+              <span style="color:#0F172A; font-weight:800;">Portal Ruang BelajarKu</span>
+            </div>
           </div>
         </div>
 
-        <!-- Mobile Header Action Buttons (Halaman Utama & Keluar) -->
+        <!-- Mobile Header Action Buttons -->
         <div class="classroom-btn-actions mobile-only-actions">
           <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
             ⬅️ Halaman Utama
@@ -1081,22 +1192,35 @@
         </div>
       </div>
 
-      <!-- Quick Nav Links Siswa -->
+      <!-- Quick Nav Links Siswa (Item 4: Source Code & Drive serta Tanya Mentor VIP Dihilangkan Sesuai Permintaan) -->
       <ul class="classroom-top-links">
-        <li><a href="#cls-portal-search-input" class="active">📚 Modul Materi</a></li>
-        <li><a href="#cls-resources-anchor">💻 Source Code &amp; Drive</a></li>
-        <li><a href="https://wa.me/6287894602627?text=Halo%20Mentor%20VIP%20NexStore%2C%20saya%20siswa%20terverifikasi%20ingin%20konsultasi%20materi" target="_blank" rel="noopener noreferrer">💬 Tanya Mentor VIP</a></li>
+        <li><a href="#cls-portal-search-input" class="active">📚 Modul Materi Pembelajaran</a></li>
       </ul>
 
-      <!-- User Profile Badge & Action -->
+      <!-- User Profile Badge & Action (Item 5: Icon Google Berisi Email Pembeli & Order ID Kunci Masuk Modul) -->
       <div class="classroom-user-actions-group">
-        <div class="classroom-student-pill">
-          <div class="classroom-student-avatar">👨‍🎓</div>
-          <div class="classroom-student-info">
-            <div style="font-size:12px; font-weight:800; color:var(--deep-navy);" id="cls-active-student-email">daffafazdian50@gmail.com</div>
-            <div style="font-size:10px; color:#10B981; font-weight:700;">🟢 Akses Lunas (<span id="cls-active-order-id">ORD-20261028-211630-4012</span>)</div>
+        <div class="google-verified-card" title="Akun Google & Order ID Resmi untuk Membuka Modul Pembelajaran">
+          <!-- Google Official Multi-Color 'G' SVG Icon -->
+          <div class="google-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+            </svg>
+          </div>
+          <div class="google-user-details">
+            <div class="google-email-line">
+              <span id="cls-active-student-email">daffafazdian50@gmail.com</span>
+              <span class="google-sso-badge">Google Verified ✓</span>
+            </div>
+            <div class="google-order-line">
+              <span>Order ID: <strong id="cls-active-order-id">ORD-20261028-211630-4012</strong></span>
+              <span class="badge-status-green">Akses Aktif 🟢</span>
+            </div>
           </div>
         </div>
+
         <div class="classroom-btn-actions desktop-only-actions">
           <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
             ⬅️ Halaman Utama
@@ -3643,5 +3767,38 @@
     </div>
   </div>
 
+
+  <!-- ========================================================================
+       MODAL PENGUMUMAN & VOUCHER KODE REDEEM (Sesuai Foto 1 & 2)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-announcement-voucher" style="display:none; align-items:center; justify-content:center; z-index:9999;">
+    <div class="modal-voucher-box">
+      <div class="modal-voucher-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:12px; font-weight:800; background:#FF2E63; color:#FFF; padding:3px 10px; border-radius:99px;">📢 Pengumuman</span>
+          <span style="font-size:12px; font-weight:700; color:#94A3B8;">Kode Promo &amp; Redeem</span>
+        </div>
+        <button onclick="closeAnnouncementVoucherModal()" style="background:none; border:none; color:#FFF; font-size:18px; cursor:pointer; padding:4px;">✕</button>
+      </div>
+      <img src="assets/hero/hero-slide-3.jpg" alt="Pengumuman Banner" class="modal-voucher-banner" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80';">
+      <div class="modal-voucher-body">
+        <h3 id="modal-voucher-title" style="font-size:17px; font-weight:900; color:#FFFFFF; margin:0 0 6px;">KODE REEDEM BOOTCAMP [ CATAT !! ]</h3>
+        <p id="modal-voucher-desc" style="font-size:12px; color:#94A3B8; margin:0 0 10px;">
+          Silahkan salin kode berikut untuk membuka akses kelas atau bootcamp di Portal Siswa:
+        </p>
+        <div class="modal-voucher-code-pill" id="modal-voucher-code" onclick="copyModalVoucherCode()" title="Klik untuk Salin Kode">
+          BOOT-5J6T3T
+        </div>
+        <div style="display:flex; gap:10px; justify-content:center;">
+          <button class="btn-secondary" onclick="closeAnnouncementVoucherModal()" style="padding:9px 18px; font-size:12.5px; color:#94A3B8; border-color:rgba(255,255,255,0.2);">
+            Tutup
+          </button>
+          <button class="shimmer-btn" onclick="redeemModalVoucherNow()" style="padding:9px 20px; font-size:12.5px; font-weight:800;">
+            Salin &amp; Redeem Sekarang ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -7608,3 +7608,380 @@ footer {
     object-fit: cover !important;
   }
 }
+
+
+/* ==========================================================================
+   UPGRADE: BOOTCAMP & KELAS LIVE, VIP MEMBER WELCOME, & GOOGLE BADGE
+   WARM PASTEL TECH PALETTE (Desain UI UX / warm_pastel_tech)
+   ========================================================================== */
+
+/* 1. VIP MEMBER WELCOME THUMBNAIL (Dashboard Utama) */
+.vip-welcome-container {
+  padding: 16px 5% 0;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.vip-welcome-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF8FA 60%, #FDEEF1 100%);
+  border: 1.5px solid rgba(255, 46, 99, 0.35);
+  border-radius: 20px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 12px 32px -8px rgba(255, 46, 99, 0.16), 0 4px 12px rgba(15, 23, 42, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.vip-welcome-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, #FF0844 0%, #FF2E63 50%, #F59E0B 100%);
+}
+.vip-welcome-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -8px rgba(255, 46, 99, 0.22);
+}
+.vip-welcome-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.vip-avatar-badge {
+  position: relative;
+  flex-shrink: 0;
+}
+.vip-google-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(255, 46, 99, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+.vip-online-dot {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid #FFFFFF;
+}
+.vip-welcome-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.vip-tag-pill {
+  font-size: 10px;
+  font-weight: 800;
+  color: #FF2E63;
+  background: #FFF1F4;
+  border: 1px solid rgba(255, 46, 99, 0.3);
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.5px;
+}
+.vip-order-tag {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 600;
+}
+.vip-order-tag strong {
+  color: #0F172A;
+  font-family: monospace;
+}
+.vip-welcome-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 4px;
+  letter-spacing: -0.4px;
+}
+.vip-name-highlight {
+  color: #FF2E63;
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.vip-welcome-desc {
+  font-size: 12.5px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.4;
+}
+.vip-welcome-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.btn-vip-classroom {
+  padding: 10px 20px !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  border-radius: 99px !important;
+  white-space: nowrap;
+}
+.btn-vip-order {
+  padding: 10px 16px !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  border-radius: 99px !important;
+  white-space: nowrap;
+}
+
+/* 2. GOOGLE VERIFIED CARD (Portal Ruang BelajarKu) */
+.google-verified-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(66, 133, 244, 0.3);
+  border-radius: 14px;
+  padding: 6px 14px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  transition: all 0.25s ease;
+}
+.google-verified-card:hover {
+  border-color: #4285F4;
+  box-shadow: 0 6px 18px rgba(66, 133, 244, 0.15);
+}
+.google-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #F8FAFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #E2E8F0;
+}
+.google-user-details {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.google-email-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.google-email-line span:first-child {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #0F172A;
+}
+.google-sso-badge {
+  font-size: 9px;
+  font-weight: 800;
+  color: #2563EB;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+.google-order-line {
+  font-size: 10.5px;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+.google-order-line strong {
+  color: #0F172A;
+  font-family: monospace;
+}
+.badge-status-green {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #059669;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+
+/* 3. SECTION BOOTCAMP & KELAS LIVE (Sesuai Foto 4) */
+.bootcamp-badge-hot {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #FF0844 0%, #FF2E63 100%);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 99px;
+  box-shadow: 0 4px 12px rgba(255, 46, 99, 0.35);
+}
+.bootcamp-card-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  margin-top: 24px;
+}
+.bootcamp-card {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+.bootcamp-card:hover {
+  transform: translateY(-6px);
+  border-color: #FF2E63;
+  box-shadow: 0 20px 40px -8px rgba(255, 46, 99, 0.18);
+}
+.bootcamp-thumb-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0F172A;
+  overflow: hidden;
+}
+.bootcamp-thumb-box img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.bootcamp-card:hover .bootcamp-thumb-box img {
+  transform: scale(1.04);
+}
+.bootcamp-content {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.bootcamp-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+.bootcamp-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 600;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.bootcamp-price-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.bootcamp-price-strike {
+  font-size: 13.5px;
+  color: #94A3B8;
+  text-decoration: line-through;
+}
+.bootcamp-price-active {
+  font-size: 22px;
+  font-weight: 800;
+  color: #E11D48;
+}
+
+/* 4. MODAL POPUP PENGUMUMAN & VOUCHER KODE (Sesuai Foto 1 & 2) */
+.modal-voucher-box {
+  background: #0F172A;
+  color: #FFFFFF;
+  border-radius: 20px;
+  border: 1.5px solid rgba(255, 46, 99, 0.4);
+  max-width: 480px;
+  width: 92%;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+.modal-voucher-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.modal-voucher-banner {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+.modal-voucher-body {
+  padding: 20px;
+  text-align: center;
+}
+.modal-voucher-code-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(255, 46, 99, 0.15);
+  border: 2px dashed #FF2E63;
+  color: #FF6B8B;
+  font-size: 20px;
+  font-weight: 900;
+  font-family: monospace;
+  padding: 10px 24px;
+  border-radius: 12px;
+  margin: 12px 0 16px;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.modal-voucher-code-pill:hover {
+  background: rgba(255, 46, 99, 0.25);
+  transform: scale(1.03);
+}
+
+/* RESPONSIVE TWEAKS */
+@media (max-width: 768px) {
+  .vip-welcome-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px;
+    gap: 16px;
+  }
+  .vip-welcome-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .vip-welcome-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+  .google-verified-card {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+  .google-user-details span:first-child {
+    font-size: 11px;
+  }
+}
