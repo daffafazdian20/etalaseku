@@ -889,75 +889,94 @@
   </section>
 
   <!-- ========================================================================
-       9. PRE-FOOTER HIGH-FIVE COLLABORATION BANNER
+       FOOTER & AKSES MEMBER (PERSIS FOTO 2 REFERENCE)
+       Brand: Produk Digital - by @daffafazdian.id
        ======================================================================== -->
-  <section style="padding: 0 5% 80px; background: var(--wave-lavender);">
-    <div style="background: #FFFFFF; border-radius: 28px; padding: 50px 30px; text-align: center; max-width: 860px; margin: 0 auto; box-shadow: var(--shadow-card); border: 2px dashed rgba(255,46,99,0.3);">
-      <div style="font-size: 54px; margin-bottom: 16px;">🙌</div>
-      <h2 style="font-size: 32px; font-weight: 800; color: var(--deep-navy); margin-bottom: 12px;">
-        Punya Ide Proyek Digital? Mari Wujudkan Bersama!
-      </h2>
-      <p style="color: var(--text-muted); max-width: 520px; margin: 0 auto 28px; font-size: 15px;">
-        Konsultasikan kebutuhan pembuatan web app, template bisnis, atau sistem otomatisasi WhatsApp Anda langsung dengan tim mentor kami.
-      </p>
-      <div class="prefooter-cta-group" style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;">
-        <button class="shimmer-btn btn-primary" onclick="toggleWhatsAppPopover()" style="padding: 16px 32px; font-size: 15.5px;">
-          Konsultasi via WhatsApp Sekarang 💬
+  <footer class="site-footer-v2" id="footer-portal">
+    <!-- Header Akses Member Sesuai Foto 2 -->
+    <div class="footer-v2-header">
+      <div class="footer-v2-eyebrow">AKSES MEMBER</div>
+      <h2 class="footer-v2-title">Sudah Beli via QRIS atau Lynk.id?</h2>
+      <p class="footer-v2-desc">Masukkan kode akses untuk membuka kelas &amp; materi di portal member.</p>
+    </div>
+
+    <!-- 3 Akses Member Cards Grid (Foto 2 Reference) -->
+    <div class="footer-v2-cards-grid">
+      <!-- Card 1: Redeem Kode Akses -->
+      <div class="footer-v2-card">
+        <div class="footer-v2-card-icon" style="background:#F59E0B; color:#0F172A;">
+          🔑
+        </div>
+        <h3 class="footer-v2-card-title">Redeem Kode Akses</h3>
+        <p class="footer-v2-card-desc">Tukarkan kode dari Lynk.id / QRIS &mdash; akun dibuat otomatis.</p>
+        <button type="button" class="footer-v2-btn footer-v2-btn-gold" onclick="openRedeemModal()">
+          🔑 Redeem Kode
         </button>
-        <a href="#" id="prefooter-community-btn" target="_blank" rel="noopener noreferrer" class="btn-community-join prefooter-community-cta" style="display:none; padding: 15px 28px; font-size: 15px;">
-          <span id="prefooter-community-icon">👥</span>
-          <span id="prefooter-community-label">Masuk Grup Komunitas Resmi ↗</span>
+      </div>
+
+      <!-- Card 2: Masuk Portal Member -->
+      <div class="footer-v2-card">
+        <div class="footer-v2-card-icon" style="background:#3B82F6; color:#FFFFFF;">
+          ➔
+        </div>
+        <h3 class="footer-v2-card-title">Masuk Portal Member</h3>
+        <p class="footer-v2-card-desc">Lanjutkan belajar dengan email yang sudah terdaftar.</p>
+        <button type="button" class="footer-v2-btn footer-v2-btn-blue" onclick="openMemberLoginModal()">
+          ➔ Masuk Portal
+        </button>
+      </div>
+
+      <!-- Card 3: Daftar Member -->
+      <div class="footer-v2-card">
+        <div class="footer-v2-card-icon" style="background:#10B981; color:#FFFFFF;">
+          👤
+        </div>
+        <h3 class="footer-v2-card-title">Daftar Member</h3>
+        <p class="footer-v2-card-desc">Belum punya akun? Daftar dan tunggu persetujuan Admin.</p>
+        <button type="button" class="footer-v2-btn footer-v2-btn-outline" onclick="openRedeemModal()">
+          👤 Daftar Sekarang
+        </button>
+      </div>
+    </div>
+
+    <!-- Testimonial Teaser Card (Foto 2 Reference) -->
+    <div class="footer-v2-testi-box">
+      <div class="footer-v2-stars">★★★★★</div>
+      <h4 class="footer-v2-testi-title">Apa kata member kami?</h4>
+      <p class="footer-v2-testi-desc">Baca pengalaman nyata para member yang sudah belajar &amp; memakai produk kami.</p>
+      <button type="button" class="footer-v2-testi-btn" onclick="scrollToSection('testimoni')">
+        💬 Lihat Testimoni Member
+      </button>
+      <div class="footer-v2-quote-watermark">❝</div>
+    </div>
+
+    <!-- Contact Row (Foto 2 Reference: Masih ragu? Tanya langsung ke Admin) -->
+    <div class="footer-v2-contact-bar">
+      <div class="footer-v2-contact-label">Masih ragu? Tanya langsung ke Admin</div>
+      <div class="footer-v2-contact-actions">
+        <button type="button" class="footer-v2-btn-wa" onclick="openBantuanModal()">
+          <span>💬</span> WhatsApp
+        </button>
+        <a href="mailto:daffafazdian50@gmail.com?subject=Tanya%20Admin%20NexStore" class="footer-v2-btn-email">
+          <span>✉️</span> Email
         </a>
       </div>
     </div>
-  </section>
 
-  <!-- ========================================================================
-       10. DEEP MIDNIGHT NAVY WAVY FOOTER
-       ======================================================================== -->
-  <footer style="background: var(--deep-navy); color: #FFFFFF; padding: 60px 5% 30px;">
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:40px; margin-bottom:50px;">
-      <div>
-        <h3 style="font-size:22px; font-weight:800; margin-bottom:14px; color:#FFFFFF; display:inline-flex; align-items:center; gap:10px; flex-wrap:wrap;">
-          <span>Etalase<span style="color:var(--primary-pink);">Ku</span></span>
-          <span class="brand-motif-pill-dark">DIGITAL HUB &amp; ACADEMY</span>
-        </h3>
-        <p style="font-size:13px; color:#94A3B8; line-height:1.6;">
-          Platform produk digital, e-learning academy, dan sistem otomasi penjualan instan berbasis Google Workspace tanpa beban biaya server bulanan.
-        </p>
+    <!-- Bottom Copyright & Nav Links Bar (Foto 2 Reference) -->
+    <div class="footer-v2-bottom-bar">
+      <div class="footer-v2-brand-col">
+        <img src="assets/hero/hero-slide-3.jpg" alt="Logo Produk Digital" class="footer-v2-brand-avatar" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=80&q=80';">
+        <span>Produk Digital - by @daffafazdian.id</span>
       </div>
-      <div>
-        <h4 style="font-size:15px; font-weight:700; margin-bottom:14px; color:#FFFFFF;">Navigasi Cepat</h4>
-        <ul style="list-style:none; font-size:13px; color:#94A3B8; display:flex; flex-direction:column; gap:8px;">
-          <li><a href="#hero" style="color:inherit; text-decoration:none;">Beranda Utama</a></li>
-          <li><a href="#produk" style="color:inherit; text-decoration:none;">Katalog Produk</a></li>
-          <li><a href="#showcase" style="color:inherit; text-decoration:none;">Hasil Karya Siswa</a></li>
-          <li><a href="#testimoni" style="color:inherit; text-decoration:none;">Testimoni Alumni</a></li>
-          <li id="footer-community-item" style="display:none;"><a href="#" id="footer-community-link" target="_blank" rel="noopener noreferrer" style="color:#38BDF8; text-decoration:none; font-weight:700;">💬 Gabung Grup Komunitas ↗</a></li>
-        </ul>
+      <div class="footer-v2-copyright-col">
+        &copy; 2026 Produk Digital - by @daffafazdian.id. Seluruh hak cipta dilindungi.
       </div>
-            <div>
-        <h4 style="font-size:15px; font-weight:700; margin-bottom:14px; color:#FFFFFF;">Akses Member &amp; Siswa</h4>
-        <ul style="list-style:none; font-size:13px; color:#94A3B8; display:flex; flex-direction:column; gap:8px;">
-          <li><a href="#redeem" onclick="openRedeemModal(); return false;" style="color:#FF2E63; text-decoration:none; font-weight:700;">🔑 Tukar Kode Akses (Redeem)</a></li>
-          <li><a href="#member-login" onclick="openMemberLoginModal(); return false;" style="color:inherit; text-decoration:none;">🎓 Login Member Classroom</a></li>
-          <li><a href="#action" onclick="document.getElementById('modal-student-bills').classList.add('active')" style="color:inherit; text-decoration:none;">💳 Cek &amp; Bayar Tagihan Siswa</a></li>
-          <li><a href="#admin" onclick="openAdminModal(); return false;" style="color:inherit; text-decoration:none;">👑 Portal Super Admin &amp; CRM</a></li>
-        </ul>
+      <div class="footer-v2-links-col">
+        <a href="#panduan" onclick="openPanduanModal(); return false;" class="footer-v2-nav-link">Panduan</a>
+        <a href="#bantuan" onclick="openBantuanModal(); return false;" class="footer-v2-nav-link footer-bantuan-link">Bantuan</a>
+        <a href="#masuk" onclick="openMemberLoginModal(); return false;" class="footer-v2-nav-link">Masuk</a>
       </div>
-      <div>
-        <h4 style="font-size:15px; font-weight:700; margin-bottom:14px; color:#FFFFFF;">Teknologi Serverless</h4>
-        <div style="display:flex; flex-wrap:wrap; gap:6px;">
-          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Google Apps Script</span>
-          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Google Sheets DB</span>
-          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Drive Storage</span>
-          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">GmailApp Automation</span>
-          <span style="background:#1E293B; color:#94A3B8; padding:4px 8px; border-radius:6px; font-size:11px;">Fonnte WhatsApp API</span>
-        </div>
-      </div>
-    </div>
-    <div style="border-top:1px solid #1E293B; padding-top:24px; text-align:center; font-size:12px; color:#64748B;">
-      &copy; 2026 NexStore Produk Digital - by @daffafazdian.id. All Rights Reserved. Built with Google Apps Script &amp; Web Standards.
     </div>
   </footer>
 
@@ -4551,6 +4570,53 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
   <!-- ========================================================================
        MODAL DETAIL BOOTCAMP (Persis Tampilan Foto 5)
        ======================================================================== -->
+  
+  <!-- ========================================================================
+       MODAL TANYA ADMIN / BANTUAN (PERSIS FOTO 3 REFERENCE)
+       Konek langsung ke Nomor WhatsApp Super Admin & Admin
+       Desain Warna Mengikuti Panduan DESAIN UI/UX
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-bantuan-admin" style="display:none; align-items:center; justify-content:center; z-index:20000;" onclick="if(event.target === this) closeBantuanModal()">
+    <div class="modal-bantuan-dialog" onclick="event.stopPropagation()">
+      <div style="text-align:center; margin-bottom:18px;">
+        <h3 style="font-size:19px; font-weight:800; margin:0 0 6px;">Tanya Admin</h3>
+        <p style="font-size:12px; color:#94A3B8; margin:0;">Isi data singkat agar Admin bisa membantu Anda lebih cepat.</p>
+      </div>
+
+      <form id="form-tanya-admin" onsubmit="event.preventDefault(); submitBantuanToWhatsApp();">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">Nama</label>
+          <input type="text" id="bantuan-name" class="form-input" placeholder="Nama Anda" required style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">No. WhatsApp</label>
+          <input type="tel" id="bantuan-wa" class="form-input" placeholder="0878... atau +60..." required style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+          <div style="font-size:11px; color:#64748B; margin-top:5px; line-height:1.4;">Contoh 087818485245. Nomor luar negeri: awali dengan + dan kode negara, mis. +60 12 345 6789.</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">Email (opsional)</label>
+          <input type="email" id="bantuan-email" class="form-input" placeholder="nama@email.com" style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label style="font-size:11.5px; font-weight:700; display:block; margin-bottom:6px;">Pertanyaan</label>
+          <textarea id="bantuan-pertanyaan" class="form-input" rows="3" style="width:100%; border-radius:8px; padding:10px 12px; font-size:13px; resize:vertical;">Halo Admin, saya tertarik dengan Bantuan.</textarea>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn-primary" style="flex:1.4; padding:11px; font-size:13px; font-weight:800; border-radius:10px; background:#3B82F6; color:#FFFFFF; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+            Lanjut ke WhatsApp
+          </button>
+          <button type="button" class="btn-secondary" style="flex:1; padding:11px; font-size:13px; font-weight:700; border-radius:10px; cursor:pointer;" onclick="closeBantuanModal()">
+            Batal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="modal-bootcamp-detail" style="display:none; align-items:center; justify-content:center; z-index:20000;" onclick="if(event.target === this) closeBootcampDetailModal()">
     <div class="modal-bootcamp-detail-dialog" onclick="event.stopPropagation()">
       <!-- Left Column: Blurred aesthetic backdrop & banner preview -->

@@ -9385,7 +9385,8 @@ footer {
 
 #modal-complete-profile.active,
 #modal-bootcamp-announcement.active,
-#modal-bootcamp-detail.active {
+#modal-bootcamp-detail.active,
+#modal-bantuan-admin.active {
   display: flex !important;
   content-visibility: visible !important;
   opacity: 1 !important;
@@ -11329,4 +11330,351 @@ body.dark-theme .modal-bc-actions .btn-secondary {
   background: rgba(255, 255, 255, 0.06) !important;
   color: #FFFFFF !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ==========================================================================
+   TURN 28: FOOTER REDESIGN (SESUAI FOTO 2) & MODAL TANYA ADMIN (SESUAI FOTO 3)
+   Mengikuti Panduan Desain UI/UX (Warm Pastel Tech & Deep Slate Navy)
+   ========================================================================== */
+.site-footer-v2 {
+  background: #080D1A !important;
+  color: #FFFFFF !important;
+  padding: 60px 5% 30px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+[data-theme="light"] .site-footer-v2,
+body:not(.dark-theme) .site-footer-v2 {
+  background: #0B132B !important;
+}
+
+.footer-v2-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 36px;
+}
+.footer-v2-eyebrow {
+  color: #38BDF8;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.footer-v2-title {
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+.footer-v2-desc {
+  font-size: 13.5px;
+  color: #94A3B8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.footer-v2-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1040px;
+  margin: 0 auto 28px;
+}
+.footer-v2-card {
+  background: #0F172A;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.footer-v2-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+.footer-v2-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.footer-v2-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 6px;
+}
+.footer-v2-card-desc {
+  font-size: 12.5px;
+  color: #94A3B8;
+  line-height: 1.5;
+  margin: 0 0 20px;
+  flex: 1;
+}
+.footer-v2-btn {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.footer-v2-btn-gold {
+  background: #F59E0B;
+  color: #0F172A;
+}
+.footer-v2-btn-gold:hover {
+  background: #D97706;
+  color: #0F172A;
+}
+.footer-v2-btn-blue {
+  background: #3B82F6;
+  color: #FFFFFF;
+}
+.footer-v2-btn-blue:hover {
+  background: #2563EB;
+}
+.footer-v2-btn-outline {
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.footer-v2-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.footer-v2-testi-box {
+  max-width: 640px;
+  margin: 0 auto 20px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 22px 26px;
+  position: relative;
+  overflow: hidden;
+}
+.footer-v2-stars {
+  color: #F59E0B;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.footer-v2-testi-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 6px;
+}
+.footer-v2-testi-desc {
+  font-size: 12.5px;
+  color: #94A3B8;
+  margin: 0 0 16px;
+  max-width: 480px;
+  line-height: 1.5;
+}
+.footer-v2-testi-btn {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.footer-v2-testi-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: #60A5FA;
+}
+.footer-v2-quote-watermark {
+  position: absolute;
+  right: 20px;
+  top: 14px;
+  font-size: 52px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.05);
+  font-family: serif;
+  pointer-events: none;
+}
+
+.footer-v2-contact-bar {
+  max-width: 820px;
+  margin: 0 auto 50px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.footer-v2-contact-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #E2E8F0;
+}
+.footer-v2-contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-v2-btn-wa {
+  background: #10B981;
+  color: #FFFFFF;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+.footer-v2-btn-wa:hover {
+  background: #059669;
+}
+.footer-v2-btn-email {
+  background: transparent;
+  color: #E2E8F0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.footer-v2-btn-email:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.footer-v2-bottom-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12.5px;
+  color: #94A3B8;
+}
+.footer-v2-brand-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+.footer-v2-brand-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+}
+.footer-v2-links-col {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.footer-v2-nav-link {
+  color: #94A3B8;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.footer-v2-nav-link:hover,
+.footer-v2-nav-link.footer-bantuan-link:hover {
+  color: #FF2E63 !important; /* Aksen Hot Pink dari folder DESAIN UI/UX */
+}
+
+/* Modal Tanya Admin Dialog (Foto 3 Reference) */
+.modal-bantuan-dialog {
+  background: #0F172A;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  width: 92%;
+  max-width: 440px;
+  padding: 26px 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+
+[data-theme="light"] .modal-bantuan-dialog,
+body:not(.dark-theme) .modal-bantuan-dialog {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25) !important;
+}
+
+[data-theme="light"] .modal-bantuan-dialog input,
+[data-theme="light"] .modal-bantuan-dialog textarea,
+body:not(.dark-theme) .modal-bantuan-dialog input,
+body:not(.dark-theme) .modal-bantuan-dialog textarea {
+  background: #F8FAFC !important;
+  color: #0F172A !important;
+  border: 1px solid #CBD5E1 !important;
+}
+
+[data-theme="light"] .modal-bantuan-dialog .btn-secondary,
+body:not(.dark-theme) .modal-bantuan-dialog .btn-secondary {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+
+@media (max-width: 768px) {
+  .footer-v2-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-v2-contact-bar {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-v2-contact-actions {
+    width: 100%;
+    justify-content: center;
+  }
+  .footer-v2-bottom-bar {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+  .footer-v2-links-col {
+    justify-content: center;
+  }
 }

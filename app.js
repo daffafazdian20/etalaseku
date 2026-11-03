@@ -9350,3 +9350,81 @@ if (typeof document !== 'undefined') {
     initAppTheme();
   }
 }
+
+
+// ============================================================================
+// TURN 28: BANTUAN & TANYA ADMIN ENGINE (FOTO 3 REFERENCE)
+// Konek langsung ke Nomor WhatsApp Super Admin & Admin
+// ============================================================================
+function openBantuanModal() {
+  const modal = document.getElementById('modal-bantuan-admin');
+  if (modal) {
+    const activeEmail = localStorage.getItem('etalaseku_member_email') || '';
+    const activeWa = localStorage.getItem('etalaseku_member_wa') || '';
+    const activeName = localStorage.getItem('etalaseku_member_name') || '';
+
+    const nameEl = document.getElementById('bantuan-name');
+    const waEl = document.getElementById('bantuan-wa');
+    const emailEl = document.getElementById('bantuan-email');
+
+    if (nameEl && !nameEl.value && activeName) nameEl.value = activeName;
+    if (waEl && !waEl.value && activeWa) waEl.value = activeWa;
+    if (emailEl && !emailEl.value && activeEmail) emailEl.value = activeEmail;
+
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeBantuanModal() {
+  const modal = document.getElementById('modal-bantuan-admin');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function submitBantuanToWhatsApp() {
+  const nameEl = document.getElementById('bantuan-name');
+  const waEl = document.getElementById('bantuan-wa');
+  const emailEl = document.getElementById('bantuan-email');
+  const queryEl = document.getElementById('bantuan-pertanyaan');
+
+  const name = nameEl ? nameEl.value.trim() : '';
+  const wa = waEl ? waEl.value.trim() : '';
+  const email = emailEl ? emailEl.value.trim() : '';
+  const query = queryEl ? queryEl.value.trim() : 'Halo Admin, saya tertarik dengan Bantuan.';
+
+  if (!name) {
+    if (typeof showToast === 'function') showToast('Silakan masukkan Nama Anda.', 'warning');
+    if (nameEl) nameEl.focus();
+    return;
+  }
+  if (!wa) {
+    if (typeof showToast === 'function') showToast('Silakan masukkan Nomor WhatsApp Anda.', 'warning');
+    if (waEl) waEl.focus();
+    return;
+  }
+
+  const adminWa = (STATE.settings && STATE.settings.wa_cs_number) || (DEFAULT_SITE_SETTINGS && DEFAULT_SITE_SETTINGS.wa_cs_number) || '6287894602627';
+
+  let msg = 'Halo Super Admin & Admin NexStore (@daffafazdian.id),\n\n';
+  msg += 'Saya butuh bantuan / tanya seputar produk & akses member:\n';
+  msg += '• Nama: ' + name + '\n';
+  msg += '• No. WhatsApp: ' + wa + '\n';
+  if (email) msg += '• Email: ' + email + '\n';
+  msg += '• Pertanyaan: ' + query + '\n\n';
+  msg += 'Mohon bantuannya, terima kasih!';
+
+  closeBantuanModal();
+  if (typeof showToast === 'function') showToast('Menghubungkan ke WhatsApp Super Admin & Admin...', 'success');
+  window.open('https://wa.me/' + adminWa + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+if (typeof window !== 'undefined') {
+  window.openBantuanModal = openBantuanModal;
+  window.closeBantuanModal = closeBantuanModal;
+  window.submitBantuanToWhatsApp = submitBantuanToWhatsApp;
+}
