@@ -2364,10 +2364,17 @@ let ADMIN_STATE = {
 };
 
 function openMemberLoginModal() {
-  closeAllModals();
-  const modal = document.getElementById('modal-member-login') || document.getElementById('modal-unified-auth');
-  if (modal) modal.classList.add('active');
-  renderRecentDeviceChips();
+  const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
+  const savedEmail = localStorage.getItem('etalaseku_member_email');
+  const savedProfile = localStorage.getItem('nexstore_member_profile');
+  if (savedOrderId || savedEmail || savedProfile) {
+    openClassroomDashboard();
+  } else {
+    closeAllModals();
+    const modal = document.getElementById('modal-member-login') || document.getElementById('modal-unified-auth');
+    if (modal) modal.classList.add('active');
+    if (typeof renderRecentDeviceChips === 'function') renderRecentDeviceChips();
+  }
 }
 window.openMemberLoginModal = openMemberLoginModal;
 
@@ -4601,8 +4608,26 @@ function openClassroomPortalDemo() {
 function openClassroomDashboard(orderId, email) {
   if (typeof closeClassroomDetailView === 'function') closeClassroomDetailView();
   closeAllModals();
-  const activeId = orderId || localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261028-211630-4012';
+  const activeId = orderId || localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
   const activeEmail = email || localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+
+  // Sinkronkan data profil member (Foto 2 & 3)
+  const profile = typeof getMemberProfile === 'function' ? getMemberProfile() : { name: 'Daffa', whatsapp: '087894602627', email: activeEmail };
+
+  const memberNameEl = document.getElementById('member-display-name');
+  if (memberNameEl) memberNameEl.textContent = profile.name || 'Daffa';
+
+  const widgetNameEl = document.getElementById('widget-profile-name');
+  if (widgetNameEl) widgetNameEl.textContent = profile.name || 'Daffa';
+
+  const widgetEmailEl = document.getElementById('widget-profile-email');
+  if (widgetEmailEl) widgetEmailEl.textContent = profile.email || activeEmail;
+
+  const widgetWaEl = document.getElementById('widget-profile-whatsapp');
+  if (widgetWaEl) widgetWaEl.textContent = profile.whatsapp || '087894602627';
+
+  const widgetAvatarEl = document.getElementById('widget-avatar-initial');
+  if (widgetAvatarEl) widgetAvatarEl.textContent = (profile.name || 'Daffa').charAt(0).toUpperCase();
 
   // Perbarui teks Order ID & Email di dashboard siswa
   const activeOrderEl = document.getElementById('cls-active-order-id');
@@ -4622,6 +4647,11 @@ function openClassroomDashboard(orderId, email) {
 
   // Render modul ke dalam kartu dashboard
   renderClassroomPortalModules('', 'ALL');
+
+  // Buka Beranda Member Area (Foto 3) sebagai tampilan default
+  if (typeof switchMemberPortalView === 'function') {
+    switchMemberPortalView('home');
+  }
 
   // Tampilkan Halaman Dashboard Khusus Member Classroom
   const portal = document.getElementById('classroom-dashboard-portal');
@@ -7362,10 +7392,12 @@ function openCourseClassroomView(moduleId) {
   activeCourseEpisodeIndex = 0;
 
   // Toggle view
+  const viewHome = document.getElementById('rb-view-home');
   const viewGrid = document.getElementById('rb-view-grid');
   const viewCourse = document.getElementById('rb-view-course');
   const viewDoc = document.getElementById('rb-view-document');
 
+  if (viewHome) viewHome.style.display = 'none';
   if (viewGrid) viewGrid.style.display = 'none';
   if (viewDoc) viewDoc.style.display = 'none';
   if (viewCourse) viewCourse.style.display = 'block';
@@ -7449,10 +7481,12 @@ function openDocumentPackageView(moduleId) {
   activeDocData = docPkg;
 
   // Toggle view
+  const viewHome = document.getElementById('rb-view-home');
   const viewGrid = document.getElementById('rb-view-grid');
   const viewCourse = document.getElementById('rb-view-course');
   const viewDoc = document.getElementById('rb-view-document');
 
+  if (viewHome) viewHome.style.display = 'none';
   if (viewGrid) viewGrid.style.display = 'none';
   if (viewCourse) viewCourse.style.display = 'none';
   if (viewDoc) viewDoc.style.display = 'block';
@@ -7496,13 +7530,15 @@ function openDocumentPackageView(moduleId) {
 
 // Kembali ke Halaman Ruang BelajarKu Grid (Foto 1)
 function closeClassroomDetailView() {
+  const viewHome = document.getElementById('rb-view-home');
   const viewGrid = document.getElementById('rb-view-grid');
   const viewCourse = document.getElementById('rb-view-course');
   const viewDoc = document.getElementById('rb-view-document');
 
   if (viewCourse) viewCourse.style.display = 'none';
   if (viewDoc) viewDoc.style.display = 'none';
-  if (viewGrid) viewGrid.style.display = 'block';
+  if (viewHome) viewHome.style.display = 'flex';
+  else if (viewGrid) viewGrid.style.display = 'block';
 
   // Stop video iframe if playing
   const embedBox = document.getElementById('rb-video-embed');
@@ -8671,3 +8707,213 @@ function handleBootcampBuyNow() {
   const targetUrl = bc.buyUrl || 'https://lynk.id/daffafazdian';
   window.open(targetUrl, '_blank');
 }
+
+
+// ============================================================================
+// 15. MEMBER AREA HOME & PROFILE MANAGEMENT ENGINE (FOTO 2 & 3 REFERENCE)
+// Brand: NexStore Produk Digital - by @daffafazdian.id
+// ============================================================================
+
+function switchMemberPortalView(viewName) {
+  const viewHome = document.getElementById('rb-view-home');
+  const viewGrid = document.getElementById('rb-view-grid');
+  const viewCourse = document.getElementById('rb-view-course');
+  const viewDoc = document.getElementById('rb-view-document');
+
+  if (viewHome) viewHome.style.display = 'none';
+  if (viewGrid) viewGrid.style.display = 'none';
+  if (viewCourse) viewCourse.style.display = 'none';
+  if (viewDoc) viewDoc.style.display = 'none';
+
+  const tabs = document.querySelectorAll('#cls-portal-tabs-nav .cls-tab-link');
+  tabs.forEach(t => t.classList.remove('active'));
+
+  if (viewName === 'home') {
+    if (viewHome) viewHome.style.display = 'flex';
+    const tabHome = document.getElementById('tab-link-home');
+    if (tabHome) tabHome.classList.add('active');
+  } else if (viewName === 'grid' || viewName === 'kelas') {
+    if (viewGrid) viewGrid.style.display = 'block';
+    const tabKelas = document.getElementById('tab-link-kelas');
+    if (tabKelas) tabKelas.classList.add('active');
+    if (typeof renderClassroomPortalModules === 'function') {
+      renderClassroomPortalModules('', 'ALL');
+    }
+  } else if (viewName === 'jalur') {
+    if (viewGrid) viewGrid.style.display = 'block';
+    const tabJalur = document.getElementById('tab-link-jalur');
+    if (tabJalur) tabJalur.classList.add('active');
+  }
+
+  const wrapper = document.getElementById('classroom-dashboard-portal');
+  if (wrapper) wrapper.scrollTop = 0;
+}
+window.switchMemberPortalView = switchMemberPortalView;
+
+function filterMemberHomeCategory(category, btn) {
+  const buttons = document.querySelectorAll('.member-tab-pills .tab-pill-btn');
+  buttons.forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const cards = document.querySelectorAll('#member-home-cards-grid .member-product-card');
+  cards.forEach(card => {
+    const cardCat = card.getAttribute('data-category');
+    if (category === 'all') {
+      card.style.display = 'flex';
+    } else if (cardCat === category) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+window.filterMemberHomeCategory = filterMemberHomeCategory;
+
+function getMemberProfile() {
+  try {
+    const raw = localStorage.getItem('nexstore_member_profile') || localStorage.getItem('etalaseku_member_profile');
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  const savedEmail = localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+  return {
+    name: 'Daffa',
+    whatsapp: '087894602627',
+    email: savedEmail
+  };
+}
+window.getMemberProfile = getMemberProfile;
+
+function openMemberProfileModal() {
+  const profile = getMemberProfile();
+  const inputEmail = document.getElementById('cp-input-email');
+  const inputName = document.getElementById('cp-input-name');
+  const inputPhone = document.getElementById('cp-input-whatsapp');
+
+  if (inputEmail) inputEmail.value = profile.email || 'daffafazdian50@gmail.com';
+  if (inputName) inputName.value = profile.name || 'Daffa';
+  if (inputPhone) inputPhone.value = profile.whatsapp || '087894602627';
+
+  const modal = document.getElementById('modal-complete-profile');
+  if (modal) modal.style.display = 'flex';
+}
+window.openMemberProfileModal = openMemberProfileModal;
+
+function closeMemberProfileModal() {
+  const modal = document.getElementById('modal-complete-profile');
+  if (modal) modal.style.display = 'none';
+}
+window.closeMemberProfileModal = closeMemberProfileModal;
+
+function handleSaveMemberProfile(event) {
+  if (event && event.preventDefault) event.preventDefault();
+
+  const inputEmail = document.getElementById('cp-input-email');
+  const inputName = document.getElementById('cp-input-name');
+  const inputPhone = document.getElementById('cp-input-whatsapp');
+
+  const name = inputName ? inputName.value.trim() : 'Daffa';
+  const whatsapp = inputPhone ? inputPhone.value.trim() : '087894602627';
+  const email = inputEmail ? inputEmail.value.trim() : (localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com');
+
+  if (!name) {
+    if (typeof showToast === 'function') showToast('Nama panggilan wajib diisi!', 'error');
+    return;
+  }
+  if (!whatsapp || whatsapp.length < 8) {
+    if (typeof showToast === 'function') showToast('Nomor WhatsApp wajib diisi dengan benar (min. 8 digit)!', 'error');
+    return;
+  }
+
+  const profileData = { name, whatsapp, email };
+  try {
+    localStorage.setItem('nexstore_member_profile', JSON.stringify(profileData));
+    localStorage.setItem('etalaseku_member_profile', JSON.stringify(profileData));
+    localStorage.setItem('nexstore_member_profile_completed', 'true');
+    localStorage.setItem('etalaseku_member_email', email);
+  } catch (e) {}
+
+  // Update UI strings everywhere
+  const memberNameEl = document.getElementById('member-display-name');
+  if (memberNameEl) memberNameEl.textContent = name;
+
+  const widgetNameEl = document.getElementById('widget-profile-name');
+  if (widgetNameEl) widgetNameEl.textContent = name;
+
+  const widgetEmailEl = document.getElementById('widget-profile-email');
+  if (widgetEmailEl) widgetEmailEl.textContent = email;
+
+  const widgetWaEl = document.getElementById('widget-profile-whatsapp');
+  if (widgetWaEl) widgetWaEl.textContent = whatsapp;
+
+  const widgetAvatarEl = document.getElementById('widget-avatar-initial');
+  if (widgetAvatarEl) widgetAvatarEl.textContent = name.charAt(0).toUpperCase();
+
+  const vipGreetingEl = document.getElementById('vip-user-greeting-name');
+  if (vipGreetingEl) vipGreetingEl.textContent = name;
+
+  closeMemberProfileModal();
+
+  if (typeof showToast === 'function') {
+    showToast('Profil member berhasil disimpan! Akses telah terbuka 🚀', 'success');
+  }
+
+  const portal = document.getElementById('classroom-dashboard-portal');
+  if (!portal || !portal.classList.contains('active')) {
+    openClassroomDashboard();
+  }
+}
+window.handleSaveMemberProfile = handleSaveMemberProfile;
+
+function openBootcampAnnouncementModal() {
+  const modal = document.getElementById('modal-bootcamp-announcement');
+  if (modal) modal.style.display = 'flex';
+}
+window.openBootcampAnnouncementModal = openBootcampAnnouncementModal;
+
+function closeBootcampAnnouncementModal() {
+  const modal = document.getElementById('modal-bootcamp-announcement');
+  if (modal) modal.style.display = 'none';
+}
+window.closeBootcampAnnouncementModal = closeBootcampAnnouncementModal;
+
+function dismissMemberAnnouncement() {
+  const card = document.getElementById('member-announcement-card');
+  if (card) card.style.display = 'none';
+}
+window.dismissMemberAnnouncement = dismissMemberAnnouncement;
+
+function copyBootcampRedeemCode() {
+  const codeEl = document.getElementById('modal-bca-code-text');
+  const code = codeEl ? codeEl.textContent.trim() : 'BOOT-5J6T3T';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(() => {
+      if (typeof showToast === 'function') showToast('Kode redeem ' + code + ' berhasil disalin! 📋', 'success');
+    }).catch(() => {
+      if (typeof showToast === 'function') showToast('Kode: ' + code, 'info');
+    });
+  } else {
+    if (typeof showToast === 'function') showToast('Kode: ' + code, 'info');
+  }
+}
+window.copyBootcampRedeemCode = copyBootcampRedeemCode;
+
+function openKaryaFromMember() {
+  if (typeof openPameranKaryaPortal === 'function') {
+    openPameranKaryaPortal();
+  } else if (typeof openAjukanKaryaModal === 'function') {
+    openAjukanKaryaModal();
+  } else {
+    closeClassroomDashboard();
+    scrollToSection('showcase');
+  }
+}
+window.openKaryaFromMember = openKaryaFromMember;
+
+function openPanduanModal() {
+  if (typeof showToast === 'function') {
+    showToast('Membuka Panduan Pembelajaran NexStore...', 'info');
+  }
+  closeClassroomDashboard();
+  scrollToSection('features');
+}
+window.openPanduanModal = openPanduanModal;

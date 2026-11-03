@@ -1186,8 +1186,14 @@
       </div>
 
       <!-- Quick Nav Links Siswa (Item 4: Source Code & Drive serta Tanya Mentor VIP Dihilangkan Sesuai Permintaan) -->
-      <ul class="classroom-top-links">
-        <li><a href="#cls-portal-search-input" class="active">📚 Modul Materi Pembelajaran</a></li>
+      <ul class="classroom-top-links" id="cls-portal-tabs-nav">
+        <li><a href="#member-home" class="cls-tab-link active" id="tab-link-home" onclick="switchMemberPortalView('home'); return false;">Beranda</a></li>
+        <li><a href="#member-kelas" class="cls-tab-link" id="tab-link-kelas" onclick="switchMemberPortalView('grid'); return false;">Kelas Saya</a></li>
+        <li><a href="#member-jalur" class="cls-tab-link" id="tab-link-jalur" onclick="switchMemberPortalView('jalur'); return false;">Jalur Belajar</a></li>
+        <li><a href="#bootcamp" class="cls-tab-link" id="tab-link-bootcamp" onclick="openBootcampDetailModal(); return false;">Bootcamp</a></li>
+        <li><a href="#pameran" class="cls-tab-link" id="tab-link-pameran" onclick="openKaryaFromMember(); return false;">Pameran Karya</a></li>
+        <li><a href="#panduan" class="cls-tab-link" id="tab-link-panduan" onclick="openPanduanModal(); return false;">Panduan</a></li>
+        <li><a href="https://wa.me/6287894602627?text=Halo%20Admin%20NexStore%2C%20saya%20member%20ingin%20order%20aplikasi%20custom" target="_blank" rel="noopener noreferrer" class="cls-tab-link" id="tab-link-custom">Aplikasi Custom</a></li>
       </ul>
 
       <!-- User Profile Badge & Action (Item 5: Icon Google Berisi Email Pembeli & Order ID Kunci Masuk Modul) -->
@@ -1215,8 +1221,11 @@
         </div>
 
         <div class="classroom-btn-actions desktop-only-actions">
+          <button class="btn-secondary" onclick="openRedeemModal()" style="padding:8px 14px; font-size:12px; font-weight:700; color:#2563EB; border-color:rgba(37,99,235,0.35); background:rgba(37,99,235,0.06); display:inline-flex; align-items:center; gap:6px;" title="Redeem Kode Akses Baru">
+            🔑 Redeem Kode
+          </button>
           <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
-            ⬅️ Halaman Utama
+            ⬅️ Beranda Utama
           </button>
           <button class="btn-secondary btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Siswa">
             🚪 Keluar
@@ -1228,9 +1237,279 @@
     <!-- Classroom Body Content -->
     <main class="classroom-body-container">
       <!-- ======================================================================
+           VIEW 0: BERANDA MEMBER AREA DASHBOARD (FOTO 3 REFERENCE)
+           ====================================================================== -->
+      <div id="rb-view-home" class="rb-view-section active">
+        <!-- 1. Announcement Banner (Foto 3) -->
+        <div class="member-announcement-card" id="member-announcement-card">
+          <div class="member-announcement-left">
+            <span class="announcement-speaker-icon">📢</span>
+            <div class="announcement-text-wrap">
+              <span class="announcement-prefix">Pengumuman:</span>
+              <strong class="announcement-headline">KODE REEDEM BOOTCAMP [ CATAT !! ]</strong>
+            </div>
+          </div>
+          <div class="member-announcement-right">
+            <button type="button" class="btn-announcement-view" onclick="openBootcampAnnouncementModal()">Lihat &gt;</button>
+            <button type="button" class="btn-announcement-dismiss" onclick="dismissMemberAnnouncement()" title="Tutup Pengumuman">✕</button>
+          </div>
+        </div>
+
+        <!-- 2. Hero Welcome Card (Foto 3) -->
+        <div class="member-welcome-hero-card">
+          <div class="welcome-hero-content">
+            <div class="verified-pill-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Profil Lengkap &amp; Terverifikasi</span>
+            </div>
+            <h1 class="welcome-hero-title">Selamat datang kembali, <span id="member-display-name">Daffa</span>!</h1>
+            <p class="welcome-hero-subtitle">Kelola pembelajaran Anda, cek jadwal bootcamp, atau jelajahi katalog produk digital terbaru.</p>
+            <div class="welcome-hero-actions">
+              <button type="button" class="btn-hero-classes" onclick="switchMemberPortalView('grid')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Kelas Saya
+              </button>
+              <button type="button" class="btn-hero-catalog" onclick="closeClassroomDashboard(); scrollToSection('katalog-produk');">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                Katalog
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. KPI Stat Cards (Foto 3) -->
+        <div class="member-kpi-grid">
+          <div class="member-kpi-card">
+            <div class="kpi-label">INVENTARIS AKSES</div>
+            <div class="kpi-value" id="kpi-owned-count">7 Produk Dimiliki</div>
+            <div class="kpi-subtext"><span class="kpi-check">✓</span> Siap dipelajari</div>
+          </div>
+          <div class="member-kpi-card">
+            <div class="kpi-label">PROGRAM BOOTCAMP</div>
+            <div class="kpi-value">1 Bootcamp Aktif</div>
+            <div class="kpi-subtext">Hadir 0/4 pertemuan</div>
+          </div>
+          <div class="member-kpi-card">
+            <div class="kpi-label">STATUS PESANAN</div>
+            <div class="kpi-value">0 Menunggu</div>
+            <div class="kpi-subtext">Tidak ada pesanan tertunda</div>
+          </div>
+        </div>
+
+        <!-- 4. Two-Column Main Layout (Foto 3) -->
+        <div class="member-main-split-layout">
+          <!-- Left Column: Courses & Documents -->
+          <div class="member-courses-column">
+            <!-- Filter Tabs -->
+            <div class="member-courses-toolbar">
+              <div class="member-tab-pills">
+                <button type="button" class="tab-pill-btn active" id="pill-home-all" onclick="filterMemberHomeCategory('all', this)">
+                  Semua <span class="tab-pill-count" id="count-home-all">7</span>
+                </button>
+                <button type="button" class="tab-pill-btn" id="pill-home-kelas" onclick="filterMemberHomeCategory('kelas', this)">
+                  Kelas <span class="tab-pill-count" id="count-home-kelas">3</span>
+                </button>
+                <button type="button" class="tab-pill-btn" id="pill-home-dokumen" onclick="filterMemberHomeCategory('dokumen', this)">
+                  Dokumen <span class="tab-pill-count" id="count-home-dokumen">4</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Products Grid (Foto 3 High Fidelity) -->
+            <div class="member-product-cards-grid" id="member-home-cards-grid">
+              <!-- Card 1: METODE 3 Integrasi GAS ke Vercel -->
+              <div class="member-product-card" data-category="kelas">
+                <div class="mp-card-thumb-wrap">
+                  <img src="assets/modules/thumb-metode3.jpg" alt="Integrasi GAS ke Vercel" class="mp-card-img" onerror="this.onerror=null; this.src='assets/hero/hero-slide-1.jpg';">
+                  <span class="mp-badge-category">KELAS</span>
+                  <span class="mp-badge-status mp-badge-dimiliki">Dimiliki</span>
+                </div>
+                <div class="mp-card-body">
+                  <h3 class="mp-card-title">METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL [CLAUDE]</h3>
+                  <p class="mp-card-desc">Dari Cara Paling Sederhana menjadi Professional, scalable dan multi-environment.</p>
+                  <div class="mp-card-meta">6 episode • 31 materi</div>
+                  <button type="button" class="mp-card-action-btn mp-btn-primary" onclick="openCourseView('MOD-01')">
+                    📖 Buka Ruang Belajar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 2: Cara Integrasi API Pihak Ketiga -->
+              <div class="member-product-card" data-category="kelas">
+                <div class="mp-card-thumb-wrap">
+                  <img src="assets/modules/thumb-basic.jpg" alt="Integrasi API Pihak Ketiga" class="mp-card-img" onerror="this.onerror=null; this.src='assets/hero/hero-slide-2.jpg';">
+                  <span class="mp-badge-category">KELAS</span>
+                  <span class="mp-badge-status mp-badge-closed">Penjualan Ditutup</span>
+                </div>
+                <div class="mp-card-body">
+                  <h3 class="mp-card-title">Cara Integrasi API Pihak Ketiga</h3>
+                  <p class="mp-card-desc">API WhatsApp, API Gemini, dan integrasi webhook eksternal.</p>
+                  <div class="mp-card-meta">1 episode • Materi Eksklusif</div>
+                  <button type="button" class="mp-card-action-btn mp-btn-disabled" disabled>
+                    🔒 Penjualan Ditutup
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 3: Kumpulan PRD (GRATIS) -->
+              <div class="member-product-card" data-category="dokumen">
+                <div class="mp-card-thumb-wrap">
+                  <img src="assets/modules/thumb-prd.jpg" alt="Kumpulan PRD" class="mp-card-img" onerror="this.onerror=null; this.src='assets/hero/hero-slide-3.jpg';">
+                  <span class="mp-badge-category">DOKUMEN</span>
+                  <span class="mp-badge-status mp-badge-dimiliki">Dimiliki</span>
+                </div>
+                <div class="mp-card-body">
+                  <h3 class="mp-card-title">Kumpulan PRD (GRATIS)</h3>
+                  <p class="mp-card-desc">Silahkan Download PRD yang dibutuhkan sebagai referensi pembuatan web app.</p>
+                  <div class="mp-card-meta">15 materi • Template PRD</div>
+                  <button type="button" class="mp-card-action-btn mp-btn-doc" onclick="openDocumentPackageView('MOD-02')">
+                    📑 Akses Dokumen
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 4: Cara Revisi & Upgrade Web App GAS -->
+              <div class="member-product-card" data-category="kelas">
+                <div class="mp-card-thumb-wrap">
+                  <img src="assets/modules/thumb-revisi.jpg" alt="Cara Revisi & Upgrade" class="mp-card-img" onerror="this.onerror=null; this.src='assets/hero/hero-slide-1.jpg';">
+                  <span class="mp-badge-category">KELAS</span>
+                  <span class="mp-badge-status mp-badge-dimiliki">Dimiliki</span>
+                </div>
+                <div class="mp-card-body">
+                  <h3 class="mp-card-title">Cara Revisi &amp; Upgrade Web App GAS</h3>
+                  <p class="mp-card-desc">Teknik refactor kode dan update aplikasi tanpa error di production.</p>
+                  <div class="mp-card-meta">4 episode • Video Praktis</div>
+                  <button type="button" class="mp-card-action-btn mp-btn-primary" onclick="openCourseView('MOD-03')">
+                    📖 Buka Ruang Belajar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 5: Belajar JavaScript DOM Modern -->
+              <div class="member-product-card" data-category="kelas">
+                <div class="mp-card-thumb-wrap">
+                  <img src="assets/hero/hero-slide-2.jpg" alt="JavaScript DOM Modern" class="mp-card-img">
+                  <span class="mp-badge-category">KELAS</span>
+                  <span class="mp-badge-status mp-badge-dimiliki">Dimiliki</span>
+                </div>
+                <div class="mp-card-body">
+                  <h3 class="mp-card-title">Belajar JavaScript DOM Modern</h3>
+                  <p class="mp-card-desc">Manipulasi antarmuka reaktif tanpa library berat, cepat dan instan.</p>
+                  <div class="mp-card-meta">8 episode • Full Coding</div>
+                  <button type="button" class="mp-card-action-btn mp-btn-primary" onclick="openCourseView('MOD-01')">
+                    📖 Buka Ruang Belajar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 6: Panduan Deploy Frontend ke GitHub Pages -->
+              <div class="member-product-card" data-category="dokumen">
+                <div class="mp-card-thumb-wrap">
+                  <img src="assets/hero/hero-slide-1.jpg" alt="Panduan Deploy GitHub Pages" class="mp-card-img">
+                  <span class="mp-badge-category">DOKUMEN</span>
+                  <span class="mp-badge-status mp-badge-dimiliki">Dimiliki</span>
+                </div>
+                <div class="mp-card-body">
+                  <h3 class="mp-card-title">Panduan Deploy Frontend ke GitHub Pages</h3>
+                  <p class="mp-card-desc">Langkah demi langkah hosting gratis, custom domain, dan SSL otomatis.</p>
+                  <div class="mp-card-meta">5 materi • Panduan Lengkap</div>
+                  <button type="button" class="mp-card-action-btn mp-btn-doc" onclick="openDocumentPackageView('MOD-02')">
+                    📑 Akses Dokumen
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 7: Dokumentasi API & Webhook WhatsApp Fonnte -->
+              <div class="member-product-card" data-category="dokumen">
+                <div class="mp-card-thumb-wrap">
+                  <img src="assets/hero/hero-slide-3.jpg" alt="Dokumentasi WhatsApp Fonnte" class="mp-card-img">
+                  <span class="mp-badge-category">DOKUMEN</span>
+                  <span class="mp-badge-status mp-badge-dimiliki">Dimiliki</span>
+                </div>
+                <div class="mp-card-body">
+                  <h3 class="mp-card-title">Dokumentasi API &amp; Webhook WhatsApp Fonnte</h3>
+                  <p class="mp-card-desc">Integrasi notifikasi pesan otomatis invoice, login OTP, dan blast CRM.</p>
+                  <div class="mp-card-meta">10 materi • Dokumentasi Teknis</div>
+                  <button type="button" class="mp-card-action-btn mp-btn-doc" onclick="openDocumentPackageView('MOD-02')">
+                    📑 Akses Dokumen
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Sidebar (Foto 3) -->
+          <aside class="member-sidebar-column">
+            <!-- User Profile Card -->
+            <div class="member-profile-widget-card">
+              <div class="widget-profile-header">
+                <div class="widget-profile-avatar" id="widget-avatar-initial">D</div>
+                <div class="widget-profile-info">
+                  <h3 class="widget-profile-name" id="widget-profile-name">Daffa</h3>
+                  <p class="widget-profile-email" id="widget-profile-email">daffafazdian50@gmail.com</p>
+                </div>
+              </div>
+              <div class="widget-profile-details">
+                <div class="widget-detail-row">
+                  <span class="detail-label">WhatsApp</span>
+                  <span class="detail-val" id="widget-profile-whatsapp">087894602627</span>
+                </div>
+              </div>
+              <button type="button" class="btn-account-settings" onclick="openMemberProfileModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Pengaturan Akun
+              </button>
+            </div>
+
+            <!-- Quick Access Member List -->
+            <div class="member-quick-access-card">
+              <h4 class="quick-access-title">AKSES CEPAT MEMBER</h4>
+              <div class="quick-access-list">
+                <a href="#karya-member" class="quick-access-item" onclick="openKaryaFromMember(); return false;">
+                  <div class="qa-item-info">
+                    <span class="qa-item-title">Ajukan Karya</span>
+                    <span class="qa-item-subtitle">Pamerkan portofolio Anda</span>
+                  </div>
+                  <span class="qa-chevron">&gt;</span>
+                </a>
+                <a href="https://wa.me/6287894602627?text=Halo%20Admin%20NexStore%2C%20saya%20member%20ingin%20order%20aplikasi%20custom" target="_blank" rel="noopener noreferrer" class="quick-access-item">
+                  <div class="qa-item-info">
+                    <span class="qa-item-title">Order Aplikasi Custom</span>
+                    <span class="qa-item-subtitle">Kebutuhan aplikasi khusus</span>
+                  </div>
+                  <span class="qa-chevron">&gt;</span>
+                </a>
+                <a href="#panduan" class="quick-access-item" onclick="openPanduanModal(); return false;">
+                  <div class="qa-item-info">
+                    <span class="qa-item-title">Panduan</span>
+                    <span class="qa-item-subtitle">5 Dokumen &amp; video tutorial</span>
+                  </div>
+                  <span class="qa-chevron">&gt;</span>
+                </a>
+                <a href="https://wa.me/6287894602627?text=Halo%20CS%20NexStore%2C%20saya%20member%20butuh%20bantuan%20terkait%20akun%20pembelajaran" target="_blank" rel="noopener noreferrer" class="quick-access-item">
+                  <div class="qa-item-info">
+                    <span class="qa-item-title">Helpdesk &amp; CS</span>
+                    <span class="qa-item-subtitle">Solusi kendala &amp; kontak admin</span>
+                  </div>
+                  <span class="qa-chevron">&gt;</span>
+                </a>
+                <a href="#redeem" class="quick-access-item" onclick="openRedeemModal(); return false;">
+                  <div class="qa-item-info">
+                    <span class="qa-item-title">Redeem Kode Akses</span>
+                    <span class="qa-item-subtitle">Punya kode dari paket?</span>
+                  </div>
+                  <span class="qa-chevron">&gt;</span>
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ======================================================================
            VIEW 1: GRID RUANG BELAJARKU (Foto 1 Reference)
            ====================================================================== -->
-      <div id="rb-view-grid">
+      <div id="rb-view-grid" style="display:none;">
         <!-- 1. Header Member Portal -->
         <div class="ruang-belajar-header">
           <div class="rb-header-titles">
@@ -4123,5 +4402,67 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
       </div>
     </div>
   </div>
+
+  <!-- ========================================================================
+       MODAL LENGKAPI DATA MEMBER (FOTO 2 REFERENCE)
+       Satu nomor WhatsApp hanya untuk satu akun. Disimpan ke LocalStorage.
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-complete-profile" style="display:none; align-items:center; justify-content:center; z-index:10010;">
+    <div class="modal-complete-profile-dialog">
+      <div class="modal-cp-header">
+        <h2 class="modal-cp-title">Lengkapi Data Member</h2>
+        <p class="modal-cp-desc">Data wajib diisi dengan benar. Satu nomor WhatsApp hanya untuk satu akun.</p>
+      </div>
+
+      <form id="form-complete-profile" onsubmit="handleSaveMemberProfile(event)">
+        <!-- Email Field (Readonly) -->
+        <div class="modal-cp-field">
+          <label class="modal-cp-label">Email</label>
+          <input type="email" id="cp-input-email" class="modal-cp-input" readonly value="daffafazdian50@gmail.com">
+        </div>
+
+        <!-- Nama Panggilan Field -->
+        <div class="modal-cp-field">
+          <label class="modal-cp-label">Nama Panggilan *</label>
+          <input type="text" id="cp-input-name" class="modal-cp-input" required placeholder="Nama Panggilan Anda" value="Daffa">
+        </div>
+
+        <!-- No. WhatsApp Field -->
+        <div class="modal-cp-field">
+          <label class="modal-cp-label">No. WhatsApp *</label>
+          <input type="tel" id="cp-input-whatsapp" class="modal-cp-input" required placeholder="08xxxxxxxxxx" value="087894602627">
+          <span class="modal-cp-helper">Nomor Indonesia diawali 08 (contoh 087810465245). Nomor luar negeri: awali dengan + dan kode negara, mis. +60 12 345 6789.</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="modal-cp-actions">
+          <button type="submit" class="btn-cp-save">Simpan &amp; Buka Akses</button>
+          <button type="button" class="btn-cp-cancel" onclick="closeMemberProfileModal()">Nanti</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL PENGUMUMAN BOOTCAMP DENGAN KODE REDEEM (FOTO SCREENSHOT REFERENSI)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-bootcamp-announcement" style="display:none; align-items:center; justify-content:center; z-index:10011;">
+    <div class="modal-bc-announcement-dialog">
+      <div class="modal-bca-header">
+        <span class="modal-bca-tag">📢 Pengumuman</span>
+        <button type="button" class="modal-bca-close" onclick="closeBootcampAnnouncementModal()">✕</button>
+      </div>
+      <div class="modal-bca-body">
+        <img src="assets/hero/hero-slide-3.jpg" alt="Poster Bootcamp" class="modal-bca-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80';">
+        <h3 class="modal-bca-title">KODE REEDEM BOOTCAMP [ CATAT !! ]</h3>
+        <div class="modal-bca-code-box">
+          <span class="modal-bca-code" id="modal-bca-code-text">BOOT-5J6T3T</span>
+          <button type="button" class="modal-bca-btn-copy" onclick="copyBootcampRedeemCode()">Salin Kode</button>
+        </div>
+        <button type="button" class="btn-bca-dismiss" onclick="closeBootcampAnnouncementModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
