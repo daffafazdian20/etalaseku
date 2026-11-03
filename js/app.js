@@ -9687,3 +9687,16 @@ function renderMainMemberShowcases() {
   });
 }
 window.renderMainMemberShowcases = renderMainMemberShowcases;
+
+// Otomatis sinkronkan tema jika preferensi mode OS/Browser pengguna berubah
+if (typeof window !== 'undefined' && window.matchMedia) {
+  try {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', e => {
+      const isManual = localStorage.getItem('nexstore_theme_manual') === 'true';
+      if (!isManual) {
+        applyAppTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  } catch(e) {}
+}

@@ -2696,7 +2696,7 @@ input:checked + .switch-slider:before {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 0 !important;
-    background: #F8FAFC !important;
+    background: transparent !important;
     display: flex !important;
     flex-direction: column !important;
   }
@@ -12165,10 +12165,19 @@ body.dark-theme .btn-verif-choice:hover:not(.active) {
   cursor: pointer !important;
 }
 
-/* 2. MODE TERANG CRM (Default & Light Theme) */
+/* 2. MODE TERANG CRM (Default & Light Theme - Warm Slate Canvas) */
 .admin-portal-wrapper,
+.admin-main-content,
+.admin-body-scroll,
+.admin-tab-content,
 [data-theme="light"] .admin-portal-wrapper,
-body.light-theme .admin-portal-wrapper {
+[data-theme="light"] .admin-main-content,
+[data-theme="light"] .admin-body-scroll,
+[data-theme="light"] .admin-tab-content,
+body.light-theme .admin-portal-wrapper,
+body.light-theme .admin-main-content,
+body.light-theme .admin-body-scroll,
+body.light-theme .admin-tab-content {
   background: #F8FAFC !important;
   color: #0F172A !important;
 }
@@ -12218,9 +12227,15 @@ body.light-theme .admin-kpi-card {
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
 }
 
-/* 3. MODE GELAP CRM (100% Mengikuti Standar DESAIN UI/UX Midnight Navy) */
+/* 3. MODE GELAP CRM (100% Mengikuti Standar DESAIN UI/UX Midnight Navy - Zero Background Leak) */
 [data-theme="dark"] .admin-portal-wrapper,
-body.dark-theme .admin-portal-wrapper {
+[data-theme="dark"] .admin-main-content,
+[data-theme="dark"] .admin-body-scroll,
+[data-theme="dark"] .admin-tab-content,
+body.dark-theme .admin-portal-wrapper,
+body.dark-theme .admin-main-content,
+body.dark-theme .admin-body-scroll,
+body.dark-theme .admin-tab-content {
   background: #0B132B !important;
   color: #FFFFFF !important;
 }
@@ -12401,4 +12416,49 @@ body.dark-theme .pill-badge.red {
   body.dark-theme .admin-table td:last-child {
     border-top-color: rgba(255, 255, 255, 0.08) !important;
   }
+}
+
+/* Override menyeluruh semua elemen background inline putih/terang di dalam CRM saat Mode Gelap */
+[data-theme="dark"] .admin-portal-wrapper [style*="background:#FFFFFF"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background: #FFFFFF"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background:#ffffff"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background: #ffffff"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background:#F8FAFC"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background: #F8FAFC"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background:#f8fafc"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background: #f8fafc"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background:white"],
+[data-theme="dark"] .admin-portal-wrapper [style*="background: white"],
+body.dark-theme .admin-portal-wrapper [style*="background:#FFFFFF"],
+body.dark-theme .admin-portal-wrapper [style*="background: #FFFFFF"],
+body.dark-theme .admin-portal-wrapper [style*="background:#ffffff"],
+body.dark-theme .admin-portal-wrapper [style*="background: #ffffff"],
+body.dark-theme .admin-portal-wrapper [style*="background:#F8FAFC"],
+body.dark-theme .admin-portal-wrapper [style*="background: #F8FAFC"],
+body.dark-theme .admin-portal-wrapper [style*="background:#f8fafc"],
+body.dark-theme .admin-portal-wrapper [style*="background: #f8fafc"],
+body.dark-theme .admin-portal-wrapper [style*="background:white"],
+body.dark-theme .admin-portal-wrapper [style*="background: white"] {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-portal-wrapper input,
+[data-theme="dark"] .admin-portal-wrapper select,
+[data-theme="dark"] .admin-portal-wrapper textarea,
+body.dark-theme .admin-portal-wrapper input,
+body.dark-theme .admin-portal-wrapper select,
+body.dark-theme .admin-portal-wrapper textarea {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-portal-wrapper .modal-card,
+body.dark-theme .admin-portal-wrapper .modal-card {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5) !important;
 }
