@@ -12043,3 +12043,362 @@ body.light-theme .member-showcase-section {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   CRM DASHBOARD: 3 PILIHAN AKSI VERIFIKASI (LUNAS, PENDING, BATAL)
+   & MODE TERANG / GELAP OTOMATIS KE SELURUH TAMPILAN DASHBOARD CRM
+   ========================================================================== */
+
+/* 1. 3 Pilihan Aksi Verifikasi */
+.crm-verif-cell-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.crm-verif-3pilih {
+  display: inline-flex;
+  align-items: center;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: 99px;
+  padding: 2px;
+  gap: 2px;
+}
+
+[data-theme="dark"] .crm-verif-3pilih,
+body.dark-theme .crm-verif-3pilih {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.btn-verif-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 99px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .btn-verif-choice,
+body.dark-theme .btn-verif-choice {
+  color: #94A3B8;
+}
+
+.btn-verif-choice:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.05);
+  color: #0F172A;
+}
+
+[data-theme="dark"] .btn-verif-choice:hover:not(.active),
+body.dark-theme .btn-verif-choice:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+/* Choice Lunas Active */
+.btn-verif-choice.choice-lunas.active {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+  border-color: #059669 !important;
+}
+
+/* Choice Pending Active */
+.btn-verif-choice.choice-pending.active {
+  background: #F59E0B !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+  border-color: #D97706 !important;
+}
+
+/* Choice Batal Active */
+.btn-verif-choice.choice-batal.active {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+  border-color: #DC2626 !important;
+}
+
+.crm-verif-extra-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-wa-siswa {
+  padding: 5px 10px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  border-radius: 8px !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-wa-siswa:hover {
+  background: #059669 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+.btn-struk-action {
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+}
+
+/* 2. MODE TERANG CRM (Default & Light Theme) */
+.admin-portal-wrapper,
+[data-theme="light"] .admin-portal-wrapper,
+body.light-theme .admin-portal-wrapper {
+  background: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .admin-topbar,
+body.light-theme .admin-topbar {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .admin-table-container,
+body.light-theme .admin-table-container {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04) !important;
+}
+
+[data-theme="light"] .admin-table-header,
+body.light-theme .admin-table-header {
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+[data-theme="light"] .admin-table th,
+body.light-theme .admin-table th {
+  background: #F8FAFC !important;
+  color: #64748B !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+[data-theme="light"] .admin-table td,
+body.light-theme .admin-table td {
+  background: #FFFFFF !important;
+  color: #1E293B !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+}
+
+[data-theme="light"] .admin-table tr:hover td,
+body.light-theme .admin-table tr:hover td {
+  background: #F8FAFC !important;
+}
+
+[data-theme="light"] .admin-kpi-card,
+body.light-theme .admin-kpi-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* 3. MODE GELAP CRM (100% Mengikuti Standar DESAIN UI/UX Midnight Navy) */
+[data-theme="dark"] .admin-portal-wrapper,
+body.dark-theme .admin-portal-wrapper {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-sidebar,
+body.dark-theme .admin-sidebar {
+  background: #070D1E !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .admin-topbar,
+body.dark-theme .admin-topbar {
+  background: #0F1A34 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-topbar h2,
+[data-theme="dark"] #admin-page-title,
+body.dark-theme .admin-topbar h2,
+body.dark-theme #admin-page-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #admin-portal-email,
+body.dark-theme #admin-portal-email {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .admin-kpi-card,
+body.dark-theme .admin-kpi-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-theme="dark"] .admin-kpi-card .kpi-label,
+body.dark-theme .admin-kpi-card .kpi-label {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .admin-kpi-card .kpi-val,
+body.dark-theme .admin-kpi-card .kpi-val {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-table-container,
+body.dark-theme .admin-table-container {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .admin-table-header,
+body.dark-theme .admin-table-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: transparent !important;
+}
+
+[data-theme="dark"] .admin-table-header h3,
+body.dark-theme .admin-table-header h3 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-table-header p,
+body.dark-theme .admin-table-header p {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .admin-table,
+body.dark-theme .admin-table {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-table th,
+body.dark-theme .admin-table th {
+  background: #182645 !important;
+  color: #94A3B8 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .admin-table td,
+body.dark-theme .admin-table td {
+  background: #131F37 !important;
+  color: #E2E8F0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="dark"] .admin-table tr:hover td,
+body.dark-theme .admin-table tr:hover td {
+  background: #1A294A !important;
+}
+
+[data-theme="dark"] .admin-table td strong,
+body.dark-theme .admin-table td strong {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-table td small,
+body.dark-theme .admin-table td small {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .admin-table-header input.form-input,
+[data-theme="dark"] #order-search-input,
+body.dark-theme .admin-table-header input.form-input,
+body.dark-theme #order-search-input {
+  background: #0B132B !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-inline-box,
+body.dark-theme .crm-inline-box {
+  background: #101B30 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-inline-box h4,
+[data-theme="dark"] .crm-inline-box .form-label,
+body.dark-theme .crm-inline-box h4,
+body.dark-theme .crm-inline-box .form-label {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-inline-box input,
+[data-theme="dark"] .crm-inline-box select,
+[data-theme="dark"] .crm-inline-box textarea,
+body.dark-theme .crm-inline-box input,
+body.dark-theme .crm-inline-box select,
+body.dark-theme .crm-inline-box textarea {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .admin-tab-content .card,
+[data-theme="dark"] .admin-tab-content .settings-group,
+[data-theme="dark"] .admin-tab-content .admin-setting-card,
+body.dark-theme .admin-tab-content .card,
+body.dark-theme .admin-tab-content .settings-group,
+body.dark-theme .admin-tab-content .admin-setting-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+/* Badges di Mode Gelap */
+[data-theme="dark"] .pill-badge.green,
+body.dark-theme .pill-badge.green {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+[data-theme="dark"] .pill-badge.yellow,
+body.dark-theme .pill-badge.yellow {
+  background: rgba(245, 158, 11, 0.2) !important;
+  color: #FCD34D !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+[data-theme="dark"] .pill-badge.red,
+body.dark-theme .pill-badge.red {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #FCA5A5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+
+@media (max-width: 768px) {
+  [data-theme="dark"] .admin-table tr,
+  body.dark-theme .admin-table tr {
+    background: #131F37 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  [data-theme="dark"] .admin-table td:last-child,
+  body.dark-theme .admin-table td:last-child {
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+  }
+}

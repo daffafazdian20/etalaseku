@@ -1,4 +1,24 @@
 
+function contactStudentWhatsApp(orderId) {
+  const orders = (typeof getMergedOrdersList === 'function') ? getMergedOrdersList() : (STATE.orders || []);
+  const order = orders.find(x => (x.ID_Order === orderId || x.orderId === orderId || x.ID_Pesanan === orderId));
+  if (order) {
+    STATE.activeReceiptOrder = order;
+    if (typeof sendReceiptToStudentWhatsApp === 'function') {
+      sendReceiptToStudentWhatsApp();
+    } else {
+      let phone = String(order.No_WhatsApp || order.whatsapp || '').replace(/\D/g, '');
+      if (phone.startsWith('0')) phone = '62' + phone.slice(1);
+      if (!phone.startsWith('62')) phone = '62' + phone;
+      const text = encodeURIComponent(`Halo ${order.Nama_Pembeli || 'Siswa'}, kami dari Tim Admin NexStore mengenai pesanan Order ID ${orderId}.`);
+      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+    }
+  } else {
+    showToast('Data pesanan tidak ditemukan.', 'error');
+  }
+}
+window.contactStudentWhatsApp = contactStudentWhatsApp;
+
 // ============================================================================
 // LIVE PREVIEW SCREENSHOT BUKTI TRANSFER CHECKOUT (OVO, LIVIN MANDIRI, BCA MOBILE, QRIS)
 // ============================================================================
@@ -2703,9 +2723,29 @@ function renderAdminPortalViews(data) {
           </td>
           <td><span class="pill-badge yellow">${o.Status_Bayar === 'Lunas' ? 'Lunas' : 'Menunggu Verifikasi'}</span></td>
           <td>
-            ${o.Status_Bayar !== 'Lunas' ? `
-              <button class="shimmer-btn" style="padding:6px 14px; font-size:11px;" onclick="verifyOrderAdmin('${o.ID_Order}', 'Lunas')">Verifikasi Lunas 🚀</button>
-            ` : `<span style="color:#10B981; font-weight:700; font-size:12px;">✓ Lunas</span>`}
+            <div class="crm-verif-cell-wrap">
+              <div class="crm-verif-3pilih" role="group" aria-label="3 Pilihan Aksi Verifikasi">
+                <button type="button" 
+                  class="btn-verif-choice choice-lunas ${(o.Status_Bayar||'').toLowerCase().includes('lunas') ? 'active' : ''}" 
+                  onclick="verifyOrderAdmin('${o.ID_Order}', 'Lunas')" 
+                  title="Verifikasi status sebagai Lunas">
+                  ✓ Lunas
+                </button>
+                <button type="button" 
+                  class="btn-verif-choice choice-pending ${(!o.Status_Bayar || (o.Status_Bayar||'').toLowerCase().includes('pending') || (o.Status_Bayar||'').toLowerCase().includes('menunggu')) ? 'active' : ''}" 
+                  onclick="verifyOrderAdmin('${o.ID_Order}', 'Pending')" 
+                  title="Tandai status sebagai Pending">
+                  ⏳ Pending
+                </button>
+                <button type="button" 
+                  class="btn-verif-choice choice-batal ${((o.Status_Bayar||'').toLowerCase().includes('batal') || (o.Status_Bayar||'').toLowerCase().includes('tolak')) ? 'active' : ''}" 
+                  onclick="verifyOrderAdmin('${o.ID_Order}', 'Batal')" 
+                  title="Tandai status sebagai Batal">
+                  ✕ Batal
+                </button>
+              </div>
+              <button type="button" class="shimmer-btn btn-wa-siswa" onclick="contactStudentWhatsApp('${o.ID_Order}')" title="Hubungi Siswa via WhatsApp">💬 WA</button>
+            </div>
           </td>
         </tr>
       `).join('');
@@ -2765,30 +2805,69 @@ function renderFullOrdersTable(orders) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px;">Belum ada data pesanan.</td></tr>`;
     return;
   }
-  tbody.innerHTML = orders.map(o => `
-    <tr>
-      <td style="font-weight:700;">${o.ID_Order}</td>
-      <td style="color:#64748B; font-size:12px;">${o.Tanggal_Waktu || '-'}</td>
-      <td><strong>${o.Nama_Pembeli}</strong><br><small style="color:#64748B;">${o.No_WhatsApp} • ${o.Email || ''}</small></td>
-      <td><strong style="color:var(--deep-navy);">${o.productName || o.Nama_Produk || o.Produk || o.ID_Produk || 'Digital Agency Notion OS'}</strong></td>
-      <td style="font-weight:800; color:var(--deep-navy);">Rp ${Number(o.Total_Bayar).toLocaleString('id-ID')}</td>
-      <td>
-        ${o.Bukti_Transfer_URL ? `<button type="button" class="btn-secondary" style="padding:4px 10px; font-size:11.5px; font-weight:700; color:#FF2E63; border-color:#FF2E63; border-radius:8px; cursor:pointer;" onclick="openProofModal('${o.ID_Order}')">📸 Lihat Bukti</button>` : '<span style="color:#94A3B8; font-size:11.5px;">-</span>'}
-      </td>
-      <td>
-        <span class="pill-badge ${o.Status_Bayar === 'Lunas' ? 'green' : (o.Status_Bayar === 'Ditolak' ? 'red' : 'yellow')}">${o.Status_Bayar}</span>
-      </td>
-      <td>
-        ${o.Status_Bayar !== 'Lunas' ? `
-          <button class="shimmer-btn" style="padding:6px 12px; font-size:11px;" onclick="verifyOrderAdmin('${o.ID_Order}', 'Lunas')">Verifikasi Lunas 🚀</button>
-        ` : `<div style="display:inline-flex; align-items:center; gap:6px;">
-            <span style="color:#10B981; font-weight:700; font-size:12px;">✓ Lunas</span>
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px; color:#059669; border-color:#6EE7B7; border-radius:6px; cursor:pointer;" onclick="openReceiptSuccessModal('${o.ID_Order}')" title="Lihat Struk Kuitansi">🧾 Struk</button>
-            <button class="shimmer-btn" style="padding:4px 8px; font-size:11px; background:#10B981; border-radius:6px; cursor:pointer;" onclick="STATE.activeReceiptOrder = getMergedOrdersList().find(x => (x.ID_Order === '${o.ID_Order}' || x.orderId === '${o.ID_Order}')); sendReceiptToStudentWhatsApp();" title="Kirim Struk ke WhatsApp Siswa">💬 WA Siswa</button>
-          </div>`}
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = orders.map(o => {
+    const rawStatus = String(o.Status_Bayar || o.Status || o.status || 'Pending').trim().toLowerCase();
+    const isLunas = rawStatus === 'lunas' || rawStatus === 'sukses' || rawStatus === 'selesai';
+    const isBatal = rawStatus === 'batal' || rawStatus === 'ditolak' || rawStatus === 'dibatalkan';
+    const isPending = !isLunas && !isBatal;
+
+    const displayStatus = isLunas ? 'Lunas' : (isBatal ? 'Batal' : 'Pending');
+    const badgeColor = isLunas ? 'green' : (isBatal ? 'red' : 'yellow');
+
+    return `
+      <tr>
+        <td style="font-weight:700;">${o.ID_Order}</td>
+        <td style="color:var(--text-muted, #64748B); font-size:12px;">${o.Tanggal_Waktu || '-'}</td>
+        <td><strong>${escapeHtml(o.Nama_Pembeli || 'Siswa')}</strong><br><small style="color:var(--text-muted, #64748B);">${escapeHtml(o.No_WhatsApp || '')} • ${escapeHtml(o.Email || '')}</small></td>
+        <td><strong style="color:var(--deep-navy);">${escapeHtml(o.productName || o.Nama_Produk || o.Produk || o.ID_Produk || 'Digital Agency Notion OS')}</strong></td>
+        <td style="font-weight:800; color:var(--deep-navy);">Rp ${Number(o.Total_Bayar || o.total || 0).toLocaleString('id-ID')}</td>
+        <td>
+          ${o.Bukti_Transfer_URL ? `<button type="button" class="btn-secondary" style="padding:4px 10px; font-size:11.5px; font-weight:700; color:#FF2E63; border-color:#FF2E63; border-radius:8px; cursor:pointer;" onclick="openProofModal('${o.ID_Order}')">📸 Lihat Bukti</button>` : '<span style="color:#94A3B8; font-size:11.5px;">-</span>'}
+        </td>
+        <td>
+          <span class="pill-badge ${badgeColor}">${displayStatus}</span>
+        </td>
+        <td>
+          <div class="crm-verif-cell-wrap">
+            <div class="crm-verif-3pilih" role="group" aria-label="3 Pilihan Aksi Verifikasi">
+              <button type="button" 
+                class="btn-verif-choice choice-lunas ${isLunas ? 'active' : ''}" 
+                onclick="verifyOrderAdmin('${o.ID_Order}', 'Lunas')" 
+                title="Verifikasi status sebagai Lunas">
+                <span class="verif-icon">✓</span> Lunas
+              </button>
+              <button type="button" 
+                class="btn-verif-choice choice-pending ${isPending ? 'active' : ''}" 
+                onclick="verifyOrderAdmin('${o.ID_Order}', 'Pending')" 
+                title="Tandai status sebagai Pending (Menunggu Pembayaran)">
+                <span class="verif-icon">⏳</span> Pending
+              </button>
+              <button type="button" 
+                class="btn-verif-choice choice-batal ${isBatal ? 'active' : ''}" 
+                onclick="verifyOrderAdmin('${o.ID_Order}', 'Batal')" 
+                title="Tandai status sebagai Batal">
+                <span class="verif-icon">✕</span> Batal
+              </button>
+            </div>
+            <div class="crm-verif-extra-actions">
+              <button type="button" class="shimmer-btn btn-wa-siswa" 
+                onclick="contactStudentWhatsApp('${o.ID_Order}')" 
+                title="Kirim Pesan Struk / Konfirmasi ke WhatsApp Siswa">
+                💬 WA Siswa
+              </button>
+              ${isLunas ? `
+                <button type="button" class="btn-secondary btn-struk-action" 
+                  onclick="openReceiptSuccessModal('${o.ID_Order}')" 
+                  title="Lihat Struk Kuitansi">
+                  🧾
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 function filterOrdersTable(query) {
@@ -3641,31 +3720,47 @@ window.saveAdminSettingsForm = saveAdminSettingsForm;
 
 async function verifyOrderAdmin(orderId, status = 'Lunas') {
   try {
+    const normStatus = (status === 'Lunas' || status === 'Pending' || status === 'Batal')
+      ? status
+      : (status.toLowerCase().includes('lunas') ? 'Lunas' : (status.toLowerCase().includes('batal') ? 'Batal' : 'Pending'));
+
     // 1. Update data lokal di STATE.orders & localStorage
     if (Array.isArray(STATE.orders)) {
       const ord = STATE.orders.find(o => (o.ID_Order === orderId || o.orderId === orderId || o.ID_Pesanan === orderId));
       if (ord) {
-        ord.Status = status;
-        ord.Status_Bayar = status;
-        ord.status = status;
+        ord.Status = normStatus;
+        ord.Status_Bayar = normStatus;
+        ord.status = normStatus;
         
-        // Simpan sesi member agar bisa langsung masuk
-        localStorage.setItem('etalaseku_member_order_id', orderId);
-        if (ord.Email || ord.email) {
-          localStorage.setItem('etalaseku_member_email', ord.Email || ord.email);
-        }
+        if (normStatus === 'Lunas') {
+          // Simpan sesi member agar bisa langsung masuk
+          localStorage.setItem('etalaseku_member_order_id', orderId);
+          if (ord.Email || ord.email) {
+            localStorage.setItem('etalaseku_member_email', ord.Email || ord.email);
+          }
 
-        // Buka draft email Gmail untuk mengirim Order ID resmi
-        const destEmail = ord.Email || ord.email || '';
-        const destName = ord.Nama_Pembeli || ord.nama || 'Siswa';
-        const prodName = ord.productName || ord.Produk || 'Kelas Digital EtalaseKu';
-        if (destEmail) {
-          const mailSubject = encodeURIComponent(`Verifikasi Lunas & Akses Kelas - Order ID: ${orderId}`);
-          const mailBody = encodeURIComponent(`Halo ${destName},\n\nPembayaran Anda untuk ${prodName} telah BERHASIL DIVERIFIKASI LUNAS oleh Super Admin & Admin EtalaseKu.\n\nDetail Akses Anda:\n• Order ID Resmi: ${orderId}\n• Email Terdaftar: ${destEmail}\n• Buka Ruang BelajarKu: ${window.location.origin}\n\nMasukkan Email atau Order ID Anda pada menu Member Area untuk mulai belajar.\n\nSalam hangat,\nSuper Admin & Tim EtalaseKu Hub`);
-          window.open(`mailto:${destEmail}?subject=${mailSubject}&body=${mailBody}`, '_blank');
+          // Buka draft email Gmail untuk mengirim Order ID resmi
+          const destEmail = ord.Email || ord.email || '';
+          const destName = ord.Nama_Pembeli || ord.nama || 'Siswa';
+          const prodName = ord.productName || ord.Produk || 'Kelas Digital EtalaseKu';
+          if (destEmail) {
+            const mailSubject = encodeURIComponent(`Verifikasi Lunas & Akses Kelas - Order ID: ${orderId}`);
+            const mailBody = encodeURIComponent(`Halo ${destName},\n\nPembayaran Anda untuk ${prodName} telah BERHASIL DIVERIFIKASI LUNAS oleh Super Admin & Admin EtalaseKu.\n\nDetail Akses Anda:\n• Order ID Resmi: ${orderId}\n• Email Terdaftar: ${destEmail}\n• Buka Ruang BelajarKu: ${window.location.origin}\n\nMasukkan Email atau Order ID Anda pada menu Member Area untuk mulai belajar.\n\nSalam hangat,\nSuper Admin & Tim EtalaseKu Hub`);
+            window.open(`mailto:${destEmail}?subject=${mailSubject}&body=${mailBody}`, '_blank');
+          }
         }
       }
       localStorage.setItem('etalaseku_orders_data', JSON.stringify(STATE.orders));
+    }
+
+    // Update juga di ADMIN_STATE.data.recentOrders jika ada
+    if (typeof ADMIN_STATE !== 'undefined' && ADMIN_STATE && ADMIN_STATE.data && Array.isArray(ADMIN_STATE.data.recentOrders)) {
+      const adminOrd = ADMIN_STATE.data.recentOrders.find(o => (o.ID_Order === orderId || o.orderId === orderId || o.ID_Pesanan === orderId));
+      if (adminOrd) {
+        adminOrd.Status = normStatus;
+        adminOrd.Status_Bayar = normStatus;
+        adminOrd.status = normStatus;
+      }
     }
 
     // 2. Sync ke backend GAS jika aktif
@@ -3676,16 +3771,33 @@ async function verifyOrderAdmin(orderId, status = 'Lunas') {
         body: JSON.stringify({
           action: 'verifyTransaction',
           token: STATE.adminToken,
-          data: { orderId, status }
+          data: { orderId, status: normStatus }
         })
       }).catch(err => console.warn('Sync verify order to GAS:', err));
     }
 
-    showToast(`✅ Pesanan ${orderId} BERHASIL DIVERIFIKASI LUNAS!`, 'success', 3500);
-    loadAdminPortalData();
-    openReceiptSuccessModal(orderId);
+    if (normStatus === 'Lunas') {
+      showToast(`✅ Pesanan ${orderId} BERHASIL DIVERIFIKASI LUNAS!`, 'success', 3500);
+      openReceiptSuccessModal(orderId);
+    } else if (normStatus === 'Pending') {
+      showToast(`⏳ Status pesanan ${orderId} diubah menjadi PENDING (Menunggu Pembayaran).`, 'info', 3000);
+    } else if (normStatus === 'Batal') {
+      showToast(`❌ Status pesanan ${orderId} telah DIBATALKAN.`, 'error', 3000);
+    }
+
+    // Re-render admin tables & badges
+    if (typeof loadAdminPortalData === 'function') {
+      loadAdminPortalData();
+    } else if (typeof ADMIN_STATE !== 'undefined' && ADMIN_STATE && ADMIN_STATE.data) {
+      if (typeof renderFullOrdersTable === 'function') {
+        renderFullOrdersTable(ADMIN_STATE.data.recentOrders || []);
+      }
+      if (typeof renderAdminDashboard === 'function') {
+        renderAdminDashboard(ADMIN_STATE.data);
+      }
+    }
   } catch (err) {
-    showToast('Gagal verifikasi: ' + err.message, 'error');
+    showToast('Gagal mengubah status: ' + err.message, 'error');
   }
 }
 
