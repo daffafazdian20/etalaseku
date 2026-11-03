@@ -4613,6 +4613,8 @@ function openClassroomPortalDemo() {
 }
 
 function openClassroomDashboard(orderId, email) {
+  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
+  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
   if (typeof closeClassroomDetailView === 'function') closeClassroomDetailView();
   closeAllModals();
   const activeId = orderId || localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
@@ -9289,7 +9291,10 @@ window.toggleAppTheme = toggleAppTheme;
 // Inisialisasi tema otomatis secepat mungkin saat halaman dimuat
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAppTheme);
+    document.addEventListener('DOMContentLoaded', () => {
+  initAppTheme();
+  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules(); // On DOM ready
+});
   } else {
     initAppTheme();
   }
