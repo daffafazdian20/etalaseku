@@ -286,40 +286,33 @@
       <div class="section-eyebrow" style="color:#FF2E63; font-weight:800; letter-spacing:1px;">PROGRAM INTENSIF</div>
       <h2 class="section-heading" style="color:var(--deep-navy);">Bootcamp &amp; Kelas Live 🔥</h2>
       <p style="color:var(--text-muted); margin-top:8px; max-width:640px; margin-left:auto; margin-right:auto;">
-        Belajar terjadwal bersama mentor. Daftar lewat website/WhatsApp, lalu masuk dengan token akses yang Anda terima.
+        Belajar terjadwal bersama mentor. Daftar lewat Lynk.id / WhatsApp, lalu masuk dengan token akses yang Anda terima.
       </p>
     </div>
 
+    <!-- Centered Card matching Photo 4 (Ukuran Ramping & Proporsional) -->
     <div class="bootcamp-card-wrap">
-      <!-- Bootcamp Card 1 (Batch 1 November) -->
       <div class="bootcamp-card">
         <div class="bootcamp-thumb-box">
-          <img src="assets/hero/hero-slide-3.jpg" alt="BootCamp Batch 1" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80';">
-          <span style="position:absolute; top:12px; left:12px;" class="bootcamp-badge-hot">⚡ Pendaftaran Dibuka</span>
-          <span style="position:absolute; bottom:12px; right:12px; background:rgba(15,23,42,0.85); backdrop-filter:blur(4px); color:#FFF; font-size:11px; font-weight:800; padding:4px 10px; border-radius:99px;">⏱️ 4 Pertemuan</span>
+          <img id="front-bc-banner-img" src="assets/hero/hero-slide-3.jpg" alt="BootCamp Batch 1" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80';">
+          <span class="bootcamp-badge-gold" id="front-bc-badge-txt">⚡ Pendaftaran Dibuka</span>
+          <span class="bootcamp-badge-duration" id="front-bc-duration-txt">⏱️ 4 pertemuan</span>
         </div>
         <div class="bootcamp-content">
-          <div style="font-size:11px; color:#FF2E63; font-weight:800; text-transform:uppercase; margin-bottom:6px;">LIVE INTENSIF VIA WEBINAR</div>
-          <h3 class="bootcamp-title">BootCamp Batch 1 (NOVEMBER) : Dari Ide di Kepala, Jadi AppWeb Nyata</h3>
-          <div class="bootcamp-meta-row">
-            <span>📅 Mulai Minggu, 8 Nov 2026 • 19.30 WIB</span>
-            <span>•</span>
-            <span>👨‍🏫 Mentor: Daffa Fazdian &amp; Team</span>
+          <h3 class="bootcamp-title" id="front-bc-title-txt">BootCamp Batch 1 (NOVEMBER)</h3>
+          <div class="bootcamp-meta-row" id="front-bc-schedule-txt">
+            <span>🕒 Mulai Minggu, 8 Nov 2026 • 19.30 WIB</span>
           </div>
-          <p style="font-size:13px; color:#64748B; line-height:1.5; margin:0 0 16px;">
-            Pelatihan membuat AppWeb lengkap dengan Claude AI + Antigravity Gemini + Google Apps Script + Google Stitch. Langsung praktek sampai aplikasi Anda terbit ke Vercel!
-          </p>
-          <div class="bootcamp-price-box">
-            <span class="bootcamp-price-strike">Rp 700.000</span>
-            <span class="bootcamp-price-active">Rp 299.000</span>
-            <span style="font-size:11px; font-weight:800; color:#059669; background:#ECFDF5; padding:2px 8px; border-radius:99px;">Hemat 57%</span>
+          <div class="bootcamp-price-tag" id="front-bc-price-txt">
+            Rp 299.000
           </div>
+          <!-- Tombol Lihat Detail & Beli Sekarang! Sesuai Permintaan Foto 3 & 4 -->
           <div style="display:flex; gap:10px; margin-top:auto;">
-            <button class="btn-secondary" style="flex:1; padding:10px; font-size:12.5px; font-weight:700;" onclick="openAnnouncementVoucherModal()">
-              🎁 Kode Redeem
+            <button class="btn-secondary" style="flex:1; padding:10px 14px; font-size:12.5px; font-weight:700; border-radius:10px; justify-content:center;" onclick="openBootcampDetailModal()">
+              🔍 Lihat Detail
             </button>
-            <button class="shimmer-btn" style="flex:1.5; padding:10px; font-size:13px; font-weight:800; justify-content:center;" onclick="handleBootcampRegistration()">
-              Daftar Bootcamp 🚀
+            <button class="shimmer-btn" style="flex:1.2; padding:10px 16px; font-size:12.5px; font-weight:800; border-radius:10px; justify-content:center;" onclick="handleBootcampBuyNow()">
+              Beli Sekarang! 🚀
             </button>
           </div>
         </div>
@@ -1771,6 +1764,17 @@
           </a>
         </li>
         <li>
+          <li>
+          <a class="admin-nav-item" href="#tab-thumball" onclick="switchAdminTab('tab-thumball', this); return false;">
+            <span>🎨 <span class="nav-text">Thumball Editing</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="admin-nav-item" href="#tab-bootcamp-crm" onclick="switchAdminTab('tab-bootcamp-crm', this); return false;">
+            <span>⚡ <span class="nav-text">Bootcamp &amp; Kelas Live</span></span>
+          </a>
+        </li>
+        <li>
           <a class="admin-nav-item" href="#tab-settings" onclick="switchAdminTab('tab-settings', this); return false;">
             <span>⚙️ <span class="nav-text">Metode Bayar & Situs</span></span>
           </a>
@@ -1842,6 +1846,201 @@
           </div>
         </div>
 
+        
+        <!-- ==================================================================
+             TAB CRM: THUMBALL EDITING (Item 2: Tempat Edit Manual Hero Dashboard Utama)
+             ================================================================== -->
+        <div class="admin-tab-content" id="tab-thumball">
+          <div class="admin-table-container" style="padding:24px;">
+            <div style="margin-bottom:18px; border-bottom:1px solid #E2E8F0; padding-bottom:14px;">
+              <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">🎨 Thumball Editing (Konten Hero Dashboard Utama)</h3>
+              <p style="font-size:12.5px; color:var(--text-muted); margin:0;">
+                Kelola teks eyebrow, headline utama, deskripsi, tombol aksi, serta upload gambar banner hero live tanpa koding.
+              </p>
+            </div>
+
+            <form onsubmit="saveThumballSettings(event)">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Teks Eyebrow / Tag Hero *</label>
+                  <input type="text" id="crm-hero-eyebrow" class="form-input" value="✦ PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID" required>
+                </div>
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Judul Utama (Headline) *</label>
+                  <input type="text" id="crm-hero-title" class="form-input" value="Aplikasi & Kelas Siap Pakai" required>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" style="font-size:11.5px; font-weight:700;">Deskripsi Singkat Hero *</label>
+                <textarea id="crm-hero-desc" class="form-input" rows="3" required style="resize:vertical;">Lihat hasil aplikasi kami, ikuti kelas & bootcamp intensif, lalu akses materinya langsung di portal member siswa tanpa hambatan.</textarea>
+              </div>
+
+              <!-- Tombol CTA 1 & CTA 2 -->
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Tombol CTA 1 (Teks &amp; Link Target)</label>
+                  <div style="display:flex; gap:8px;">
+                    <input type="text" id="crm-hero-btn1-text" class="form-input" value="🚀 Lihat Bootcamp & Kelas Live" style="flex:1.2;">
+                    <input type="text" id="crm-hero-btn1-link" class="form-input" value="#bootcamp" style="flex:0.8;">
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Tombol CTA 2 (Teks &amp; Link Target)</label>
+                  <div style="display:flex; gap:8px;">
+                    <input type="text" id="crm-hero-btn2-text" class="form-input" value="🛍️ Katalog Produk" style="flex:1.2;">
+                    <input type="text" id="crm-hero-btn2-link" class="form-input" value="#produk" style="flex:0.8;">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tombol Kode Promo -->
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Teks Tombol Kode Promo</label>
+                  <input type="text" id="crm-hero-promo-btn-text" class="form-input" value="📢 Kode Promo">
+                </div>
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Kode Promo Default Saat Diklik</label>
+                  <input type="text" id="crm-hero-promo-code" class="form-input" value="BOOT-5J6T3T">
+                </div>
+              </div>
+
+              <!-- Upload Banner / Gambar Hero -->
+              <div class="form-group" style="margin-bottom:20px; background:#F8FAFC; border:1.5px dashed #CBD5E1; padding:18px; border-radius:14px;">
+                <label class="form-label" style="font-size:12px; font-weight:800; color:var(--deep-navy); margin-bottom:6px;">
+                  🖼️ Upload Foto Banner Hero (Dukungan File Folder &amp; Link URL)
+                </label>
+                <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                  <input type="text" id="crm-hero-img-url" class="form-input" placeholder="Tempel URL Gambar Google Drive / Link URL Foto..." oninput="handleHeroUrlInput(this.value)">
+                  <button type="button" class="shimmer-btn" style="padding:10px 16px; font-size:12px; white-space:nowrap;" onclick="document.getElementById('crm-hero-img-file').click()">
+                    📁 Pilih Foto dari File Folder
+                  </button>
+                  <input type="file" id="crm-hero-img-file" accept="image/*" style="display:none;" onchange="handleHeroFileInput(this)">
+                </div>
+                <!-- Live Preview Hero Image -->
+                <div id="crm-hero-img-preview-box" style="margin-top:10px; display:flex; align-items:center; gap:14px;">
+                  <div style="width:160px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:1.5px solid #CBD5E1; background:#0B1120;">
+                    <img id="crm-hero-img-preview" src="assets/hero/hero-slide-1.jpg" alt="Preview Hero" style="width:100%; height:100%; aspect-ratio:16/9; object-fit:cover;">
+                  </div>
+                  <div style="font-size:11.5px; color:#64748B;">
+                    <strong>Ukuran Rekomendasi</strong>: Landscape 16:9 (1280x720). Foto akan otomatis tampil di section hero pertama.
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="shimmer-btn" style="padding:13px 26px; font-size:14px; font-weight:800;">
+                💾 Simpan Perubahan Thumball ke Website
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ==================================================================
+             TAB CRM: BOOTCAMP & KELAS LIVE EDITING (Item 3: Edit Manual Bootcamp Sesuai Foto 5)
+             ================================================================== -->
+        <div class="admin-tab-content" id="tab-bootcamp-crm">
+          <div class="admin-table-container" style="padding:24px;">
+            <div style="margin-bottom:18px; border-bottom:1px solid #E2E8F0; padding-bottom:14px;">
+              <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">⚡ Manajemen Bootcamp &amp; Kelas Live</h3>
+              <p style="font-size:12.5px; color:var(--text-muted); margin:0;">
+                Kelola kartu pendaftaran bootcamp, banner 16:9, jadwal live, harga investasi, dan detail kurikulum (Foto 5).
+              </p>
+            </div>
+
+            <form onsubmit="saveBootcampSettings(event)">
+              <div style="display:grid; grid-template-columns:1fr 2fr; gap:16px; margin-bottom:16px;">
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Status Badge</label>
+                  <input type="text" id="crm-bc-badge" class="form-input" value="⚡ Pendaftaran Dibuka" required>
+                </div>
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Judul Bootcamp / Program *</label>
+                  <input type="text" id="crm-bc-title" class="form-input" value="BootCamp Batch 1 (NOVEMBER)" required>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Harga Investasi / Promo (Rp) *</label>
+                  <input type="number" id="crm-bc-price-promo" class="form-input" value="299000" required>
+                </div>
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Harga Normal / Coret (Rp)</label>
+                  <input type="number" id="crm-bc-price-normal" class="form-input" value="700000">
+                </div>
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Kuota Peserta</label>
+                  <input type="number" id="crm-bc-quota" class="form-input" value="100">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Jumlah Pertemuan</label>
+                  <input type="text" id="crm-bc-meetings" class="form-input" value="4x live (WIB)" required>
+                </div>
+                <div>
+                  <label class="form-label" style="font-size:11.5px; font-weight:700;">Jadwal Live</label>
+                  <input type="text" id="crm-bc-schedule" class="form-input" value="Minggu, 8 Nov 2026 • 19.30 WIB" required>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" style="font-size:11.5px; font-weight:700;">Link Pembelian (Lynk.id / WhatsApp / Checkout) *</label>
+                <input type="url" id="crm-bc-buy-url" class="form-input" value="https://lynk.id/daffafazdian" required>
+              </div>
+
+              <!-- Upload Banner Bootcamp 16:9 -->
+              <div class="form-group" style="margin-bottom:18px; background:#F8FAFC; border:1.5px dashed #CBD5E1; padding:18px; border-radius:14px;">
+                <label class="form-label" style="font-size:12px; font-weight:800; color:var(--deep-navy); margin-bottom:6px;">
+                  🖼️ Upload Foto Banner Bootcamp (Folder File / Link URL 16:9)
+                </label>
+                <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                  <input type="text" id="crm-bc-banner-url" class="form-input" placeholder="Tempel URL Banner Google Drive / Web..." oninput="handleBootcampUrlInput(this.value)">
+                  <button type="button" class="shimmer-btn" style="padding:10px 16px; font-size:12px; white-space:nowrap;" onclick="document.getElementById('crm-bc-banner-file').click()">
+                    📁 Pilih Foto dari File Folder
+                  </button>
+                  <input type="file" id="crm-bc-banner-file" accept="image/*" style="display:none;" onchange="handleBootcampFileInput(this)">
+                </div>
+                <!-- Live Preview Bootcamp Banner -->
+                <div id="crm-bc-banner-preview-box" style="margin-top:10px; display:flex; align-items:center; gap:14px;">
+                  <div style="width:160px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:1.5px solid #CBD5E1; background:#0B1120;">
+                    <img id="crm-bc-banner-preview" src="assets/hero/hero-slide-3.jpg" alt="Preview Bootcamp Banner" style="width:100%; height:100%; aspect-ratio:16/9; object-fit:cover;">
+                  </div>
+                  <div style="font-size:11.5px; color:#64748B;">
+                    Format 16:9 disesuaikan otomatis dengan kartu Bootcamp di halaman utama dan dialog detail pop-up.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Akses Kelas yang Didapat (Foto 5) -->
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" style="font-size:11.5px; font-weight:700;">Akses Kelas yang Didapat (Pisahkan dengan baris baru)</label>
+                <textarea id="crm-bc-classes" class="form-input" rows="5" style="resize:vertical;">METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL [CLAUDE]
+Kumpulan PRD (GRATIS)
+Kumpulan Video Cara Revisi & Upgrade
+METODE 1 | BASIC - Belajar GAS sangat Mudah [CLAUDE]
+METODE 2 | MENENGAH - Integrasi GAS ke GITHUB [CLAUDE]
+METODE 3 | LANJUTAN - Integrasi GAS ke Vercel [GEMINI]
+MIGRASI KE SUPABASE</textarea>
+              </div>
+
+              <!-- Kurikulum & Jadwal (Foto 5) -->
+              <div class="form-group" style="margin-bottom:20px;">
+                <label class="form-label" style="font-size:11.5px; font-weight:700;">Kurikulum &amp; Jadwal Pertemuan (Format: Judul | Tanggal & Waktu, pisahkan dengan baris baru)</label>
+                <textarea id="crm-bc-curriculum" class="form-input" rows="4" style="resize:vertical;">Pertemuan 1 | Minggu, 8 Nov 2026 • 19.30 WIB - 22.30 WIB
+Pertemuan 2 | Minggu, 15 Nov 2026 • 19.30 WIB - 22.30 WIB
+Pertemuan 3 | Minggu, 22 Nov 2026 • 19.30 WIB - 22.30 WIB
+Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
+              </div>
+
+              <button type="submit" class="shimmer-btn" style="padding:13px 26px; font-size:14px; font-weight:800;">
+                💾 Simpan Data Bootcamp ke Website
+              </button>
+            </form>
+          </div>
+        </div>
         <!-- Tab 2: Pesanan & Verifikasi -->
         <div class="admin-tab-content" id="tab-orders">
           <div class="admin-table-container">
@@ -3795,6 +3994,130 @@
           </button>
           <button class="shimmer-btn" onclick="redeemModalVoucherNow()" style="padding:9px 20px; font-size:12.5px; font-weight:800;">
             Salin &amp; Redeem Sekarang ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL DETAIL BOOTCAMP (Persis Tampilan Foto 5)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal-bootcamp-detail" style="display:none; align-items:center; justify-content:center; z-index:9999;">
+    <div class="modal-bootcamp-detail-dialog">
+      <!-- Left Column: Blurred aesthetic backdrop & banner preview -->
+      <div class="modal-bc-left">
+        <div class="modal-bc-left-blur" id="modal-bc-blur-bg" style="background-image:url('assets/hero/hero-slide-3.jpg');"></div>
+        <div class="modal-bc-left-thumb">
+          <img id="modal-bc-sharp-img" src="assets/hero/hero-slide-3.jpg" alt="Preview Bootcamp" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80';">
+        </div>
+      </div>
+
+      <!-- Right Column: Details, Curriculum, Metrics & Buy Actions (Foto 5) -->
+      <div class="modal-bc-right">
+        <div class="modal-bc-header-row">
+          <span class="modal-bc-status-pill" id="modal-bc-status-badge">Pendaftaran dibuka</span>
+          <button onclick="closeBootcampDetailModal()" style="background:none; border:none; color:#94A3B8; font-size:22px; cursor:pointer; padding:4px; line-height:1;">✕</button>
+        </div>
+
+        <h2 class="modal-bc-title" id="modal-bc-title">BootCamp Batch 1 (NOVEMBER)</h2>
+
+        <!-- 3 Metrics Boxes (Foto 5) -->
+        <div class="modal-bc-metrics-grid">
+          <div class="modal-bc-metric-item">
+            <div class="modal-bc-metric-label">INVESTASI</div>
+            <div class="modal-bc-metric-val" id="modal-bc-investasi" style="color:#FF2E63;">299000</div>
+          </div>
+          <div class="modal-bc-metric-item">
+            <div class="modal-bc-metric-label">PERTEMUAN</div>
+            <div class="modal-bc-metric-val" id="modal-bc-pertemuan">4x live (WIB)</div>
+          </div>
+          <div class="modal-bc-metric-item">
+            <div class="modal-bc-metric-label">KUOTA</div>
+            <div class="modal-bc-metric-val" id="modal-bc-kuota">100</div>
+          </div>
+        </div>
+
+        <!-- Section: Akses Kelas yang Didapat (Foto 5) -->
+        <div class="modal-bc-section-title">AKSES KELAS YANG DIDAPAT</div>
+        <ul class="modal-bc-class-list" id="modal-bc-class-list">
+          <li class="modal-bc-class-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL [CLAUDE]</span>
+          </li>
+          <li class="modal-bc-class-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Kumpulan PRD (GRATIS)</span>
+          </li>
+          <li class="modal-bc-class-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Kumpulan Video Cara Revisi &amp; Upgrade</span>
+          </li>
+          <li class="modal-bc-class-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>METODE 1 | BASIC - Belajar GAS sangat Mudah [CLAUDE]</span>
+          </li>
+          <li class="modal-bc-class-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>METODE 2 | MENENGAH - Integrasi GAS ke GITHUB [CLAUDE]</span>
+          </li>
+          <li class="modal-bc-class-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>METODE 3 | LANJUTAN - Integrasi GAS ke Vercel [GEMINI]</span>
+          </li>
+          <li class="modal-bc-class-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>MIGRASI KE SUPABASE</span>
+          </li>
+        </ul>
+
+        <!-- Section: Kurikulum & Jadwal (Foto 5) -->
+        <div class="modal-bc-section-title">KURIKULUM &amp; JADWAL</div>
+        <div class="modal-bc-schedule-list" id="modal-bc-schedule-list">
+          <div class="modal-bc-schedule-box">
+            <div class="modal-bc-schedule-num">1</div>
+            <div class="modal-bc-schedule-details">
+              <div class="modal-bc-schedule-title">Pertemuan 1</div>
+              <div class="modal-bc-schedule-time">Minggu, 8 Nov 2026 • 19.30 WIB - 22.30 WIB</div>
+            </div>
+          </div>
+          <div class="modal-bc-schedule-box">
+            <div class="modal-bc-schedule-num">2</div>
+            <div class="modal-bc-schedule-details">
+              <div class="modal-bc-schedule-title">Pertemuan 2</div>
+              <div class="modal-bc-schedule-time">Minggu, 15 Nov 2026 • 19.30 WIB - 22.30 WIB</div>
+            </div>
+          </div>
+          <div class="modal-bc-schedule-box">
+            <div class="modal-bc-schedule-num">3</div>
+            <div class="modal-bc-schedule-details">
+              <div class="modal-bc-schedule-title">Pertemuan 3</div>
+              <div class="modal-bc-schedule-time">Minggu, 22 Nov 2026 • 19.30 WIB - 22.30 WIB</div>
+            </div>
+          </div>
+          <div class="modal-bc-schedule-box">
+            <div class="modal-bc-schedule-num">4</div>
+            <div class="modal-bc-schedule-details">
+              <div class="modal-bc-schedule-title">Pertemuan 4</div>
+              <div class="modal-bc-schedule-time">Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Yang Anda Dapatkan (Foto 5) -->
+        <div class="modal-bc-section-title">YANG ANDA DAPATKAN</div>
+        <div class="modal-bc-perks-box">
+          <div>♾️ Akses materi seumur hidup setelah bootcamp selesai</div>
+          <div>🎓 Sertifikat dengan QR verifikasi setelah menyelesaikan syarat</div>
+        </div>
+
+        <!-- Action Buttons (Foto 5) -->
+        <div class="modal-bc-actions">
+          <button class="shimmer-btn" style="flex:1.4; padding:12px; font-size:13.5px; font-weight:800; justify-content:center; border-radius:10px;" onclick="handleBootcampBuyNow()">
+            🛍️ Beli Token di Lynk.id / Beli Sekarang!
+          </button>
+          <button class="btn-secondary" style="flex:1; padding:12px; font-size:12.5px; font-weight:700; border-radius:10px; color:#FFFFFF; border-color:rgba(255,255,255,0.25);" onclick="closeBootcampDetailModal(); openRedeemModal();">
+            Sudah punya token? Daftar
           </button>
         </div>
       </div>

@@ -8363,3 +8363,311 @@ function handleBootcampRegistration() {
   const msg = encodeURIComponent('Halo Admin NexStore, saya ingin mendaftar BootCamp Batch 1 (NOVEMBER) : Dari Ide di Kepala Jadi AppWeb Nyata. Mohon info pembayaran & aksesnya.');
   window.open('https://wa.me/' + wa + '?text=' + msg, '_blank');
 }
+
+
+// ============================================================================
+// THUMBALL & BOOTCAMP DYNAMIC SYNC ENGINE (CRM & FRONTEND)
+// ============================================================================
+const DEFAULT_THUMBALL_SETTINGS = {
+  eyebrow: '✦ PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID',
+  title: 'Aplikasi & Kelas Siap Pakai',
+  desc: 'Lihat hasil aplikasi kami, ikuti kelas & bootcamp intensif, lalu akses materinya langsung di portal member siswa tanpa hambatan.',
+  btn1Text: '🚀 Lihat Bootcamp & Kelas Live',
+  btn1Link: '#bootcamp',
+  btn2Text: '🛍️ Katalog Produk',
+  btn2Link: '#produk',
+  promoBtnText: '📢 Kode Promo',
+  promoCode: 'BOOT-5J6T3T',
+  imageUrl: 'assets/hero/hero-slide-1.jpg'
+};
+
+const DEFAULT_BOOTCAMP_DATA = {
+  badge: '⚡ Pendaftaran Dibuka',
+  title: 'BootCamp Batch 1 (NOVEMBER)',
+  duration: '⏱️ 4 pertemuan',
+  schedule: '🕒 Mulai Minggu, 8 Nov 2026 • 19.30 WIB',
+  pricePromo: 299000,
+  priceNormal: 700000,
+  quota: 100,
+  meetings: '4x live (WIB)',
+  buyUrl: 'https://lynk.id/daffafazdian',
+  bannerUrl: 'assets/hero/hero-slide-3.jpg',
+  classes: [
+    'METODE 3 | LANJUTAN - Integrasi GAS ke VERCEL [CLAUDE]',
+    'Kumpulan PRD (GRATIS)',
+    'Kumpulan Video Cara Revisi & Upgrade',
+    'METODE 1 | BASIC - Belajar GAS sangat Mudah [CLAUDE]',
+    'METODE 2 | MENENGAH - Integrasi GAS ke GITHUB [CLAUDE]',
+    'METODE 3 | LANJUTAN - Integrasi GAS ke Vercel [GEMINI]',
+    'MIGRASI KE SUPABASE'
+  ],
+  curriculum: [
+    { num: 1, title: 'Pertemuan 1', time: 'Minggu, 8 Nov 2026 • 19.30 WIB - 22.30 WIB' },
+    { num: 2, title: 'Pertemuan 2', time: 'Minggu, 15 Nov 2026 • 19.30 WIB - 22.30 WIB' },
+    { num: 3, title: 'Pertemuan 3', time: 'Minggu, 22 Nov 2026 • 19.30 WIB - 22.30 WIB' },
+    { num: 4, title: 'Pertemuan 4', time: 'Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB' }
+  ]
+};
+
+function getThumballSettings() {
+  try {
+    const raw = localStorage.getItem('nexstore_hero_thumball_data');
+    if (raw) return { ...DEFAULT_THUMBALL_SETTINGS, ...JSON.parse(raw) };
+  } catch (e) {}
+  return DEFAULT_THUMBALL_SETTINGS;
+}
+
+function applyThumballSettingsToDom() {
+  const d = getThumballSettings();
+
+  const eyebrowEl = document.querySelector('.hero-tag');
+  if (eyebrowEl && d.eyebrow) eyebrowEl.textContent = d.eyebrow;
+
+  const titleEl = document.querySelector('.hero-title');
+  if (titleEl && d.title) {
+    titleEl.innerHTML = escapeHtml(d.title).replace(/Siap Pakai/i, '<span class="highlight">Siap Pakai</span>');
+  }
+
+  const descEl = document.querySelector('.hero-desc');
+  if (descEl && d.desc) descEl.textContent = d.desc;
+
+  const btn1 = document.getElementById('hero-btn-bootcamp');
+  if (btn1) {
+    if (d.btn1Text) btn1.innerHTML = '<span>' + escapeHtml(d.btn1Text) + '</span>';
+    if (d.btn1Link) btn1.setAttribute('href', d.btn1Link);
+  }
+
+  const btn2 = document.getElementById('hero-btn-primary');
+  if (btn2) {
+    if (d.btn2Text) btn2.innerHTML = '<span>' + escapeHtml(d.btn2Text) + '</span>';
+    if (d.btn2Link) btn2.setAttribute('href', d.btn2Link);
+  }
+
+  // Update Hero Slide 1 image
+  if (d.imageUrl) {
+    const heroImg1 = document.querySelector('.hero-slide.active img') || document.querySelector('.hero-slide img');
+    if (heroImg1) heroImg1.src = formatImageUrl(d.imageUrl);
+  }
+
+  // Populate CRM Thumball Form fields if present
+  const crmEyebrow = document.getElementById('crm-hero-eyebrow');
+  if (crmEyebrow) crmEyebrow.value = d.eyebrow;
+  const crmTitle = document.getElementById('crm-hero-title');
+  if (crmTitle) crmTitle.value = d.title;
+  const crmDesc = document.getElementById('crm-hero-desc');
+  if (crmDesc) crmDesc.value = d.desc;
+  const crmBtn1Text = document.getElementById('crm-hero-btn1-text');
+  if (crmBtn1Text) crmBtn1Text.value = d.btn1Text;
+  const crmBtn1Link = document.getElementById('crm-hero-btn1-link');
+  if (crmBtn1Link) crmBtn1Link.value = d.btn1Link;
+  const crmBtn2Text = document.getElementById('crm-hero-btn2-text');
+  if (crmBtn2Text) crmBtn2Text.value = d.btn2Text;
+  const crmBtn2Link = document.getElementById('crm-hero-btn2-link');
+  if (crmBtn2Link) crmBtn2Link.value = d.btn2Link;
+  const crmPromoText = document.getElementById('crm-hero-promo-btn-text');
+  if (crmPromoText) crmPromoText.value = d.promoBtnText;
+  const crmPromoCode = document.getElementById('crm-hero-promo-code');
+  if (crmPromoCode) crmPromoCode.value = d.promoCode;
+  const crmImgUrl = document.getElementById('crm-hero-img-url');
+  if (crmImgUrl) crmImgUrl.value = d.imageUrl;
+  const crmImgPrev = document.getElementById('crm-hero-img-preview');
+  if (crmImgPrev) crmImgPrev.src = formatImageUrl(d.imageUrl);
+}
+
+function handleHeroUrlInput(val) {
+  const prev = document.getElementById('crm-hero-img-preview');
+  if (prev && val) prev.src = formatImageUrl(val);
+}
+
+function handleHeroFileInput(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result;
+      const urlInput = document.getElementById('crm-hero-img-url');
+      if (urlInput) urlInput.value = base64;
+      const prev = document.getElementById('crm-hero-img-preview');
+      if (prev) prev.src = base64;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function saveThumballSettings(e) {
+  if (e && e.preventDefault) e.preventDefault();
+
+  const data = {
+    eyebrow: document.getElementById('crm-hero-eyebrow')?.value || DEFAULT_THUMBALL_SETTINGS.eyebrow,
+    title: document.getElementById('crm-hero-title')?.value || DEFAULT_THUMBALL_SETTINGS.title,
+    desc: document.getElementById('crm-hero-desc')?.value || DEFAULT_THUMBALL_SETTINGS.desc,
+    btn1Text: document.getElementById('crm-hero-btn1-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Text,
+    btn1Link: document.getElementById('crm-hero-btn1-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Link,
+    btn2Text: document.getElementById('crm-hero-btn2-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Text,
+    btn2Link: document.getElementById('crm-hero-btn2-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Link,
+    promoBtnText: document.getElementById('crm-hero-promo-btn-text')?.value || DEFAULT_THUMBALL_SETTINGS.promoBtnText,
+    promoCode: document.getElementById('crm-hero-promo-code')?.value || DEFAULT_THUMBALL_SETTINGS.promoCode,
+    imageUrl: document.getElementById('crm-hero-img-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl
+  };
+
+  localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
+  applyThumballSettingsToDom();
+  showToast('Perubahan Thumball Dashboard Utama berhasil disimpan! 🎨✨');
+}
+
+// ----------------------------------------------------------------------------
+// BOOTCAMP SETTINGS & MODAL ENGINE
+// ----------------------------------------------------------------------------
+function getBootcampData() {
+  try {
+    const raw = localStorage.getItem('nexstore_bootcamp_data');
+    if (raw) return { ...DEFAULT_BOOTCAMP_DATA, ...JSON.parse(raw) };
+  } catch (e) {}
+  return DEFAULT_BOOTCAMP_DATA;
+}
+
+function applyBootcampDataToDom() {
+  const bc = getBootcampData();
+
+  // Front card
+  const frontBadge = document.getElementById('front-bc-badge-txt');
+  if (frontBadge) frontBadge.textContent = bc.badge || '⚡ Pendaftaran Dibuka';
+
+  const frontDuration = document.getElementById('front-bc-duration-txt');
+  if (frontDuration) frontDuration.textContent = bc.duration || '⏱️ 4 pertemuan';
+
+  const frontTitle = document.getElementById('front-bc-title-txt');
+  if (frontTitle) frontTitle.textContent = bc.title;
+
+  const frontSchedule = document.getElementById('front-bc-schedule-txt');
+  if (frontSchedule) frontSchedule.innerHTML = '<span>' + escapeHtml(bc.schedule) + '</span>';
+
+  const frontPrice = document.getElementById('front-bc-price-txt');
+  if (frontPrice) frontPrice.textContent = 'Rp ' + Number(bc.pricePromo || 299000).toLocaleString('id-ID');
+
+  const frontBanner = document.getElementById('front-bc-banner-img');
+  if (frontBanner && bc.bannerUrl) frontBanner.src = formatImageUrl(bc.bannerUrl);
+
+  // Detail Modal Elements
+  const modalTitle = document.getElementById('modal-bc-title');
+  if (modalTitle) modalTitle.textContent = bc.title;
+
+  const modalBadge = document.getElementById('modal-bc-status-badge');
+  if (modalBadge) modalBadge.textContent = bc.badge.replace(/[⚡🔥]/g, '').trim() || 'Pendaftaran dibuka';
+
+  const modalInvest = document.getElementById('modal-bc-investasi');
+  if (modalInvest) modalInvest.textContent = bc.pricePromo;
+
+  const modalMeetings = document.getElementById('modal-bc-pertemuan');
+  if (modalMeetings) modalMeetings.textContent = bc.meetings || '4x live (WIB)';
+
+  const modalQuota = document.getElementById('modal-bc-kuota');
+  if (modalQuota) modalQuota.textContent = bc.quota || '100';
+
+  const modalSharp = document.getElementById('modal-bc-sharp-img');
+  if (modalSharp && bc.bannerUrl) modalSharp.src = formatImageUrl(bc.bannerUrl);
+
+  const modalBlur = document.getElementById('modal-bc-blur-bg');
+  if (modalBlur && bc.bannerUrl) modalBlur.style.backgroundImage = 'url("' + formatImageUrl(bc.bannerUrl) + '")';
+
+  // Classes list
+  const classListEl = document.getElementById('modal-bc-class-list');
+  if (classListEl && Array.isArray(bc.classes)) {
+    classListEl.innerHTML = bc.classes.map(c => `
+      <li class="modal-bc-class-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>${escapeHtml(c)}</span>
+      </li>
+    `).join('');
+  }
+
+  // Populate CRM Bootcamp Form if present
+  const crmBadge = document.getElementById('crm-bc-badge');
+  if (crmBadge) crmBadge.value = bc.badge;
+  const crmTitle = document.getElementById('crm-bc-title');
+  if (crmTitle) crmTitle.value = bc.title;
+  const crmPricePromo = document.getElementById('crm-bc-price-promo');
+  if (crmPricePromo) crmPricePromo.value = bc.pricePromo;
+  const crmPriceNormal = document.getElementById('crm-bc-price-normal');
+  if (crmPriceNormal) crmPriceNormal.value = bc.priceNormal;
+  const crmQuota = document.getElementById('crm-bc-quota');
+  if (crmQuota) crmQuota.value = bc.quota;
+  const crmMeetings = document.getElementById('crm-bc-meetings');
+  if (crmMeetings) crmMeetings.value = bc.meetings;
+  const crmSchedule = document.getElementById('crm-bc-schedule');
+  if (crmSchedule) crmSchedule.value = bc.schedule;
+  const crmBuyUrl = document.getElementById('crm-bc-buy-url');
+  if (crmBuyUrl) crmBuyUrl.value = bc.buyUrl;
+  const crmBannerUrl = document.getElementById('crm-bc-banner-url');
+  if (crmBannerUrl) crmBannerUrl.value = bc.bannerUrl;
+  const crmBannerPrev = document.getElementById('crm-bc-banner-preview');
+  if (crmBannerPrev) crmBannerPrev.src = formatImageUrl(bc.bannerUrl);
+
+  const crmClasses = document.getElementById('crm-bc-classes');
+  if (crmClasses && Array.isArray(bc.classes)) crmClasses.value = bc.classes.join('\n');
+}
+
+function handleBootcampUrlInput(val) {
+  const prev = document.getElementById('crm-bc-banner-preview');
+  if (prev && val) prev.src = formatImageUrl(val);
+}
+
+function handleBootcampFileInput(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result;
+      const urlInput = document.getElementById('crm-bc-banner-url');
+      if (urlInput) urlInput.value = base64;
+      const prev = document.getElementById('crm-bc-banner-preview');
+      if (prev) prev.src = base64;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function saveBootcampSettings(e) {
+  if (e && e.preventDefault) e.preventDefault();
+
+  const rawClasses = document.getElementById('crm-bc-classes')?.value || '';
+  const classes = rawClasses.split('\n').map(s => s.trim()).filter(Boolean);
+
+  const data = {
+    badge: document.getElementById('crm-bc-badge')?.value || DEFAULT_BOOTCAMP_DATA.badge,
+    title: document.getElementById('crm-bc-title')?.value || DEFAULT_BOOTCAMP_DATA.title,
+    duration: '⏱️ 4 pertemuan',
+    schedule: document.getElementById('crm-bc-schedule')?.value || DEFAULT_BOOTCAMP_DATA.schedule,
+    pricePromo: Number(document.getElementById('crm-bc-price-promo')?.value || 299000),
+    priceNormal: Number(document.getElementById('crm-bc-price-normal')?.value || 700000),
+    quota: Number(document.getElementById('crm-bc-quota')?.value || 100),
+    meetings: document.getElementById('crm-bc-meetings')?.value || DEFAULT_BOOTCAMP_DATA.meetings,
+    buyUrl: document.getElementById('crm-bc-buy-url')?.value || DEFAULT_BOOTCAMP_DATA.buyUrl,
+    bannerUrl: document.getElementById('crm-bc-banner-url')?.value || DEFAULT_BOOTCAMP_DATA.bannerUrl,
+    classes: classes.length > 0 ? classes : DEFAULT_BOOTCAMP_DATA.classes,
+    curriculum: DEFAULT_BOOTCAMP_DATA.curriculum
+  };
+
+  localStorage.setItem('nexstore_bootcamp_data', JSON.stringify(data));
+  applyBootcampDataToDom();
+  showToast('Data Bootcamp & Kelas Live berhasil disimpan ke website! ⚡');
+}
+
+function openBootcampDetailModal() {
+  const modal = document.getElementById('modal-bootcamp-detail');
+  if (modal) {
+    applyBootcampDataToDom();
+    modal.style.display = 'flex';
+  }
+}
+
+function closeBootcampDetailModal() {
+  const modal = document.getElementById('modal-bootcamp-detail');
+  if (modal) modal.style.display = 'none';
+}
+
+function handleBootcampBuyNow() {
+  const bc = getBootcampData();
+  const targetUrl = bc.buyUrl || 'https://lynk.id/daffafazdian';
+  window.open(targetUrl, '_blank');
+}

@@ -7985,3 +7985,359 @@ footer {
     font-size: 11px;
   }
 }
+
+
+/* ==========================================================================
+   UPGRADE: THUMBALL EDITING & BOOTCAMP DETAIL MODAL (FOTO 2, 4, 5 REFERENCE)
+   WARM PASTEL TECH PALETTE (Desain UI UX / warm_pastel_tech)
+   ========================================================================== */
+
+/* 1. VIP MEMBER WELCOME (Sesuai Ukuran & Proporsi Foto 2) */
+.vip-welcome-container {
+  padding: 16px 5% 0;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.vip-welcome-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 46, 99, 0.28) !important;
+  border-radius: 18px !important;
+  padding: 20px 26px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  box-shadow: 0 10px 28px -6px rgba(15, 23, 42, 0.06), 0 2px 8px rgba(255, 46, 99, 0.08) !important;
+}
+.vip-tag-pill {
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  color: #059669 !important;
+  background: #ECFDF5 !important;
+  border: 1px solid #A7F3D0 !important;
+  padding: 2px 9px !important;
+  border-radius: 99px !important;
+}
+.vip-welcome-title {
+  font-size: 21px !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  margin: 3px 0 3px !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.3px !important;
+}
+.vip-welcome-desc {
+  font-size: 13px !important;
+  color: #64748B !important;
+  margin: 0 !important;
+  line-height: 1.45 !important;
+}
+.btn-vip-classroom {
+  padding: 8.5px 18px !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  border-radius: 99px !important;
+}
+.btn-vip-order {
+  padding: 8.5px 16px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  border-radius: 99px !important;
+}
+
+/* 2. BOOTCAMP CARD (Sesuai Ukuran Ramping Foto 4) */
+.bootcamp-card-wrap {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  width: 100% !important;
+}
+.bootcamp-card {
+  max-width: 400px !important;
+  width: 100% !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.07) !important;
+  transition: all 0.25s ease !important;
+}
+.bootcamp-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #FF2E63 !important;
+  box-shadow: 0 16px 36px -8px rgba(255, 46, 99, 0.2) !important;
+}
+.bootcamp-thumb-box {
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  background: #0B1120 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.bootcamp-thumb-box img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+}
+.bootcamp-badge-gold {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FCD34D;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.bootcamp-badge-duration {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.bootcamp-content {
+  padding: 18px 20px !important;
+}
+.bootcamp-title {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+  margin: 0 0 6px !important;
+  line-height: 1.35 !important;
+}
+.bootcamp-meta-row {
+  font-size: 12px !important;
+  color: #64748B !important;
+  margin-bottom: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.bootcamp-price-tag {
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  color: #0F172A !important;
+  margin-bottom: 16px !important;
+  letter-spacing: -0.5px;
+}
+
+/* 3. MODAL DETAIL BOOTCAMP (Persis Tampilan Foto 5) */
+.modal-bootcamp-detail-dialog {
+  display: flex;
+  width: 94%;
+  max-width: 880px;
+  max-height: 90vh;
+  border-radius: 20px;
+  background: #0B1120;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+.modal-bc-left {
+  width: 42%;
+  position: relative;
+  background: #080D1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.modal-bc-left-blur {
+  position: absolute;
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.45);
+  transform: scale(1.15);
+  pointer-events: none;
+}
+.modal-bc-left-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
+}
+.modal-bc-left-thumb img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+.modal-bc-right {
+  width: 58%;
+  padding: 24px 26px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: #0B1120;
+}
+.modal-bc-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.modal-bc-status-pill {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.modal-bc-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 14px;
+  line-height: 1.3;
+}
+.modal-bc-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.modal-bc-metric-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.modal-bc-metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #94A3B8;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.modal-bc-metric-val {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+.modal-bc-section-title {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 0 0 10px;
+}
+.modal-bc-class-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.modal-bc-class-item {
+  font-size: 12px;
+  color: #CBD5E1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.modal-bc-class-item svg {
+  color: #10B981;
+  flex-shrink: 0;
+}
+.modal-bc-schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.modal-bc-schedule-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modal-bc-schedule-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(37, 99, 235, 0.2);
+  color: #60A5FA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.modal-bc-schedule-details {
+  line-height: 1.3;
+}
+.modal-bc-schedule-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+.modal-bc-schedule-time {
+  font-size: 11px;
+  color: #94A3B8;
+}
+.modal-bc-perks-box {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #CBD5E1;
+}
+.modal-bc-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .modal-bootcamp-detail-dialog {
+    flex-direction: column;
+    max-height: 94vh;
+  }
+  .modal-bc-left {
+    width: 100%;
+    padding: 16px;
+  }
+  .modal-bc-right {
+    width: 100%;
+    padding: 18px;
+  }
+  .modal-bc-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
