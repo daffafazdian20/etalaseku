@@ -9446,248 +9446,113 @@ footer {
 }
 
 
+
 /* ==========================================================================
-   THEME TOGGLE BUTTON STYLES & WARM PASTEL TECH MODE TERANG
-   Sesuai Folder: Desain UI UX / stitch_etalaseku_digital_hub_ui_ux / warm_pastel_tech
+   COMPREHENSIVE FULL-SITE THEME ENGINE (MODE TERANG & GELAP MENYELURUH)
+   Sesuai Permintaan: Mode Terang & Gelap Berjalan Otomatis ke Seluruh Halaman Website!
    ========================================================================== */
+
+/* 1. Sleek Compact Theme Toggle Icon Button (Hanya Icon, Tanpa Teks) */
 .btn-theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 13px;
-  font-size: 12px;
-  font-weight: 700;
-  border-radius: 20px;
-  cursor: pointer;
-  border: 1px solid #CBD5E1;
-  background: #FFFFFF;
-  color: #0F172A;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  border: 1.5px solid #CBD5E1 !important;
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  flex-shrink: 0 !important;
+  outline: none !important;
 }
 
 .btn-theme-toggle:hover {
-  border-color: #FF2E63;
-  color: #FF2E63;
-  transform: translateY(-1px);
+  border-color: #FF2E63 !important;
+  transform: translateY(-2px) scale(1.08) !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.3) !important;
+}
+
+.btn-theme-toggle:active {
+  transform: scale(0.95) !important;
 }
 
 .btn-theme-toggle .theme-toggle-icon {
-  font-size: 13px;
-  line-height: 1;
+  font-size: 17px !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  transition: transform 0.3s ease !important;
 }
 
-/* Mode Terang (Default Warm Pastel Tech): Member Dashboard Jangan Full Gelap */
-.main-member-area-dashboard {
-  background: #FBF9F5 !important;
-  color: #0F172A !important;
-  border-bottom: 1px solid #E2E8F0 !important;
-  transition: background-color 0.3s ease, color 0.3s ease;
+.btn-theme-toggle:hover .theme-toggle-icon {
+  transform: rotate(25deg);
 }
 
-.member-announcement-card {
-  background: #FFF1F4 !important;
-  border: 1px solid rgba(255, 46, 99, 0.35) !important;
-  color: #0F172A !important;
+/* 2. Global Dark Theme CSS Variables Override */
+[data-theme="dark"],
+body.dark-theme {
+  --color-primary: #FF2E63 !important;
+  --color-primary-container: #E51152 !important;
+  --color-cta-hover: #E11D48 !important;
+  --color-secondary: #0F172A !important;
+  --color-midnight-indigo: #0B132B !important;
+  --color-background: #0B132B !important;
+  --color-surface: #0B132B !important;
+  --color-surface-card: #131F37 !important;
+  --color-surface-container: #1E293B !important;
+  --color-on-background: #FFFFFF !important;
+  --color-on-surface: #FFFFFF !important;
+  --color-on-surface-variant: #CBD5E1 !important;
+  --color-outline: rgba(255, 255, 255, 0.15) !important;
+  --color-pastel-pink: #131F37 !important;
+  --color-pastel-lavender: #0F172A !important;
+  --color-pastel-mint: #131F37 !important;
+  --color-text-muted: #94A3B8 !important;
+  --color-error: #EF4444 !important;
+  --color-success-green: #10B981 !important;
+
+  /* Global Functional Theme Aliases */
+  --canvas-bg: #0B132B !important;
+  --wave-pink: #131F37 !important;
+  --wave-lavender: #0F172A !important;
+  --wave-mint: #131F37 !important;
+  --primary-pink: #FF2E63 !important;
+  --coral-pink: #FF2E63 !important;
+  --primary-hover: #E11D48 !important;
+  --deep-navy: #FFFFFF !important;
+  --card-surface: #131F37 !important;
+  --text-main: #FFFFFF !important;
+  --text-muted: #94A3B8 !important;
+  --border-subtle: rgba(255, 255, 255, 0.12) !important;
+
+  background-color: #0B132B !important;
+  color: #FFFFFF !important;
 }
 
-.announcement-prefix {
-  color: #FF2E63 !important;
-}
-
-.announcement-headline {
-  color: #0F172A !important;
-}
-
-.btn-announcement-dismiss {
-  color: #94A3B8 !important;
-}
-
-.member-welcome-hero-card {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFF5F7 100%) !important;
-  border: 1px solid #FFE4E6 !important;
-  box-shadow: 0 4px 20px rgba(255, 46, 99, 0.08) !important;
-}
-
-.welcome-hero-title {
-  color: #0F172A !important;
-}
-
-.welcome-hero-subtitle {
-  color: #64748B !important;
-}
-
-.btn-hero-catalog {
-  background: #FFFFFF !important;
-  color: #0F172A !important;
-  border: 1px solid #CBD5E1 !important;
-}
-
-.btn-hero-catalog:hover {
-  background: #F8FAFC !important;
-  border-color: #94A3B8 !important;
-}
-
-.main-kpi-card {
-  background: #FFFFFF !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
-}
-
-.main-kpi-label {
-  color: #64748B !important;
-}
-
-.main-kpi-val {
-  color: #0F172A !important;
-}
-
-.tab-pill-btn {
-  background: #FFFFFF !important;
-  color: #475569 !important;
-  border: 1px solid #E2E8F0 !important;
-}
-
-.tab-pill-btn:hover {
-  color: #FF2E63 !important;
-  border-color: rgba(255, 46, 99, 0.3) !important;
-}
-
-.member-product-card {
-  background: #FFFFFF !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
-}
-
-.mp-card-title {
-  color: #0F172A !important;
-}
-
-.mp-card-desc {
-  color: #64748B !important;
-}
-
-.mp-card-meta {
-  color: #94A3B8 !important;
-}
-
-.member-profile-summary-box {
-  background: #FFFFFF !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
-}
-
-.mp-name {
-  color: #0F172A !important;
-}
-
-.mp-email,
-.mp-info-val {
-  color: #64748B !important;
-}
-
-.btn-manage-account {
-  background: #F8FAFC !important;
-  color: #0F172A !important;
-  border: 1px solid #CBD5E1 !important;
-}
-
-.btn-manage-account:hover {
-  background: #F1F5F9 !important;
-  border-color: #FF2E63 !important;
-  color: #FF2E63 !important;
-}
-
-/* Navbar Member di Mode Terang */
-.classroom-portal-nav {
-  background: rgba(255, 255, 255, 0.96) !important;
-  border-bottom: 1px solid #E2E8F0 !important;
-  color: #0F172A !important;
-}
-
-.classroom-brand .brand-name-text {
-  color: #0F172A !important;
-}
-
-.cls-tab-link {
-  color: #475569 !important;
-}
-
-.cls-tab-link:hover {
-  color: #FF2E63 !important;
-}
-
-.member-profile-nav-chip {
-  background: #F1F5F9 !important;
-  border-color: #E2E8F0 !important;
-  color: #0F172A !important;
-}
-
-/* Modal Lengkapi Data / Pengaturan Akun di Mode Terang */
-.modal-complete-profile-dialog {
-  background: #FFFFFF !important;
-  color: #0F172A !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15) !important;
-}
-
-.modal-cp-title {
-  color: #0F172A !important;
-}
-
-.modal-cp-desc {
-  color: #64748B !important;
-}
-
-.account-verified-order-badge {
-  background: #FFF1F4 !important;
-  border: 1px solid rgba(255, 46, 99, 0.3) !important;
-}
-
-#setting-modal-email {
-  color: #0F172A !important;
-}
-
-.modal-cp-label {
-  color: #334155 !important;
-}
-
-.modal-cp-input {
-  background: #F8FAFC !important;
-  border: 1px solid #CBD5E1 !important;
-  color: #0F172A !important;
-}
-
-.modal-cp-input:focus {
-  background: #FFFFFF !important;
-  border-color: #FF2E63 !important;
-  box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.2) !important;
-}
-
-.modal-cp-input::placeholder {
-  color: #94A3B8 !important;
-}
-
-.btn-cp-cancel {
-  background: #F1F5F9 !important;
-  color: #475569 !important;
-  border: 1px solid #E2E8F0 !important;
-}
-
-/* ==========================================================================
-   MODE GELAP (DARK THEME) OVERRIDES ([data-theme="dark"] / body.dark-theme)
-   ========================================================================== */
+/* 3. Menyeluruh Dark Theme Overrides ke Seluruh Halaman Website */
 [data-theme="dark"] body,
 body.dark-theme {
   background-color: #0B132B !important;
   color: #FFFFFF !important;
 }
 
+/* Navbar & Announcement Bar di Dark Mode */
+[data-theme="dark"] .announcement-bar,
+body.dark-theme .announcement-bar {
+  background: #060913 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
 [data-theme="dark"] .navbar,
 body.dark-theme .navbar {
-  background: rgba(11, 19, 43, 0.95) !important;
+  background: rgba(11, 19, 43, 0.96) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(16px) !important;
 }
 
 [data-theme="dark"] .brand-name-text,
@@ -9705,6 +9570,35 @@ body.dark-theme .nav-links a:hover {
   color: #FF2E63 !important;
 }
 
+[data-theme="dark"] .btn-theme-toggle,
+body.dark-theme .btn-theme-toggle {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .btn-theme-toggle:hover,
+body.dark-theme .btn-theme-toggle:hover {
+  border-color: #FF2E63 !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+/* Hero Section di Dark Mode (Seluruh Hero Berlatar Gelap Elegan) */
+[data-theme="dark"] .hero-section,
+body.dark-theme .hero-section {
+  background: linear-gradient(180deg, #0B132B 0%, #131F37 100%) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .hero-tag,
+body.dark-theme .hero-tag {
+  background: #1E293B !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
 [data-theme="dark"] .hero-title,
 body.dark-theme .hero-title {
   color: #FFFFFF !important;
@@ -9715,10 +9609,122 @@ body.dark-theme .hero-desc {
   color: #94A3B8 !important;
 }
 
+[data-theme="dark"] .btn-hero-catalog,
+[data-theme="dark"] .hero-btn-group .btn-secondary,
+body.dark-theme .btn-hero-catalog,
+body.dark-theme .hero-btn-group .btn-secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .btn-hero-catalog:hover,
+[data-theme="dark"] .hero-btn-group .btn-secondary:hover,
+body.dark-theme .btn-hero-catalog:hover,
+body.dark-theme .hero-btn-group .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #FF2E63 !important;
+}
+
+[data-theme="dark"] .hero-cta-card,
+body.dark-theme .hero-cta-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Kartu Sambutan VIP Member Area di Dark Mode */
+[data-theme="dark"] .vip-welcome-card,
+body.dark-theme .vip-welcome-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+  border: 1px solid rgba(255, 46, 99, 0.35) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .vip-welcome-title,
+body.dark-theme .vip-welcome-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .vip-welcome-desc,
+body.dark-theme .vip-welcome-desc {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .btn-vip-order,
+body.dark-theme .btn-vip-order {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Seluruh Section Wrapper (Bootcamp, Kategori, Produk, Testimoni, Showcase) di Dark Mode */
+[data-theme="dark"] .section-wrapper,
+[data-theme="dark"] section[style*="background: var(--canvas-bg)"],
+[data-theme="dark"] section[style*="background: var(--wave-mint)"],
+[data-theme="dark"] section[style*="background: var(--wave-lavender)"],
+body.dark-theme .section-wrapper,
+body.dark-theme section[style*="background: var(--canvas-bg)"],
+body.dark-theme section[style*="background: var(--wave-mint)"],
+body.dark-theme section[style*="background: var(--wave-lavender)"] {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .section-title,
+body.dark-theme .section-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .section-desc,
+body.dark-theme .section-desc {
+  color: #94A3B8 !important;
+}
+
+/* Bootcamp Cards di Dark Mode */
+[data-theme="dark"] .bootcamp-card,
+body.dark-theme .bootcamp-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .bootcamp-title,
+body.dark-theme .bootcamp-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .bootcamp-desc,
+body.dark-theme .bootcamp-desc {
+  color: #94A3B8 !important;
+}
+
+/* Kategori Cards di Dark Mode */
+[data-theme="dark"] .category-card,
+body.dark-theme .category-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .category-title,
+body.dark-theme .category-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .category-count,
+body.dark-theme .category-count {
+  color: #94A3B8 !important;
+}
+
+/* Product Cards di Dark Mode */
 [data-theme="dark"] .product-card,
 body.dark-theme .product-card {
   background: #131F37 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
   color: #FFFFFF !important;
 }
 
@@ -9732,201 +9738,123 @@ body.dark-theme .product-desc {
   color: #94A3B8 !important;
 }
 
+[data-theme="dark"] .product-price-cur,
+body.dark-theme .product-price-cur {
+  color: #FFFFFF !important;
+}
+
+/* Testimonials Section & Cards di Dark Mode */
+[data-theme="dark"] .testimonials-section,
+body.dark-theme .testimonials-section {
+  background: #0F172A !important;
+  color: #FFFFFF !important;
+}
+
 [data-theme="dark"] .testimonial-card,
 body.dark-theme .testimonial-card {
   background: #131F37 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
   color: #FFFFFF !important;
 }
 
-[data-theme="dark"] .btn-theme-toggle,
-body.dark-theme .btn-theme-toggle {
+[data-theme="dark"] .testimonial-author,
+body.dark-theme .testimonial-author {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .testimonial-role,
+body.dark-theme .testimonial-role {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .testimonial-text,
+body.dark-theme .testimonial-text {
+  color: #CBD5E1 !important;
+}
+
+/* Banner CTA Pra-Footer di Dark Mode */
+[data-theme="dark"] section[style*="var(--wave-lavender)"] > div,
+body.dark-theme section[style*="var(--wave-lavender)"] > div {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 46, 99, 0.35) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] section[style*="var(--wave-lavender)"] h2,
+body.dark-theme section[style*="var(--wave-lavender)"] h2 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] section[style*="var(--wave-lavender)"] p,
+body.dark-theme section[style*="var(--wave-lavender)"] p {
+  color: #94A3B8 !important;
+}
+
+/* Footer di Dark Mode */
+[data-theme="dark"] footer,
+body.dark-theme footer {
+  background: #060913 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Tombol Sekunder Umum di Dark Mode */
+[data-theme="dark"] .btn-secondary,
+body.dark-theme .btn-secondary {
   background: rgba(255, 255, 255, 0.08) !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
   color: #FFFFFF !important;
 }
 
-[data-theme="dark"] .btn-theme-toggle:hover,
-body.dark-theme .btn-theme-toggle:hover {
+[data-theme="dark"] .btn-secondary:hover,
+body.dark-theme .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
   border-color: #FF2E63 !important;
-  color: #FF2E63 !important;
 }
 
-/* Dark Mode Member Area */
-[data-theme="dark"] .main-member-area-dashboard,
-body.dark-theme .main-member-area-dashboard {
+/* Modals di Dark Mode */
+[data-theme="dark"] .modal-card,
+body.dark-theme .modal-card {
   background: #0B132B !important;
   color: #FFFFFF !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-[data-theme="dark"] .member-announcement-card,
-body.dark-theme .member-announcement-card {
-  background: #131F37 !important;
-  border: 1px solid rgba(255, 46, 99, 0.35) !important;
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .announcement-headline,
-body.dark-theme .announcement-headline {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .member-welcome-hero-card,
-body.dark-theme .member-welcome-hero-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
-}
-
-[data-theme="dark"] .welcome-hero-title,
-body.dark-theme .welcome-hero-title {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .welcome-hero-subtitle,
-body.dark-theme .welcome-hero-subtitle {
-  color: #94A3B8 !important;
-}
-
-[data-theme="dark"] .btn-hero-catalog,
-body.dark-theme .btn-hero-catalog {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: #FFFFFF !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-[data-theme="dark"] .main-kpi-card,
-body.dark-theme .main-kpi-card {
-  background: rgba(30, 41, 59, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-[data-theme="dark"] .main-kpi-label,
-body.dark-theme .main-kpi-label {
-  color: #94A3B8 !important;
-}
-
-[data-theme="dark"] .main-kpi-val,
-body.dark-theme .main-kpi-val {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .tab-pill-btn,
-body.dark-theme .tab-pill-btn {
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: #94A3B8 !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
 }
 
-[data-theme="dark"] .member-product-card,
-body.dark-theme .member-product-card {
-  background: #131F37 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-[data-theme="dark"] .mp-card-title,
-body.dark-theme .mp-card-title {
+[data-theme="dark"] .modal-title,
+body.dark-theme .modal-title {
   color: #FFFFFF !important;
 }
 
-[data-theme="dark"] .mp-card-desc,
-body.dark-theme .mp-card-desc {
-  color: #94A3B8 !important;
-}
-
-[data-theme="dark"] .member-profile-summary-box,
-body.dark-theme .member-profile-summary-box {
-  background: rgba(30, 41, 59, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-[data-theme="dark"] .mp-name,
-body.dark-theme .mp-name {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .mp-email,
-[data-theme="dark"] .mp-info-val,
-body.dark-theme .mp-email,
-body.dark-theme .mp-info-val {
-  color: #94A3B8 !important;
-}
-
-[data-theme="dark"] .btn-manage-account,
-body.dark-theme .btn-manage-account {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: #FFFFFF !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-[data-theme="dark"] .classroom-portal-nav,
-body.dark-theme .classroom-portal-nav {
-  background: rgba(11, 19, 43, 0.94) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .classroom-brand .brand-name-text,
-body.dark-theme .classroom-brand .brand-name-text {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .cls-tab-link,
-body.dark-theme .cls-tab-link {
-  color: #CBD5E1 !important;
-}
-
-[data-theme="dark"] .member-profile-nav-chip,
-body.dark-theme .member-profile-nav-chip {
-  background: rgba(255, 255, 255, 0.08) !important;
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-textarea,
+body.dark-theme .form-input,
+body.dark-theme .form-select,
+body.dark-theme .form-textarea {
+  background: rgba(255, 255, 255, 0.06) !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
   color: #FFFFFF !important;
 }
 
-[data-theme="dark"] .modal-complete-profile-dialog,
-body.dark-theme .modal-complete-profile-dialog {
-  background: #0B132B !important;
-  color: #FFFFFF !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-[data-theme="dark"] .modal-cp-title,
-body.dark-theme .modal-cp-title {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .modal-cp-desc,
-body.dark-theme .modal-cp-desc {
-  color: #94A3B8 !important;
-}
-
-[data-theme="dark"] .account-verified-order-badge,
-body.dark-theme .account-verified-order-badge {
-  background: #0B132B !important;
-  border: 1px solid rgba(255, 46, 99, 0.3) !important;
-}
-
-[data-theme="dark"] #setting-modal-email,
-body.dark-theme #setting-modal-email {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .modal-cp-label,
-body.dark-theme .modal-cp-label {
-  color: #CBD5E1 !important;
-}
-
-[data-theme="dark"] .modal-cp-input,
-body.dark-theme .modal-cp-input {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .btn-cp-cancel,
-body.dark-theme .btn-cp-cancel {
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: #94A3B8 !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+/* Transisi Halus Pergantian Tema ke Seluruh Elemen */
+body,
+.navbar,
+.hero-section,
+.section-wrapper,
+.testimonials-section,
+.main-member-area-dashboard,
+.member-welcome-hero-card,
+.main-kpi-card,
+.member-product-card,
+.product-card,
+.category-card,
+.bootcamp-card,
+.testimonial-card,
+.btn-theme-toggle {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }

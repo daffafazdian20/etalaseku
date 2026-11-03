@@ -9206,13 +9206,34 @@ function renderMainMemberDashboardModules(filterCategory, searchQuery) {
 window.renderMainMemberDashboardModules = renderMainMemberDashboardModules;
 
 
+
 // ============================================================================
-// THEME MANAGER ENGINE (MODE TERANG & GELAP SESUAI DESAIN UI/UX)
+// COMPREHENSIVE AUTOMATIC THEME MANAGER ENGINE
 // Mendukung Mode Terang (Default Warm Pastel Tech) & Mode Gelap
+// Berjalan otomatis, tanpa teks (hanya icon), dan merubah seluruh halaman website!
 // ============================================================================
 function initAppTheme() {
-  const savedTheme = localStorage.getItem('nexstore_theme') || 'light';
-  applyAppTheme(savedTheme);
+  let theme = localStorage.getItem('nexstore_theme');
+  if (!theme) {
+    // Berjalan otomatis: deteksi preferensi sistem OS / browser
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    } else {
+      theme = 'light';
+    }
+  }
+  applyAppTheme(theme);
+
+  // Listener otomatis jika user merubah preferensi tema di level OS / browser
+  if (window.matchMedia) {
+    try {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('nexstore_theme_manual')) {
+          applyAppTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    } catch(err) {}
+  }
 }
 
 function applyAppTheme(theme) {
@@ -9226,18 +9247,27 @@ function applyAppTheme(theme) {
     document.body.classList.add('light-theme');
   }
 
-  // Update seluruh tombol toggle mode terang & gelap di semua navbar
+  // Update seluruh tombol toggle tema di seluruh website (hanya tombol icon, tanpa tulisan teks)
   document.querySelectorAll('.btn-theme-toggle').forEach(btn => {
-    const icon = btn.querySelector('.theme-toggle-icon');
+    // Pastikan tidak ada teks tulisan mode di dalam tombol
     const label = btn.querySelector('.theme-toggle-label');
+    if (label) label.remove();
+
+    let icon = btn.querySelector('.theme-toggle-icon');
+    if (!icon) {
+      icon = document.createElement('span');
+      icon.className = 'theme-toggle-icon';
+      btn.appendChild(icon);
+    }
+
     if (isDark) {
-      if (icon) icon.textContent = '🌙';
-      if (label) label.textContent = 'Mode Gelap';
+      icon.textContent = '☀️';
       btn.title = 'Beralih ke Mode Terang (Warm Pastel Tech)';
+      btn.setAttribute('aria-label', 'Beralih ke Mode Terang');
     } else {
-      if (icon) icon.textContent = '☀️';
-      if (label) label.textContent = 'Mode Terang';
+      icon.textContent = '🌙';
       btn.title = 'Beralih ke Mode Gelap';
+      btn.setAttribute('aria-label', 'Beralih ke Mode Gelap');
     }
   });
 }
@@ -9246,16 +9276,17 @@ function toggleAppTheme() {
   const current = document.documentElement.getAttribute('data-theme') || (document.body.classList.contains('dark-theme') ? 'dark' : 'light');
   const next = current === 'dark' ? 'light' : 'dark';
   localStorage.setItem('nexstore_theme', next);
+  localStorage.setItem('nexstore_theme_manual', 'true');
   applyAppTheme(next);
   if (typeof showToast === 'function') {
-    showToast(next === 'dark' ? '🌙 Beralih ke Mode Gelap' : '☀️ Beralih ke Mode Terang (Warm Pastel Tech)', 'info', 2200);
+    showToast(next === 'dark' ? '🌙 Mode Gelap Aktif (Seluruh Halaman)' : '☀️ Mode Terang Aktif (Warm Pastel Tech)', 'info', 2000);
   }
 }
 window.initAppTheme = initAppTheme;
 window.applyAppTheme = applyAppTheme;
 window.toggleAppTheme = toggleAppTheme;
 
-// Inisialisasi tema saat skrip dimuat agar bebas kedip
+// Inisialisasi tema otomatis secepat mungkin saat halaman dimuat
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAppTheme);
