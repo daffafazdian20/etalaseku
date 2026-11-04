@@ -9999,7 +9999,7 @@ function renderCustomAppSubmissions() {
       <div class="custom-app-card">
         <div class="custom-app-card-top">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span class="pill-badge blue" style="font-size:11px;">${escapeHtml(item.id)}</span>
+            <span class="pill-badge" style="background:rgba(255,46,99,0.1); color:#FF2E63; border:1px solid rgba(255,46,99,0.25); font-size:11px;">${escapeHtml(item.id)}</span>
             <span style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(item.tanggal)}</span>
           </div>
           <span class="pill-badge green" style="font-size:11px;">${escapeHtml(item.status || 'Menunggu Peninjauan Admin')}</span>

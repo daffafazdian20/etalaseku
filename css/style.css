@@ -13711,9 +13711,9 @@ body.dark-theme #crm-footer-logo-preview-box {
 }
 
 .custom-hero-pill {
-  background: rgba(59, 130, 246, 0.18);
-  color: #60A5FA;
-  border: 1px solid rgba(59, 130, 246, 0.35);
+  background: rgba(255, 46, 99, 0.12);
+  color: #FF2E63;
+  border: 1px solid rgba(255, 46, 99, 0.25);
   font-size: 11.5px;
   font-weight: 800;
   padding: 4px 12px;
@@ -13745,7 +13745,7 @@ body.dark-theme #crm-footer-logo-preview-box {
 }
 
 .custom-btn-new-app {
-  background: #3B82F6 !important;
+  background: #FF2E63 !important;
   color: #FFFFFF !important;
   border: none !important;
   border-radius: 12px !important;
@@ -13756,14 +13756,14 @@ body.dark-theme #crm-footer-logo-preview-box {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(255, 46, 99, 0.35) !important;
   transition: all 0.2s ease !important;
 }
 
 .custom-btn-new-app:hover {
-  background: #2563EB !important;
+  background: #E11D48 !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(59, 130, 246, 0.5) !important;
+  box-shadow: 0 8px 22px rgba(255, 46, 99, 0.5) !important;
 }
 
 /* Section Pengajuan Saya */
@@ -13784,11 +13784,11 @@ body.dark-theme #crm-footer-logo-preview-box {
 .custom-count-pill {
   font-size: 11.5px;
   font-weight: 700;
-  color: #3B82F6;
-  background: rgba(59, 130, 246, 0.1);
+  color: #FF2E63;
+  background: rgba(255, 46, 99, 0.1);
   padding: 3px 10px;
   border-radius: 99px;
-  border: 1px solid rgba(59, 130, 246, 0.25);
+  border: 1px solid rgba(255, 46, 99, 0.25);
 }
 
 /* Empty State Card (Foto 1) */
@@ -13806,8 +13806,9 @@ body.dark-theme #crm-footer-logo-preview-box {
   width: 56px;
   height: 56px;
   border-radius: 16px;
-  background: rgba(59, 130, 246, 0.12);
-  color: #3B82F6;
+  background: rgba(255, 46, 99, 0.1);
+  color: #FF2E63;
+  border: 1px solid rgba(255, 46, 99, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13981,13 +13982,13 @@ body.dark-theme #crm-footer-logo-preview-box {
 }
 
 .custom-step-item.active .custom-step-bubble {
-  background: #3B82F6;
+  background: #FF2E63;
   color: #FFFFFF;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.45);
+  box-shadow: 0 0 12px rgba(255, 46, 99, 0.45);
 }
 
 .custom-step-item.active .custom-step-label {
-  color: var(--deep-navy, #0F172A);
+  color: #FF2E63;
   font-weight: 800;
 }
 
@@ -14090,9 +14091,9 @@ body.dark-theme #crm-footer-logo-preview-box {
 
 /* Alert Banner in Step 3 */
 .custom-alert-banner {
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  color: #2563EB;
+  background: rgba(255, 46, 99, 0.08);
+  border: 1px solid rgba(255, 46, 99, 0.25);
+  color: #FF2E63;
   border-radius: 10px;
   padding: 10px 16px;
   font-size: 12px;
@@ -14224,9 +14225,9 @@ body.dark-theme .custom-checkbox-label {
 
 [data-theme="dark"] .custom-alert-banner,
 body.dark-theme .custom-alert-banner {
-  background: rgba(59, 130, 246, 0.15) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
-  color: #93C5FD !important;
+  background: rgba(255, 46, 99, 0.12) !important;
+  border-color: rgba(255, 46, 99, 0.3) !important;
+  color: #FF85A1 !important;
 }
 
 [data-theme="dark"] .custom-summary-box,
