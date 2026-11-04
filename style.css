@@ -13271,3 +13271,286 @@ body.dark-theme #modal-complete-profile .modal-card {
   background: #131F37 !important;
   border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
 }
+
+/* ==========================================================================
+   TURN 38: CHECKOUT PROOF DROPZONE, GUIDE BOX & QRIS DOWNLOAD (DESAIN UI/UX)
+   ========================================================================== */
+
+/* Proof Guide Box in Checkout Modal */
+.checkout-proof-guide-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.checkout-proof-guide-box .proof-guide-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1E293B;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.checkout-proof-guide-box .proof-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+.checkout-proof-guide-box .proof-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.checkout-proof-guide-box .proof-pill.ovo {
+  background: #EDE9FE;
+  color: #6D28D9;
+  border: 1px solid #DDD6FE;
+}
+.checkout-proof-guide-box .proof-pill.mandiri {
+  background: #E0F2FE;
+  color: #0284C7;
+  border: 1px solid #BAE6FD;
+}
+.checkout-proof-guide-box .proof-pill.bca {
+  background: #DBEAFE;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+.checkout-proof-guide-box .proof-pill.gopay {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+.checkout-proof-guide-box .proof-guide-desc {
+  font-size: 11px;
+  color: #64748B;
+  line-height: 1.4;
+}
+
+/* Proof Dropzone in Checkout Modal */
+.checkout-proof-dropzone {
+  cursor: pointer;
+  border: 2px dashed #CBD5E1;
+  border-radius: 14px;
+  padding: 16px 12px;
+  text-align: center;
+  background: #FFFFFF;
+  transition: all 0.25s ease;
+}
+.checkout-proof-dropzone:hover {
+  border-color: #FF2E63;
+  background: #FFF1F4;
+}
+.checkout-proof-dropzone .proof-dropzone-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--deep-navy, #0F172A);
+  transition: color 0.2s ease;
+}
+.checkout-proof-dropzone .proof-dropzone-sub {
+  font-size: 11px;
+  color: var(--text-muted, #64748B);
+  margin-top: 2px;
+  transition: color 0.2s ease;
+}
+
+/* Proof Live Preview Container */
+.checkout-proof-preview-container {
+  margin-top: 10px;
+  background: #FFFFFF;
+  border: 1.5px solid #10B981;
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.12);
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+/* QRIS Display Card & Download Button */
+.qris-display-card {
+  text-align: center;
+  padding: 16px 12px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  margin: 12px 0;
+  transition: all 0.25s ease;
+}
+.qris-img-preview {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.qris-img-preview:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+.btn-download-qris {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: #10B981;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);
+}
+.btn-download-qris:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(16, 185, 129, 0.35);
+}
+
+/* ==========================================================================
+   DARK MODE ADAPTATION FOR CHECKOUT PROOF & QRIS (DESAIN UI/UX)
+   ========================================================================== */
+[data-theme="dark"] .checkout-proof-guide-box,
+body.dark-theme .checkout-proof-guide-box,
+body.theme-dark .checkout-proof-guide-box,
+.dark-mode .checkout-proof-guide-box {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+[data-theme="dark"] .checkout-proof-guide-box .proof-guide-title,
+body.dark-theme .checkout-proof-guide-box .proof-guide-title,
+body.theme-dark .checkout-proof-guide-box .proof-guide-title,
+.dark-mode .checkout-proof-guide-box .proof-guide-title {
+  color: #F8FAFC !important;
+}
+[data-theme="dark"] .checkout-proof-guide-box .proof-guide-desc,
+body.dark-theme .checkout-proof-guide-box .proof-guide-desc,
+body.theme-dark .checkout-proof-guide-box .proof-guide-desc,
+.dark-mode .checkout-proof-guide-box .proof-guide-desc {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .checkout-proof-guide-box .proof-pill,
+body.dark-theme .checkout-proof-guide-box .proof-pill,
+body.theme-dark .checkout-proof-guide-box .proof-pill,
+.dark-mode .checkout-proof-guide-box .proof-pill {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-theme="dark"] .checkout-proof-guide-box .proof-pill.ovo,
+body.dark-theme .checkout-proof-guide-box .proof-pill.ovo,
+body.theme-dark .checkout-proof-guide-box .proof-pill.ovo {
+  color: #C4B5FD !important;
+}
+[data-theme="dark"] .checkout-proof-guide-box .proof-pill.mandiri,
+body.dark-theme .checkout-proof-guide-box .proof-pill.mandiri,
+body.theme-dark .checkout-proof-guide-box .proof-pill.mandiri {
+  color: #7DD3FC !important;
+}
+[data-theme="dark"] .checkout-proof-guide-box .proof-pill.bca,
+body.dark-theme .checkout-proof-guide-box .proof-pill.bca,
+body.theme-dark .checkout-proof-guide-box .proof-pill.bca {
+  color: #93C5FD !important;
+}
+[data-theme="dark"] .checkout-proof-guide-box .proof-pill.gopay,
+body.dark-theme .checkout-proof-guide-box .proof-pill.gopay,
+body.theme-dark .checkout-proof-guide-box .proof-pill.gopay {
+  color: #86EFAC !important;
+}
+
+[data-theme="dark"] .checkout-proof-dropzone,
+body.dark-theme .checkout-proof-dropzone,
+body.theme-dark .checkout-proof-dropzone,
+.dark-mode .checkout-proof-dropzone {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+[data-theme="dark"] .checkout-proof-dropzone:hover,
+body.dark-theme .checkout-proof-dropzone:hover,
+body.theme-dark .checkout-proof-dropzone:hover,
+.dark-mode .checkout-proof-dropzone:hover {
+  background: #131F37 !important;
+  border-color: #FF2E63 !important;
+}
+[data-theme="dark"] .checkout-proof-dropzone .proof-dropzone-title,
+body.dark-theme .checkout-proof-dropzone .proof-dropzone-title,
+body.theme-dark .checkout-proof-dropzone .proof-dropzone-title,
+.dark-mode .checkout-proof-dropzone .proof-dropzone-title {
+  color: #F8FAFC !important;
+}
+[data-theme="dark"] .checkout-proof-dropzone .proof-dropzone-sub,
+body.dark-theme .checkout-proof-dropzone .proof-dropzone-sub,
+body.theme-dark .checkout-proof-dropzone .proof-dropzone-sub,
+.dark-mode .checkout-proof-dropzone .proof-dropzone-sub {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .checkout-proof-preview-container,
+body.dark-theme .checkout-proof-preview-container,
+body.theme-dark .checkout-proof-preview-container,
+.dark-mode .checkout-proof-preview-container {
+  background: #0B132B !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+[data-theme="dark"] .qris-display-card,
+body.dark-theme .qris-display-card,
+body.theme-dark .qris-display-card,
+.dark-mode .qris-display-card {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* System Preference Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .checkout-proof-guide-box {
+    background: #131F37 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-guide-box .proof-guide-title {
+    color: #F8FAFC !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-guide-box .proof-guide-desc {
+    color: #94A3B8 !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-guide-box .proof-pill {
+    background: #0B132B !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-guide-box .proof-pill.ovo { color: #C4B5FD !important; }
+  :root:not([data-theme="light"]) .checkout-proof-guide-box .proof-pill.mandiri { color: #7DD3FC !important; }
+  :root:not([data-theme="light"]) .checkout-proof-guide-box .proof-pill.bca { color: #93C5FD !important; }
+  :root:not([data-theme="light"]) .checkout-proof-guide-box .proof-pill.gopay { color: #86EFAC !important; }
+
+  :root:not([data-theme="light"]) .checkout-proof-dropzone {
+    background: #0B132B !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-dropzone:hover {
+    background: #131F37 !important;
+    border-color: #FF2E63 !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-dropzone .proof-dropzone-title {
+    color: #F8FAFC !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-dropzone .proof-dropzone-sub {
+    color: #94A3B8 !important;
+  }
+  :root:not([data-theme="light"]) .checkout-proof-preview-container {
+    background: #0B132B !important;
+    border-color: rgba(16, 185, 129, 0.4) !important;
+  }
+  :root:not([data-theme="light"]) .qris-display-card {
+    background: #0B132B !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+}

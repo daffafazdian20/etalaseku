@@ -1956,23 +1956,11 @@ function updateCheckoutPriceDisplay() {
   const badgeEl = document.getElementById('checkout-installment-badge');
   const noteEl = document.getElementById('checkout-plan-note');
 
-  if (STATE.selectedPaymentPlan === 'cicilan') {
-    const cicilan1 = Math.round(fullPrice / 2);
-    if (priceEl) priceEl.textContent = 'Rp ' + cicilan1.toLocaleString('id-ID');
-    if (badgeEl) {
-      badgeEl.textContent = 'Cicilan 1 dari 2';
-      badgeEl.style.background = '#FEF9C3';
-      badgeEl.style.color = '#854D0E';
-    }
-    if (noteEl) noteEl.innerHTML = `<strong>Cicilan 1:</strong> Rp ${cicilan1.toLocaleString('id-ID')} dibayar sekarang. <strong>Cicilan 2:</strong> Rp ${cicilan1.toLocaleString('id-ID')} jatuh tempo 30 hari ke depan via menu <em>Cek Tagihan</em>.`;
-  } else {
-    if (priceEl) priceEl.textContent = 'Rp ' + fullPrice.toLocaleString('id-ID');
-    if (badgeEl) {
-      badgeEl.textContent = 'Akses Seumur Hidup';
-      badgeEl.style.background = '#DCFCE7';
-      badgeEl.style.color = '#166534';
-    }
-    if (noteEl) noteEl.textContent = 'Bayar 100% lunas untuk langsung mendapatkan akses kuitansi resmi & materi seketika.';
+  const priceFormatted = 'Rp ' + fullPrice.toLocaleString('id-ID');
+  if (priceEl) priceEl.textContent = priceFormatted;
+  if (badgeEl) badgeEl.textContent = 'Akses Seumur Hidup';
+  if (noteEl) {
+    noteEl.textContent = 'Bayar 100% lunas untuk langsung mendapatkan akses kuitansi resmi & materi seketika.';
   }
 }
 
@@ -2010,6 +1998,70 @@ function renderCheckoutPaymentChannels() {
   }).join('');
 }
 
+
+/**
+ * Turn 38: Fitur Unduh Barcode QRIS Otomatis
+ * Tersinkronisasi dengan CRM Dashboard (Menu Metode Bayar)
+ */
+function downloadQrisImage(url) {
+  const targetUrl = url ||
+    (STATE.paymentChannels && STATE.paymentChannels.qris && STATE.paymentChannels.qris.qrUrl) ||
+    (STATE.settings && STATE.settings.qris_image_url) ||
+    'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F';
+
+  if (!targetUrl) {
+    if (typeof showToast === 'function') showToast('⚠️ URL Barcode QRIS belum disetel oleh Admin.', 'warning');
+    return;
+  }
+
+  if (typeof showToast === 'function') {
+    showToast('📥 Mengunduh barcode QRIS... Silakan bayar melalui m-Banking / e-Wallet.', 'info');
+  }
+
+  // Jika berupa base64 data URL
+  if (targetUrl.startsWith('data:image/')) {
+    const a = document.createElement('a');
+    a.href = targetUrl;
+    a.download = 'qris-pembayaran-nexstore.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    return;
+  }
+
+  // Jika URL internet biasa, coba ambil sebagai Blob agar browser langsung mendownload file gambar
+  try {
+    fetch(targetUrl, { mode: 'cors' })
+      .then(res => {
+        if (!res.ok) throw new Error('Fetch failed');
+        return res.blob();
+      })
+      .then(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'qris-pembayaran-nexstore.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+      })
+      .catch(() => {
+        // Fallback untuk cross-origin yang memblokir CORS: download langsung via tag anchor atau tab baru
+        const a = document.createElement('a');
+        a.href = targetUrl;
+        a.target = '_blank';
+        a.download = 'qris-pembayaran-nexstore.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+  } catch (err) {
+    window.open(targetUrl, '_blank');
+  }
+}
+window.downloadQrisImage = downloadQrisImage;
+
 function selectPaymentChannel(channelKey) {
   STATE.selectedPaymentChannelKey = channelKey;
   renderCheckoutPaymentChannels();
@@ -2022,6 +2074,7 @@ function selectPaymentChannel(channelKey) {
   if (!c) return;
 
   if (c.tipe === 'qris') {
+    const qrisTargetUrl = c.qrUrl || (STATE.paymentChannels && STATE.paymentChannels.qris && STATE.paymentChannels.qris.qrUrl) || (STATE.settings && STATE.settings.qris_image_url) || 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F';
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
@@ -2031,8 +2084,18 @@ function selectPaymentChannel(channelKey) {
         <span class="pill-badge green">Semua Bank / e-Wallet</span>
       </div>
       <div class="qris-display-card">
-        <img src="${c.qrUrl || 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F'}" alt="QRIS Barcode" class="qris-img-preview">
-        <div style="font-size:11px; color:#64748B; margin-top:8px; font-weight:600;">Scan QRIS di atas via BCA, Mandiri Livin, BNI Mobile, GoPay, OVO, atau ShopeePay</div>
+        <div style="position:relative; display:inline-block; cursor:pointer;" onclick="downloadQrisImage('${qrisTargetUrl}')" title="Klik gambar barcode untuk unduh QRIS">
+          <img src="${qrisTargetUrl}" alt="QRIS Barcode" class="qris-img-preview" style="cursor:pointer; border-radius:12px; transition:transform 0.2s ease;">
+          <div style="position:absolute; bottom:6px; right:6px; background:rgba(15,23,42,0.85); color:#FFFFFF; font-size:10px; font-weight:700; padding:2px 8px; border-radius:6px; display:flex; align-items:center; gap:4px; pointer-events:none;">
+            <span>📥 Unduh</span>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          <button type="button" class="btn-download-qris" onclick="downloadQrisImage('${qrisTargetUrl}')">
+            📥 Unduh Barcode QRIS
+          </button>
+        </div>
+        <div style="font-size:11px; color:#64748B; margin-top:8px; font-weight:600;">Klik gambar barcode QRIS atau tombol di atas untuk unduh, lalu scan via BCA, Mandiri Livin, BNI Mobile, GoPay, OVO, atau ShopeePay</div>
       </div>
       <p style="font-size:11px; color:var(--text-muted); margin:0;">${c.instruksi || 'Buka m-Banking atau e-Wallet favorit Anda, pilih Scan QRIS, lalu unggah bukti transfer.'}</p>
     `;
@@ -3105,10 +3168,49 @@ async function saveProductForm(e, isInline = false) {
     // Simpan ke IndexedDB & Safe LocalStorage tanpa pernah melempar unhandled QuotaExceededError!
     persistProductsSafely(STATE.products);
 
+    // Turn 38: Sinkronkan produk ke modul kelas agar langsung tampil di Katalog Member & Ruang Belajar
+    try {
+      let currentModules = typeof loadStoredClassroomModules === 'function' ? loadStoredClassroomModules() : [];
+      const modExists = currentModules.some(m => m.ID_Produk === payload.ID_Produk || m.Judul_Modul === payload.Nama_Produk);
+      if (!modExists) {
+        const newMod = {
+          ID_Materi: 'MOD-' + Date.now().toString().slice(-4),
+          ID_Produk: payload.ID_Produk,
+          Judul_Modul: payload.Nama_Produk,
+          Urutan: currentModules.length + 1,
+          Tipe_Badge: payload.Kategori && payload.Kategori.toLowerCase().includes('dokumen') ? 'DOKUMEN' : 'KELAS',
+          Kategori: payload.Kategori || 'Produk Digital',
+          Tipe_Konten: 'Video HD & Modul',
+          Episode: 1,
+          Materi_Count: 1,
+          URL_Konten: payload.Link_Akses_Materi || '',
+          Durasi_Menit: 30,
+          Status: payload.Status || 'Publish',
+          Thumbnail_URL: payload.Banner_URL,
+          Button_Text: '📂 Akses Produk',
+          Deskripsi: payload.Deskripsi || payload.Nama_Produk
+        };
+        currentModules.push(newMod);
+        localStorage.setItem('etalaseku_classroom_modules', JSON.stringify(currentModules));
+        localStorage.setItem('etalaseku_modules', JSON.stringify(currentModules));
+      }
+    } catch(errMod) {
+      console.warn('Sync modul error:', errMod);
+    }
+
     // Refresh semua tampilan tabel dan katalog seketika (Optimistic UI 0ms)
     renderProducts();
     if (typeof renderAdminProductsTable === 'function') {
       renderAdminProductsTable(STATE.products);
+    }
+    if (typeof renderMainMemberDashboardModules === 'function') {
+      renderMainMemberDashboardModules();
+    }
+    if (typeof renderClassroomGrid === 'function') {
+      renderClassroomGrid();
+    }
+    if (typeof renderAdminModulesTable === 'function') {
+      renderAdminModulesTable(typeof loadStoredClassroomModules === 'function' ? loadStoredClassroomModules() : []);
     }
     if (typeof SlideshowManager !== 'undefined' && SlideshowManager.initProductSlideshows) {
       SlideshowManager.initProductSlideshows();
@@ -9322,15 +9424,8 @@ function renderMainMemberDashboardModules(filterCategory, searchQuery) {
     memberModules = filterModulesForCurrentStudent(allModules, activeOrderId, activeEmail);
   }
   if (!Array.isArray(memberModules) || memberModules.length === 0) {
-    // Fallback: Jika member memiliki order PRD, filter modul PRD
-    memberModules = allModules.filter(m => {
-      const title = (m.Judul_Modul || '').toLowerCase();
-      const desc = (m.Deskripsi || '').toLowerCase();
-      return title.includes('prd') || desc.includes('prd');
-    });
-    if (memberModules.length === 0) {
-      memberModules = allModules.slice(0, 1);
-    }
+    // Tampilkan seluruh katalog produk / modul yang ada di database CRM tanpa pembatasan 1 produk
+    memberModules = allModules;
   }
 
   const totalCount = memberModules.length;

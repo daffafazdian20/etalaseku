@@ -128,10 +128,6 @@
         ➔] Member Area
       </button>
 
-      <!-- Tombol Cek Tagihan Siswa (gas-tagihan-pembayaran) -->
-      <button class="btn-secondary" onclick="document.getElementById('modal-student-bills').classList.add('active')" style="padding:9px 15px; font-size:13px;">
-        💳 Cek Tagihan
-      </button>
       <!-- Tombol Admin Portal -->
       <button class="shimmer-btn" onclick="openAdminModal()" style="padding:9px 18px; font-size:13px;">
         Admin Portal ⚙️
@@ -989,22 +985,6 @@
         </div>
       </div>
 
-      <!-- Skema Pembayaran: Lunas vs Cicilan Bertahap -->
-      <div class="form-group" style="margin-bottom:14px;">
-        <label class="form-label">Skema Pembayaran</label>
-        <div class="plan-toggle-container">
-          <button type="button" class="plan-toggle-btn active" id="btn-plan-lunas" onclick="setCheckoutPaymentPlan('lunas')">
-            ⚡ Bayar Penuh (Lunas)
-          </button>
-          <button type="button" class="plan-toggle-btn" id="btn-plan-cicilan" onclick="setCheckoutPaymentPlan('cicilan')">
-            📅 Cicilan Bertahap (2x)
-          </button>
-        </div>
-        <div id="checkout-plan-note" style="font-size:12px; color:var(--text-muted); padding:0 4px;">
-          Bayar 100% lunas untuk langsung mendapatkan akses kuitansi resmi & materi seketika.
-        </div>
-      </div>
-
       <form onsubmit="submitOrderForm(event)">
         <div class="form-group">
           <label class="form-label">Nama Lengkap *</label>
@@ -1042,31 +1022,31 @@
           </div>
 
           <!-- Panduan Contoh Bukti Transfer Sah (OVO, Livin' Mandiri, BCA Mobile, QRIS) -->
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:10px 12px; margin-bottom:8px;">
-            <div style="font-size:11.5px; font-weight:700; color:#1E293B; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+          <div class="checkout-proof-guide-box">
+            <div class="proof-guide-title">
               <span>📱</span> Contoh Bukti Transfer yang Diterima:
             </div>
-            <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px;">
-              <span style="font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:6px; background:#EDE9FE; color:#6D28D9; border:1px solid #DDD6FE;">💜 OVO (Transaksi Berhasil)</span>
-              <span style="font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:6px; background:#E0F2FE; color:#0284C7; border:1px solid #BAE6FD;">💙 Livin' Mandiri (Transfer Berhasil)</span>
-              <span style="font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:6px; background:#DBEAFE; color:#1D4ED8; border:1px solid #BFDBFE;">🔷 BCA Mobile (Transfer Successful)</span>
-              <span style="font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:6px; background:#DCFCE7; color:#15803D; border:1px solid #BBF7D0;">🟢 GoPay / QRIS</span>
+            <div class="proof-pills-row">
+              <span class="proof-pill ovo">💜 OVO (Transaksi Berhasil)</span>
+              <span class="proof-pill mandiri">💙 Livin' Mandiri (Transfer Berhasil)</span>
+              <span class="proof-pill bca">🔷 BCA Mobile (Transfer Successful)</span>
+              <span class="proof-pill gopay">🟢 GoPay / QRIS</span>
             </div>
-            <div style="font-size:11px; color:#64748B; line-height:1.4;">
+            <div class="proof-guide-desc">
               Pastikan screenshot menampilkan: <strong>Status Berhasil</strong>, <strong>Nominal Transfer</strong>, dan <strong>Nama / Rekening Tujuan</strong>.
             </div>
           </div>
 
           <!-- Upload Dropzone Area -->
-          <div class="dropzone" id="order-proof-dropzone" onclick="document.getElementById('order-proof-file').click()" style="cursor:pointer; border:2px dashed #CBD5E1; border-radius:14px; padding:16px 12px; text-align:center; background:#FFFFFF; transition:all 0.2s;">
+          <div class="dropzone checkout-proof-dropzone" id="order-proof-dropzone" onclick="document.getElementById('order-proof-file').click()">
             <div style="font-size:24px; margin-bottom:4px;">📸</div>
-            <div id="order-proof-label-title" style="font-size:13px; font-weight:700; color:var(--deep-navy);">Pilih Berkas Foto Bukti Transfer</div>
-            <div id="order-proof-label-sub" style="font-size:11px; color:var(--text-muted); margin-top:2px;">Format JPG, PNG, WEBP (Maks 5 MB)</div>
+            <div id="order-proof-label-title" class="proof-dropzone-title">Pilih Berkas Foto Bukti Transfer</div>
+            <div id="order-proof-label-sub" class="proof-dropzone-sub">Format JPG, PNG, WEBP (Maks 5 MB)</div>
             <input type="file" id="order-proof-file" accept="image/*" style="display:none;" onchange="handleOrderProofFileChange(this)">
           </div>
 
           <!-- Live Image Preview Box (Muncul Otomatis Saat Foto Terpilih) -->
-          <div id="order-proof-preview-container" style="display:none; margin-top:10px; background:#FFFFFF; border:1.5px solid #10B981; border-radius:14px; padding:12px; box-shadow:0 4px 14px rgba(16,185,129,0.12);">
+          <div id="order-proof-preview-container" class="checkout-proof-preview-container" style="display:none;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
               <span style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:800; color:#059669; background:#DCFCE7; padding:3px 10px; border-radius:99px;">
                 <span>✓</span> Bukti Transfer Terlampir
@@ -2271,12 +2251,6 @@
           </a>
         </li>
         <li>
-          <a class="admin-nav-item" href="#tab-billing" onclick="switchAdminTab('tab-billing', this); return false;">
-            <span>💳 <span class="nav-text">Tagihan & Cicilan Siswa</span></span>
-            <span class="admin-nav-badge" style="background:#8B5CF6;" id="badge-bills-count">0</span>
-          </a>
-        </li>
-        <li>
           <a class="admin-nav-item" href="#tab-classroom" onclick="switchAdminTab('tab-classroom', this); return false;">
             <span>🎓 <span class="nav-text">Portal Ruang BelajarKu</span></span>
             <span class="admin-nav-badge" style="background:#E11D48;" id="badge-modules-count">6</span>
@@ -2850,40 +2824,6 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
                   </tr>
                 </thead>
                 <tbody id="testi-admin-tbody">
-                  <!-- Rendered by app.js -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab 7: Tagihan & Cicilan Siswa (gas-tagihan-pembayaran) -->
-        <div class="admin-tab-content" id="tab-billing">
-          <div class="admin-table-container">
-            <div class="admin-table-header">
-              <div>
-                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">Manajemen Tagihan & Cicilan Siswa (Installment Plan)</h3>
-                <p style="font-size:12px; color:var(--text-muted);">Pantau pembayaran bertahap, jatuh tempo, verifikasi pelunasan, dan kirim pengingat WhatsApp 1-klik.</p>
-              </div>
-              <button class="shimmer-btn" style="padding:10px 18px; font-size:13px;" onclick="openCreateBillModal()">
-                + Terbitkan Tagihan Baru 💳
-              </button>
-            </div>
-            <div style="overflow-x:auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>ID Tagihan</th>
-                    <th>Nama Siswa & Kontak</th>
-                    <th>Produk / Modul</th>
-                    <th>Angsuran</th>
-                    <th>Nominal</th>
-                    <th>Jatuh Tempo</th>
-                    <th>Status</th>
-                    <th>Aksi CRM & Follow-Up</th>
-                  </tr>
-                </thead>
-                <tbody id="billing-admin-tbody">
                   <!-- Rendered by app.js -->
                 </tbody>
               </table>
