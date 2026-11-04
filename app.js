@@ -8689,6 +8689,7 @@ function saveThumballSettings(e) {
 
   localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
   applyThumballSettingsToDom();
+  applyFooterBrandingSettingsToDom();
   showToast('Perubahan Thumball Dashboard Utama berhasil disimpan! 🎨✨');
 }
 
@@ -9457,6 +9458,7 @@ if (typeof document !== 'undefined') {
   initAppTheme();
   if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules(); // On DOM ready
   if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
+  applyFooterBrandingSettingsToDom();
   if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom();
 });
   } else {
@@ -9699,4 +9701,91 @@ if (typeof window !== 'undefined' && window.matchMedia) {
       }
     });
   } catch(e) {}
+}
+
+
+/* ==========================================================================
+   TURN 34: FOOTER BRANDING & LOGO EDITING MANAGEMENT (Produk Digital - by @daffafazdian.id)
+   ========================================================================== */
+const DEFAULT_FOOTER_BRANDING = {
+  brandName: 'Produk Digital - by @daffafazdian.id',
+  copyright: '© 2026 Produk Digital - by @daffafazdian.id. Seluruh hak cipta dilindungi.',
+  logoUrl: 'assets/hero/hero-slide-3.jpg'
+};
+
+function getFooterBrandingSettings() {
+  try {
+    const raw = localStorage.getItem('nexstore_footer_branding_data');
+    if (raw) return { ...DEFAULT_FOOTER_BRANDING, ...JSON.parse(raw) };
+  } catch (e) {}
+  return DEFAULT_FOOTER_BRANDING;
+}
+
+function applyFooterBrandingSettingsToDom() {
+  const d = getFooterBrandingSettings();
+  const brandEl = document.getElementById('footer-brand-name-txt');
+  if (brandEl && d.brandName) brandEl.textContent = d.brandName;
+
+  const copyEl = document.getElementById('footer-copyright-txt');
+  if (copyEl && d.copyright) copyEl.innerHTML = d.copyright;
+
+  const avatarEl = document.getElementById('footer-brand-avatar-img');
+  if (avatarEl && d.logoUrl) {
+    avatarEl.src = formatImageUrl(d.logoUrl);
+  }
+
+  // Populate CRM Form fields if present
+  const inputBrand = document.getElementById('crm-footer-brand-name');
+  if (inputBrand) inputBrand.value = d.brandName;
+
+  const inputCopy = document.getElementById('crm-footer-copyright');
+  if (inputCopy) inputCopy.value = d.copyright;
+
+  const inputLogo = document.getElementById('crm-footer-logo-url');
+  if (inputLogo) inputLogo.value = d.logoUrl;
+
+  const prevImg = document.getElementById('crm-footer-logo-preview');
+  if (prevImg && d.logoUrl) prevImg.src = formatImageUrl(d.logoUrl);
+
+  const prevTxt = document.getElementById('crm-footer-brand-preview-txt');
+  if (prevTxt && d.brandName) prevTxt.textContent = d.brandName;
+}
+
+function handleFooterBrandNameInput(val) {
+  const prevTxt = document.getElementById('crm-footer-brand-preview-txt');
+  if (prevTxt) prevTxt.textContent = val || DEFAULT_FOOTER_BRANDING.brandName;
+}
+
+function handleFooterLogoUrlInput(url) {
+  const preview = document.getElementById('crm-footer-logo-preview');
+  if (preview && url) {
+    preview.src = formatImageUrl(url);
+  }
+}
+
+function handleFooterLogoFileInput(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+    const urlInput = document.getElementById('crm-footer-logo-url');
+    if (urlInput) urlInput.value = base64;
+    const preview = document.getElementById('crm-footer-logo-preview');
+    if (preview) preview.src = base64;
+    showToast('Foto avatar footer berhasil dipilih! Klik Simpan untuk menerapkan. 📸');
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveFooterBrandingSettings(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const brandName = document.getElementById('crm-footer-brand-name')?.value || DEFAULT_FOOTER_BRANDING.brandName;
+  const copyright = document.getElementById('crm-footer-copyright')?.value || DEFAULT_FOOTER_BRANDING.copyright;
+  const logoUrl = document.getElementById('crm-footer-logo-url')?.value || DEFAULT_FOOTER_BRANDING.logoUrl;
+
+  const data = { brandName, copyright, logoUrl };
+  localStorage.setItem('nexstore_footer_branding_data', JSON.stringify(data));
+  applyFooterBrandingSettingsToDom();
+  showToast('Logo & tulisan Produk Digital berhasil disimpan! 🎨✨');
 }

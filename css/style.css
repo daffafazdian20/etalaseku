@@ -12653,3 +12653,117 @@ body.light-theme .crm-editor-section {
   border: 1px solid #E2E8F0 !important;
   color: #0F172A !important;
 }
+
+
+/* ==========================================================================
+   TURN 34: ENHANCED FOOTER AKSES MEMBER & BRANDING DESAIN UI/UX
+   ========================================================================== */
+.footer-v2-eyebrow {
+  color: #FF2E63 !important;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+[data-theme="light"] .footer-v2-eyebrow,
+body:not(.dark-theme) .footer-v2-eyebrow {
+  color: #FF2E63 !important;
+}
+
+[data-theme="dark"] .footer-v2-eyebrow,
+body.dark-theme .footer-v2-eyebrow {
+  color: #FF2E63 !important;
+}
+
+/* 3 Card Icons Mengikuti Folder DESAIN UI/UX */
+/* Card 1: Redeem Kode Akses (Pastel Pink & Hot Pink #FF2E63) */
+.footer-v2-icon-redeem {
+  background: #FDEEF1 !important;
+  color: #FF2E63 !important;
+  border: 1.5px solid rgba(255, 46, 99, 0.25) !important;
+}
+[data-theme="dark"] .footer-v2-icon-redeem,
+body.dark-theme .footer-v2-icon-redeem {
+  background: rgba(255, 46, 99, 0.16) !important;
+  color: #FF2E63 !important;
+  border-color: rgba(255, 46, 99, 0.35) !important;
+}
+.footer-v2-btn-redeem {
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.32);
+}
+.footer-v2-btn-redeem:hover {
+  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 46, 99, 0.45);
+}
+
+/* Card 2: Masuk Portal Member (Pastel Lavender & Indigo DESAIN UI/UX) */
+.footer-v2-icon-portal {
+  background: #F3EDFD !important;
+  color: #4F46E5 !important;
+  border: 1.5px solid rgba(79, 70, 229, 0.25) !important;
+}
+[data-theme="dark"] .footer-v2-icon-portal,
+body.dark-theme .footer-v2-icon-portal {
+  background: rgba(99, 102, 241, 0.18) !important;
+  color: #818CF8 !important;
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+.footer-v2-btn-portal {
+  background: #4F46E5 !important;
+  color: #FFFFFF !important;
+}
+.footer-v2-btn-portal:hover {
+  background: #4338CA !important;
+  transform: translateY(-2px);
+}
+
+/* Card 3: Daftar Member (Pastel Mint & Emerald DESAIN UI/UX) */
+.footer-v2-icon-daftar {
+  background: #E8F8F5 !important;
+  color: #059669 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.25) !important;
+}
+[data-theme="dark"] .footer-v2-icon-daftar,
+body.dark-theme .footer-v2-icon-daftar {
+  background: rgba(16, 185, 129, 0.16) !important;
+  color: #34D399 !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+/* Floating WA Button dinaikkan agar leluasa */
+.floating-wa-btn {
+  bottom: 38px !important;
+  right: 28px !important;
+}
+
+/* Geser Link Panduan, Bantuan, Masuk ke kiri agar 100% bebas dari icon WhatsApp */
+.footer-v2-bottom-bar {
+  padding-right: 24px;
+}
+
+.footer-v2-links-col {
+  margin-right: 88px !important; /* Geser ke kiri dari floating WhatsApp */
+  padding-right: 8px;
+}
+
+@media (max-width: 768px) {
+  .footer-v2-bottom-bar {
+    padding-bottom: 85px !important; /* Ruang ekstra di HP */
+    padding-right: 16px;
+  }
+  .footer-v2-links-col {
+    margin-right: 0 !important;
+    justify-content: center;
+  }
+  .floating-wa-btn {
+    bottom: 24px !important;
+    right: 20px !important;
+  }
+}
