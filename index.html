@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261104-39">
+  <link rel="stylesheet" href="css/style.css?v=20261104-40">
 </head>
 <body>
 
@@ -103,6 +103,7 @@
             <li><a href="#produk">Katalog Produk</a></li>
       <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Member</a></li>
       <li><a href="#testimoni">Testimoni</a></li>
+      <li><a href="#custom" onclick="openCustomAppPortal('custom'); return false;">Aplikasi Custom</a></li>
 
     </ul>
     <!-- Mobile Right Pill (Hanya Muncul di Layar HP) -->
@@ -1383,7 +1384,7 @@
         <li><a href="#bootcamp" class="cls-tab-link" id="tab-link-bootcamp" onclick="openBootcampDetailModal(); return false;">Bootcamp</a></li>
         <li><a href="#pameran" class="cls-tab-link" id="tab-link-pameran" onclick="openKaryaFromMember(); return false;">Hasil Karya Member</a></li>
         <li><a href="#panduan" class="cls-tab-link" id="tab-link-panduan" onclick="openPanduanModal(); return false;">Panduan</a></li>
-        <li><a href="https://wa.me/6287894602627?text=Halo%20Admin%20NexStore%2C%20saya%20member%20ingin%20order%20aplikasi%20custom" target="_blank" rel="noopener noreferrer" class="cls-tab-link" id="tab-link-custom">Aplikasi Custom</a></li>
+        <li><a href="#custom" class="cls-tab-link" id="tab-link-custom" onclick="switchMemberPortalView('custom'); return false;">Aplikasi Custom</a></li>
       </ul>
 
       <!-- User Profile Badge & Action (Item 5: Icon Google Berisi Email Pembeli & Order ID Kunci Masuk Modul) -->
@@ -1980,6 +1981,248 @@
               <!-- Rendered dynamically by app.js -->
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================
+           VIEW 5: DASHBOARD APLIKASI CUSTOM (SESUAI FOTO 1)
+           Mode Terang & Gelap Otomatis dengan Palet DESAIN UI/UX
+           ======================================================================== -->
+      <div class="rb-view-section" id="rb-view-custom" style="display:none;">
+        <div class="custom-portal-container">
+          
+          <!-- Top Hero Card / Banner (Foto 1) -->
+          <div class="custom-app-hero-banner">
+            <div class="custom-hero-left">
+              <span class="custom-hero-pill">🛠️ Jasa Pembuatan Aplikasi</span>
+              <h1 class="custom-hero-title">Aplikasi Custom Berbasis Apps Script</h1>
+              <p class="custom-hero-subtitle">
+                Butuh aplikasi berbasis Google Apps Script yang sesuai kebutuhan Anda? Ajukan di sini &mdash; kami bantu dari analisis sampai aplikasi siap dipakai.
+              </p>
+            </div>
+            <div class="custom-hero-right">
+              <button type="button" class="shimmer-btn custom-btn-new-app" onclick="switchMemberPortalView('custom-new')">
+                <span style="font-size:16px; font-weight:800;">+</span> Ajukan Aplikasi Baru
+              </button>
+            </div>
+          </div>
+
+          <!-- Section: Pengajuan Saya (Foto 1) -->
+          <div class="custom-submissions-section">
+            <div class="custom-section-header">
+              <h2 class="custom-section-title">Pengajuan Saya</h2>
+              <span class="custom-count-pill" id="custom-apps-count-pill" style="display:none;">0 Pengajuan</span>
+            </div>
+
+            <!-- List / Grid Container (Rendered by JS) -->
+            <div id="custom-apps-list-container">
+              <div class="custom-empty-card">
+                <div class="custom-empty-icon-wrap">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="18" r="3"></circle>
+                    <circle cx="6" cy="6" r="3"></circle>
+                    <path d="M13 6h3a2 2 0 0 1 2 2v7"></path>
+                    <line x1="6" y1="9" x2="6" y2="21"></line>
+                  </svg>
+                </div>
+                <h3 class="custom-empty-title">Belum ada pengajuan</h3>
+                <p class="custom-empty-desc">Ceritakan aplikasi yang Anda butuhkan &mdash; Admin akan mengirim penawaran harga.</p>
+                <button type="button" class="shimmer-btn" style="margin-top:16px; padding:10px 22px; font-size:13px; font-weight:700;" onclick="switchMemberPortalView('custom-new')">
+                  + Ajukan Aplikasi Baru
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========================================================================
+           VIEW 6: MULTI-STEP WIZARD AJUKAN APLIKASI CUSTOM (SESUAI FOTO 2, 3, 4, 5)
+           Mode Terang & Gelap Otomatis dengan Palet DESAIN UI/UX
+           ======================================================================== -->
+      <div class="rb-view-section" id="rb-view-custom-new" style="display:none;">
+        <div class="custom-wizard-container">
+          
+          <!-- Back Link -->
+          <div class="custom-wizard-topbar">
+            <a href="#custom" class="custom-back-link" onclick="switchMemberPortalView('custom'); return false;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              <span>Pengajuan Saya</span>
+            </a>
+            <h1 class="custom-wizard-title">Ajukan Aplikasi Custom</h1>
+          </div>
+
+          <!-- Stepper Navigation (4 Steps) -->
+          <div class="custom-stepper-wrap">
+            <div class="custom-step-item active" id="cstep-nav-1" onclick="goToCustomStep(1)">
+              <div class="custom-step-bubble" id="cstep-bubble-1">1</div>
+              <span class="custom-step-label">Data Diri</span>
+            </div>
+            <div class="custom-step-line" id="cstep-line-1"></div>
+            <div class="custom-step-item" id="cstep-nav-2" onclick="goToCustomStep(2)">
+              <div class="custom-step-bubble" id="cstep-bubble-2">2</div>
+              <span class="custom-step-label">Ketentuan</span>
+            </div>
+            <div class="custom-step-line" id="cstep-line-2"></div>
+            <div class="custom-step-item" id="cstep-nav-3" onclick="goToCustomStep(3)">
+              <div class="custom-step-bubble" id="cstep-bubble-3">3</div>
+              <span class="custom-step-label">Kebutuhan</span>
+            </div>
+            <div class="custom-step-line" id="cstep-line-3"></div>
+            <div class="custom-step-item" id="cstep-nav-4" onclick="goToCustomStep(4)">
+              <div class="custom-step-bubble" id="cstep-bubble-4">4</div>
+              <span class="custom-step-label">Kesepakatan</span>
+            </div>
+          </div>
+
+          <!-- Wizard Card Container -->
+          <div class="custom-wizard-card">
+            
+            <!-- STEP 1: DATA DIRI (FOTO 2) -->
+            <div class="custom-step-content" id="cstep-panel-1">
+              <form id="custom-step1-form" onsubmit="event.preventDefault(); goToCustomStep(2);">
+                <div class="form-group">
+                  <label class="form-label">Nama Lengkap *</label>
+                  <input type="text" id="cust-form-name" class="form-input" required placeholder="Masukkan nama lengkap" oninput="saveCustomDraft()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="cust-form-email" class="form-input" placeholder="nama@email.com" oninput="saveCustomDraft()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">No. WhatsApp *</label>
+                  <input type="tel" id="cust-form-phone" class="form-input" required placeholder="08xxxxxxxxxx" oninput="saveCustomDraft()">
+                  <div class="form-helper-note">Format 08xxxxxxxxxx, dipakai Admin untuk konfirmasi.</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Profesi *</label>
+                  <input type="text" id="cust-form-profesi" class="form-input" required placeholder="Contoh: fresh graduate, Guru, Karyawan, Owner Bisnis" oninput="saveCustomDraft()">
+                </div>
+
+                <button type="submit" class="shimmer-btn custom-step-btn-submit">
+                  Lanjut &rarr;
+                </button>
+                <div class="custom-autosave-footer">Isian tersimpan otomatis sebagai draf di perangkat ini.</div>
+              </form>
+            </div>
+
+            <!-- STEP 2: KETENTUAN (FOTO 3 & 4) -->
+            <div class="custom-step-content" id="cstep-panel-2" style="display:none;">
+              <div class="custom-terms-box">
+                <ol class="custom-terms-list">
+                  <li>Aplikasi dibangun di atas Google Apps Script, Google Sheets (database), dan Google Drive (penyimpanan berkas) milik akun Google Anda sendiri (untuk akun gmail biasa start 15 GB dan untuk gmail workspace start di 1TB - Keduanya bisa diupgrade dengan layanan google cloud / google one).</li>
+                  <li>Aplikasi berjalan sebagai web app di browser (desktop &amp; HP). Bukan aplikasi Play Store / App Store.</li>
+                  <li>Batas &amp; kuota mengikuti ketentuan Google (mis. email &plusmn;100/hari untuk akun Gmail biasa, waktu proses maks. 6 menit per aksi).</li>
+                  <li>Batas &amp; kuota mengikuti ketentuan Google (mis. email &plusmn;1500/hari untuk akun Gmail workspace, waktu proses maks. 30 menit per aksi).</li>
+                  <li>Harga final ditentukan setelah Admin meninjau jawaban Anda. Pengerjaan dimulai setelah harga disepakati.</li>
+                  <li>Revisi kecil setelah serah terima dibantu selama 7 hari maksimal 2x revisi. Penambahan fitur baru dihitung sebagai pengajuan baru.</li>
+                  <li>Hasil akhir berupa berkas source code (.zip) + video tutorial instalasi.</li>
+                </ol>
+              </div>
+
+              <div class="custom-checkbox-wrapper">
+                <label class="custom-checkbox-label">
+                  <input type="checkbox" id="cust-terms-agree" onchange="handleCustomTermsToggle(this)">
+                  <span>Saya sudah membaca, paham, dan setuju dengan seluruh ketentuan di atas.</span>
+                </label>
+              </div>
+
+              <div class="custom-nav-btns-row">
+                <button type="button" class="btn-secondary" onclick="goToCustomStep(1)">&larr; Kembali</button>
+                <button type="button" class="shimmer-btn" id="btn-cust-step2-next" onclick="goToCustomStep(3)" disabled>
+                  Paham &amp; Setuju, Lanjut &rarr;
+                </button>
+              </div>
+              <div class="custom-autosave-footer">Isian tersimpan otomatis sebagai draf di perangkat ini.</div>
+            </div>
+
+            <!-- STEP 3: KEBUTUHAN (FOTO 5) -->
+            <div class="custom-step-content" id="cstep-panel-3" style="display:none;">
+              <div class="custom-alert-banner">
+                Semua pertanyaan wajib dijawab. Jawaban jelas = penawaran lebih tepat.
+              </div>
+
+              <form id="custom-step3-form" onsubmit="event.preventDefault(); goToCustomStep(4);">
+                <div class="form-group">
+                  <label class="form-label">1. Nama / judul aplikasi yang diinginkan *</label>
+                  <input type="text" id="cust-q1-title" class="form-input" required placeholder="Contoh: Aplikasi Absensi Guru" oninput="saveCustomDraft()">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">2. Masalah apa yang ingin diselesaikan dengan aplikasi ini? *</label>
+                  <textarea id="cust-q2-problem" class="form-input" rows="3" required placeholder="Ceritakan alur kerja saat ini dan kendala yang dihadapi..." oninput="saveCustomDraft()"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">3. Siapa saja pengguna aplikasi dan apa perannya? *</label>
+                  <textarea id="cust-q3-users" class="form-input" rows="3" required placeholder="Contoh: Admin, Guru, Siswa" oninput="saveCustomDraft()"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">4. Fitur utama yang wajib ada? *</label>
+                  <textarea id="cust-q4-features" class="form-input" rows="4" required placeholder="Tulis per baris" oninput="saveCustomDraft()"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">5. Data apa saja yang perlu disimpan / dicatat? *</label>
+                  <textarea id="cust-q5-data" class="form-input" rows="3" required placeholder="Contoh: Data siswa, presensi harian, nilai tugas..." oninput="saveCustomDraft()"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">6. Kapan aplikasi dibutuhkan? *</label>
+                  <input type="text" id="cust-q6-timeline" class="form-input" required placeholder="Contoh: akhir November 2026" oninput="saveCustomDraft()">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">7. Berapa Rencana Jumlah Pengguna (User) Aplikasi Web ini? *</label>
+                  <input type="text" id="cust-q7-usercount" class="form-input" required placeholder="Contoh: 20 orang admin & 200 pengguna" oninput="saveCustomDraft()">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">8. Gambarkan Desain yang mungkin jadi Preferensi Anda untuk App Web ini ! *</label>
+                  <textarea id="cust-q8-design" class="form-input" rows="3" required placeholder="Contoh: Nuansa warna biru/pink modern, responsif HP, dashboard ringkas..." oninput="saveCustomDraft()"></textarea>
+                </div>
+
+                <div class="custom-nav-btns-row">
+                  <button type="button" class="btn-secondary" onclick="goToCustomStep(2)">&larr; Kembali</button>
+                  <button type="submit" class="shimmer-btn">Lanjut &rarr;</button>
+                </div>
+                <div class="custom-autosave-footer">Isian tersimpan otomatis sebagai draf di perangkat ini.</div>
+              </form>
+            </div>
+
+            <!-- STEP 4: KESEPAKATAN (REVIEW & SUBMIT) -->
+            <div class="custom-step-content" id="cstep-panel-4" style="display:none;">
+              <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin-bottom:8px;">Ringkasan Pengajuan Aplikasi Custom</h3>
+              <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:18px;">Periksa kembali data Anda sebelum diteruskan ke WhatsApp Admin untuk penawaran harga &amp; timeline.</p>
+
+              <!-- Dynamic Summary Box -->
+              <div class="custom-summary-box" id="cust-summary-review-box">
+                <!-- Populated dynamically by JS -->
+              </div>
+
+              <!-- Notice Box -->
+              <div class="custom-agreement-info-box">
+                <strong style="color:var(--deep-navy); font-size:13px; display:block; margin-bottom:6px;">📋 Alur Setelah Pengajuan:</strong>
+                <ol style="margin:0 0 0 18px; padding:0; font-size:12px; line-height:1.6; color:var(--text-muted);">
+                  <li>Admin akan memverifikasi kesesuaian arsitektur Google Apps Script &amp; Google Sheets.</li>
+                  <li>Penawaran harga, estimasi waktu penyelesaian, serta rincian teknis dikirim langsung ke WhatsApp Anda.</li>
+                  <li>Status pengerjaan dapat Anda pantau kapan saja di menu <em>Pengajuan Saya</em>.</li>
+                </ol>
+              </div>
+
+              <div class="custom-nav-btns-row">
+                <button type="button" class="btn-secondary" onclick="goToCustomStep(3)">&larr; Kembali</button>
+                <button type="button" class="shimmer-btn" style="flex:1;" onclick="submitCustomAppForm()">
+                  Kirim Pengajuan Aplikasi 🚀
+                </button>
+              </div>
+              <div class="custom-autosave-footer">Isian tersimpan otomatis sebagai draf di perangkat ini.</div>
+            </div>
+
+          </div>
+
         </div>
       </div>
     </main>
@@ -4235,8 +4478,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261104-39"></script>
-  <script defer src="js/app.js?v=20261104-39"></script>
+  <script defer src="js/config.js?v=20261104-40"></script>
+  <script defer src="js/app.js?v=20261104-40"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
@@ -4723,6 +4966,28 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
           <button type="button" class="modal-bca-btn-copy" onclick="copyBootcampRedeemCode()">Salin Kode</button>
         </div>
         <button type="button" class="btn-bca-dismiss" onclick="closeBootcampAnnouncementModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Rincian Pengajuan Aplikasi Custom -->
+  <div class="modal-overlay" id="modal-custom-app-detail" style="display:none; align-items:center; justify-content:center; z-index:10015;" onclick="if(event.target === this) closeCustomAppDetailModal()">
+    <div class="modal-card" style="max-width:620px; max-height:90vh; overflow-y:auto; border-radius:20px; padding:28px 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; border-bottom:1px solid var(--color-outline); padding-bottom:12px;">
+        <div>
+          <span class="pill-badge blue" id="cad-badge-id">APP-XXXXXX</span>
+          <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy); margin:8px 0 2px;" id="cad-title">Judul Aplikasi</h3>
+          <div style="font-size:11.5px; color:var(--text-muted);" id="cad-date">Tanggal Pengajuan</div>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeCustomAppDetailModal()">&times;</button>
+      </div>
+      <div id="cad-content-body" style="font-size:13px; line-height:1.6; color:var(--deep-navy);">
+        <!-- Populated dynamically -->
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px solid var(--color-outline); padding-top:14px;">
+        <button type="button" class="btn-secondary" onclick="closeCustomAppDetailModal()">Tutup</button>
+        <button type="button" class="shimmer-btn" id="cad-btn-wa" onclick="">Hubungi Admin via WA 💬</button>
       </div>
     </div>
   </div>

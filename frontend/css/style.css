@@ -13674,3 +13674,633 @@ body.dark-theme #crm-footer-logo-preview-box {
   border-color: rgba(255, 255, 255, 0.15) !important;
   color: #FFFFFF !important;
 }
+
+
+/* ============================================================================
+   APLIKASI CUSTOM DASHBOARD & MULTI-STEP WIZARD (SESUAI FOTO 1, 2, 3, 4, 5)
+   Pewarnaan Resmi DESAIN UI/UX (Warm Pastel Tech) & Mode Terang / Gelap Otomatis
+   ============================================================================ */
+
+.custom-portal-container,
+.custom-wizard-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  box-sizing: border-box;
+  color: var(--deep-navy, #0F172A);
+}
+
+/* Top Hero Banner (Foto 1) */
+.custom-app-hero-banner {
+  background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+  border-radius: 20px;
+  padding: 32px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  margin-bottom: 32px;
+}
+
+.custom-hero-left {
+  flex: 1 1 480px;
+}
+
+.custom-hero-pill {
+  background: rgba(59, 130, 246, 0.18);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.custom-hero-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 12px 0 8px;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.custom-hero-subtitle {
+  font-size: 13px;
+  color: #94A3B8;
+  line-height: 1.55;
+  max-width: 580px;
+  margin: 0;
+}
+
+.custom-hero-right {
+  flex-shrink: 0;
+}
+
+.custom-btn-new-app {
+  background: #3B82F6 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 12px 24px !important;
+  font-size: 13.5px !important;
+  font-weight: 800 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.custom-btn-new-app:hover {
+  background: #2563EB !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(59, 130, 246, 0.5) !important;
+}
+
+/* Section Pengajuan Saya */
+.custom-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.custom-section-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--deep-navy, #0F172A);
+  margin: 0;
+}
+
+.custom-count-pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #3B82F6;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 3px 10px;
+  border-radius: 99px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+/* Empty State Card (Foto 1) */
+.custom-empty-card {
+  background: var(--color-surface-card, #FFFFFF);
+  border: 1.5px dashed var(--color-outline, #CBD5E1);
+  border-radius: 20px;
+  padding: 56px 24px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+
+.custom-empty-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #3B82F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.custom-empty-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--deep-navy, #0F172A);
+  margin: 0 0 6px;
+}
+
+.custom-empty-desc {
+  font-size: 13px;
+  color: var(--text-muted, #64748B);
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+/* Submission Card Grid */
+.custom-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 18px;
+}
+
+.custom-app-card {
+  background: var(--color-surface-card, #FFFFFF);
+  border: 1px solid var(--color-outline, #E2E8F0);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.custom-app-card:hover {
+  transform: translateY(-2px);
+  border-color: #CBD5E1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.custom-app-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.custom-app-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--deep-navy, #0F172A);
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+
+.custom-app-card-desc {
+  font-size: 12px;
+  color: var(--text-muted, #64748B);
+  line-height: 1.5;
+  margin: 0 0 14px;
+  flex-grow: 1;
+}
+
+.custom-app-card-meta {
+  background: var(--color-surface, #F8FAFC);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  border: 1px solid var(--color-outline, #E2E8F0);
+}
+
+.custom-meta-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.custom-meta-item:last-child {
+  margin-bottom: 0;
+}
+.custom-meta-lbl {
+  color: var(--text-muted, #64748B);
+}
+.custom-meta-val {
+  color: var(--deep-navy, #0F172A);
+  font-weight: 700;
+}
+
+.custom-app-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* Multi-Step Wizard Layout (Foto 2, 3, 4, 5) */
+.custom-wizard-topbar {
+  margin-bottom: 24px;
+}
+
+.custom-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted, #64748B);
+  text-decoration: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.custom-back-link:hover {
+  color: #FF2E63;
+}
+
+.custom-wizard-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--deep-navy, #0F172A);
+  margin: 0;
+  letter-spacing: -0.4px;
+}
+
+/* Stepper Bar */
+.custom-stepper-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px auto 32px;
+  gap: 10px;
+  max-width: 580px;
+  flex-wrap: wrap;
+}
+
+.custom-step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.custom-step-bubble {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  background: #E2E8F0;
+  color: #64748B;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.custom-step-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #64748B;
+  transition: color 0.25s ease;
+}
+
+.custom-step-item.active .custom-step-bubble {
+  background: #3B82F6;
+  color: #FFFFFF;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.45);
+}
+
+.custom-step-item.active .custom-step-label {
+  color: var(--deep-navy, #0F172A);
+  font-weight: 800;
+}
+
+.custom-step-item.completed .custom-step-bubble {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.custom-step-item.completed .custom-step-label {
+  color: #10B981;
+}
+
+.custom-step-line {
+  width: 36px;
+  height: 2px;
+  background: #E2E8F0;
+  transition: background 0.25s ease;
+}
+
+.custom-step-line.completed {
+  background: #10B981;
+}
+
+/* Wizard Main Card */
+.custom-wizard-card {
+  background: var(--color-surface-card, #FFFFFF);
+  border: 1px solid var(--color-outline, #E2E8F0);
+  border-radius: 20px;
+  padding: 32px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  max-width: 680px;
+  margin: 0 auto;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.custom-step-btn-submit {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  margin-top: 22px;
+  border-radius: 12px;
+}
+
+.custom-autosave-footer {
+  font-size: 11.5px;
+  color: var(--text-muted, #64748B);
+  text-align: center;
+  margin-top: 14px;
+}
+
+/* Terms Box in Step 2 */
+.custom-terms-box {
+  background: var(--color-surface, #F8FAFC);
+  border: 1px solid var(--color-outline, #E2E8F0);
+  border-radius: 12px;
+  padding: 18px 22px;
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.custom-terms-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--deep-navy, #0F172A);
+}
+
+.custom-terms-list li {
+  margin-bottom: 8px;
+}
+
+.custom-checkbox-wrapper {
+  margin: 16px 0 24px;
+  padding: 12px 16px;
+  background: var(--color-surface, #F8FAFC);
+  border-radius: 10px;
+  border: 1px solid var(--color-outline, #E2E8F0);
+}
+
+.custom-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--deep-navy, #0F172A);
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.4;
+}
+
+.custom-checkbox-label input {
+  margin-top: 2px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+/* Alert Banner in Step 3 */
+.custom-alert-banner {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #2563EB;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.custom-nav-btns-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.custom-nav-btns-row button {
+  padding: 12px 22px;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.custom-summary-box {
+  background: var(--color-surface, #F8FAFC);
+  border: 1px solid var(--color-outline, #E2E8F0);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+.custom-agreement-info-box {
+  background: rgba(255, 46, 99, 0.05);
+  border: 1px solid rgba(255, 46, 99, 0.2);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+/* ============================================================================
+   DARK MODE ENFORCEMENT UNTUK APLIKASI CUSTOM (SESUAI PALET DESAIN UI/UX)
+   ============================================================================ */
+[data-theme="dark"] .custom-portal-container,
+body.dark-theme .custom-portal-container,
+[data-theme="dark"] .custom-wizard-container,
+body.dark-theme .custom-wizard-container {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-app-hero-banner,
+body.dark-theme .custom-app-hero-banner {
+  background: linear-gradient(135deg, #131F37 0%, #0B132B 100%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .custom-hero-title,
+body.dark-theme .custom-hero-title,
+[data-theme="dark"] .custom-section-title,
+body.dark-theme .custom-section-title,
+[data-theme="dark"] .custom-wizard-title,
+body.dark-theme .custom-wizard-title,
+[data-theme="dark"] .custom-empty-title,
+body.dark-theme .custom-empty-title,
+[data-theme="dark"] .custom-app-card-title,
+body.dark-theme .custom-app-card-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-hero-subtitle,
+body.dark-theme .custom-hero-subtitle,
+[data-theme="dark"] .custom-empty-desc,
+body.dark-theme .custom-empty-desc,
+[data-theme="dark"] .custom-app-card-desc,
+body.dark-theme .custom-app-card-desc,
+[data-theme="dark"] .custom-autosave-footer,
+body.dark-theme .custom-autosave-footer {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .custom-empty-card,
+body.dark-theme .custom-empty-card {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .custom-app-card,
+body.dark-theme .custom-app-card {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-app-card-meta,
+body.dark-theme .custom-app-card-meta {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .custom-meta-val,
+body.dark-theme .custom-meta-val {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-wizard-card,
+body.dark-theme .custom-wizard-card {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .custom-terms-box,
+body.dark-theme .custom-terms-box {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .custom-terms-list,
+body.dark-theme .custom-terms-list {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .custom-checkbox-wrapper,
+body.dark-theme .custom-checkbox-wrapper {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .custom-checkbox-label,
+body.dark-theme .custom-checkbox-label {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-alert-banner,
+body.dark-theme .custom-alert-banner {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #93C5FD !important;
+}
+
+[data-theme="dark"] .custom-summary-box,
+body.dark-theme .custom-summary-box {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-agreement-info-box,
+body.dark-theme .custom-agreement-info-box {
+  background: rgba(255, 46, 99, 0.1) !important;
+  border-color: rgba(255, 46, 99, 0.25) !important;
+}
+
+[data-theme="dark"] .custom-step-bubble,
+body.dark-theme .custom-step-bubble {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #94A3B8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .custom-step-label,
+body.dark-theme .custom-step-label {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .custom-step-item.active .custom-step-label,
+body.dark-theme .custom-step-item.active .custom-step-label {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-step-line,
+body.dark-theme .custom-step-line {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .custom-wizard-card .form-label,
+body.dark-theme .custom-wizard-card .form-label {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .custom-wizard-card .form-input,
+body.dark-theme .custom-wizard-card .form-input {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #modal-custom-app-detail .modal-card,
+body.dark-theme #modal-custom-app-detail .modal-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+@media (max-width: 640px) {
+  .custom-app-hero-banner {
+    padding: 24px 20px;
+  }
+  .custom-btn-new-app {
+    width: 100%;
+    justify-content: center;
+  }
+  .custom-stepper-wrap {
+    gap: 6px;
+  }
+  .custom-step-line {
+    width: 20px;
+  }
+  .custom-step-label {
+    display: none;
+  }
+  .custom-apps-grid {
+    grid-template-columns: 1fr;
+  }
+}

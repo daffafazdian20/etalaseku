@@ -9049,11 +9049,15 @@ function switchMemberPortalView(viewName) {
   const viewGrid = document.getElementById('rb-view-grid');
   const viewCourse = document.getElementById('rb-view-course');
   const viewDoc = document.getElementById('rb-view-document');
+  const viewCustom = document.getElementById('rb-view-custom');
+  const viewCustomNew = document.getElementById('rb-view-custom-new');
 
   if (viewHome) viewHome.style.display = 'none';
   if (viewGrid) viewGrid.style.display = 'none';
   if (viewCourse) viewCourse.style.display = 'none';
   if (viewDoc) viewDoc.style.display = 'none';
+  if (viewCustom) viewCustom.style.display = 'none';
+  if (viewCustomNew) viewCustomNew.style.display = 'none';
 
   const tabs = document.querySelectorAll('#cls-portal-tabs-nav .cls-tab-link');
   tabs.forEach(t => t.classList.remove('active'));
@@ -9073,6 +9077,18 @@ function switchMemberPortalView(viewName) {
     if (viewGrid) viewGrid.style.display = 'block';
     const tabJalur = document.getElementById('tab-link-jalur');
     if (tabJalur) tabJalur.classList.add('active');
+  } else if (viewName === 'custom') {
+    if (viewCustom) viewCustom.style.display = 'block';
+    const tabCustom = document.getElementById('tab-link-custom');
+    if (tabCustom) tabCustom.classList.add('active');
+    renderCustomAppSubmissions();
+    window.location.hash = '#/custom';
+  } else if (viewName === 'custom-new') {
+    if (viewCustomNew) viewCustomNew.style.display = 'block';
+    const tabCustom = document.getElementById('tab-link-custom');
+    if (tabCustom) tabCustom.classList.add('active');
+    initCustomAppWizard();
+    window.location.hash = '#/custom-new';
   }
 
   const wrapper = document.getElementById('classroom-dashboard-portal');
@@ -9924,3 +9940,521 @@ function saveFooterBrandingSettings(e) {
   applyFooterBrandingSettingsToDom();
   showToast('Logo & tulisan Produk Digital berhasil disimpan! 🎨✨');
 }
+
+
+// ============================================================================
+// MODUL APLIKASI CUSTOM BERBASIS APPS SCRIPT (SESUAI FOTO 1, 2, 3, 4, 5)
+// Open Access, Multi-Step Wizard, Autosave Draft, dan Integrasi WhatsApp
+// ============================================================================
+
+function openCustomAppPortal(view = 'custom') {
+  closeAllModals();
+  const portal = document.getElementById('classroom-dashboard-portal');
+  if (portal) portal.classList.add('active');
+  switchMemberPortalView(view);
+}
+window.openCustomAppPortal = openCustomAppPortal;
+
+function renderCustomAppSubmissions() {
+  const container = document.getElementById('custom-apps-list-container');
+  const countPill = document.getElementById('custom-apps-count-pill');
+  if (!container) return;
+
+  let submissions = [];
+  try {
+    const raw = localStorage.getItem('etalaseku_custom_apps');
+    if (raw) submissions = JSON.parse(raw);
+  } catch(e) {}
+
+  if (!Array.isArray(submissions) || submissions.length === 0) {
+    if (countPill) countPill.style.display = 'none';
+    container.innerHTML = `
+      <div class="custom-empty-card">
+        <div class="custom-empty-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="18" r="3"></circle>
+            <circle cx="6" cy="6" r="3"></circle>
+            <path d="M13 6h3a2 2 0 0 1 2 2v7"></path>
+            <line x1="6" y1="9" x2="6" y2="21"></line>
+          </svg>
+        </div>
+        <h3 class="custom-empty-title">Belum ada pengajuan</h3>
+        <p class="custom-empty-desc">Ceritakan aplikasi yang Anda butuhkan &mdash; Admin akan mengirim penawaran harga.</p>
+        <button type="button" class="shimmer-btn" style="margin-top:16px; padding:9px 22px; font-size:13px; font-weight:700;" onclick="switchMemberPortalView('custom-new')">
+          + Ajukan Aplikasi Baru
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  if (countPill) {
+    countPill.textContent = submissions.length + ' Pengajuan';
+    countPill.style.display = 'inline-flex';
+  }
+
+  let html = '<div class="custom-apps-grid">';
+  submissions.forEach((item, index) => {
+    html += `
+      <div class="custom-app-card">
+        <div class="custom-app-card-top">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="pill-badge blue" style="font-size:11px;">${escapeHtml(item.id)}</span>
+            <span style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(item.tanggal)}</span>
+          </div>
+          <span class="pill-badge green" style="font-size:11px;">${escapeHtml(item.status || 'Menunggu Peninjauan Admin')}</span>
+        </div>
+
+        <h3 class="custom-app-card-title">${escapeHtml(item.judul)}</h3>
+        <p class="custom-app-card-desc">${escapeHtml(item.masalah ? item.masalah.slice(0, 140) + '...' : '-')}</p>
+
+        <div class="custom-app-card-meta">
+          <div class="custom-meta-item">
+            <span class="custom-meta-lbl">Pemohon:</span>
+            <strong class="custom-meta-val">${escapeHtml(item.nama)} (${escapeHtml(item.profesi || '-')})</strong>
+          </div>
+          <div class="custom-meta-item">
+            <span class="custom-meta-lbl">Target Kebutuhan:</span>
+            <span class="custom-meta-val">${escapeHtml(item.timeline || '-')}</span>
+          </div>
+        </div>
+
+        <div class="custom-app-card-actions">
+          <button type="button" class="btn-secondary" style="padding:7px 14px; font-size:12px; font-weight:700;" onclick="viewCustomAppDetail('${item.id}')">
+            👁️ Rincian Lengkap
+          </button>
+          <button type="button" class="shimmer-btn" style="padding:7px 16px; font-size:12px; font-weight:700;" onclick="chatAdminForCustomApp('${item.id}')">
+            💬 Chat Admin WA
+          </button>
+          <button type="button" class="btn-secondary" style="padding:7px 10px; font-size:12px; color:#EF4444;" title="Hapus Pengajuan" onclick="deleteCustomAppSubmission('${item.id}')">
+            🗑️
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+window.renderCustomAppSubmissions = renderCustomAppSubmissions;
+
+let currentCustomStep = 1;
+
+function initCustomAppWizard() {
+  currentCustomStep = 1;
+  goToCustomStep(1);
+
+  // Load draft if available
+  try {
+    const raw = localStorage.getItem('etalaseku_custom_app_draft');
+    if (raw) {
+      const d = JSON.parse(raw);
+      if (d.nama) document.getElementById('cust-form-name').value = d.nama;
+      if (d.email) document.getElementById('cust-form-email').value = d.email;
+      if (d.phone) document.getElementById('cust-form-phone').value = d.phone;
+      if (d.profesi) document.getElementById('cust-form-profesi').value = d.profesi;
+      if (d.q1) document.getElementById('cust-q1-title').value = d.q1;
+      if (d.q2) document.getElementById('cust-q2-problem').value = d.q2;
+      if (d.q3) document.getElementById('cust-q3-users').value = d.q3;
+      if (d.q4) document.getElementById('cust-q4-features').value = d.q4;
+      if (d.q5) document.getElementById('cust-q5-data').value = d.q5;
+      if (d.q6) document.getElementById('cust-q6-timeline').value = d.q6;
+      if (d.q7) document.getElementById('cust-q7-usercount').value = d.q7;
+      if (d.q8) document.getElementById('cust-q8-design').value = d.q8;
+    }
+  } catch(e) {}
+
+  // Auto-populate from logged-in member session if inputs are still empty
+  const profile = typeof getMemberProfile === 'function' ? getMemberProfile() : null;
+  const nameEl = document.getElementById('cust-form-name');
+  const emailEl = document.getElementById('cust-form-email');
+  const phoneEl = document.getElementById('cust-form-phone');
+
+  if (profile) {
+    if (nameEl && !nameEl.value) nameEl.value = profile.name || 'Daffa';
+    if (emailEl && !emailEl.value) emailEl.value = profile.email || localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+    if (phoneEl && !phoneEl.value) phoneEl.value = profile.whatsapp || '087894602627';
+  } else {
+    if (nameEl && !nameEl.value) nameEl.value = 'Daffa';
+    if (emailEl && !emailEl.value) emailEl.value = localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+    if (phoneEl && !phoneEl.value) phoneEl.value = '087894602627';
+  }
+}
+window.initCustomAppWizard = initCustomAppWizard;
+
+function saveCustomDraft() {
+  try {
+    const draft = {
+      nama: (document.getElementById('cust-form-name') || {}).value || '',
+      email: (document.getElementById('cust-form-email') || {}).value || '',
+      phone: (document.getElementById('cust-form-phone') || {}).value || '',
+      profesi: (document.getElementById('cust-form-profesi') || {}).value || '',
+      q1: (document.getElementById('cust-q1-title') || {}).value || '',
+      q2: (document.getElementById('cust-q2-problem') || {}).value || '',
+      q3: (document.getElementById('cust-q3-users') || {}).value || '',
+      q4: (document.getElementById('cust-q4-features') || {}).value || '',
+      q5: (document.getElementById('cust-q5-data') || {}).value || '',
+      q6: (document.getElementById('cust-q6-timeline') || {}).value || '',
+      q7: (document.getElementById('cust-q7-usercount') || {}).value || '',
+      q8: (document.getElementById('cust-q8-design') || {}).value || ''
+    };
+    localStorage.setItem('etalaseku_custom_app_draft', JSON.stringify(draft));
+  } catch(e) {}
+}
+window.saveCustomDraft = saveCustomDraft;
+
+function handleCustomTermsToggle(cb) {
+  const btnNext = document.getElementById('btn-cust-step2-next');
+  if (btnNext) {
+    btnNext.disabled = !cb.checked;
+  }
+}
+window.handleCustomTermsToggle = handleCustomTermsToggle;
+
+function goToCustomStep(stepNum) {
+  // Validations when moving forward
+  if (stepNum > currentCustomStep) {
+    if (currentCustomStep === 1) {
+      const name = (document.getElementById('cust-form-name') || {}).value || '';
+      const phone = (document.getElementById('cust-form-phone') || {}).value || '';
+      const profesi = (document.getElementById('cust-form-profesi') || {}).value || '';
+      if (!name.trim()) {
+        if (typeof showToast === 'function') showToast('⚠️ Mohon isi Nama Lengkap Anda.', 'warning');
+        return;
+      }
+      if (!phone.trim()) {
+        if (typeof showToast === 'function') showToast('⚠️ Mohon isi No. WhatsApp Anda.', 'warning');
+        return;
+      }
+      if (!profesi.trim()) {
+        if (typeof showToast === 'function') showToast('⚠️ Mohon isi Profesi / Pekerjaan Anda.', 'warning');
+        return;
+      }
+    } else if (currentCustomStep === 2) {
+      const agree = document.getElementById('cust-terms-agree');
+      if (!agree || !agree.checked) {
+        if (typeof showToast === 'function') showToast('⚠️ Harap centang persetujuan ketentuan sebelum lanjut.', 'warning');
+        return;
+      }
+    } else if (currentCustomStep === 3) {
+      const q1 = (document.getElementById('cust-q1-title') || {}).value || '';
+      const q2 = (document.getElementById('cust-q2-problem') || {}).value || '';
+      const q3 = (document.getElementById('cust-q3-users') || {}).value || '';
+      const q4 = (document.getElementById('cust-q4-features') || {}).value || '';
+      const q5 = (document.getElementById('cust-q5-data') || {}).value || '';
+      const q6 = (document.getElementById('cust-q6-timeline') || {}).value || '';
+      const q7 = (document.getElementById('cust-q7-usercount') || {}).value || '';
+      const q8 = (document.getElementById('cust-q8-design') || {}).value || '';
+
+      if (!q1.trim() || !q2.trim() || !q3.trim() || !q4.trim() || !q5.trim() || !q6.trim() || !q7.trim() || !q8.trim()) {
+        if (typeof showToast === 'function') showToast('⚠️ Semua 8 pertanyaan kebutuhan wajib dijawab lengkap.', 'warning');
+        return;
+      }
+    }
+  }
+
+  currentCustomStep = stepNum;
+
+  // Update panels
+  for (let i = 1; i <= 4; i++) {
+    const p = document.getElementById('cstep-panel-' + i);
+    if (p) p.style.display = i === stepNum ? 'block' : 'none';
+
+    const nav = document.getElementById('cstep-nav-' + i);
+    const bubble = document.getElementById('cstep-bubble-' + i);
+    const line = document.getElementById('cstep-line-' + i);
+
+    if (nav && bubble) {
+      nav.classList.remove('active', 'completed');
+      if (i < stepNum) {
+        nav.classList.add('completed');
+        bubble.innerHTML = '✓';
+      } else if (i === stepNum) {
+        nav.classList.add('active');
+        bubble.innerHTML = i;
+      } else {
+        bubble.innerHTML = i;
+      }
+    }
+
+    if (line) {
+      if (i < stepNum) line.classList.add('completed');
+      else line.classList.remove('completed');
+    }
+  }
+
+  if (stepNum === 4) {
+    renderCustomSummaryReview();
+  }
+
+  const card = document.querySelector('.custom-wizard-card');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+window.goToCustomStep = goToCustomStep;
+
+function renderCustomSummaryReview() {
+  const box = document.getElementById('cust-summary-review-box');
+  if (!box) return;
+
+  const nama = (document.getElementById('cust-form-name') || {}).value || '-';
+  const email = (document.getElementById('cust-form-email') || {}).value || '-';
+  const phone = (document.getElementById('cust-form-phone') || {}).value || '-';
+  const profesi = (document.getElementById('cust-form-profesi') || {}).value || '-';
+
+  const q1 = (document.getElementById('cust-q1-title') || {}).value || '-';
+  const q2 = (document.getElementById('cust-q2-problem') || {}).value || '-';
+  const q3 = (document.getElementById('cust-q3-users') || {}).value || '-';
+  const q4 = (document.getElementById('cust-q4-features') || {}).value || '-';
+  const q5 = (document.getElementById('cust-q5-data') || {}).value || '-';
+  const q6 = (document.getElementById('cust-q6-timeline') || {}).value || '-';
+  const q7 = (document.getElementById('cust-q7-usercount') || {}).value || '-';
+  const q8 = (document.getElementById('cust-q8-design') || {}).value || '-';
+
+  box.innerHTML = `
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; border-bottom:1px solid var(--color-outline); padding-bottom:12px;">
+      <div>
+        <span style="font-size:11px; color:var(--text-muted); display:block;">Nama Pemohon:</span>
+        <strong style="color:var(--deep-navy); font-size:13px;">${escapeHtml(nama)}</strong>
+      </div>
+      <div>
+        <span style="font-size:11px; color:var(--text-muted); display:block;">No. WhatsApp:</span>
+        <strong style="color:var(--deep-navy); font-size:13px;">${escapeHtml(phone)}</strong>
+      </div>
+      <div>
+        <span style="font-size:11px; color:var(--text-muted); display:block;">Email:</span>
+        <span style="color:var(--deep-navy); font-size:12.5px;">${escapeHtml(email)}</span>
+      </div>
+      <div>
+        <span style="font-size:11px; color:var(--text-muted); display:block;">Profesi:</span>
+        <span style="color:var(--deep-navy); font-size:12.5px;">${escapeHtml(profesi)}</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <span style="font-size:11px; color:var(--text-muted); display:block;">1. Judul Aplikasi:</span>
+      <strong style="color:#FF2E63; font-size:14px;">${escapeHtml(q1)}</strong>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+      <div>
+        <span style="font-size:11px; color:var(--text-muted); display:block;">6. Target Kebutuhan:</span>
+        <strong style="color:var(--deep-navy); font-size:12.5px;">${escapeHtml(q6)}</strong>
+      </div>
+      <div>
+        <span style="font-size:11px; color:var(--text-muted); display:block;">7. Estimasi User:</span>
+        <strong style="color:var(--deep-navy); font-size:12.5px;">${escapeHtml(q7)}</strong>
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <span style="font-size:11px; color:var(--text-muted); display:block;">2. Masalah yang Diselesaikan:</span>
+      <p style="font-size:12px; color:var(--deep-navy); margin:2px 0 0; line-height:1.5;">${escapeHtml(q2)}</p>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <span style="font-size:11px; color:var(--text-muted); display:block;">4. Fitur Utama Wajib:</span>
+      <p style="font-size:12px; color:var(--deep-navy); margin:2px 0 0; line-height:1.5; white-space:pre-line;">${escapeHtml(q4)}</p>
+    </div>
+  `;
+}
+window.renderCustomSummaryReview = renderCustomSummaryReview;
+
+function submitCustomAppForm() {
+  const nama = (document.getElementById('cust-form-name') || {}).value || 'Daffa';
+  const email = (document.getElementById('cust-form-email') || {}).value || '';
+  const phone = (document.getElementById('cust-form-phone') || {}).value || '';
+  const profesi = (document.getElementById('cust-form-profesi') || {}).value || '';
+
+  const q1 = (document.getElementById('cust-q1-title') || {}).value || '';
+  const q2 = (document.getElementById('cust-q2-problem') || {}).value || '';
+  const q3 = (document.getElementById('cust-q3-users') || {}).value || '';
+  const q4 = (document.getElementById('cust-q4-features') || {}).value || '';
+  const q5 = (document.getElementById('cust-q5-data') || {}).value || '';
+  const q6 = (document.getElementById('cust-q6-timeline') || {}).value || '';
+  const q7 = (document.getElementById('cust-q7-usercount') || {}).value || '';
+  const q8 = (document.getElementById('cust-q8-design') || {}).value || '';
+
+  const subId = 'APP-' + Date.now().toString().slice(-6);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  const newApp = {
+    id: subId,
+    tanggal: dateStr,
+    nama: nama.trim(),
+    email: email.trim(),
+    whatsapp: phone.trim(),
+    profesi: profesi.trim(),
+    judul: q1.trim(),
+    masalah: q2.trim(),
+    users: q3.trim(),
+    fitur: q4.trim(),
+    data: q5.trim(),
+    timeline: q6.trim(),
+    userCount: q7.trim(),
+    desain: q8.trim(),
+    status: 'Menunggu Peninjauan Admin'
+  };
+
+  // Simpan ke localStorage
+  let submissions = [];
+  try {
+    const raw = localStorage.getItem('etalaseku_custom_apps');
+    if (raw) submissions = JSON.parse(raw);
+  } catch(e) {}
+  if (!Array.isArray(submissions)) submissions = [];
+  submissions.unshift(newApp);
+  localStorage.setItem('etalaseku_custom_apps', JSON.stringify(submissions));
+
+  // Bersihkan draft
+  try {
+    localStorage.removeItem('etalaseku_custom_app_draft');
+  } catch(e) {}
+
+  // Format pesan WhatsApp terstruktur
+  const waMsg = `Halo Admin NexStore, saya ingin mengajukan Pembuatan Aplikasi Custom Berbasis Google Apps Script:
+
+📋 *DATA PEMOHON*
+• Nama: ${newApp.nama}
+• WhatsApp: ${newApp.whatsapp}
+• Email: ${newApp.email || '-'}
+• Profesi: ${newApp.profesi}
+
+🚀 *RINCIAN APLIKASI CUSTOM (${newApp.id})*
+1. *Nama Aplikasi:* ${newApp.judul}
+2. *Masalah yang Diselesaikan:* ${newApp.masalah}
+3. *Pengguna & Peran:* ${newApp.users}
+4. *Fitur Utama Wajib:*
+${newApp.fitur}
+5. *Data yang Disimpan:* ${newApp.data}
+6. *Target Kebutuhan:* ${newApp.timeline}
+7. *Estimasi User:* ${newApp.userCount}
+8. *Preferensi Desain:* ${newApp.desain}
+
+Mohon peninjauan teknis dan penawaran harganya. Terima kasih!`;
+
+  const waTarget = getActiveWaCsNumber();
+  const waUrl = 'https://wa.me/' + waTarget + '?text=' + encodeURIComponent(waMsg);
+  window.open(waUrl, '_blank');
+
+  if (typeof showToast === 'function') {
+    showToast('🎉 Pengajuan ' + newApp.id + ' berhasil dibuat! Admin akan segera memproses.', 'success', 3500);
+  }
+
+  // Kembali ke halaman Pengajuan Saya
+  switchMemberPortalView('custom');
+}
+window.submitCustomAppForm = submitCustomAppForm;
+
+function viewCustomAppDetail(id) {
+  let submissions = [];
+  try {
+    submissions = JSON.parse(localStorage.getItem('etalaseku_custom_apps') || '[]');
+  } catch(e) {}
+  const app = submissions.find(s => s.id === id);
+  if (!app) return;
+
+  const modal = document.getElementById('modal-custom-app-detail');
+  if (!modal) return;
+
+  const bId = document.getElementById('cad-badge-id'); if (bId) bId.textContent = app.id;
+  const bTitle = document.getElementById('cad-title'); if (bTitle) bTitle.textContent = app.judul;
+  const bDate = document.getElementById('cad-date'); if (bDate) bDate.textContent = 'Diajukan pada ' + app.tanggal + ' • Status: ' + (app.status || 'Menunggu Peninjauan Admin');
+
+  const body = document.getElementById('cad-content-body');
+  if (body) {
+    body.innerHTML = `
+      <div style="background:var(--color-surface); padding:12px 14px; border-radius:12px; margin-bottom:14px; border:1px solid var(--color-outline);">
+        <strong style="color:var(--deep-navy);">Informasi Pemohon:</strong> ${escapeHtml(app.nama)} (${escapeHtml(app.profesi)}) &bull; WA: ${escapeHtml(app.whatsapp)} &bull; Email: ${escapeHtml(app.email || '-')}
+      </div>
+      <div style="margin-bottom:10px;">
+        <strong style="color:#FF2E63;">1. Masalah yang Diselesaikan:</strong>
+        <p style="margin:2px 0 0; line-height:1.5;">${escapeHtml(app.masalah)}</p>
+      </div>
+      <div style="margin-bottom:10px;">
+        <strong style="color:#FF2E63;">2. Pengguna & Peran:</strong>
+        <p style="margin:2px 0 0; line-height:1.5;">${escapeHtml(app.users)}</p>
+      </div>
+      <div style="margin-bottom:10px;">
+        <strong style="color:#FF2E63;">3. Fitur Utama Wajib:</strong>
+        <p style="margin:2px 0 0; line-height:1.5; white-space:pre-line;">${escapeHtml(app.fitur)}</p>
+      </div>
+      <div style="margin-bottom:10px;">
+        <strong style="color:#FF2E63;">4. Data yang Perlu Disimpan:</strong>
+        <p style="margin:2px 0 0; line-height:1.5;">${escapeHtml(app.data)}</p>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+        <div>
+          <strong style="color:#FF2E63;">5. Target Kebutuhan:</strong>
+          <div>${escapeHtml(app.timeline)}</div>
+        </div>
+        <div>
+          <strong style="color:#FF2E63;">6. Estimasi User:</strong>
+          <div>${escapeHtml(app.userCount)}</div>
+        </div>
+      </div>
+      <div>
+        <strong style="color:#FF2E63;">7. Preferensi Desain:</strong>
+        <p style="margin:2px 0 0; line-height:1.5;">${escapeHtml(app.desain)}</p>
+      </div>
+    `;
+  }
+
+  const btnWa = document.getElementById('cad-btn-wa');
+  if (btnWa) {
+    btnWa.onclick = () => chatAdminForCustomApp(app.id);
+  }
+
+  modal.style.display = 'flex';
+}
+window.viewCustomAppDetail = viewCustomAppDetail;
+
+function closeCustomAppDetailModal() {
+  const modal = document.getElementById('modal-custom-app-detail');
+  if (modal) modal.style.display = 'none';
+}
+window.closeCustomAppDetailModal = closeCustomAppDetailModal;
+
+function chatAdminForCustomApp(id) {
+  let submissions = [];
+  try {
+    submissions = JSON.parse(localStorage.getItem('etalaseku_custom_apps') || '[]');
+  } catch(e) {}
+  const app = submissions.find(s => s.id === id);
+  const waTarget = getActiveWaCsNumber();
+  const text = app
+    ? `Halo Admin NexStore, saya ingin follow up pengajuan Aplikasi Custom *${app.id}* - *${app.judul}* atas nama *${app.nama}*.`
+    : `Halo Admin NexStore, saya ingin follow up pengajuan Aplikasi Custom ${id}.`;
+  window.open('https://wa.me/' + waTarget + '?text=' + encodeURIComponent(text), '_blank');
+}
+window.chatAdminForCustomApp = chatAdminForCustomApp;
+
+function deleteCustomAppSubmission(id) {
+  if (!confirm('Apakah Anda yakin ingin menghapus data pengajuan ini?')) return;
+  let submissions = [];
+  try {
+    submissions = JSON.parse(localStorage.getItem('etalaseku_custom_apps') || '[]');
+  } catch(e) {}
+  submissions = submissions.filter(s => s.id !== id);
+  localStorage.setItem('etalaseku_custom_apps', JSON.stringify(submissions));
+  renderCustomAppSubmissions();
+  if (typeof showToast === 'function') {
+    showToast('Pengajuan telah dihapus.', 'info');
+  }
+}
+window.deleteCustomAppSubmission = deleteCustomAppSubmission;
+
+// Global Hash Routing Listener
+function handleCustomAppHashRouting() {
+  const hash = (window.location.hash || '').toLowerCase();
+  if (hash === '#/custom' || hash === '#custom') {
+    openCustomAppPortal('custom');
+  } else if (hash === '#/custom-new' || hash === '#custom-new') {
+    openCustomAppPortal('custom-new');
+  }
+}
+
+window.addEventListener('hashchange', handleCustomAppHashRouting);
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(handleCustomAppHashRouting, 300);
+});
