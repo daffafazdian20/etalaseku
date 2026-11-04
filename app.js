@@ -2565,6 +2565,8 @@ function openAdminPortal() {
   renderStudentBillingTab(STATE.bills || []);
   renderClassroomModulesAdmin();
   renderAdminShowcaseTable(STATE.showcases);
+  if (typeof updateLicensesBadge === 'function') updateLicensesBadge();
+  if (typeof renderMemberLicensesTable === 'function') renderMemberLicensesTable();
 
   loadAdminPortalData();
 }
@@ -2594,6 +2596,7 @@ function switchAdminTab(tabId, navEl) {
     'tab-products': 'Manajemen Katalog Produk Digital',
     'tab-showcase': 'Hasil Karya & Portofolio Siswa (Social Proof)',
     'tab-crm': 'CRM Leads & Antrean Waitlist',
+    'tab-member-licenses': 'Manajemen Data Lisensi Member',
     'tab-testimonials': 'Manajemen Testimoni & Review Alumni',
     'tab-billing': 'Manajemen Tagihan & Cicilan Siswa (Installment Plan)',
     'tab-classroom': 'Editor & Manajemen Portal Ruang BelajarKu',
@@ -2609,6 +2612,8 @@ function switchAdminTab(tabId, navEl) {
     populateAdminSiteSettingsForm();
   } else if (tabId === 'tab-account') {
     renderAdminAccountTab();
+  } else if (tabId === 'tab-member-licenses') {
+    if (typeof renderMemberLicensesTable === 'function') renderMemberLicensesTable();
   } else if (tabId === 'tab-billing') {
     renderStudentBillingTab(STATE.bills || []);
   } else if (tabId === 'tab-classroom') {
@@ -9214,6 +9219,11 @@ function handleSaveMemberProfile(event) {
     localStorage.setItem('nexstore_member_order_id', orderId);
   } catch (e) {}
 
+  // 1. Simpan / Upsert ke database Lisensi Member CRM (Sesuai Permintaan User)
+  if (typeof saveMemberLicenseToCrm === 'function') {
+    saveMemberLicenseToCrm({ name, whatsapp, email, orderId });
+  }
+
   // Update badge & Order ID in modal and page
   const badgeOrderId = document.getElementById('setting-modal-order-id');
   if (badgeOrderId) badgeOrderId.textContent = orderId;
@@ -9247,19 +9257,221 @@ function handleSaveMemberProfile(event) {
 
   closeMemberProfileModal();
 
-  if (typeof showToast === 'function') {
-    showToast('Profil & lisensi Order ID berhasil disimpan! 🚀', 'success');
-  }
-
   document.querySelectorAll('.member-display-name').forEach(el => el.textContent = name);
   document.querySelectorAll('.widget-profile-name').forEach(el => el.textContent = name);
   document.querySelectorAll('.widget-profile-email').forEach(el => el.textContent = email);
   document.querySelectorAll('.member-profile-whatsapp').forEach(el => el.textContent = whatsapp);
   document.querySelectorAll('.member-avatar-initial').forEach(el => el.textContent = name.charAt(0).toUpperCase());
 
-  showMemberAreaDashboard(orderId, email);
+  // 2. Munculkan langsung ke Halaman Dashboard CRM Menu Lisensi Member (Sesuai Permintaan User)
+  openAdminPortal();
+  switchAdminTab('tab-member-licenses');
+  if (typeof renderMemberLicensesTable === 'function') renderMemberLicensesTable();
+
+  if (typeof showToast === 'function') {
+    showToast('Data lisensi member berhasil disimpan dan dimunculkan ke Dashboard CRM! 🚀', 'success');
+  }
 }
 window.handleSaveMemberProfile = handleSaveMemberProfile;
+
+// ============================================================================
+// DATA LISENSI MEMBER CRM ENGINE (SESUAI REQUEST USER)
+// ============================================================================
+function getMemberLicenses() {
+  try {
+    const raw = localStorage.getItem('etalaseku_member_licenses');
+    if (raw) {
+      const list = JSON.parse(raw);
+      if (Array.isArray(list) && list.length > 0) return list;
+    }
+  } catch (e) {}
+
+  const activeEmail = localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
+  const activeOrderId = localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
+  const profile = typeof getMemberProfile === 'function' ? getMemberProfile() : { name: 'Daffa', whatsapp: '087894602627' };
+
+  const initialList = [
+    {
+      id: 'LIC-001',
+      email: activeEmail,
+      name: profile.name || 'Daffa',
+      whatsapp: profile.whatsapp || '087894602627',
+      orderId: activeOrderId,
+      tanggal: '02/11/2026 21.42',
+      status: 'Aktif'
+    },
+    {
+      id: 'LIC-002',
+      email: 'bmuda6838@gmail.com',
+      name: 'Adit',
+      whatsapp: '081234567890',
+      orderId: 'ORD-20261030-152053-9581',
+      tanggal: '30/10/2026 15.20',
+      status: 'Aktif'
+    }
+  ];
+  try {
+    localStorage.setItem('etalaseku_member_licenses', JSON.stringify(initialList));
+  } catch (e) {}
+  return initialList;
+}
+window.getMemberLicenses = getMemberLicenses;
+
+function saveMemberLicenseToCrm(data) {
+  if (!data || !data.email) return;
+  let list = getMemberLicenses();
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const mins = String(now.getMinutes()).padStart(2, '0');
+  const tanggalStr = `${day}/${month}/${year} ${hours}.${mins}`;
+
+  const existingIndex = list.findIndex(item => 
+    (item.email && item.email.toLowerCase() === data.email.toLowerCase()) || 
+    (item.orderId && data.orderId && item.orderId === data.orderId)
+  );
+
+  if (existingIndex >= 0) {
+    list[existingIndex] = {
+      ...list[existingIndex],
+      name: data.name || list[existingIndex].name || 'Daffa',
+      whatsapp: data.whatsapp || list[existingIndex].whatsapp || '087894602627',
+      email: data.email,
+      orderId: data.orderId || list[existingIndex].orderId || 'ORD-20261102-214204-9617',
+      tanggal: tanggalStr,
+      status: 'Aktif'
+    };
+  } else {
+    const newId = 'LIC-' + String(list.length + 1).padStart(3, '0');
+    list.unshift({
+      id: newId,
+      name: data.name || 'Daffa',
+      whatsapp: data.whatsapp || '087894602627',
+      email: data.email,
+      orderId: data.orderId || 'ORD-20261102-214204-9617',
+      tanggal: tanggalStr,
+      status: 'Aktif'
+    });
+  }
+
+  try {
+    localStorage.setItem('etalaseku_member_licenses', JSON.stringify(list));
+  } catch (e) {}
+
+  updateLicensesBadge();
+  renderMemberLicensesTable();
+}
+window.saveMemberLicenseToCrm = saveMemberLicenseToCrm;
+
+function updateLicensesBadge() {
+  const badge = document.getElementById('badge-licenses-count');
+  if (badge) {
+    const list = getMemberLicenses();
+    badge.textContent = list.length;
+  }
+}
+window.updateLicensesBadge = updateLicensesBadge;
+
+function renderMemberLicensesTable(searchQuery) {
+  const tbody = document.getElementById('crm-licenses-tbody');
+  if (!tbody) return;
+
+  let list = getMemberLicenses();
+  if (searchQuery && typeof searchQuery === 'string' && searchQuery.trim()) {
+    const q = searchQuery.trim().toLowerCase();
+    list = list.filter(item => 
+      (item.email && item.email.toLowerCase().includes(q)) ||
+      (item.name && item.name.toLowerCase().includes(q)) ||
+      (item.whatsapp && item.whatsapp.toLowerCase().includes(q)) ||
+      (item.orderId && item.orderId.toLowerCase().includes(q))
+    );
+  }
+
+  if (list.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding:32px 16px; color:var(--text-muted); font-size:12.5px;">
+          Belum ada data lisensi member ditemukan. Saat member menyimpan profil di menu Pengaturan Akun, data lisensi resmi akan muncul di sini secara otomatis.
+        </td>
+      </tr>
+    `;
+    updateLicensesBadge();
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => {
+    let cleanWa = (item.whatsapp || '').replace(/[^0-9]/g, '');
+    if (cleanWa.startsWith('0')) cleanWa = '62' + cleanWa.substring(1);
+    const waText = encodeURIComponent(`Halo ${item.name || 'Member'}, salam dari NexStore! Ini terkait data lisensi akun & Order ID Anda (${item.orderId || '-'}).`);
+    const waUrl = cleanWa ? `https://wa.me/${cleanWa}?text=${waText}` : '#';
+
+    return `
+      <tr>
+        <td>
+          <div style="font-weight:700; color:var(--deep-navy);">${escapeHtml(item.email || '-')}</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Update: ${escapeHtml(item.tanggal || '-')}</div>
+        </td>
+        <td>
+          <div style="font-weight:700; color:var(--deep-navy);">${escapeHtml(item.name || '-')}</div>
+        </td>
+        <td>
+          ${item.whatsapp ? `
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="color:#10B981; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+              <span>📲</span> <span>${escapeHtml(item.whatsapp)}</span>
+            </a>
+          ` : '<span style="color:var(--text-muted);">-</span>'}
+        </td>
+        <td>
+          <span class="pill-badge" style="background:rgba(255,46,99,0.1); color:#FF2E63; border:1px solid rgba(255,46,99,0.25); font-weight:800; font-family:monospace; font-size:11.5px;">
+            ${escapeHtml(item.orderId || '-')}
+          </span>
+        </td>
+        <td>
+          <span class="pill-badge green" style="font-size:11px; font-weight:700;">${escapeHtml(item.status || 'Aktif')} 🟢</span>
+        </td>
+        <td>
+          <div style="display:flex; align-items:center; gap:6px;">
+            ${cleanWa ? `
+              <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-action-wa" style="padding:5px 10px; font-size:11px; background:#10B981; color:#FFFFFF; border-radius:6px; text-decoration:none; font-weight:700; display:inline-flex; align-items:center; gap:4px;">
+                WA Siswa
+              </a>
+            ` : ''}
+            <button type="button" class="btn-secondary" onclick="navigator.clipboard.writeText('${escapeHtml(item.orderId || '')}').then(() => showToast('Order ID disalin ke clipboard! 📋'));" style="padding:5px 9px; font-size:11px; border-radius:6px; cursor:pointer;" title="Salin Order ID">
+              📋 Salin
+            </button>
+            <button type="button" class="btn-secondary" onclick="deleteMemberLicense('${escapeHtml(item.id)}')" style="padding:5px 8px; font-size:11px; color:#EF4444; border-color:rgba(239,68,68,0.3); border-radius:6px; cursor:pointer;" title="Hapus Lisensi">
+              🗑️
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  updateLicensesBadge();
+}
+window.renderMemberLicensesTable = renderMemberLicensesTable;
+
+function filterMemberLicenses(query) {
+  renderMemberLicensesTable(query);
+}
+window.filterMemberLicenses = filterMemberLicenses;
+
+function deleteMemberLicense(licenseId) {
+  if (!confirm('Yakin ingin menghapus data lisensi member ini dari Dashboard CRM?')) return;
+  let list = getMemberLicenses();
+  list = list.filter(item => item.id !== licenseId);
+  try {
+    localStorage.setItem('etalaseku_member_licenses', JSON.stringify(list));
+  } catch (e) {}
+  renderMemberLicensesTable();
+  if (typeof showToast === 'function') {
+    showToast('Data lisensi member berhasil dihapus dari CRM!', 'success');
+  }
+}
+window.deleteMemberLicense = deleteMemberLicense;
 
 function openBootcampAnnouncementModal() {
   const modal = document.getElementById('modal-bootcamp-announcement');

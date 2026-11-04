@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261104-42">
+  <link rel="stylesheet" href="css/style.css?v=20261104-43">
 </head>
 <body>
 
@@ -2443,6 +2443,12 @@
           </a>
         </li>
         <li>
+          <a class="admin-nav-item" href="#tab-member-licenses" onclick="switchAdminTab('tab-member-licenses', this); return false;">
+            <span>🔑 <span class="nav-text">Lisensi Member</span></span>
+            <span class="admin-nav-badge" style="background:#FF2E63;" id="badge-licenses-count">0</span>
+          </a>
+        </li>
+        <li>
           <a class="admin-nav-item" href="#tab-testimonials" onclick="switchAdminTab('tab-testimonials', this); return false;">
             <span>⭐ <span class="nav-text">Testimoni Alumni</span></span>
           </a>
@@ -2988,6 +2994,41 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
                   </tr>
                 </thead>
                 <tbody id="crm-leads-tbody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Lisensi Member (Sesuai Permintaan User: Email, Nama Panggilan, No. WhatsApp, Order ID) -->
+        <div class="admin-tab-content" id="tab-member-licenses">
+          <div class="admin-table-container">
+            <div class="admin-table-header" style="flex-wrap:wrap; gap:12px;">
+              <div>
+                <h3 style="font-size:16px; font-weight:800; color:var(--deep-navy);">🔑 Data Lisensi Member</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Data lisensi akun member resmi yang tersimpan saat profil disimpan (Email, Nama Panggilan, No. WhatsApp, Order ID).</p>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <input type="text" id="search-licenses-input" placeholder="Cari nama, email, WA, Order ID..." class="form-input" style="font-size:12px; padding:6px 12px; width:220px;" oninput="filterMemberLicenses(this.value)">
+                <button class="btn-secondary" style="padding:8px 14px; font-size:12px;" onclick="renderMemberLicensesTable()">
+                  🔄 Refresh
+                </button>
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Nama Panggilan</th>
+                    <th>No. WhatsApp</th>
+                    <th>Order ID</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="crm-licenses-tbody">
                   <!-- Rendered by app.js -->
                 </tbody>
               </table>
@@ -4478,8 +4519,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261104-42"></script>
-  <script defer src="js/app.js?v=20261104-42"></script>
+  <script defer src="js/config.js?v=20261104-43"></script>
+  <script defer src="js/app.js?v=20261104-43"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
@@ -4891,33 +4932,6 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
       <div class="modal-cp-header">
         <h2 class="modal-cp-title" style="font-size:20px; font-weight:800; margin:0 0 6px;">Pengaturan Akun &amp; Lisensi Member</h2>
         <p class="modal-cp-desc" style="font-size:12.5px; margin:0 0 16px;">Kelola profil, nomor WhatsApp terdaftar, dan data lisensi resmi produk digital Anda.</p>
-        
-        <!-- Google Verified & Order ID Card (Item 2 & 3: Dimasukkan ke dalam Pengaturan Akun Sesuai Permintaan) -->
-        <div class="account-verified-order-badge" style="border:1px solid rgba(255,46,99,0.3); border-radius:14px; padding:12px 16px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:12px; text-align:left;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="width:36px; height:36px; border-radius:10px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
-              <svg width="20" height="20" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-              </svg>
-            </div>
-            <div>
-              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                <span style="font-size:13px; font-weight:700;" id="setting-modal-email">daffafazdian50@gmail.com</span>
-                <span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 7px; border-radius:99px;">Google Verified ✓</span>
-              </div>
-              <div style="font-size:11.5px; color:#94A3B8; margin-top:3px;">
-                Order ID: <strong id="setting-modal-order-id" style="color:#FF2E63;">ORD-20261102-214204-9617</strong>
-                <span style="background:#10B981; color:#FFFFFF; font-size:9.5px; font-weight:800; padding:1px 6px; border-radius:99px; margin-left:4px;">Akses Aktif 🟢</span>
-              </div>
-            </div>
-          </div>
-          <button type="button" class="btn-secondary btn-vip-order" onclick="copyVipOrderId()" style="padding:6px 12px; font-size:11px; border-radius:8px; cursor:pointer;" title="Salin Order ID">
-            📋 Salin
-          </button>
-        </div>
       </div>
 
       <form id="form-complete-profile" onsubmit="handleSaveMemberProfile(event)">
