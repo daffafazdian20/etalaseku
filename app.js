@@ -8617,8 +8617,13 @@ function checkAndRenderVipWelcomeCard() {
 }
 
 function copyVipOrderId() {
+  const modalOrderEl = document.getElementById('setting-modal-order-id');
+  const inputOrderEl = document.getElementById('cp-input-order-id');
   const orderEl = document.getElementById('vip-user-order-id');
-  const text = orderEl ? orderEl.textContent.trim() : (localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261028-211630-4012');
+  const text = (modalOrderEl && modalOrderEl.textContent.trim()) || 
+               (inputOrderEl && inputOrderEl.value.trim()) || 
+               (orderEl ? orderEl.textContent.trim() : '') || 
+               (localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617');
   navigator.clipboard.writeText(text).then(() => {
     showToast('Order ID berhasil disalin ke clipboard! 📋');
   }).catch(() => {
@@ -9116,16 +9121,23 @@ function filterMemberHomeCategory(category, btn) {
 window.filterMemberHomeCategory = filterMemberHomeCategory;
 
 function getMemberProfile() {
-  try {
-    const raw = localStorage.getItem('nexstore_member_profile') || localStorage.getItem('etalaseku_member_profile');
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
-  const savedEmail = localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
-  return {
+  let profile = {
     name: 'Daffa',
     whatsapp: '087894602627',
-    email: savedEmail
+    email: localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com',
+    orderId: localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617'
   };
+  try {
+    const raw = localStorage.getItem('nexstore_member_profile') || localStorage.getItem('etalaseku_member_profile');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      profile = { ...profile, ...parsed };
+    }
+  } catch (e) {}
+  if (!profile.orderId) {
+    profile.orderId = localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
+  }
+  return profile;
 }
 window.getMemberProfile = getMemberProfile;
 
@@ -9134,13 +9146,15 @@ function openMemberProfileModal() {
   const inputEmail = document.getElementById('cp-input-email');
   const inputName = document.getElementById('cp-input-name');
   const inputPhone = document.getElementById('cp-input-whatsapp');
+  const inputOrderId = document.getElementById('cp-input-order-id');
 
   const activeEmail = profile.email || localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
-  const activeOrderId = localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
+  const activeOrderId = profile.orderId || localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
 
   if (inputEmail) inputEmail.value = activeEmail;
   if (inputName) inputName.value = profile.name || 'Daffa';
   if (inputPhone) inputPhone.value = profile.whatsapp || '087894602627';
+  if (inputOrderId) inputOrderId.value = activeOrderId;
 
   const badgeEmail = document.getElementById('setting-modal-email');
   if (badgeEmail) badgeEmail.textContent = activeEmail;
@@ -9170,10 +9184,12 @@ function handleSaveMemberProfile(event) {
   const inputEmail = document.getElementById('cp-input-email');
   const inputName = document.getElementById('cp-input-name');
   const inputPhone = document.getElementById('cp-input-whatsapp');
+  const inputOrderId = document.getElementById('cp-input-order-id');
 
   const name = inputName ? inputName.value.trim() : 'Daffa';
   const whatsapp = inputPhone ? inputPhone.value.trim() : '087894602627';
   const email = inputEmail ? inputEmail.value.trim() : (localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com');
+  const orderId = (inputOrderId && inputOrderId.value.trim()) ? inputOrderId.value.trim() : (localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617');
 
   if (!name) {
     if (typeof showToast === 'function') showToast('Nama panggilan wajib diisi!', 'error');
@@ -9183,14 +9199,32 @@ function handleSaveMemberProfile(event) {
     if (typeof showToast === 'function') showToast('Nomor WhatsApp wajib diisi dengan benar (min. 8 digit)!', 'error');
     return;
   }
+  if (!orderId) {
+    if (typeof showToast === 'function') showToast('Order ID wajib diisi!', 'error');
+    return;
+  }
 
-  const profileData = { name, whatsapp, email };
+  const profileData = { name, whatsapp, email, orderId };
   try {
     localStorage.setItem('nexstore_member_profile', JSON.stringify(profileData));
     localStorage.setItem('etalaseku_member_profile', JSON.stringify(profileData));
     localStorage.setItem('nexstore_member_profile_completed', 'true');
     localStorage.setItem('etalaseku_member_email', email);
+    localStorage.setItem('etalaseku_member_order_id', orderId);
+    localStorage.setItem('nexstore_member_order_id', orderId);
   } catch (e) {}
+
+  // Update badge & Order ID in modal and page
+  const badgeOrderId = document.getElementById('setting-modal-order-id');
+  if (badgeOrderId) badgeOrderId.textContent = orderId;
+
+  const vipOrderIdEl = document.getElementById('vip-user-order-id');
+  if (vipOrderIdEl) vipOrderIdEl.textContent = orderId;
+
+  const clsGreetingId = document.getElementById('cls-student-greeting-id');
+  if (clsGreetingId) clsGreetingId.textContent = orderId;
+
+  document.querySelectorAll('.member-order-id').forEach(el => el.textContent = orderId);
 
   // Update UI strings everywhere
   const memberNameEl = document.getElementById('member-display-name');
@@ -9214,7 +9248,7 @@ function handleSaveMemberProfile(event) {
   closeMemberProfileModal();
 
   if (typeof showToast === 'function') {
-    showToast('Profil member berhasil disimpan! Akses telah terbuka 🚀', 'success');
+    showToast('Profil & lisensi Order ID berhasil disimpan! 🚀', 'success');
   }
 
   document.querySelectorAll('.member-display-name').forEach(el => el.textContent = name);
@@ -9223,7 +9257,7 @@ function handleSaveMemberProfile(event) {
   document.querySelectorAll('.member-profile-whatsapp').forEach(el => el.textContent = whatsapp);
   document.querySelectorAll('.member-avatar-initial').forEach(el => el.textContent = name.charAt(0).toUpperCase());
 
-  showMemberAreaDashboard();
+  showMemberAreaDashboard(orderId, email);
 }
 window.handleSaveMemberProfile = handleSaveMemberProfile;
 
