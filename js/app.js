@@ -2925,7 +2925,7 @@ function openAddProductModal() {
   document.getElementById('product-form-title').textContent = 'Tambah Produk Digital Baru 📦';
   document.getElementById('prod-form-id').value = '';
   document.getElementById('prod-form-name').value = '';
-  document.getElementById('prod-form-category').value = 'E-Course Praktis';
+  document.getElementById('prod-form-category').value = '';
   document.getElementById('prod-form-status').value = 'Publish';
   document.getElementById('prod-form-price-normal').value = '';
   document.getElementById('prod-form-price-promo').value = '';
@@ -2946,7 +2946,7 @@ function openEditProductModal(productId) {
   document.getElementById('product-form-title').textContent = 'Edit Produk Digital 📦';
   document.getElementById('prod-form-id').value = p.ID_Produk;
   document.getElementById('prod-form-name').value = p.Nama_Produk;
-  document.getElementById('prod-form-category').value = p.Kategori;
+  document.getElementById('prod-form-category').value = p.Kategori || '';
   document.getElementById('prod-form-status').value = p.Status;
   document.getElementById('prod-form-price-normal').value = p.Harga_Normal;
   document.getElementById('prod-form-price-promo').value = p.Harga_Promo;
@@ -2987,7 +2987,7 @@ async function saveProductForm(e, isInline = false) {
 
     if (isInline) {
       const name = (document.getElementById('inline-prod-name') ? document.getElementById('inline-prod-name').value : '').trim();
-      const cat = document.getElementById('inline-prod-category') ? document.getElementById('inline-prod-category').value : 'Template Bisnis';
+      const cat = (document.getElementById('inline-prod-category') ? document.getElementById('inline-prod-category').value : '').trim() || 'Produk Digital';
       const status = document.getElementById('inline-prod-status') ? document.getElementById('inline-prod-status').value : 'Publish';
       const normalPrice = Number(document.getElementById('inline-prod-normal-price') ? document.getElementById('inline-prod-normal-price').value : 0);
       const promoPrice = Number(document.getElementById('inline-prod-promo-price') ? document.getElementById('inline-prod-promo-price').value : 0);
@@ -3051,7 +3051,7 @@ async function saveProductForm(e, isInline = false) {
 
       const idVal = (document.getElementById('prod-form-id') ? document.getElementById('prod-form-id').value : '').trim();
       const name = (document.getElementById('prod-form-name') ? document.getElementById('prod-form-name').value : '').trim();
-      const cat = document.getElementById('prod-form-category') ? document.getElementById('prod-form-category').value : 'E-Course Praktis';
+      const cat = (document.getElementById('prod-form-category') ? document.getElementById('prod-form-category').value : '').trim() || 'Produk Digital';
       const status = document.getElementById('prod-form-status') ? document.getElementById('prod-form-status').value : 'Publish';
       const normalPrice = Number(document.getElementById('prod-form-price-normal') ? document.getElementById('prod-form-price-normal').value : 0);
       const promoPrice = Number(document.getElementById('prod-form-price-promo') ? document.getElementById('prod-form-price-promo').value : 0);

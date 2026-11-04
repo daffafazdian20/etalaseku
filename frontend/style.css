@@ -12462,3 +12462,194 @@ body.dark-theme .admin-portal-wrapper .modal-card {
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5) !important;
 }
+
+/* ==========================================================================
+   MODAL DIALOGS & CRM EDITORS: 100% COMPLETE DARK & LIGHT MODE RULES (DESAIN UI/UX)
+   Zero white background leaks, full automatic reactivity
+   ========================================================================== */
+
+/* 1. Modal Overlay & Cards (General) */
+[data-theme="dark"] .modal-overlay,
+body.dark-theme .modal-overlay {
+  background: rgba(0, 0, 0, 0.78) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+[data-theme="dark"] .modal-card,
+body.dark-theme .modal-card {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65) !important;
+}
+
+[data-theme="dark"] .modal-card h1,
+[data-theme="dark"] .modal-card h2,
+[data-theme="dark"] .modal-card h3,
+[data-theme="dark"] .modal-card h4,
+[data-theme="dark"] .modal-card .form-label,
+body.dark-theme .modal-card h1,
+body.dark-theme .modal-card h2,
+body.dark-theme .modal-card h3,
+body.dark-theme .modal-card h4,
+body.dark-theme .modal-card .form-label {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .modal-card p,
+[data-theme="dark"] .modal-card span,
+[data-theme="dark"] .modal-card small,
+body.dark-theme .modal-card p,
+body.dark-theme .modal-card span,
+body.dark-theme .modal-card small {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .modal-card .form-input,
+[data-theme="dark"] .modal-card input,
+[data-theme="dark"] .modal-card select,
+[data-theme="dark"] .modal-card textarea,
+body.dark-theme .modal-card .form-input,
+body.dark-theme .modal-card input,
+body.dark-theme .modal-card select,
+body.dark-theme .modal-card textarea {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .modal-close-btn,
+body.dark-theme .modal-close-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #CBD5E1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .modal-close-btn:hover,
+body.dark-theme .modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #FFFFFF !important;
+}
+
+/* 2. Foto 1: Modal Admin Login */
+[data-theme="dark"] #modal-admin-login .modal-card,
+body.dark-theme #modal-admin-login .modal-card {
+  background: #131F37 !important;
+  border: 1.5px solid rgba(255, 46, 99, 0.4) !important;
+}
+
+[data-theme="dark"] #modal-admin-login input,
+body.dark-theme #modal-admin-login input {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+/* 3. Foto 4: Modal Showcase Form (Input Manual Hasil Karya Siswa) */
+[data-theme="dark"] #modal-showcase-form .modal-header-banner,
+[data-theme="dark"] #modal-showcase-form .modal-footer-banner,
+body.dark-theme #modal-showcase-form .modal-header-banner,
+body.dark-theme #modal-showcase-form .modal-footer-banner {
+  background: #0F1A34 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] #modal-showcase-form .modal-header-banner,
+[data-theme="light"] #modal-showcase-form .modal-footer-banner,
+body.light-theme #modal-showcase-form .modal-header-banner,
+body.light-theme #modal-showcase-form .modal-footer-banner {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+/* 4. Foto 5: Modal Modul Editor & Kurikulum (crm-module-editor-dialog) */
+[data-theme="dark"] .crm-module-editor-dialog,
+body.dark-theme .crm-module-editor-dialog {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .crm-meditor-header,
+[data-theme="dark"] .crm-meditor-footer,
+body.dark-theme .crm-meditor-header,
+body.dark-theme .crm-meditor-footer {
+  background: #0F1A34 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-meditor-body,
+body.dark-theme .crm-meditor-body {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-editor-section,
+body.dark-theme .crm-editor-section {
+  background: #0B132B !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-editor-sec-title,
+body.dark-theme .crm-editor-sec-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .mod-type-pill,
+body.dark-theme .mod-type-pill {
+  background: #0B132B !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .mod-type-pill.active,
+body.dark-theme .mod-type-pill.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.35) !important;
+}
+
+[data-theme="dark"] .crm-module-editor-dialog input,
+[data-theme="dark"] .crm-module-editor-dialog select,
+[data-theme="dark"] .crm-module-editor-dialog textarea,
+body.dark-theme .crm-module-editor-dialog input,
+body.dark-theme .crm-module-editor-dialog select,
+body.dark-theme .crm-module-editor-dialog textarea {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+/* Light Mode Rules for Editor Dialog */
+[data-theme="light"] .crm-module-editor-dialog,
+body.light-theme .crm-module-editor-dialog {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .crm-meditor-header,
+[data-theme="light"] .crm-meditor-footer,
+body.light-theme .crm-meditor-header,
+body.light-theme .crm-meditor-footer {
+  background: #FFFFFF !important;
+  border-color: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .crm-meditor-body,
+body.light-theme .crm-meditor-body {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .crm-editor-section,
+body.light-theme .crm-editor-section {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
