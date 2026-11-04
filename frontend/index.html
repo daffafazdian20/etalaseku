@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261103-10">
+  <link rel="stylesheet" href="css/style.css?v=20261104-39">
 </head>
 <body>
 
@@ -1171,52 +1171,6 @@
         <p id="testi-modal-quote" style="font-size:14px; color:var(--text-main); line-height:1.6; font-style:italic;">-</p>
       </div>
       <button class="btn-secondary" style="width:100%;" onclick="closeAllModals()">Tutup Cerita</button>
-    </div>
-  </div>
-
-  <!-- Modal Cek Tagihan Siswa (gas-tagihan-pembayaran) -->
-  <div class="modal-overlay" id="modal-student-bills">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
-      <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Cek & Bayar Tagihan Siswa 💳</h3>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Periksa status SPP, biaya bimbingan, atau cicilan modul kelas Anda.</p>
-
-      <form onsubmit="checkStudentBills(event)">
-        <div class="form-group">
-          <label class="form-label">Masukkan No. WhatsApp Terdaftar</label>
-          <div style="display:flex; gap:8px;">
-            <input type="tel" id="bill-check-phone" required class="form-input" placeholder="08123456789">
-            <button type="submit" class="shimmer-btn" style="padding:10px 18px; font-size:13px; white-space:nowrap;">Cari Tagihan 🔍</button>
-          </div>
-        </div>
-      </form>
-
-      <div id="student-bills-list" style="margin-top:20px;">
-        <!-- List tagihan akan di-render di sini -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Unggah Bukti Bayar Tagihan Siswa -->
-  <div class="modal-overlay" id="modal-pay-bill">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
-      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:6px;">Upload Bukti Bayar Tagihan</h3>
-      <form onsubmit="submitStudentBillProof(event)">
-        <div class="form-group">
-          <label class="form-label">ID Tagihan</label>
-          <input type="text" id="pay-bill-id" readonly class="form-input" style="background:#F1F5F9;">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Total yang Harus Dibayar</label>
-          <input type="text" id="pay-bill-nominal" readonly class="form-input" style="background:#F1F5F9; font-weight:800; color:var(--primary-pink);">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Unggah Foto Bukti Transfer</label>
-          <input type="file" id="pay-bill-proof" accept="image/*" required class="form-input">
-        </div>
-        <button type="submit" class="shimmer-btn" style="width:100%; padding:14px; font-size:14px;">Kirim Bukti Pembayaran 🚀</button>
-      </form>
     </div>
   </div>
 
@@ -3139,7 +3093,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
         <div class="admin-tab-content" id="tab-settings">
           <div style="display:grid; grid-template-columns:1fr; gap:24px; max-width:860px;">
             <!-- Panel 1: Konfigurasi Metode Pembayaran Otomatis Server -->
-            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:28px; box-shadow:var(--shadow-card);">
+            <div class="crm-setting-panel" style="border-radius:20px; padding:28px; box-shadow:var(--shadow-card);">
               <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
                 <div>
                   <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy);">Metode Pembayaran Otomatis Server ⚡</h3>
@@ -3354,7 +3308,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
             </div>
 
             <!-- Panel 2: Teks Promo & Informasi Situs (Terhubung Langsung ke Halaman Utama) -->
-            <div class="site-settings-panel-card" style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:28px; box-shadow:var(--shadow-card);">
+            <div class="site-settings-panel-card crm-setting-panel" style="border-radius:20px; padding:28px; box-shadow:var(--shadow-card);">
               <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid #F1F5F9;">
                 <div>
                   <h3 style="font-size:18px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">Pengaturan Banner Promo &amp; Kontak Situs</h3>
@@ -3434,7 +3388,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
           <div style="display:flex; flex-direction:column; gap:24px; max-width:850px;">
             
             <!-- CARD 1: KREDENSIAL AKUN SAAT INI & TRANSPARANSI SANDI -->
-            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:24px 26px; box-shadow:var(--shadow-card);">
+            <div class="crm-setting-panel" style="border-radius:20px; padding:24px 26px; box-shadow:var(--shadow-card);">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #F1F5F9; flex-wrap:wrap; gap:10px;">
                 <div>
                   <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">🔑 Sandi &amp; Akun Sesi Aktif</h3>
@@ -3503,7 +3457,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
             </div>
 
             <!-- CARD 2: TAMBAH AKUN PENGELOLA BARU (INPUT MANUAL EMAIL GOOGLE & SANDI) -->
-            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:24px 26px; box-shadow:var(--shadow-card);">
+            <div class="crm-setting-panel" style="border-radius:20px; padding:24px 26px; box-shadow:var(--shadow-card);">
               <div style="margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #F1F5F9;">
                 <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">➕ Tambah Akun Pengelola Baru (Email Google &amp; Sandi Manual)</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin:0;">Daftarkan email Google admin baru (tidak terbatas 1 email) beserta peran dan sandi yang dapat diotak-atik secara manual.</p>
@@ -3540,7 +3494,7 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
             </div>
 
             <!-- CARD 3: DAFTAR SEMUA AKUN SUPER ADMIN & ADMIN TERDAFTAR -->
-            <div style="background:#FFFFFF; border-radius:20px; border:1px solid #E2E8F0; padding:24px 26px; box-shadow:var(--shadow-card);">
+            <div class="crm-setting-panel" style="border-radius:20px; padding:24px 26px; box-shadow:var(--shadow-card);">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #F1F5F9; flex-wrap:wrap; gap:8px;">
                 <div>
                   <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px;">👥 Seluruh Akun Super Admin &amp; Admin Terdaftar</h3>
@@ -3778,49 +3732,6 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
         </div>
         <button type="submit" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px;">
           Simpan Testimoni ⭐
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ========================================================================
-       MODAL TERBITKAN TAGIHAN / CICILAN SISWA (gas-tagihan-pembayaran)
-       ======================================================================== -->
-  <div class="modal-overlay" id="modal-create-bill">
-    <div class="modal-card" style="max-width:540px;">
-      <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
-      <h3 style="font-size:20px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Terbitkan Tagihan Cicilan Siswa 💳</h3>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Tagihan ini akan tercatat di sistem dan dapat dilihat siswa melalui menu Cek Tagihan.</p>
-      
-      <form onsubmit="handleCreateBillForm(event)">
-        <div class="form-group">
-          <label class="form-label">Nama Siswa / Pembeli *</label>
-          <input type="text" id="bill-form-name" required class="form-input" placeholder="Contoh: Budi Santoso">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nomor WhatsApp Siswa (Diawali 62/08) *</label>
-          <input type="tel" id="bill-form-phone" required class="form-input" placeholder="Contoh: 08123456789">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nama Modul / Produk Tagihan *</label>
-          <input type="text" id="bill-form-title" required class="form-input" placeholder="Contoh: GAS Pro Web App Masterclass (Cicilan 2 dari 2)">
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-          <div class="form-group">
-            <label class="form-label">Nominal Tagihan (Rp) *</label>
-            <input type="number" id="bill-form-amount" required class="form-input" placeholder="Contoh: 49500">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tanggal Jatuh Tempo *</label>
-            <input type="date" id="bill-form-due" required class="form-input">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Catatan Tambahan untuk Siswa</label>
-          <input type="text" id="bill-form-notes" class="form-input" placeholder="Pelunasan modul tahap 2">
-        </div>
-        <button type="submit" id="btn-submit-bill" class="shimmer-btn" style="width:100%; padding:14px; font-size:15px;">
-          Terbitkan Tagihan Sekarang 🚀
         </button>
       </form>
     </div>
@@ -4324,8 +4235,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261103-10"></script>
-  <script defer src="js/app.js?v=20261103-10"></script>
+  <script defer src="js/config.js?v=20261104-39"></script>
+  <script defer src="js/app.js?v=20261104-39"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
@@ -4423,10 +4334,6 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
       <span>Ruang Belajar</span>
       <span class="bottom-nav-dot" id="bnav-classroom-dot" style="display:none;"></span>
-    </button>
-    <button type="button" class="mobile-bottom-nav-item" id="bnav-bills" onclick="handleBottomNavTab('tagihan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      <span>Tagihan</span>
     </button>
     <button type="button" class="mobile-bottom-nav-item" id="bnav-cs" onclick="handleBottomNavTab('cs')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>

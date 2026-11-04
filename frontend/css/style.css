@@ -13554,3 +13554,123 @@ body.theme-dark .qris-display-card,
     border-color: rgba(255, 255, 255, 0.12) !important;
   }
 }
+
+
+/* ============================================================================
+   TURN 38 / 39 ENHANCEMENTS: DARK MODE FOR CRM PANELS & CHECKOUT PROOF DROPZONE
+   Sesuai Palet Resmi DESAIN UI/UX
+   ============================================================================ */
+
+/* CRM Setting Panel */
+.crm-setting-panel {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: var(--deep-navy, #0F172A);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+[data-theme="dark"] .crm-setting-panel,
+body.dark-theme .crm-setting-panel,
+body.theme-dark .crm-setting-panel,
+.dark-mode .crm-setting-panel {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-setting-panel h3,
+body.dark-theme .crm-setting-panel h3,
+[data-theme="dark"] .crm-setting-panel strong,
+body.dark-theme .crm-setting-panel strong {
+  color: #FFFFFF !important;
+}
+
+/* Payment Setting Cards in CRM */
+[data-theme="dark"] .payment-setting-card,
+body.dark-theme .payment-setting-card,
+body.theme-dark .payment-setting-card,
+.dark-mode .payment-setting-card {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .payment-setting-card .payment-setting-header,
+body.dark-theme .payment-setting-card .payment-setting-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .payment-setting-card .payment-setting-header strong,
+body.dark-theme .payment-setting-card .payment-setting-header strong {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .payment-setting-card .form-label,
+body.dark-theme .payment-setting-card .form-label {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .payment-setting-card .form-input,
+body.dark-theme .payment-setting-card .form-input {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #qris-admin-preview-img {
+  background: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Site Settings Panel in CRM */
+[data-theme="dark"] .site-settings-panel-card,
+body.dark-theme .site-settings-panel-card,
+body.theme-dark .site-settings-panel-card,
+.dark-mode .site-settings-panel-card {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .site-setting-field-box,
+body.dark-theme .site-setting-field-box {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .site-setting-label-row label,
+body.dark-theme .site-setting-label-row label {
+  color: #F8FAFC !important;
+}
+
+/* Checkout Modal Proof Guide & Dropzone Dark Mode Enforcement */
+[data-theme="dark"] #modal-checkout .checkout-proof-guide-box,
+body.dark-theme #modal-checkout .checkout-proof-guide-box,
+body.theme-dark #modal-checkout .checkout-proof-guide-box,
+.dark-mode #modal-checkout .checkout-proof-guide-box {
+  background: #0B132B !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #modal-checkout .checkout-proof-dropzone,
+body.dark-theme #modal-checkout .checkout-proof-dropzone,
+body.theme-dark #modal-checkout .checkout-proof-dropzone,
+.dark-mode #modal-checkout .checkout-proof-dropzone {
+  background: #0B132B !important;
+  border: 2px dashed rgba(255, 255, 255, 0.2) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #modal-checkout .checkout-proof-dropzone:hover,
+body.dark-theme #modal-checkout .checkout-proof-dropzone:hover {
+  background: #131F37 !important;
+  border-color: #FF2E63 !important;
+}
+
+[data-theme="dark"] #crm-footer-logo-preview-box,
+body.dark-theme #crm-footer-logo-preview-box {
+  background: #0B132B !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}

@@ -8435,7 +8435,7 @@ window.updateHeroCtaButtons = updateHeroCtaButtons;
 
 function handleBottomNavTab(tab) {
   // Update active states
-  const tabs = ['home', 'classroom', 'bills', 'cs'];
+  const tabs = ['home', 'classroom', 'cs'];
   tabs.forEach(t => {
     const el = document.getElementById('bnav-' + t);
     if (el) el.classList.remove('active');
@@ -8455,10 +8455,6 @@ function handleBottomNavTab(tab) {
     else window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (tab === 'classroom') {
     openClassroomDashboardOrLogin();
-  } else if (tab === 'tagihan') {
-    closeAllModals();
-    const billsModal = document.getElementById('modal-student-bills');
-    if (billsModal) billsModal.classList.add('active');
   } else if (tab === 'cs') {
     const wa = getActiveWaCsNumber();
     const url = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Halo Admin EtalaseKu Hub, saya butuh bantuan terkait produk & pembelajaran.');
@@ -9415,18 +9411,8 @@ function renderMainMemberDashboardModules(filterCategory, searchQuery) {
   }
 
   // Point 2: Filter modul berdasarkan Order ID & Email Member yang sedang aktif
-  // Siswa dengan Order ID Kumpulan PRD hanya menampilkan 1 modul miliknya (Sesuai Alur Sistem Foto 1 & 2)
-  const activeOrderId = localStorage.getItem('etalaseku_member_order_id') || 'ORD-20261102-214204-9617';
-  const activeEmail = localStorage.getItem('etalaseku_member_email') || 'daffafazdian50@gmail.com';
-
-  let memberModules = [];
-  if (typeof filterModulesForCurrentStudent === 'function') {
-    memberModules = filterModulesForCurrentStudent(allModules, activeOrderId, activeEmail);
-  }
-  if (!Array.isArray(memberModules) || memberModules.length === 0) {
-    // Tampilkan seluruh katalog produk / modul yang ada di database CRM tanpa pembatasan 1 produk
-    memberModules = allModules;
-  }
+  // Turn 38: Tampilkan seluruh produk & modul dari database CRM tanpa dibatasi hanya 1 produk (Responsif HP & Desktop)
+  let memberModules = allModules;
 
   const totalCount = memberModules.length;
   let kelasCount = 0;
