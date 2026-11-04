@@ -4492,6 +4492,7 @@ function handleRedeemAccessCodeForm(e) {
   if (!code.toUpperCase().startsWith('ORD-') && !code.toUpperCase().startsWith('DEMO')) {
     code = 'ORD-' + code;
   }
+  code = code.toUpperCase();
 
   // Cek status Order ID di daftar pesanan
   const orders = getMergedOrdersList();
