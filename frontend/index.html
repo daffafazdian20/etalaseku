@@ -7,6 +7,21 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>NexStore Produk Digital - by @daffafazdian.id</title>
+    <!-- Immediate Theme Engine: Eliminates Flash & Runs Automatically from System OS Preference -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('nexstore_theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark-theme');
+        } else {
+          document.documentElement.classList.remove('dark-theme');
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="description" content="NexStore Produk Digital - by @daffafazdian.id. Platform e-commerce produk digital, kelas online, dan sistem otomasi penjualan instan berbasis Google Apps Script & Sheets.">
   
   <!-- App Favicon & Web Icons -->
@@ -966,11 +981,11 @@
       <h3 style="font-size:22px; font-weight:800; color:var(--deep-navy); margin-bottom:4px;">Checkout Instan ⚡</h3>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Selesaikan pesanan Anda dalam 60 detik.</p>
 
-      <div style="background:#F8FAFC; border-radius:14px; padding:16px; margin-bottom:16px; border:1px solid #E2E8F0;">
-        <div style="font-weight:700; color:var(--deep-navy);" id="checkout-product-title">GAS Pro Web App Masterclass</div>
+      <div class="checkout-product-card-wrap">
+        <div class="checkout-product-card-title" id="checkout-product-title">GAS Pro Web App Masterclass</div>
         <div style="display:flex; align-items:baseline; justify-content:space-between; margin-top:4px;">
-          <div style="font-size:22px; font-weight:800; color:var(--primary-pink);" id="checkout-product-price">Rp 99.000</div>
-          <span style="font-size:11px; background:#DCFCE7; color:#166534; font-weight:700; padding:2px 8px; border-radius:99px;" id="checkout-installment-badge">Akses Seumur Hidup</span>
+          <div class="checkout-product-card-price" id="checkout-product-price">Rp 99.000</div>
+          <span class="checkout-product-card-badge" id="checkout-installment-badge">Akses Seumur Hidup</span>
         </div>
       </div>
 

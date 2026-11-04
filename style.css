@@ -12878,3 +12878,396 @@ body.dark-theme .nav-links a {
     font-size: 11px !important;
   }
 }
+
+
+/* ==========================================================================
+   TURN 37: 100% COMPREHENSIVE AUTOMATIC DARK & LIGHT MODE FOR ENTIRE SITE & ALL MODALS
+   Following Warm Pastel Tech Design Palette (DESAIN UI/UX)
+   ========================================================================== */
+
+/* ALL MODALS IN DARK MODE */
+[data-theme="dark"] .modal-overlay,
+body.dark-theme .modal-overlay {
+  background: rgba(4, 7, 16, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+[data-theme="dark"] .modal-card,
+body.dark-theme .modal-card,
+[data-theme="dark"] .compact-modal,
+body.dark-theme .compact-modal {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7) !important;
+}
+
+[data-theme="dark"] .modal-card h1,
+[data-theme="dark"] .modal-card h2,
+[data-theme="dark"] .modal-card h3,
+[data-theme="dark"] .modal-card h4,
+body.dark-theme .modal-card h1,
+body.dark-theme .modal-card h2,
+body.dark-theme .modal-card h3,
+body.dark-theme .modal-card h4 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .modal-card p,
+body.dark-theme .modal-card p {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .modal-card .form-label,
+body.dark-theme .modal-card .form-label,
+[data-theme="dark"] .modal-card label,
+body.dark-theme .modal-card label {
+  color: #E2E8F0 !important;
+}
+
+[data-theme="dark"] .modal-card .form-input,
+[data-theme="dark"] .modal-card input,
+[data-theme="dark"] .modal-card select,
+[data-theme="dark"] .modal-card textarea,
+body.dark-theme .modal-card .form-input,
+body.dark-theme .modal-card input,
+body.dark-theme .modal-card select,
+body.dark-theme .modal-card textarea {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .modal-card .form-input:focus,
+[data-theme="dark"] .modal-card input:focus,
+[data-theme="dark"] .modal-card select:focus,
+[data-theme="dark"] .modal-card textarea:focus,
+body.dark-theme .modal-card .form-input:focus,
+body.dark-theme .modal-card input:focus,
+body.dark-theme .modal-card select:focus,
+body.dark-theme .modal-card textarea:focus {
+  border-color: #FF2E63 !important;
+  box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.2) !important;
+  outline: none !important;
+}
+
+[data-theme="dark"] .modal-card .btn-secondary,
+body.dark-theme .modal-card .btn-secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .modal-card .btn-secondary:hover,
+body.dark-theme .modal-card .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #FF2E63 !important;
+  color: #FF2E63 !important;
+}
+
+[data-theme="dark"] .modal-close-btn,
+body.dark-theme .modal-close-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #CBD5E1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .modal-close-btn:hover,
+body.dark-theme .modal-close-btn:hover {
+  background: rgba(255, 46, 99, 0.15) !important;
+  color: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+}
+
+/* ==========================================================================
+   CHECKOUT INSTAN MODAL (#modal-checkout) - COMPLETE LIGHT & DARK THEME
+   ========================================================================== */
+
+/* 1. PRODUCT SUMMARY CARD */
+.checkout-product-card-wrap {
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.25s ease;
+}
+
+.checkout-product-card-title {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.checkout-product-card-price {
+  font-size: 22px;
+  font-weight: 800;
+  color: #FF2E63;
+}
+
+.checkout-product-card-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+/* Light Mode: Product Summary */
+[data-theme="light"] .checkout-product-card-wrap,
+body.light-theme .checkout-product-card-wrap,
+body:not(.dark-theme) .checkout-product-card-wrap {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+}
+
+[data-theme="light"] .checkout-product-card-title,
+body.light-theme .checkout-product-card-title,
+body:not(.dark-theme) .checkout-product-card-title {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .checkout-product-card-badge,
+body.light-theme .checkout-product-card-badge,
+body:not(.dark-theme) .checkout-product-card-badge {
+  background: #DCFCE7 !important;
+  color: #166534 !important;
+}
+
+/* Dark Mode: Product Summary */
+[data-theme="dark"] .checkout-product-card-wrap,
+body.dark-theme .checkout-product-card-wrap {
+  background: #0B132B !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .checkout-product-card-title,
+body.dark-theme .checkout-product-card-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .checkout-product-card-badge,
+body.dark-theme .checkout-product-card-badge {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+/* 2. SKEMA PEMBAYARAN TOGGLE */
+/* Light Mode */
+[data-theme="light"] .plan-toggle-container,
+body.light-theme .plan-toggle-container,
+body:not(.dark-theme) .plan-toggle-container {
+  background: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+[data-theme="light"] .plan-toggle-btn,
+body.light-theme .plan-toggle-btn,
+body:not(.dark-theme) .plan-toggle-btn {
+  color: #64748B !important;
+  background: transparent !important;
+}
+
+[data-theme="light"] .plan-toggle-btn.active,
+body.light-theme .plan-toggle-btn.active,
+body:not(.dark-theme) .plan-toggle-btn.active {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1px solid #CBD5E1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  font-weight: 800 !important;
+}
+
+/* Dark Mode */
+[data-theme="dark"] .plan-toggle-container,
+body.dark-theme .plan-toggle-container {
+  background: #0B132B !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .plan-toggle-btn,
+body.dark-theme .plan-toggle-btn {
+  color: #94A3B8 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+[data-theme="dark"] .plan-toggle-btn.active,
+body.dark-theme .plan-toggle-btn.active {
+  background: #1E293B !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid #FF2E63 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="dark"] #checkout-plan-note,
+body.dark-theme #checkout-plan-note {
+  color: #94A3B8 !important;
+}
+
+/* 3. PAYMENT CHANNEL PILL BUTTONS */
+/* Light Mode */
+[data-theme="light"] .channel-pill-btn,
+body.light-theme .channel-pill-btn,
+body:not(.dark-theme) .channel-pill-btn {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .channel-pill-btn .channel-name,
+body.light-theme .channel-pill-btn .channel-name,
+body:not(.dark-theme) .channel-pill-btn .channel-name {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .channel-pill-btn .channel-sub,
+body.light-theme .channel-pill-btn .channel-sub,
+body:not(.dark-theme) .channel-pill-btn .channel-sub {
+  color: #64748B !important;
+}
+
+[data-theme="light"] .channel-pill-btn.active,
+body.light-theme .channel-pill-btn.active,
+body:not(.dark-theme) .channel-pill-btn.active {
+  background: #FFF1F4 !important;
+  border-color: #FF2E63 !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.25) !important;
+}
+
+[data-theme="light"] .channel-pill-btn.active .channel-name,
+body.light-theme .channel-pill-btn.active .channel-name,
+body:not(.dark-theme) .channel-pill-btn.active .channel-name {
+  color: #FF2E63 !important;
+}
+
+/* Dark Mode */
+[data-theme="dark"] .channel-pill-btn,
+body.dark-theme .channel-pill-btn {
+  background: #0B132B !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .channel-pill-btn .channel-name,
+body.dark-theme .channel-pill-btn .channel-name {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .channel-pill-btn .channel-sub,
+body.dark-theme .channel-pill-btn .channel-sub {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .channel-pill-btn.active,
+body.dark-theme .channel-pill-btn.active {
+  background: rgba(255, 46, 99, 0.18) !important;
+  border-color: #FF2E63 !important;
+  box-shadow: 0 4px 16px rgba(255, 46, 99, 0.35) !important;
+}
+
+[data-theme="dark"] .channel-pill-btn.active .channel-name,
+body.dark-theme .channel-pill-btn.active .channel-name {
+  color: #FF2E63 !important;
+}
+
+/* 4. PAYMENT DETAILS BOX (Rekening, QRIS, & Copy) */
+/* Light Mode */
+[data-theme="light"] .payment-details-box,
+body.light-theme .payment-details-box,
+body:not(.dark-theme) .payment-details-box {
+  background: #FFF1F4 !important;
+  border: 1.5px solid #FCE7F3 !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .payment-rekening-row,
+body.light-theme .payment-rekening-row,
+body:not(.dark-theme) .payment-rekening-row {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .payment-rekening-num,
+body.light-theme .payment-rekening-num,
+body:not(.dark-theme) .payment-rekening-num {
+  color: #0F172A !important;
+}
+
+/* Dark Mode */
+[data-theme="dark"] .payment-details-box,
+body.dark-theme .payment-details-box {
+  background: #0B132B !important;
+  border: 1.5px solid rgba(255, 46, 99, 0.35) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .payment-rekening-row,
+body.dark-theme .payment-rekening-row {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .payment-rekening-num,
+body.dark-theme .payment-rekening-num {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .payment-details-box div,
+[data-theme="dark"] .payment-details-box span,
+[data-theme="dark"] .payment-details-box strong,
+[data-theme="dark"] .payment-details-box p,
+body.dark-theme .payment-details-box div,
+body.dark-theme .payment-details-box span,
+body.dark-theme .payment-details-box strong,
+body.dark-theme .payment-details-box p {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .payment-details-box .text-muted,
+body.dark-theme .payment-details-box .text-muted {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .payment-details-box button.btn-secondary,
+body.dark-theme .payment-details-box button.btn-secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .payment-details-box button.btn-secondary:hover,
+body.dark-theme .payment-details-box button.btn-secondary:hover {
+  background: rgba(255, 46, 99, 0.2) !important;
+  border-color: #FF2E63 !important;
+  color: #FF2E63 !important;
+}
+
+/* 5. TAGIHAN SISWA MODALS (#modal-student-bills & #modal-pay-bill) */
+[data-theme="dark"] #modal-student-bills .student-bill-card,
+body.dark-theme #modal-student-bills .student-bill-card,
+[data-theme="dark"] #modal-pay-bill .bill-summary-box,
+body.dark-theme #modal-pay-bill .bill-summary-box {
+  background: #0B132B !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #modal-student-bills .student-bill-card h4,
+[data-theme="dark"] #modal-student-bills .student-bill-card strong,
+body.dark-theme #modal-student-bills .student-bill-card h4,
+body.dark-theme #modal-student-bills .student-bill-card strong {
+  color: #FFFFFF !important;
+}
+
+/* 6. REDEEM & AUTH MODALS IN DARK MODE */
+[data-theme="dark"] #modal-redeem-code .modal-card,
+[data-theme="dark"] #modal-member-login .modal-card,
+[data-theme="dark"] #modal-complete-profile .modal-card,
+body.dark-theme #modal-redeem-code .modal-card,
+body.dark-theme #modal-member-login .modal-card,
+body.dark-theme #modal-complete-profile .modal-card {
+  background: #131F37 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+}

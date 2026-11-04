@@ -9420,7 +9420,9 @@ window.renderMainMemberDashboardModules = renderMainMemberDashboardModules;
 // ============================================================================
 function initAppTheme() {
   let theme = localStorage.getItem('nexstore_theme');
-  if (!theme) {
+  const hasManual = localStorage.getItem('nexstore_theme_manual') === 'true';
+
+  if (!theme || !hasManual) {
     // Berjalan otomatis: deteksi preferensi sistem OS / browser
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       theme = 'dark';
@@ -9433,11 +9435,17 @@ function initAppTheme() {
   // Listener otomatis jika user merubah preferensi tema di level OS / browser
   if (window.matchMedia) {
     try {
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const listener = e => {
         if (!localStorage.getItem('nexstore_theme_manual')) {
           applyAppTheme(e.matches ? 'dark' : 'light');
         }
-      });
+      };
+      if (mq.addEventListener) {
+        mq.addEventListener('change', listener);
+      } else if (mq.addListener) {
+        mq.addListener(listener);
+      }
     } catch(err) {}
   }
 }
@@ -9445,10 +9453,15 @@ function initAppTheme() {
 function applyAppTheme(theme) {
   const isDark = theme === 'dark';
   document.documentElement.setAttribute('data-theme', theme);
+  document.body.setAttribute('data-theme', theme);
   if (isDark) {
+    document.documentElement.classList.add('dark-theme');
+    document.documentElement.classList.remove('light-theme');
     document.body.classList.add('dark-theme');
     document.body.classList.remove('light-theme');
   } else {
+    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.classList.add('light-theme');
     document.body.classList.remove('dark-theme');
     document.body.classList.add('light-theme');
   }
