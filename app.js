@@ -4835,10 +4835,14 @@ function updateMemberClassroomNavbar(orderId, email) {
   const displayUser = email || orderId;
 
   if (displayUser) {
-    if (navItem) navItem.style.display = 'inline-block';
-    if (navPill) navPill.style.display = 'flex';
-    if (navLoginBtn) navLoginBtn.style.display = 'none';
-    if (navRedeemBtn) navRedeemBtn.style.display = 'none';
+    // Sesuai Permintaan User: Tombol RuangBelajarKu & Dashboard Belajar di navbar dihilangkan agar rapi & tidak memanjang
+    if (navItem) navItem.style.display = 'none';
+    if (navPill) navPill.style.display = 'none';
+    if (navLoginBtn) {
+      navLoginBtn.style.display = 'inline-flex';
+      navLoginBtn.innerHTML = '➔] Member Area';
+    }
+    if (navRedeemBtn) navRedeemBtn.style.display = 'inline-flex';
     
     if (badgeText) {
       badgeText.textContent = displayUser.length > 20 ? (displayUser.slice(0, 18) + '...') : displayUser;
@@ -8449,6 +8453,50 @@ window.copyClassroomPortalLink = copyClassroomPortalLink;
 // ============================================================================
 // VIP MEMBER WELCOME & ANNOUNCEMENT VOUCHER CONTROLS (Items 1, 2, 6)
 // ============================================================================
+function getMemberDisplayName() {
+  const savedOrderId = (localStorage.getItem('etalaseku_member_order_id') || '').trim();
+  const savedEmail = (localStorage.getItem('etalaseku_member_email') || '').trim().toLowerCase();
+
+  // 1. Cari data nama pembeli dari pesanan yang sudah dibeli
+  const orders = typeof getMergedOrdersList === 'function' ? getMergedOrdersList() : [];
+  const matchedOrder = orders.find(o => 
+    (savedOrderId && (o.ID_Order === savedOrderId || o.orderId === savedOrderId)) ||
+    (savedEmail && ((o.Email || o.email || '').toLowerCase() === savedEmail))
+  );
+
+  if (matchedOrder) {
+    const rawName = matchedOrder.Nama || matchedOrder.nama || matchedOrder.Nama_Pembeli || matchedOrder.buyerName || matchedOrder.name || '';
+    if (rawName && rawName.trim()) {
+      return formatNameTitleCase(rawName.trim());
+    }
+  }
+
+  // 2. Cek profile di localStorage
+  try {
+    const rawProfile = localStorage.getItem('etalaseku_member_profile');
+    if (rawProfile) {
+      const parsed = JSON.parse(rawProfile);
+      if (parsed && parsed.name && parsed.name.trim()) {
+        return formatNameTitleCase(parsed.name.trim());
+      }
+    }
+  } catch (e) {}
+
+  // 3. Fallback nama dari email
+  if (savedEmail) {
+    const prefix = savedEmail.split('@')[0];
+    const cleanPrefix = prefix.replace(/[0-9_.-]+$/g, '');
+    if (cleanPrefix) return formatNameTitleCase(cleanPrefix);
+  }
+
+  return 'Daffa';
+}
+
+function formatNameTitleCase(str) {
+  if (!str) return '';
+  return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+}
+
 function checkAndRenderVipWelcomeCard() {
   const card = document.getElementById('vip-member-welcome-card');
   if (!card) return;
@@ -8460,19 +8508,11 @@ function checkAndRenderVipWelcomeCard() {
   if (savedOrderId || savedEmail) {
     card.style.display = 'block';
 
-    const profile = typeof getMemberProfile === 'function' ? getMemberProfile() : { name: 'Daffa' };
-    const displayName = profile.name || (savedEmail ? savedEmail.split('@')[0] : 'Daffa');
-    const activeEmail = savedEmail || 'daffafazdian50@gmail.com';
-    const activeOrderId = savedOrderId || 'ORD-20261102-214204-9617';
+    const displayName = getMemberDisplayName();
 
-    const nameEl = document.getElementById('vip-user-display-name');
-    if (nameEl) nameEl.textContent = displayName;
-
-    const orderEl = document.getElementById('vip-user-order-id');
-    if (orderEl) orderEl.textContent = activeOrderId;
-
-    const emailEl = document.getElementById('vip-user-email-text');
-    if (emailEl) emailEl.textContent = activeEmail;
+    document.querySelectorAll('.member-display-name, #vip-user-display-name').forEach(el => {
+      el.textContent = displayName;
+    });
   } else {
     card.style.display = 'none';
   }

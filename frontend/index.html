@@ -84,16 +84,11 @@
     </a>
     <ul class="nav-links" id="main-nav-links">
       <li><a href="#hero">Beranda</a></li>
-      <li><a href="#bootcamp">Bootcamp &amp; Kelas Live</a></li>
+      <li><a href="#bootcamp">Bootcamp</a></li>
             <li><a href="#produk">Katalog Produk</a></li>
       <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Member</a></li>
       <li><a href="#testimoni">Testimoni</a></li>
-      <!-- Navigasi Khusus Member Classroom (Otomatis Muncul Ketika Siswa Sudah Memiliki Order ID) -->
-      <li id="nav-item-member-classroom" style="display:none;">
-        <a href="#classroom" onclick="openClassroomDashboard(); return false;" style="color:var(--coral-pink); font-weight:800; background:#FFF1F4; padding:6px 14px; border-radius:20px; display:inline-flex; align-items:center; gap:6px;">
-          🎓 Ruang BelajarKu
-        </a>
-      </li>
+
     </ul>
     <!-- Mobile Right Pill (Hanya Muncul di Layar HP) -->
     <div class="mobile-header-right-wrap" style="display:none;">
@@ -104,15 +99,7 @@
     </div>
 
     <div class="nav-actions">
-      <!-- Navigasi Aksi Khusus Member Classroom yang Sudah Punya Order ID -->
-      <div id="member-classroom-nav-pill" style="display:none; align-items:center; gap:8px;">
-        <button class="shimmer-btn" onclick="openClassroomDashboard()" style="padding:8px 16px; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
-          🎓 Dashboard Belajar (<span id="top-member-order-badge">daffafazdian50@gmail.com</span>)
-        </button>
-        <button class="btn-secondary" onclick="handleClassroomLogout()" title="Keluar dari Sesi Member" style="padding:8px 12px; font-size:12px; color:#EF4444; border-color:#FCA5A5;">
-          Keluar
-        </button>
-      </div>
+
 
       <!-- Tombol Redeem Kode Akses (Sesuai Referensi Gambar) -->
       <!-- Theme Toggle (Mode Terang / Gelap Sesuai DESAIN UI/UX) -->
@@ -138,42 +125,27 @@
   </nav>
 
   <!-- ========================================================================
-       VIP MEMBER WELCOME THUMBNAIL (Item 6: Khusus yang sudah beli produk)
+       VIP MEMBER WELCOME THUMBNAIL (Sesuai Foto 2 & Palet DESAIN UI/UX)
        ======================================================================== -->
-  <div id="vip-member-welcome-card" class="vip-welcome-container" style="display:none;">
-    <div class="vip-welcome-card">
-      <div class="vip-welcome-left">
-        <div class="vip-avatar-badge">
-          <div class="vip-google-icon-wrapper">
-            <svg width="24" height="24" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-            </svg>
-          </div>
-          <span class="vip-online-dot"></span>
+  <div id="vip-member-welcome-card" class="vip-welcome-container" style="display:none; margin-bottom:20px;">
+    <div class="member-welcome-hero-card" style="box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);">
+      <div class="welcome-hero-content" style="width:100%;">
+        <div class="verified-pill-badge" style="margin-bottom:12px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Profil Lengkap &amp; Terverifikasi</span>
         </div>
-        <div>
-          <div class="vip-welcome-eyebrow">
-            <span class="vip-tag-pill">✦ VIP MEMBER TERVERIFIKASI</span>
-            <span class="vip-order-tag">Order ID: <strong id="vip-user-order-id">ORD-20261028-211630-4012</strong></span>
-          </div>
-          <h2 class="vip-welcome-title">
-            Selamat Datang kembali, <span id="vip-user-display-name" class="vip-name-highlight">Daffa</span>! 👋
-          </h2>
-          <p class="vip-welcome-desc">
-            Kamu memiliki akses resmi ke modul pembelajaran &amp; produk digital NexStore (<span id="vip-user-email-text" style="font-weight:700; color:#0F172A;">daffafazdian50@gmail.com</span>). Lanjutkan belajarmu sekarang!
-          </p>
+        <h1 class="welcome-hero-title">Selamat datang kembali, <span class="member-display-name" id="vip-user-display-name">Daffa</span>!</h1>
+        <p class="welcome-hero-subtitle">Kelola pembelajaran Anda, cek jadwal bootcamp, atau jelajahi katalog produk digital terbaru.</p>
+        <div class="welcome-hero-actions">
+          <button type="button" class="btn-hero-classes" onclick="openClassroomDashboardOrLogin()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Ruang BelajarKu
+          </button>
+          <button type="button" class="btn-hero-catalog" onclick="scrollToSection('produk')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            Katalog
+          </button>
         </div>
-      </div>
-      <div class="vip-welcome-actions">
-        <button class="shimmer-btn btn-vip-classroom" onclick="openClassroomDashboardOrLogin()">
-          🎓 Buka Ruang BelajarKu Saya →
-        </button>
-        <button class="btn-secondary btn-vip-order" onclick="copyVipOrderId()" title="Salin Order ID Anda">
-          📋 Salin Order ID
-        </button>
       </div>
     </div>
   </div>
