@@ -514,6 +514,19 @@ body {
   flex-wrap: wrap;
 }
 
+.hero-btn-group[style*="display: none"],
+.hero-btn-group[style*="display:none"] {
+  display: none !important;
+  margin-bottom: 0 !important;
+}
+
+.hero-btn-group a[style*="display: none"],
+.hero-btn-group a[style*="display:none"],
+.hero-btn-group button[style*="display: none"],
+.hero-btn-group button[style*="display:none"] {
+  display: none !important;
+}
+
 .btn-primary {
   padding: 14px 28px;
   font-size: 15px;

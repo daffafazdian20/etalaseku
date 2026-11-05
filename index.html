@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261105-05">
+  <link rel="stylesheet" href="css/style.css?v=20261105-06">
 </head>
 <body>
 
@@ -103,7 +103,7 @@
             <li><a href="#produk">Katalog Produk</a></li>
       <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Member</a></li>
       <li><a href="#testimoni">Testimoni</a></li>
-      <li><a href="#custom" onclick="openCustomAppPortal('custom'); return false;">Aplikasi Custom</a></li>
+      <li><a href="javascript:void(0)" onclick="openCustomAppPortal('custom'); return false;">Aplikasi Custom</a></li>
 
     </ul>
     <!-- Mobile Right Pill (Hanya Muncul di Layar HP) -->
@@ -473,17 +473,17 @@
       <p class="hero-desc">
         Lihat hasil aplikasi kami, ikuti kelas &amp; bootcamp intensif, lalu akses materinya langsung di portal member siswa tanpa hambatan.
       </p>
-      <div class="hero-btn-group" id="hero-smart-btn-group">
-        <a href="#bootcamp" class="shimmer-btn btn-primary cta-pulse-glow" id="hero-btn-bootcamp" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+      <div class="hero-btn-group" id="hero-smart-btn-group" style="display:none;">
+        <a href="#bootcamp" class="shimmer-btn btn-primary cta-pulse-glow" id="hero-btn-bootcamp" style="text-decoration:none; display:none; align-items:center; gap:8px;">
           <span>🚀 Lihat Bootcamp &amp; Kelas Live</span>
         </a>
-        <a href="#produk" class="btn-secondary" id="hero-btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700;">
+        <a href="#produk" class="btn-secondary" id="hero-btn-primary" style="text-decoration:none; display:none; align-items:center; gap:8px; font-weight:700;">
           <span>🛍️ Katalog Produk</span>
         </a>
-        <button class="btn-secondary" id="hero-btn-secondary" onclick="openClassroomDashboardOrLogin()">
+        <button class="btn-secondary" id="hero-btn-secondary" onclick="openClassroomDashboardOrLogin()" style="display:none;">
           Masuk Member Area 🔑
         </button>
-        <button class="btn-secondary" id="hero-btn-promo" onclick="openAnnouncementVoucherModal()" style="color:#FF2E63; border-color:rgba(255,46,99,0.3); background:#FFF1F4;">
+        <button class="btn-secondary" id="hero-btn-promo" onclick="openAnnouncementVoucherModal()" style="color:#FF2E63; border-color:rgba(255,46,99,0.3); background:#FFF1F4; display:none;">
           📢 Kode Promo
         </button>
       </div>
@@ -1378,7 +1378,7 @@
         <li><a href="#bootcamp" class="cls-tab-link" id="tab-link-bootcamp" onclick="openBootcampDetailModal(); return false;">Bootcamp</a></li>
         <li><a href="#pameran" class="cls-tab-link" id="tab-link-pameran" onclick="openKaryaFromMember(); return false;">Hasil Karya Member</a></li>
         <li><a href="#panduan" class="cls-tab-link" id="tab-link-panduan" onclick="openPanduanModal(); return false;">Panduan</a></li>
-        <li><a href="#custom" class="cls-tab-link" id="tab-link-custom" onclick="switchMemberPortalView('custom'); return false;">Aplikasi Custom</a></li>
+        <li><a href="javascript:void(0)" class="cls-tab-link" id="tab-link-custom" onclick="switchMemberPortalView('custom'); return false;">Aplikasi Custom</a></li>
       </ul>
 
       <!-- User Profile Badge & Action (Item 5: Rapih, Responsif & Elegan di Mobile & Desktop) -->
@@ -2047,7 +2047,7 @@
           
           <!-- Back Link -->
           <div class="custom-wizard-topbar">
-            <a href="#custom" class="custom-back-link" onclick="switchMemberPortalView('custom'); return false;">
+            <a href="javascript:void(0)" class="custom-back-link" onclick="switchMemberPortalView('custom'); return false;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
               <span>Pengajuan Saya</span>
             </a>
@@ -2604,9 +2604,9 @@
                         <span>🚀 Tombol Bootcamp</span>
                       </label>
                       <div style="display:flex; align-items:center; gap:8px;">
-                        <span class="crm-toggle-badge active" id="badge-btn1-status">● Aktif (ON)</span>
+                        <span class="crm-toggle-badge inactive" id="badge-btn1-status">✕ Non-Aktif (OFF)</span>
                         <label class="crm-toggle-switch">
-                          <input type="checkbox" id="crm-hero-btn1-active" checked onchange="handleCrmToggleChange(this, 'badge-btn1-status')">
+                          <input type="checkbox" id="crm-hero-btn1-active" onchange="handleCrmToggleChange(this, 'badge-btn1-status', true)">
                           <span class="crm-toggle-slider"></span>
                         </label>
                       </div>
@@ -2624,9 +2624,9 @@
                         <span>🛍️ Tombol Katalog</span>
                       </label>
                       <div style="display:flex; align-items:center; gap:8px;">
-                        <span class="crm-toggle-badge active" id="badge-btn2-status">● Aktif (ON)</span>
+                        <span class="crm-toggle-badge inactive" id="badge-btn2-status">✕ Non-Aktif (OFF)</span>
                         <label class="crm-toggle-switch">
-                          <input type="checkbox" id="crm-hero-btn2-active" checked onchange="handleCrmToggleChange(this, 'badge-btn2-status')">
+                          <input type="checkbox" id="crm-hero-btn2-active" onchange="handleCrmToggleChange(this, 'badge-btn2-status', true)">
                           <span class="crm-toggle-slider"></span>
                         </label>
                       </div>
@@ -2644,9 +2644,9 @@
                         <span>🔑 Tombol Member Area</span>
                       </label>
                       <div style="display:flex; align-items:center; gap:8px;">
-                        <span class="crm-toggle-badge active" id="badge-btn-member-status">● Aktif (ON)</span>
+                        <span class="crm-toggle-badge inactive" id="badge-btn-member-status">✕ Non-Aktif (OFF)</span>
                         <label class="crm-toggle-switch">
-                          <input type="checkbox" id="crm-hero-btn-member-active" checked onchange="handleCrmToggleChange(this, 'badge-btn-member-status')">
+                          <input type="checkbox" id="crm-hero-btn-member-active" onchange="handleCrmToggleChange(this, 'badge-btn-member-status', true)">
                           <span class="crm-toggle-slider"></span>
                         </label>
                       </div>
@@ -2664,9 +2664,9 @@
                         <span>📢 Tombol Kode Promo</span>
                       </label>
                       <div style="display:flex; align-items:center; gap:8px;">
-                        <span class="crm-toggle-badge active" id="badge-btn-promo-status">● Aktif (ON)</span>
+                        <span class="crm-toggle-badge inactive" id="badge-btn-promo-status">✕ Non-Aktif (OFF)</span>
                         <label class="crm-toggle-switch">
-                          <input type="checkbox" id="crm-hero-btn-promo-active" checked onchange="handleCrmToggleChange(this, 'badge-btn-promo-status')">
+                          <input type="checkbox" id="crm-hero-btn-promo-active" onchange="handleCrmToggleChange(this, 'badge-btn-promo-status', true)">
                           <span class="crm-toggle-slider"></span>
                         </label>
                       </div>
@@ -4595,8 +4595,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261105-05"></script>
-  <script defer src="js/app.js?v=20261105-05"></script>
+  <script defer src="js/config.js?v=20261105-06"></script>
+  <script defer src="js/app.js?v=20261105-06"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
