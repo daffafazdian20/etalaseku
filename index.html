@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261105-04">
+  <link rel="stylesheet" href="css/style.css?v=20261105-05">
 </head>
 <body>
 
@@ -1368,21 +1368,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Mobile Header Action Buttons -->
-        <div class="classroom-btn-actions mobile-only-actions">
-          <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
-            ⬅️ Halaman Utama
-          </button>
-          <button type="button" class="btn-nav-logout btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Member" aria-label="Keluar Sesi Member">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-            <span class="nav-logout-text">Keluar</span>
-          </button>
-        </div>
       </div>
 
       <!-- Quick Nav Links Siswa (Item 4: Source Code & Drive serta Tanya Mentor VIP Dihilangkan Sesuai Permintaan) -->
@@ -1396,21 +1381,23 @@
         <li><a href="#custom" class="cls-tab-link" id="tab-link-custom" onclick="switchMemberPortalView('custom'); return false;">Aplikasi Custom</a></li>
       </ul>
 
-      <!-- User Profile Badge & Action (Item 5: Icon Google Berisi Email Pembeli & Order ID Kunci Masuk Modul) -->
+      <!-- User Profile Badge & Action (Item 5: Rapih, Responsif & Elegan di Mobile & Desktop) -->
       <div class="classroom-user-actions-group">
-        <button type="button" class="btn-theme-toggle btn-cls-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme"><span class="theme-toggle-icon">🌙</span></button>
-        <button type="button" class="btn-secondary member-profile-nav-chip" onclick="openMemberProfileModal()" title="Pengaturan Akun &amp; Profil Member" style="padding:6px 14px; font-size:12px; font-weight:700; color:#FFFFFF; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:20px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;">
-          <span class="member-avatar-initial" style="width:20px; height:20px; border-radius:50%; background:#FF2E63; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">D</span>
-          <span class="member-display-name">Daffa</span>
-          <span style="font-size:11px; opacity:0.8;">⚙️</span>
-        </button>
+        <div class="classroom-user-left-group" style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="btn-theme-toggle btn-cls-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme"><span class="theme-toggle-icon">🌙</span></button>
+          <button type="button" class="btn-secondary member-profile-nav-chip" onclick="openMemberProfileModal()" title="Pengaturan Akun &amp; Profil Member" style="padding:6px 14px; font-size:12px; font-weight:700; color:#FFFFFF; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:20px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;">
+            <span class="member-avatar-initial" style="width:20px; height:20px; border-radius:50%; background:#FF2E63; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">D</span>
+            <span class="member-display-name">Daffa</span>
+            <span style="font-size:11px; opacity:0.8;">⚙️</span>
+          </button>
+        </div>
 
-        <div class="classroom-btn-actions desktop-only-actions">
-          <button class="btn-secondary" onclick="openRedeemModal()" style="padding:8px 14px; font-size:12px; font-weight:700; color:#2563EB; border-color:rgba(37,99,235,0.35); background:rgba(37,99,235,0.06); display:inline-flex; align-items:center; gap:6px;" title="Redeem Kode Akses Baru">
+        <div class="classroom-btn-actions">
+          <button class="btn-secondary btn-redeem-desktop-only" onclick="openRedeemModal()" style="padding:8px 14px; font-size:12px; font-weight:700; color:#2563EB; border-color:rgba(37,99,235,0.35); background:rgba(37,99,235,0.06); display:inline-flex; align-items:center; gap:6px;" title="Redeem Kode Akses Baru">
             🔑 Redeem Kode
           </button>
           <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
-            ⬅️ Beranda Utama
+            ⬅️ Halaman Utama
           </button>
           <button type="button" class="btn-nav-logout btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Member" aria-label="Keluar Sesi Member">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -4608,8 +4595,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261105-04"></script>
-  <script defer src="js/app.js?v=20261105-04"></script>
+  <script defer src="js/config.js?v=20261105-05"></script>
+  <script defer src="js/app.js?v=20261105-05"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">

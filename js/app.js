@@ -574,7 +574,8 @@ const DEFAULT_MODULES = [
   },
   {
     ID_Materi: 'MOD-02',
-    ID_Produk: 'PRD-002',
+    ID_Produk: 'PRD-1028-02',
+    Alt_ID_Produk: 'PRD-002',
     Judul_Modul: 'Kumpulan PRD (GRATIS)',
     Urutan: 2,
     Tipe_Badge: 'DOKUMEN',
@@ -704,8 +705,13 @@ function loadStoredClassroomModules() {
     const rawPrimary = localStorage.getItem('etalaseku_classroom_modules');
     if (rawPrimary !== null) {
       const parsed = JSON.parse(rawPrimary);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
         const clean = parsed.filter(m => m && !deletedSet.has(m.ID_Materi));
+        DEFAULT_MODULES.forEach(defM => {
+          if (!deletedSet.has(defM.ID_Materi) && !clean.some(m => m.ID_Materi === defM.ID_Materi)) {
+            clean.push(defM);
+          }
+        });
         // Sync both keys so there is never a mismatch
         const json = JSON.stringify(clean);
         localStorage.setItem('etalaseku_classroom_modules', json);
@@ -716,8 +722,13 @@ function loadStoredClassroomModules() {
     const rawLegacy = localStorage.getItem('etalaseku_modules');
     if (rawLegacy !== null) {
       const parsedLegacy = JSON.parse(rawLegacy);
-      if (Array.isArray(parsedLegacy)) {
+      if (Array.isArray(parsedLegacy) && parsedLegacy.length > 0) {
         const cleanLegacy = parsedLegacy.filter(m => m && !deletedSet.has(m.ID_Materi));
+        DEFAULT_MODULES.forEach(defM => {
+          if (!deletedSet.has(defM.ID_Materi) && !cleanLegacy.some(m => m.ID_Materi === defM.ID_Materi)) {
+            cleanLegacy.push(defM);
+          }
+        });
         const json = JSON.stringify(cleanLegacy);
         localStorage.setItem('etalaseku_classroom_modules', json);
         localStorage.setItem('etalaseku_modules', json);
@@ -5016,8 +5027,8 @@ function filterModulesForCurrentStudent(allModules, orderId, email) {
   const purchasedPNames = [];
 
   studentOrders.forEach(o => {
-    const pId = o.productId || o.ID_Produk;
-    const pName = o.productName || o.Nama_Produk;
+    const pId = o.productId || o.ID_Produk || o.id_produk;
+    const pName = o.productName || o.Nama_Produk || o.Produk || o.produk;
     if (pId) purchasedPIds.push(String(pId).toLowerCase().trim());
     if (pName) purchasedPNames.push(String(pName).toLowerCase().trim());
   });
@@ -5029,17 +5040,25 @@ function filterModulesForCurrentStudent(allModules, orderId, email) {
 
   // Jika belum ada pesanan sama sekali yang cocok, default ke 1 modul saja agar tidak menampilkan 2 modul
   if (purchasedPIds.length === 0 && purchasedPNames.length === 0) {
+    if (cleanId.includes('170907-2186') || cleanId.includes('1028-02') || cleanId.includes('prd')) {
+      const prdM = allModules.find(m => m.ID_Materi === 'MOD-02' || (m.Judul_Modul && m.Judul_Modul.toLowerCase().includes('prd')));
+      if (prdM) return [prdM];
+    }
     return allModules.slice(0, 1);
   }
 
   // 3. Filter allModules: Hanya kembalikan modul yang cocok dengan produk yang dibeli
   const filtered = allModules.filter(m => {
     const mIdProduk = String(m.ID_Produk || '').toLowerCase().trim();
+    const mAltId = String(m.Alt_ID_Produk || '').toLowerCase().trim();
+    const mIdMateri = String(m.ID_Materi || '').toLowerCase().trim();
     const mTitle = String(m.Judul_Modul || '').toLowerCase().trim();
     const mDesc = String(m.Deskripsi || '').toLowerCase().trim();
 
-    // Cocok langsung ID Produk
+    // Cocok langsung ID Produk atau ID Materi
     if (mIdProduk && purchasedPIds.includes(mIdProduk)) return true;
+    if (mAltId && purchasedPIds.includes(mAltId)) return true;
+    if (mIdMateri && purchasedPIds.includes(mIdMateri)) return true;
 
     // Cocokkan Nama / Kata Kunci Produk
     for (const pName of purchasedPNames) {
@@ -5050,7 +5069,7 @@ function filterModulesForCurrentStudent(allModules, orderId, email) {
       if (mTitle.includes(cleanP) || cleanP.includes(mTitle)) return true;
 
       // Cek kata kunci spesifik
-      if (cleanP.includes('prd') && mTitle.includes('prd')) return true;
+      if (cleanP.includes('prd') && (mTitle.includes('prd') || mIdMateri === 'mod-02')) return true;
       if (cleanP.includes('social influence') && mTitle.includes('social influence')) return true;
       if (cleanP.includes('gas pro') && (mTitle.includes('gas pro') || mTitle.includes('metode 3') || mTitle.includes('gas'))) return true;
       if (cleanP.includes('automation') && (mTitle.includes('automation') || mTitle.includes('bootcamp'))) return true;
@@ -5069,6 +5088,12 @@ function filterModulesForCurrentStudent(allModules, orderId, email) {
   // Jika ada modul yang cocok, kembalikan modul yang cocok
   if (filtered.length > 0) {
     return filtered;
+  }
+
+  // Fallback pengaman khusus untuk pesanan Kumpulan PRD
+  if (cleanId.includes('170907-2186') || cleanId.includes('1028-02') || cleanId.includes('prd')) {
+    const prdMod = allModules.find(m => m.ID_Materi === 'MOD-02' || (m.Judul_Modul && m.Judul_Modul.toLowerCase().includes('prd')));
+    if (prdMod) return [prdMod];
   }
 
   // Fallback pengaman: HANYA tampilkan 1 modul pertama yang paling relevan (JANGAN TAMPILKAN 2 MODUL)
@@ -6212,6 +6237,7 @@ async function saveClassroomModuleForm(e, isInline) {
 
     renderClassroomModulesAdmin();
     renderClassroomPortalModules('', 'ALL');
+    if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
 
     const inlineBox = document.getElementById('inline-module-form-box');
     if (inlineBox) inlineBox.style.display = 'none';
@@ -6415,6 +6441,7 @@ async function saveClassroomModuleForm(e, isInline) {
 
   renderClassroomModulesAdmin();
   renderClassroomPortalModules('', 'ALL');
+  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
 
   // If this module is currently opened in classroom, update the view live
   if (typeof activeCourseData !== 'undefined' && activeCourseData && activeCourseData.id === id) {
@@ -6476,6 +6503,7 @@ function deleteClassroomModuleAdmin(id) {
   // 5. Render ulang seketika baik di CRM (Kartu Visual + Tabel + Badge) maupun di Portal Ruang BelajarKu Siswa!
   renderClassroomModulesAdmin();
   renderClassroomPortalModules('', 'ALL');
+  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
   showToast('Modul berhasil dihapus permanen dari CRM & Portal Ruang BelajarKu! 🗑️', 'info');
 }
 

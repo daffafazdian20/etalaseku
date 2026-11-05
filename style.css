@@ -2269,37 +2269,75 @@ input:checked + .switch-slider:before {
     min-width: 580px;
   }
   .classroom-portal-nav {
-    padding: 12px 14px 10px !important;
+    padding: 10px 14px 10px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
   .classroom-nav-top-row {
     display: flex !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     align-items: center !important;
     width: 100% !important;
   }
-  .mobile-only-actions {
+  .classroom-brand {
     display: flex !important;
-    gap: 6px !important;
-  }
-  .mobile-only-actions .btn-cls-home,
-  .mobile-only-actions .btn-cls-logout {
-    padding: 6px 10px !important;
-    font-size: 11px !important;
-    height: 32px !important;
-  }
-  .desktop-only-actions {
-    display: none !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-width: 0 !important;
   }
   .classroom-top-links {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding: 4px 0 !important;
+    margin: 0 !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    width: 100% !important;
+  }
+  .classroom-top-links::-webkit-scrollbar {
     display: none !important;
   }
   .classroom-user-actions-group {
     width: 100% !important;
     display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding-top: 4px !important;
+  }
+  .classroom-user-left-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  .classroom-btn-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .btn-redeem-desktop-only {
+    display: none !important;
+  }
+  .classroom-btn-actions .btn-cls-home,
+  .classroom-btn-actions .btn-cls-logout {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    height: 32px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
   .classroom-student-pill {
     width: 100% !important;
@@ -2685,16 +2723,17 @@ input:checked + .switch-slider:before {
     margin-bottom: 16px !important;
   }
 
-  /* 2. CLASSROOM PORTAL ON MOBILE (PHOTO 4 FIXES) */
+  /* 2. CLASSROOM PORTAL ON MOBILE (PHOTO 1 & 2 FIXES) */
   .classroom-portal-nav {
     padding: 10px 12px !important;
     gap: 8px !important;
     flex-direction: column !important;
+    align-items: stretch !important;
     background: #FFFFFF !important;
   }
   .classroom-nav-top-row {
     display: flex !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     align-items: center !important;
     width: 100% !important;
   }
@@ -2702,24 +2741,42 @@ input:checked + .switch-slider:before {
     display: flex !important;
     align-items: center !important;
     gap: 8px !important;
+    width: 100% !important;
     min-width: 0 !important;
   }
-  .mobile-only-actions {
+  .classroom-user-actions-group {
+    width: 100% !important;
     display: flex !important;
-    gap: 6px !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
   }
-  .mobile-only-actions .btn-cls-home,
-  .mobile-only-actions .btn-cls-logout {
+  .classroom-user-left-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  .classroom-btn-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .btn-redeem-desktop-only {
+    display: none !important;
+  }
+  .classroom-btn-actions .btn-cls-home,
+  .classroom-btn-actions .btn-cls-logout {
     padding: 6px 10px !important;
     font-size: 11px !important;
     height: 32px !important;
-  }
-  .desktop-only-actions {
-    display: none !important;
-  }
-
-  .classroom-user-actions-group {
-    width: 100% !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
   .classroom-student-pill {
     width: 100% !important;
@@ -10559,6 +10616,26 @@ body.dark-theme .rb-card .rb-card-title {
 [data-theme="dark"] .rb-card .rb-card-desc,
 body.dark-theme .rb-card .rb-card-desc {
   color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .btn-cls-home,
+body.dark-theme .btn-cls-home {
+  background: #1E293B !important;
+  color: #F8FAFC !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .btn-cls-home:hover,
+body.dark-theme .btn-cls-home:hover {
+  background: #334155 !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme="dark"] .btn-cls-logout,
+body.dark-theme .btn-cls-logout {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #F87171 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
 [data-theme="dark"] .rb-card .rb-card-meta,
