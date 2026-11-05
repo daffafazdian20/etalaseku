@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261104-44">
+  <link rel="stylesheet" href="css/style.css?v=20261105-01">
 </head>
 <body>
 
@@ -127,6 +127,16 @@
       <!-- Tombol Member Area (Sesuai Referensi Gambar) -->
       <button class="btn-secondary" id="nav-btn-member-login" onclick="openMemberLoginModal()" style="padding:9px 16px; font-size:13px; font-weight:700; color:var(--deep-navy);">
         ➔] Member Area
+      </button>
+
+      <!-- Tombol / Icon Keluar ke Dashboard Utama (Sesuai Foto 1 Referensi) -->
+      <button type="button" class="btn-nav-logout" id="nav-btn-logout" onclick="handleExitToMainDashboard()" title="Keluar ke Dashboard Utama" aria-label="Keluar ke Dashboard Utama">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span class="nav-logout-text">Keluar</span>
       </button>
 
       <!-- Tombol Admin Portal -->
@@ -410,6 +420,10 @@
             <button type="button" class="btn-account-settings" onclick="openMemberProfileModal()">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               Pengaturan Akun
+            </button>
+            <button type="button" class="btn-account-logout" onclick="handleExitToMainDashboard()" style="margin-top:8px; width:100%; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:9px 14px; font-size:12.5px; font-weight:700; color:#EF4444; background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.25); border-radius:10px; cursor:pointer; transition:all 0.2s ease;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Keluar ke Dashboard Utama
             </button>
           </div>
 
@@ -4519,8 +4533,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261104-44"></script>
-  <script defer src="js/app.js?v=20261104-44"></script>
+  <script defer src="js/config.js?v=20261105-01"></script>
+  <script defer src="js/app.js?v=20261105-01"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">

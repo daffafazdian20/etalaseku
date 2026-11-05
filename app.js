@@ -4936,6 +4936,7 @@ function updateMemberClassroomNavbar(orderId, email) {
   const navPill = document.getElementById('member-classroom-nav-pill');
   const navLoginBtn = document.getElementById('nav-btn-member-login');
   const navRedeemBtn = document.getElementById('nav-btn-redeem');
+  const navLogoutBtn = document.getElementById('nav-btn-logout');
   const badgeText = document.getElementById('top-member-order-badge');
   const heroBtn = document.getElementById('hero-btn-classroom');
 
@@ -4950,6 +4951,7 @@ function updateMemberClassroomNavbar(orderId, email) {
       navLoginBtn.innerHTML = '➔] Member Area';
     }
     if (navRedeemBtn) navRedeemBtn.style.display = 'inline-flex';
+    if (navLogoutBtn) navLogoutBtn.style.display = 'inline-flex';
     
     if (badgeText) {
       badgeText.textContent = displayUser.length > 20 ? (displayUser.slice(0, 18) + '...') : displayUser;
@@ -4967,6 +4969,7 @@ function updateMemberClassroomNavbar(orderId, email) {
     if (navPill) navPill.style.display = 'none';
     if (navLoginBtn) navLoginBtn.style.display = 'inline-block';
     if (navRedeemBtn) navRedeemBtn.style.display = 'inline-block';
+    if (navLogoutBtn) navLogoutBtn.style.display = 'none';
 
     if (heroBtn) {
       heroBtn.innerHTML = 'Akses Member Area 🔑';
@@ -9601,6 +9604,63 @@ function hideMemberAreaDashboard() {
   updateMemberClassroomNavbar(null, null);
 }
 window.hideMemberAreaDashboard = hideMemberAreaDashboard;
+
+// ============================================================================
+// FUNGSI KELUAR KE DASHBOARD UTAMA (SESUAI FOTO 1 & FOTO 2)
+// Klik tombol/icon Keluar untuk kembali ke Dashboard Utama publik secara instan
+// ============================================================================
+function handleExitToMainDashboard() {
+  // 1. Sembunyikan view Member Area di Dashboard Utama
+  const mainDash = document.getElementById('main-member-area-dashboard');
+  if (mainDash) mainDash.style.display = 'none';
+
+  // 2. Tutup portal kelas classroom jika sedang terbuka
+  if (typeof closeClassroomDashboard === 'function') {
+    closeClassroomDashboard();
+  }
+  const classPortal = document.getElementById('classroom-dashboard-portal');
+  if (classPortal) classPortal.classList.remove('active');
+  localStorage.removeItem('etalaseku_is_in_classroom');
+
+  // 3. Tampilkan kembali Hero Section dan section publik utama
+  const heroEl = document.getElementById('hero');
+  if (heroEl) heroEl.style.display = '';
+
+  const vipWelcomeCard = document.getElementById('vip-member-welcome-card');
+  if (vipWelcomeCard) vipWelcomeCard.style.display = 'none';
+
+  // Pastikan section-section katalog publik tampil normal
+  const publicSections = ['kategori', 'produk', 'fitur', 'karya-member', 'testimoni', 'faq'];
+  publicSections.forEach(secId => {
+    const sec = document.getElementById(secId);
+    if (sec) sec.style.display = '';
+  });
+
+  // 4. Tutup semua modal aktif agar layar bersih
+  if (typeof closeAllModals === 'function') {
+    closeAllModals();
+  }
+
+  // 5. Update URL hash ke #hero
+  try {
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, '', '#hero');
+    } else {
+      window.location.hash = '#hero';
+    }
+  } catch (e) {
+    window.location.hash = '#hero';
+  }
+
+  // 6. Scroll halus ke paling atas dashboard utama
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // 7. Tampilkan notifikasi toast ramah
+  if (typeof showToast === 'function') {
+    showToast('Berhasil keluar ke Dashboard Utama 🏠', 'success', 2500);
+  }
+}
+window.handleExitToMainDashboard = handleExitToMainDashboard;
 
 function openMemberAreaOrLogin() {
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');

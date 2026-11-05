@@ -14308,3 +14308,89 @@ body.dark-theme #modal-custom-app-detail .modal-card {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   TOMBOL / ICON KELUAR KE DASHBOARD UTAMA (Sesuai Referensi Foto 1 & Foto 2)
+   ========================================================================== */
+.btn-nav-logout {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 8px 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #EF4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(239, 68, 68, 0.28) !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  outline: none !important;
+  text-decoration: none !important;
+}
+
+.btn-nav-logout svg {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+.btn-nav-logout:hover {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  border-color: #EF4444 !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+}
+
+.btn-nav-logout:hover svg {
+  stroke: #FFFFFF !important;
+}
+
+.btn-nav-logout:active {
+  transform: scale(0.96) !important;
+}
+
+/* Dark Mode Styling */
+[data-theme="dark"] .btn-nav-logout,
+body.dark-theme .btn-nav-logout {
+  color: #FCA5A5 !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .btn-nav-logout:hover,
+body.dark-theme .btn-nav-logout:hover {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  border-color: #EF4444 !important;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.5) !important;
+}
+
+.btn-account-logout:hover {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  border-color: #EF4444 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn-account-logout:hover svg {
+  stroke: #FFFFFF !important;
+}
+
+/* Responsive: pada layar sempit sembunyikan label teks "Keluar", tampilkan icon door-arrow seperti Foto 1 */
+@media (max-width: 991px) {
+  .btn-nav-logout .nav-logout-text {
+    display: none !important;
+  }
+  .btn-nav-logout {
+    padding: 7px 10px !important;
+    border-radius: 8px !important;
+  }
+}
+
