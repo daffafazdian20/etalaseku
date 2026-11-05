@@ -544,7 +544,8 @@ body {
 .hero-slideshow-container {
   position: relative;
   width: 100%;
-  border-radius: 28px;
+  aspect-ratio: 16 / 9 !important;
+  border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.2);
   background: #FFFFFF;
@@ -568,11 +569,13 @@ body {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  height: 100%;
 }
 
 .hero-slide img {
   width: 100%;
-  height: 380px;
+  height: 100% !important;
+  aspect-ratio: 16 / 9 !important;
   object-fit: cover;
   display: block;
 }
@@ -2075,43 +2078,10 @@ input:checked + .switch-slider:before {
   .brand-logo {
     font-size: 17px;
   }
-  .nav-links {
-    display: flex !important;
-    width: 100%;
-    order: 3;
-    gap: 6px;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 6px 0 2px;
-    margin: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-  }
-  .nav-links::-webkit-scrollbar {
-    display: none;
-  }
-  .nav-links li {
-    flex-shrink: 0;
-  }
-  .nav-links a {
-    font-size: 11.5px !important;
-    font-weight: 700;
-    color: var(--deep-navy);
-    background: #F8FAFC;
-    border: 1px solid #E2E8F0;
-    border-radius: 16px;
-    padding: 5px 11px;
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-  }
-  .nav-links a:hover,
-  .nav-links a.active {
-    background: #FFF1F4;
-    border-color: #FECDD3;
-    color: #FF2E63 !important;
+  /* Sesuai Foto 2: Menu navigasi (Beranda, Bootcamp, Katalog, dll) dihilangkan di mobile */
+  .nav-links,
+  .navbar .nav-links {
+    display: none !important;
   }
   .nav-actions {
     gap: 6px;
@@ -2395,41 +2365,10 @@ input:checked + .switch-slider:before {
     font-size: 11.5px !important;
     height: 32px !important;
   }
-  .nav-links {
-    order: 3 !important;
-    width: 100% !important;
-    display: flex !important;
-    gap: 8px !important;
-    overflow-x: auto !important;
-    white-space: nowrap !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-    padding: 8px 0 2px !important;
-    border-top: 1px solid rgba(15, 23, 42, 0.05) !important;
-  }
-  .nav-links::-webkit-scrollbar {
+  /* Sesuai Foto 2: Menu navigasi (Beranda, Bootcamp, Katalog, dll) dihilangkan di mobile */
+  .nav-links,
+  .navbar .nav-links {
     display: none !important;
-  }
-  .nav-links li {
-    flex-shrink: 0 !important;
-  }
-  .nav-links a {
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    color: var(--deep-navy) !important;
-    background: #F8FAFC !important;
-    border: 1px solid #E2E8F0 !important;
-    border-radius: 16px !important;
-    padding: 5px 12px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    white-space: nowrap !important;
-  }
-  .nav-links a:hover,
-  .nav-links a.active {
-    background: #FFF1F4 !important;
-    border-color: #FECDD3 !important;
-    color: var(--coral-pink) !important;
   }
   .hero-section {
     padding: 40px 24px 60px;
@@ -7188,18 +7127,43 @@ input:checked + .switch-slider:before {
   .mobile-bottom-nav {
     display: flex !important;
   }
-  /* Sembunyikan deretan 5 tombol navigasi atas di layar HP */
-  .navbar .nav-actions {
+  /* Sesuai Foto 2: Menu navigasi atas di HP dihilangkan; hanya tampil Logo + Theme Toggle + Member Area */
+  .nav-links,
+  .navbar .nav-links {
+    display: none !important;
+  }
+  .mobile-header-right-wrap {
     display: none !important;
   }
   .navbar {
     padding: 10px 16px !important;
     justify-content: space-between !important;
+    align-items: center !important;
   }
-  .mobile-header-right-wrap {
+  .navbar .nav-actions {
     display: flex !important;
     align-items: center !important;
     gap: 8px !important;
+    margin-left: auto !important;
+    order: 2 !important;
+  }
+  .navbar .nav-actions #nav-btn-redeem,
+  .navbar .nav-actions .shimmer-btn,
+  .navbar .nav-actions .btn-nav-logout {
+    display: none !important;
+  }
+  .navbar .nav-actions .btn-theme-toggle {
+    display: inline-flex !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+  }
+  .navbar .nav-actions #nav-btn-member-login {
+    display: inline-flex !important;
+    padding: 7px 13px !important;
+    font-size: 12px !important;
+    height: 34px !important;
+    align-items: center !important;
   }
 
   /* Nonaktifkan partikel kupu-kupu di HP (UPGRADE 2) */
@@ -7601,13 +7565,16 @@ footer {
 
 @media (max-width: 768px) {
   .hero-slideshow-container {
+    width: 100% !important;
     max-width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
     border-radius: 18px !important;
     margin: 0 auto !important;
   }
   .hero-slide img {
-    height: 220px !important;
     width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16 / 9 !important;
     object-fit: cover !important;
   }
 }
@@ -14402,5 +14369,80 @@ body.dark-theme .btn-nav-logout:hover {
     padding: 7px 10px !important;
     border-radius: 8px !important;
   }
+}
+
+/* ==========================================================================
+   CRM TOGGLE SWITCH COMPONENT (ON / OFF SWITCH & BADGES)
+   Sesuai Permintaan: Bisa aktif/non-aktifkan tiap tombol hero tanpa dihapus
+   ========================================================================== */
+.crm-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.crm-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.crm-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #CBD5E1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 34px;
+}
+
+.crm-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #FFFFFF;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.crm-toggle-switch input:checked + .crm-toggle-slider {
+  background-color: #10B981;
+}
+
+.crm-toggle-switch input:checked + .crm-toggle-slider:before {
+  transform: translateX(20px);
+}
+
+.crm-toggle-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+.crm-toggle-badge.active {
+  background: #DCFCE7 !important;
+  color: #166534 !important;
+  border: 1px solid rgba(22, 101, 52, 0.2) !important;
+}
+.crm-toggle-badge.inactive {
+  background: #F1F5F9 !important;
+  color: #64748B !important;
+  border: 1px solid #E2E8F0 !important;
 }
 

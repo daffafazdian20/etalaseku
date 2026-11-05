@@ -8702,14 +8702,32 @@ const DEFAULT_THUMBALL_SETTINGS = {
   eyebrow: '✦ PRODUK DIGITAL - BY @DAFFAFAZDIAN.ID',
   title: 'Aplikasi & Kelas Siap Pakai',
   desc: 'Lihat hasil aplikasi kami, ikuti kelas & bootcamp intensif, lalu akses materinya langsung di portal member siswa tanpa hambatan.',
+  btn1Active: true,
   btn1Text: '🚀 Lihat Bootcamp & Kelas Live',
   btn1Link: '#bootcamp',
+  btn2Active: true,
   btn2Text: '🛍️ Katalog Produk',
   btn2Link: '#produk',
+  btnMemberActive: true,
+  btnMemberText: 'Masuk Member Area 🔑',
+  btnPromoActive: true,
   promoBtnText: '📢 Kode Promo',
   promoCode: 'BOOT-5J6T3T',
   imageUrl: 'assets/hero/hero-slide-1.jpg'
 };
+
+function handleCrmToggleChange(checkbox, badgeId) {
+  const badge = document.getElementById(badgeId);
+  if (!badge) return;
+  if (checkbox && checkbox.checked) {
+    badge.className = 'crm-toggle-badge active';
+    badge.textContent = '● Aktif (ON)';
+  } else {
+    badge.className = 'crm-toggle-badge inactive';
+    badge.textContent = '○ Non-Aktif (OFF)';
+  }
+}
+window.handleCrmToggleChange = handleCrmToggleChange;
 
 const DEFAULT_BOOTCAMP_DATA = {
   badge: '⚡ Pendaftaran Dibuka',
@@ -8761,16 +8779,34 @@ function applyThumballSettingsToDom() {
   const descEl = document.querySelector('.hero-desc');
   if (descEl && d.desc) descEl.textContent = d.desc;
 
+  // 1. Tombol Bootcamp (ON / OFF Switch)
   const btn1 = document.getElementById('hero-btn-bootcamp');
   if (btn1) {
     if (d.btn1Text) btn1.innerHTML = '<span>' + escapeHtml(d.btn1Text) + '</span>';
     if (d.btn1Link) btn1.setAttribute('href', d.btn1Link);
+    btn1.style.display = (d.btn1Active !== false) ? 'inline-flex' : 'none';
   }
 
+  // 2. Tombol Katalog Produk (ON / OFF Switch)
   const btn2 = document.getElementById('hero-btn-primary');
   if (btn2) {
     if (d.btn2Text) btn2.innerHTML = '<span>' + escapeHtml(d.btn2Text) + '</span>';
     if (d.btn2Link) btn2.setAttribute('href', d.btn2Link);
+    btn2.style.display = (d.btn2Active !== false) ? 'inline-flex' : 'none';
+  }
+
+  // 3. Tombol Masuk Member Area (ON / OFF Switch)
+  const btnMember = document.getElementById('hero-btn-secondary');
+  if (btnMember) {
+    if (d.btnMemberText) btnMember.innerHTML = escapeHtml(d.btnMemberText);
+    btnMember.style.display = (d.btnMemberActive !== false) ? 'inline-flex' : 'none';
+  }
+
+  // 4. Tombol Kode Promo (ON / OFF Switch)
+  const btnPromo = document.getElementById('hero-btn-promo');
+  if (btnPromo) {
+    if (d.promoBtnText) btnPromo.innerHTML = escapeHtml(d.promoBtnText);
+    btnPromo.style.display = (d.btnPromoActive !== false) ? 'inline-flex' : 'none';
   }
 
   // Update Hero Slide 1 image
@@ -8786,18 +8822,49 @@ function applyThumballSettingsToDom() {
   if (crmTitle) crmTitle.value = d.title;
   const crmDesc = document.getElementById('crm-hero-desc');
   if (crmDesc) crmDesc.value = d.desc;
+
+  // Populate Tombol 1
+  const crmBtn1Active = document.getElementById('crm-hero-btn1-active');
+  if (crmBtn1Active) {
+    crmBtn1Active.checked = (d.btn1Active !== false);
+    handleCrmToggleChange(crmBtn1Active, 'badge-btn1-status');
+  }
   const crmBtn1Text = document.getElementById('crm-hero-btn1-text');
   if (crmBtn1Text) crmBtn1Text.value = d.btn1Text;
   const crmBtn1Link = document.getElementById('crm-hero-btn1-link');
   if (crmBtn1Link) crmBtn1Link.value = d.btn1Link;
+
+  // Populate Tombol 2
+  const crmBtn2Active = document.getElementById('crm-hero-btn2-active');
+  if (crmBtn2Active) {
+    crmBtn2Active.checked = (d.btn2Active !== false);
+    handleCrmToggleChange(crmBtn2Active, 'badge-btn2-status');
+  }
   const crmBtn2Text = document.getElementById('crm-hero-btn2-text');
   if (crmBtn2Text) crmBtn2Text.value = d.btn2Text;
   const crmBtn2Link = document.getElementById('crm-hero-btn2-link');
   if (crmBtn2Link) crmBtn2Link.value = d.btn2Link;
+
+  // Populate Tombol Member
+  const crmBtnMemberActive = document.getElementById('crm-hero-btn-member-active');
+  if (crmBtnMemberActive) {
+    crmBtnMemberActive.checked = (d.btnMemberActive !== false);
+    handleCrmToggleChange(crmBtnMemberActive, 'badge-btn-member-status');
+  }
+  const crmBtnMemberText = document.getElementById('crm-hero-btn-member-text');
+  if (crmBtnMemberText) crmBtnMemberText.value = d.btnMemberText || 'Masuk Member Area 🔑';
+
+  // Populate Tombol Promo
+  const crmBtnPromoActive = document.getElementById('crm-hero-btn-promo-active');
+  if (crmBtnPromoActive) {
+    crmBtnPromoActive.checked = (d.btnPromoActive !== false);
+    handleCrmToggleChange(crmBtnPromoActive, 'badge-btn-promo-status');
+  }
   const crmPromoText = document.getElementById('crm-hero-promo-btn-text');
   if (crmPromoText) crmPromoText.value = d.promoBtnText;
   const crmPromoCode = document.getElementById('crm-hero-promo-code');
   if (crmPromoCode) crmPromoCode.value = d.promoCode;
+
   const crmImgUrl = document.getElementById('crm-hero-img-url');
   if (crmImgUrl) crmImgUrl.value = d.imageUrl;
   const crmImgPrev = document.getElementById('crm-hero-img-preview');
@@ -8831,10 +8898,15 @@ function saveThumballSettings(e) {
     eyebrow: document.getElementById('crm-hero-eyebrow')?.value || DEFAULT_THUMBALL_SETTINGS.eyebrow,
     title: document.getElementById('crm-hero-title')?.value || DEFAULT_THUMBALL_SETTINGS.title,
     desc: document.getElementById('crm-hero-desc')?.value || DEFAULT_THUMBALL_SETTINGS.desc,
+    btn1Active: document.getElementById('crm-hero-btn1-active') ? document.getElementById('crm-hero-btn1-active').checked : true,
     btn1Text: document.getElementById('crm-hero-btn1-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Text,
     btn1Link: document.getElementById('crm-hero-btn1-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Link,
+    btn2Active: document.getElementById('crm-hero-btn2-active') ? document.getElementById('crm-hero-btn2-active').checked : true,
     btn2Text: document.getElementById('crm-hero-btn2-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Text,
     btn2Link: document.getElementById('crm-hero-btn2-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Link,
+    btnMemberActive: document.getElementById('crm-hero-btn-member-active') ? document.getElementById('crm-hero-btn-member-active').checked : true,
+    btnMemberText: document.getElementById('crm-hero-btn-member-text')?.value || DEFAULT_THUMBALL_SETTINGS.btnMemberText,
+    btnPromoActive: document.getElementById('crm-hero-btn-promo-active') ? document.getElementById('crm-hero-btn-promo-active').checked : true,
     promoBtnText: document.getElementById('crm-hero-promo-btn-text')?.value || DEFAULT_THUMBALL_SETTINGS.promoBtnText,
     promoCode: document.getElementById('crm-hero-promo-code')?.value || DEFAULT_THUMBALL_SETTINGS.promoCode,
     imageUrl: document.getElementById('crm-hero-img-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl
@@ -8843,7 +8915,7 @@ function saveThumballSettings(e) {
   localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
   applyThumballSettingsToDom();
   applyFooterBrandingSettingsToDom();
-  showToast('Perubahan Thumball Dashboard Utama berhasil disimpan! 🎨✨');
+  showToast('Perubahan Thumball & Tombol Hero berhasil disimpan! 🎨✨');
 }
 
 // ----------------------------------------------------------------------------
