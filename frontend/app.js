@@ -4942,6 +4942,9 @@ function updateMemberClassroomNavbar(orderId, email) {
 
   const displayUser = email || orderId;
 
+  // Di Halaman Dashboard Utama (#hero), tombol Keluar di navbar selalu dihapus / disembunyikan (Sesuai Permintaan Foto 1)
+  if (navLogoutBtn) navLogoutBtn.style.display = 'none';
+
   if (displayUser) {
     // Sesuai Permintaan User: Tombol RuangBelajarKu & Dashboard Belajar di navbar dihilangkan agar rapi & tidak memanjang
     if (navItem) navItem.style.display = 'none';
@@ -4951,7 +4954,6 @@ function updateMemberClassroomNavbar(orderId, email) {
       navLoginBtn.innerHTML = '➔] Member Area';
     }
     if (navRedeemBtn) navRedeemBtn.style.display = 'inline-flex';
-    if (navLogoutBtn) navLogoutBtn.style.display = 'inline-flex';
     
     if (badgeText) {
       badgeText.textContent = displayUser.length > 20 ? (displayUser.slice(0, 18) + '...') : displayUser;
@@ -4969,7 +4971,6 @@ function updateMemberClassroomNavbar(orderId, email) {
     if (navPill) navPill.style.display = 'none';
     if (navLoginBtn) navLoginBtn.style.display = 'inline-block';
     if (navRedeemBtn) navRedeemBtn.style.display = 'inline-block';
-    if (navLogoutBtn) navLogoutBtn.style.display = 'none';
 
     if (heroBtn) {
       heroBtn.innerHTML = 'Akses Member Area 🔑';

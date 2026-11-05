@@ -1720,20 +1720,30 @@ input:checked + .switch-slider:before {
 }
 
 .btn-cls-logout {
-  padding: 7px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #EF4444;
-  background: #FFFFFF;
-  border: 1.5px solid #FCA5A5;
-  border-radius: 20px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 8px 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #EF4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(239, 68, 68, 0.28) !important;
+  border-radius: 8px !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 .btn-cls-logout:hover {
-  background: #FEF2F2;
-  border-color: #EF4444;
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  border-color: #EF4444 !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+}
+.btn-cls-logout:hover svg {
+  stroke: #FFFFFF !important;
 }
 
 .mobile-only-actions {

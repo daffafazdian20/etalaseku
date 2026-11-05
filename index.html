@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261105-01">
+  <link rel="stylesheet" href="css/style.css?v=20261105-02">
 </head>
 <body>
 
@@ -127,16 +127,6 @@
       <!-- Tombol Member Area (Sesuai Referensi Gambar) -->
       <button class="btn-secondary" id="nav-btn-member-login" onclick="openMemberLoginModal()" style="padding:9px 16px; font-size:13px; font-weight:700; color:var(--deep-navy);">
         ➔] Member Area
-      </button>
-
-      <!-- Tombol / Icon Keluar ke Dashboard Utama (Sesuai Foto 1 Referensi) -->
-      <button type="button" class="btn-nav-logout" id="nav-btn-logout" onclick="handleExitToMainDashboard()" title="Keluar ke Dashboard Utama" aria-label="Keluar ke Dashboard Utama">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-          <polyline points="16 17 21 12 16 7"></polyline>
-          <line x1="21" y1="12" x2="9" y2="12"></line>
-        </svg>
-        <span class="nav-logout-text">Keluar</span>
       </button>
 
       <!-- Tombol Admin Portal -->
@@ -1384,8 +1374,13 @@
           <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
             ⬅️ Halaman Utama
           </button>
-          <button class="btn-secondary btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Siswa">
-            🚪 Keluar
+          <button type="button" class="btn-nav-logout btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Member" aria-label="Keluar Sesi Member">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span class="nav-logout-text">Keluar</span>
           </button>
         </div>
       </div>
@@ -1417,8 +1412,13 @@
           <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
             ⬅️ Beranda Utama
           </button>
-          <button class="btn-secondary btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Siswa">
-            🚪 Keluar
+          <button type="button" class="btn-nav-logout btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Member" aria-label="Keluar Sesi Member">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span class="nav-logout-text">Keluar</span>
           </button>
         </div>
       </div>
@@ -2414,7 +2414,14 @@
       <div style="display:flex; align-items:center; gap:6px;">
         <button type="button" class="btn-theme-toggle btn-admin-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme" style="width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);"><span class="theme-toggle-icon">🌙</span></button>
         <button class="btn-secondary" onclick="backToWebsiteFromAdmin()" style="padding:6px 10px; font-size:11px; background:rgba(255,255,255,0.08); color:white; border-color:rgba(255,255,255,0.2);">⬅ Web</button>
-        <button class="btn-secondary" onclick="adminLogout()" style="padding:6px 10px; font-size:11px; background:rgba(239,68,68,0.15); color:#EF4444; border-color:#EF4444;">🚪 Keluar</button>
+        <button type="button" class="btn-nav-logout" onclick="adminLogout()" title="Keluar Admin" aria-label="Keluar Admin" style="padding:6px 11px; font-size:11.5px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Keluar</span>
+        </button>
       </div>
     </div>
     <!-- Fixed Left Sidebar (260px) in Deep Midnight Navy -->
@@ -2496,8 +2503,13 @@
         </li>
       </ul>
       <div id="admin-sidebar-desktop-footer" style="padding:16px; border-top:1px solid rgba(255,255,255,0.08);">
-        <button class="btn-secondary" style="width:100%; color:#EF4444; border-color:#EF4444; padding:8px; font-size:12px; justify-content:center;" onclick="adminLogout()">
-          🚪 Keluar Admin
+        <button type="button" class="btn-nav-logout" style="width:100%; justify-content:center; gap:8px; padding:9px 12px; font-size:12.5px;" onclick="adminLogout()" title="Keluar Admin">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Keluar Admin</span>
         </button>
       </div>
     </aside>
@@ -4533,8 +4545,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261105-01"></script>
-  <script defer src="js/app.js?v=20261105-01"></script>
+  <script defer src="js/config.js?v=20261105-02"></script>
+  <script defer src="js/app.js?v=20261105-02"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
