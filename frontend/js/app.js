@@ -2630,7 +2630,10 @@ function switchAdminTab(tabId, navEl) {
     'tab-billing': 'Manajemen Tagihan & Cicilan Siswa (Installment Plan)',
     'tab-classroom': 'Editor & Manajemen Portal Ruang BelajarKu',
     'tab-settings': 'Metode Pembayaran Otomatis Server & Pengaturan Situs',
-    'tab-account': 'Pengaturan Akun & Hak Akses Portal (Super Admin / Admin)'
+    'tab-account': 'Pengaturan Akun & Hak Akses Portal (Super Admin / Admin)',
+    'tab-maintenance': 'Manajemen Mode Server Maintenance',
+    'tab-thumball': 'Thumball Editing (Konten Hero)',
+    'tab-bootcamp-crm': 'Manajemen Bootcamp & Kelas Live'
   };
   const titleEl = document.getElementById('admin-page-title');
   if (titleEl && titles[tabId]) titleEl.textContent = titles[tabId];
@@ -2660,6 +2663,8 @@ function switchAdminTab(tabId, navEl) {
     renderAdminProductsTable(STATE.products || []);
   } else if (tabId === 'tab-dashboard') {
     if (typeof renderAdminDashboardStats === 'function') renderAdminDashboardStats(STATE.stats);
+  } else if (tabId === 'tab-maintenance') {
+    if (typeof applyMaintenanceSettingsToDom === 'function') applyMaintenanceSettingsToDom();
   }
 }
 
@@ -11114,14 +11119,16 @@ function applyMaintenanceSettingsToDom() {
   const overlay = document.getElementById('server-maintenance-overlay');
   if (!overlay) return;
 
-  const isAdmin = (typeof STATE !== 'undefined' && STATE.adminToken) || localStorage.getItem('etalaseku_admin_token');
+  const portalWrapper = document.getElementById('admin-portal-wrapper');
+  const isCrmActive = (portalWrapper && (portalWrapper.classList.contains('active') || portalWrapper.style.display === 'flex' || portalWrapper.style.display === 'block')) || localStorage.getItem('etalaseku_is_in_crm') === 'true';
+  const isAdmin = (typeof STATE !== 'undefined' && STATE.adminToken) || localStorage.getItem('etalaseku_admin_token') || isCrmActive;
   const isMember = localStorage.getItem('etalaseku_member_order_id');
   const hash = (window.location.hash || '').toLowerCase();
   const isViewingClassroom = hash.includes('classroom') || hash.includes('belajar');
 
   if (m.active === true) {
-    if (isAdmin) {
-      // Admin dapat bypass, tampilkan floating admin warning banner
+    if (isAdmin || isCrmActive) {
+      // Admin / Pengelola di dalam CRM tidak pernah ditutup oleh overlay pemeliharaan
       overlay.style.display = 'none';
       renderAdminMaintenanceBanner();
     } else if (m.allowMembers && isMember && isViewingClassroom) {
@@ -11160,6 +11167,19 @@ function removeAdminMaintenanceBanner() {
 function handleMaintenanceToggleChange(checkbox) {
   const current = getMaintenanceSettings();
   current.active = checkbox.checked;
+
+  // Immediate badge update in CRM UI
+  const crmBadge = document.getElementById('badge-crm-maintenance-status');
+  if (crmBadge) {
+    crmBadge.className = checkbox.checked ? 'crm-toggle-badge active' : 'crm-toggle-badge inactive';
+    crmBadge.textContent = checkbox.checked ? '✓ Aktif (ON)' : '✕ Non-Aktif (OFF)';
+  }
+  const crmNavBadge = document.getElementById('badge-maintenance-status');
+  if (crmNavBadge) {
+    crmNavBadge.textContent = checkbox.checked ? 'ON' : 'OFF';
+    crmNavBadge.style.background = checkbox.checked ? '#EF4444' : '#2563EB';
+  }
+
   saveMaintenanceSettingsToStorage(current);
   applyMaintenanceSettingsToDom();
   if (typeof showToast === 'function') {
