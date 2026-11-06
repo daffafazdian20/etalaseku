@@ -10216,7 +10216,6 @@ body.light-theme .rb-search-input {
   border: 1.5px solid #CBD5E1 !important;
 }
 
-.member-product-card,
 [data-theme="light"] .member-product-card,
 body.light-theme .member-product-card {
   background: #FFFFFF !important;
@@ -10596,7 +10595,6 @@ body.light-theme .cls-tab-link:hover:not(.active) {
   background: rgba(255, 46, 99, 0.08) !important;
 }
 
-.rb-card,
 [data-theme="light"] .rb-card,
 body.light-theme .rb-card {
   background: #FFFFFF !important;
@@ -15067,4 +15065,77 @@ body.dark-theme .btn-bypass-link {
   max-width: 44px !important;
   max-height: 24px !important;
   border-radius: 24px !important;
+}
+
+/* ==========================================================================
+   TURN 35: PERFECT THEME ENGINE (FIX FOTO 1 & 2 - MODE TERANG & GELAP 100% SEMPURNA)
+   ========================================================================== */
+[data-theme="dark"] .my-submission-card,
+body.dark-theme .my-submission-card {
+  background: #1E293B !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-theme="dark"] .my-submission-card h4,
+body.dark-theme .my-submission-card h4 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .my-submission-card div,
+body.dark-theme .my-submission-card div {
+  color: #94A3B8;
+}
+
+[data-theme="dark"] .my-submission-card .my-sub-icon-box,
+body.dark-theme .my-submission-card .my-sub-icon-box {
+  background: rgba(37, 99, 235, 0.2) !important;
+  color: #60A5FA !important;
+}
+
+[data-theme="dark"] .rb-user-pill,
+body.dark-theme .rb-user-pill {
+  background: #1E293B !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #F8FAFC !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-theme="dark"] .rb-user-pill .rb-user-order,
+body.dark-theme .rb-user-pill .rb-user-order {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .rb-card .rb-card-content,
+body.dark-theme .rb-card .rb-card-content {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rb-cat-pill,
+body.dark-theme .rb-cat-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #E2E8F0 !important;
+}
+
+[data-theme="dark"] .rb-cat-pill.cat-dokumen,
+body.dark-theme .rb-cat-pill.cat-dokumen {
+  background: rgba(124, 58, 237, 0.18) !important;
+  color: #C4B5FD !important;
+  border-color: rgba(124, 58, 237, 0.3) !important;
+}
+
+[data-theme="dark"] .rb-cat-pill.cat-aplikasi,
+body.dark-theme .rb-cat-pill.cat-aplikasi {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #6EE7B7 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="dark"] .member-product-card .mp-card-body,
+body.dark-theme .member-product-card .mp-card-body {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
 }

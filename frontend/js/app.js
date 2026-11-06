@@ -4911,6 +4911,8 @@ function openClassroomDashboard(orderId, email) {
 
   // Render modul ke dalam kartu dashboard
   renderClassroomPortalModules('', 'ALL');
+  if (typeof renderMainMemberShowcases === 'function') renderMainMemberShowcases();
+  if (typeof applyAppTheme === 'function') applyAppTheme(document.documentElement.getAttribute('data-theme') || 'light');
 
   // Buka Beranda Member Area (Foto 3) sebagai tampilan default
   if (typeof switchMemberPortalView === 'function') {
@@ -6715,6 +6717,7 @@ function openPameranKaryaPortal() {
     portal.scrollTop = 0;
   }
   renderPameranKaryaPortal();
+  if (typeof applyAppTheme === 'function') applyAppTheme(document.documentElement.getAttribute('data-theme') || 'light');
 }
 window.openPameranKaryaPortal = openPameranKaryaPortal;
 
@@ -6746,7 +6749,7 @@ function renderPameranKaryaPortal(filterCat = 'Semua') {
         return `
           <div class="my-submission-card">
             <div style="display:flex; align-items:center; gap:12px;">
-              <div style="width:40px; height:40px; border-radius:10px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
+              <div class="my-sub-icon-box" style="width:40px; height:40px; border-radius:10px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
                 🖥️
               </div>
               <div>
@@ -10004,27 +10007,31 @@ window.renderMainMemberDashboardModules = renderMainMemberDashboardModules;
 // Mendukung Mode Terang (Default Warm Pastel Tech) & Mode Gelap
 // Berjalan otomatis, tanpa teks (hanya icon), dan merubah seluruh halaman website!
 // ============================================================================
-function initAppTheme() {
-  let theme = localStorage.getItem('nexstore_theme');
-  const hasManual = localStorage.getItem('nexstore_theme_manual') === 'true';
-
-  if (!theme || !hasManual) {
-    // Berjalan otomatis: deteksi preferensi sistem OS / browser
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      theme = 'dark';
-    } else {
-      theme = 'light';
-    }
+function getEffectiveTheme() {
+  const saved = localStorage.getItem('nexstore_theme');
+  if (saved === 'dark' || saved === 'light') {
+    return saved;
   }
+  // Berjalan 100% otomatis: mendeteksi pengaturan mode sistem OS / Browser pengguna
+  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+  return 'light';
+}
+
+function initAppTheme() {
+  const theme = getEffectiveTheme();
   applyAppTheme(theme);
 
-  // Listener otomatis jika user merubah preferensi tema di level OS / browser
-  if (window.matchMedia) {
+  // Pasang listener reaktif otomatis 100%: jika pengguna mengubah mode OS di Windows/HP/Mac, web langsung berganti otomatis!
+  if (typeof window !== 'undefined' && window.matchMedia) {
     try {
       const mq = window.matchMedia('(prefers-color-scheme: dark)');
       const listener = e => {
-        if (!localStorage.getItem('nexstore_theme_manual')) {
-          applyAppTheme(e.matches ? 'dark' : 'light');
+        const hasManual = localStorage.getItem('nexstore_theme_manual') === 'true';
+        if (!hasManual) {
+          const sysTheme = e.matches ? 'dark' : 'light';
+          applyAppTheme(sysTheme);
         }
       };
       if (mq.addEventListener) {
@@ -10090,6 +10097,7 @@ if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
   initAppTheme();
   if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules(); // On DOM ready
+  if (typeof renderMainMemberShowcases === 'function') renderMainMemberShowcases(); // On DOM ready (Foto 2)
   if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
   if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
   applyFooterBrandingSettingsToDom();
