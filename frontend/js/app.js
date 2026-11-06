@@ -10052,25 +10052,18 @@ function applyAppTheme(theme) {
     document.body.classList.add('light-theme');
   }
 
-  // Update seluruh tombol toggle tema di seluruh website (hanya tombol icon, tanpa tulisan teks)
+  // Update seluruh tombol toggle tema di seluruh website (ikon polos tanpa warna, outline stroke SVG)
   document.querySelectorAll('.btn-theme-toggle').forEach(btn => {
-    // Pastikan tidak ada teks tulisan mode di dalam tombol
-    const label = btn.querySelector('.theme-toggle-label');
-    if (label) label.remove();
-
-    let icon = btn.querySelector('.theme-toggle-icon');
-    if (!icon) {
-      icon = document.createElement('span');
-      icon.className = 'theme-toggle-icon';
-      btn.appendChild(icon);
-    }
-
+    // Bersihkan isi lama
+    btn.innerHTML = '';
     if (isDark) {
-      icon.textContent = '☀️';
-      btn.title = 'Beralih ke Mode Terang (Warm Pastel Tech)';
+      // Di Dark Mode: Tampilkan ikon Matahari polos outline putih/monokrom untuk beralih ke Mode Terang
+      btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      btn.title = 'Beralih ke Mode Terang';
       btn.setAttribute('aria-label', 'Beralih ke Mode Terang');
     } else {
-      icon.textContent = '🌙';
+      // Di Light Mode: Tampilkan ikon Bulan sabit polos outline gelap/monokrom untuk beralih ke Mode Gelap
+      btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
       btn.title = 'Beralih ke Mode Gelap';
       btn.setAttribute('aria-label', 'Beralih ke Mode Gelap');
     }
@@ -10084,7 +10077,7 @@ function toggleAppTheme() {
   localStorage.setItem('nexstore_theme_manual', 'true');
   applyAppTheme(next);
   if (typeof showToast === 'function') {
-    showToast(next === 'dark' ? '🌙 Mode Gelap Aktif (Seluruh Halaman)' : '☀️ Mode Terang Aktif (Warm Pastel Tech)', 'info', 2000);
+    showToast(next === 'dark' ? 'Mode Gelap Aktif' : 'Mode Terang Aktif', 'info', 2000);
   }
 }
 window.initAppTheme = initAppTheme;
