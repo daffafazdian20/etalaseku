@@ -1,37 +1,95 @@
 
 /* ==========================================================================
-   WARM PASTEL TECH DESIGN SYSTEM PALETTE
-   Sesuai Folder: Desain UI UX / stitch_etalaseku_digital_hub_ui_ux / warm_pastel_tech / DESIGN.md
+   MODERN HIGH-CONTRAST SAPPHIRE INDIGO DESIGN SYSTEM
+   Standard: Plus Jakarta Sans Typography & Deep Sapphire / Dark Slate Palette
    Brand: NexStore Produk Digital - by @daffafazdian.id
    ========================================================================== */
 :root {
-  /* Warm Pastel Tech Named Color Tokens */
-  --color-primary: #FF2E63;
-  --color-primary-container: #E51152;
-  --color-cta-hover: #E11D48;
+  /* Modern Sapphire & Dark Slate Color Tokens */
+  --color-primary: #2563EB;
+  --color-primary-container: #1D4ED8;
+  --color-cta-hover: #1E40AF;
   --color-secondary: #0F172A;
   --color-midnight-indigo: #1E1B4B;
-  --color-background: #FBF9F5;
-  --color-surface: #FBF9F5;
+  --color-background: #F8FAFC;
+  --color-surface: #F8FAFC;
   --color-surface-card: #FFFFFF;
-  --color-surface-container: #EFEEEA;
-  --color-surface-container-high: #EAE8E4;
-  --color-surface-container-highest: #E4E2DE;
-  --color-on-background: #1B1C1A;
-  --color-on-surface: #1B1C1A;
-  --color-on-surface-variant: #5C3F42;
-  --color-outline: #906E71;
-  --color-outline-variant: #E5BDC0;
-  --color-pastel-pink: #FDEEF1;
-  --color-pastel-lavender: #F3EDFD;
-  --color-pastel-mint: #E8F8F5;
-  --color-text-muted: #64748B;
-  --color-error: #BA1A1A;
-  --color-error-container: #FFDAD6;
+  --color-surface-container: #F1F5F9;
+  --color-surface-container-high: #E2E8F0;
+  --color-surface-container-highest: #CBD5E1;
+  --color-on-background: #0F172A;
+  --color-on-surface: #0F172A;
+  --color-on-surface-variant: #334155;
+  --color-outline: #64748B;
+  --color-outline-variant: #CBD5E1;
+  --color-pastel-pink: #EFF6FF;
+  --color-pastel-lavender: #EEF2FF;
+  --color-pastel-mint: #F0FDF4;
+  --color-text-muted: #334155; /* High contrast description text */
+  --color-error: #DC2626;
+  --color-error-container: #FEE2E2;
   --color-amber-gold: #F59E0B;
   --color-success-green: #10B981;
 
   /* Aliases for Full Compatibility */
+  --canvas-bg: #F8FAFC;
+  --wave-pink: #EFF6FF;
+  --wave-lavender: #EEF2FF;
+  --wave-mint: #F0FDF4;
+  --primary-pink: #2563EB;
+  --coral-pink: #2563EB;
+  --primary-hover: #1D4ED8;
+  --deep-navy: #0F172A;
+  --card-surface: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #334155;
+  --border-subtle: #E2E8F0;
+  --success-green: #10B981;
+  --amber-gold: #F59E0B;
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+  --shadow-hover: 0 20px 30px -10px rgba(37, 99, 235, 0.15), 0 10px 15px -5px rgba(15, 23, 42, 0.04);
+}
+
+/* NexStore Modern App Icon & Brand Byline Styling */
+.brand-app-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
+  border: 1.5px solid rgba(37, 99, 235, 0.4);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-logo:hover .brand-app-icon {
+  transform: scale(1.04);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+  border-color: #2563EB;
+}
+
+.brand-byline {
+  font-size: 10px;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.3px;
+  transition: color 0.2s ease;
+}
+
+.brand-logo:hover .brand-byline {
+  color: #2563EB;
+}
+
+/* ==========================================================================
+   ETALASEKU DIGITAL HUB & ACADEMY — HIGH CONVERTING STYLESHEET
+   Desain Visual: Modern Playful-Professional (Wavy Pastel + 3D Interactive)
+   ========================================================================== */
+
+:root {
   --canvas-bg: var(--color-background);
   --wave-pink: var(--color-pastel-pink);
   --wave-lavender: var(--color-pastel-lavender);
@@ -46,64 +104,18 @@
   --border-subtle: #E2E8F0;
   --success-green: var(--color-success-green);
   --amber-gold: var(--color-amber-gold);
-}
-
-/* NexStore Modern App Icon & Brand Byline Styling */
-.brand-app-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
-  border: 1.5px solid rgba(255, 46, 99, 0.4);
-  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.28);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.brand-logo:hover .brand-app-icon {
-  transform: scale(1.06) rotate(-2deg);
-  box-shadow: 0 6px 20px rgba(255, 46, 99, 0.45);
-  border-color: #FF2E63;
-}
-
-.brand-byline {
-  font-size: 10px;
-  font-weight: 700;
-  color: #64748B;
-  letter-spacing: 0.3px;
-  transition: color 0.2s ease;
-}
-
-.brand-logo:hover .brand-byline {
-  color: #FF2E63;
-}
-
-/* ==========================================================================
-   ETALASEKU DIGITAL HUB & ACADEMY — HIGH CONVERTING STYLESHEET
-   Desain Visual: Modern Playful-Professional (Wavy Pastel + 3D Interactive)
-   ========================================================================== */
-
-:root {
-  --canvas-bg: #FFFDF9;
-  --wave-pink: #FDEEF1;
-  --wave-lavender: #F3EDFD;
-  --wave-mint: #E8F8F5;
-  --primary-pink: #FF2E63;
-  --coral-pink: #FF2E63;
-  --primary-hover: #E11D48;
-  --deep-navy: #0F172A;
-  --card-surface: #FFFFFF;
-  --text-main: #0F172A;
-  --text-muted: #475569;
-  --border-subtle: #E2E8F0;
-  --success-green: #10B981;
-  --amber-gold: #F59E0B;
-  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
-  --shadow-hover: 0 20px 30px -10px rgba(255, 46, 99, 0.15), 0 10px 15px -5px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 20px 30px -10px rgba(37, 99, 235, 0.15), 0 10px 15px -5px rgba(15, 23, 42, 0.04);
+}
+
+h1, h2, h3, h4, .hero-title, .section-title, .brand-name-text, .welcome-hero-title, .rb-portal-title {
+  font-family: var(--font-main);
+  letter-spacing: -0.02em !important;
+}
+
+p, .hero-desc, .section-subtitle, .card-desc {
+  color: var(--text-muted);
 }
 
 * {
@@ -230,14 +242,18 @@ body {
 .shimmer-btn {
   position: relative;
   overflow: hidden;
-  background: var(--primary-pink);
+  background: var(--color-primary);
   color: #FFFFFF;
   border: none;
-  border-radius: 9999px;
+  border-radius: 9px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(255, 46, 99, 0.4);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .shimmer-btn::after {
@@ -247,49 +263,36 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(60deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+  background: linear-gradient(60deg, transparent 35%, rgba(255, 255, 255, 0.25) 50%, transparent 65%);
   transform: rotate(30deg) translateX(-100%);
-  animation: shimmerSweep 3.5s infinite;
+  animation: shimmerSweep 4s infinite;
 }
 
 @keyframes shimmerSweep {
   0% { transform: rotate(30deg) translateX(-100%); }
-  25%, 100% { transform: rotate(30deg) translateX(100%); }
+  20%, 100% { transform: rotate(30deg) translateX(100%); }
 }
 
 .shimmer-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(255, 46, 99, 0.6), 0 0 15px rgba(255, 46, 99, 0.8);
+  background: var(--color-cta-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
 }
 
-/* Glowing Border on Product Cards */
+/* Modern Card Surfaces (Clean Elevation without Leaking Blur Blobs) */
 .glow-card {
   position: relative;
-  border-radius: 24px;
+  border-radius: 14px;
   background: var(--card-surface);
-  transition: all 0.4s ease;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-}
-
-.glow-card::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 26px;
-  background: linear-gradient(135deg, rgba(255, 46, 99, 0.4), rgba(124, 58, 237, 0.3), rgba(16, 185, 129, 0.4));
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  filter: blur(8px);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
 }
 
 .glow-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px -15px rgba(255, 46, 99, 0.25);
-}
-
-.glow-card:hover::before {
-  opacity: 1;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.1);
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
 /* ==========================================================================
@@ -449,16 +452,84 @@ body {
 
 .nav-actions .btn-secondary,
 .nav-actions .shimmer-btn {
-  padding: 7px 13px !important;
-  font-size: 12px !important;
+  padding: 7px 14px !important;
+  font-size: 12.5px !important;
   font-weight: 700 !important;
-  border-radius: 20px !important;
+  border-radius: 9px !important;
   white-space: nowrap !important;
   height: 36px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  gap: 6px !important;
   flex-shrink: 0 !important;
+}
+
+/* Nav Dropdown Menu for Clean Simplified Header (Upgrade Point 6) */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropdown-toggle {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--deep-navy);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 7px;
+  transition: all 0.2s ease;
+}
+
+.nav-dropdown-toggle:hover {
+  color: var(--color-primary);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 210px;
+  background: var(--card-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1000;
+  margin-top: 6px;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  display: flex;
+}
+
+.nav-dropdown-menu a {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px !important;
+  font-weight: 600;
+  color: var(--deep-navy) !important;
+  text-decoration: none;
+  border-radius: 7px;
+  transition: all 0.15s ease;
+}
+
+.nav-dropdown-menu a:hover {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--color-primary) !important;
 }
 
 /* ==========================================================================
@@ -528,29 +599,51 @@ body {
 }
 
 .btn-primary {
-  padding: 14px 28px;
-  font-size: 15px;
+  padding: 13px 26px;
+  font-size: 14.5px;
+  font-weight: 700;
+  border-radius: 9px;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary:hover {
+  background: var(--color-cta-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
 }
 
 .btn-secondary {
-  padding: 14px 24px;
-  font-size: 15px;
+  padding: 13px 22px;
+  font-size: 14.5px;
   font-weight: 700;
-  border-radius: 9999px;
-  border: 2px solid var(--deep-navy);
-  background: transparent;
+  border-radius: 9px;
+  border: 1.5px solid #CBD5E1;
+  background: #FFFFFF;
   color: var(--deep-navy);
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .btn-secondary:hover {
-  background: var(--deep-navy);
-  color: #FFFFFF;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(37, 99, 235, 0.04);
+  transform: translateY(-2px);
 }
 
 /* Hero Slideshow Showcase */
@@ -6979,21 +7072,8 @@ input:checked + .switch-slider:before {
 
 /* 1. PULSING GLOW KEYFRAMES (DISCOUNT & CTA) */
 @keyframes discountPulseGlow {
-  0% {
-    text-shadow: 0 0 4px #FF2E63, 0 0 10px #FF2E63;
-    color: #FFFFFF;
-    transform: scale(1);
-  }
-  50% {
-    text-shadow: 0 0 14px #FBBF24, 0 0 28px #FF2E63, 0 0 36px #FF2E63;
-    color: #FFFBEB;
-    transform: scale(1.02);
-  }
-  100% {
-    text-shadow: 0 0 4px #FF2E63, 0 0 10px #FF2E63;
-    color: #FFFFFF;
-    transform: scale(1);
-  }
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 1; }
 }
 
 .announcement-discount-glow {
@@ -7028,18 +7108,8 @@ input:checked + .switch-slider:before {
 }
 
 @keyframes ctaPulseGlow {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 46, 99, 0.4), 0 4px 15px rgba(255, 46, 99, 0.2);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(255, 46, 99, 0.85), 0 0 45px rgba(251, 191, 36, 0.4);
-    transform: scale(1.03);
-  }
-  100% {
-    box-shadow: 0 0 10px rgba(255, 46, 99, 0.4), 0 4px 15px rgba(255, 46, 99, 0.2);
-    transform: scale(1);
-  }
+  0%, 100% { box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25); }
+  50% { box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35); }
 }
 
 .cta-pulse-glow {
@@ -7415,27 +7485,13 @@ input:checked + .switch-slider:before {
 
 /* 2. TULISAN DISKON MENYALA-NYALA (NEON FIRE PULSE GLOW) */
 @keyframes neonDiscountFirePulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 14px rgba(255, 46, 99, 0.85), 0 0 28px rgba(245, 158, 11, 0.65), inset 0 0 10px rgba(255, 255, 255, 0.6);
-    text-shadow: 0 0 8px #FF2E63, 0 0 16px #F59E0B;
-  }
-  50% {
-    transform: scale(1.06);
-    box-shadow: 0 0 24px rgba(255, 46, 99, 1), 0 0 42px rgba(245, 158, 11, 0.95), 0 0 60px rgba(239, 68, 68, 0.8), inset 0 0 16px rgba(255, 255, 255, 0.9);
-    text-shadow: 0 0 14px #FF2E63, 0 0 26px #F59E0B, 0 0 34px #FFFFFF;
-  }
+  0%, 100% { transform: scale(1); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+  50% { transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 }
 
 @keyframes textNeonGlowPulse {
-  0%, 100% {
-    text-shadow: 0 0 8px #FF2E63, 0 0 18px #F59E0B;
-    filter: drop-shadow(0 0 6px rgba(255, 46, 99, 0.7));
-  }
-  50% {
-    text-shadow: 0 0 16px #FF2E63, 0 0 30px #F59E0B, 0 0 40px #EF4444, 0 0 50px #FFFFFF;
-    filter: drop-shadow(0 0 14px rgba(255, 46, 99, 1));
-  }
+  0%, 100% { filter: none; text-shadow: none; }
+  50% { filter: none; text-shadow: none; }
 }
 
 /* TULISAN DISKON BAGIAN ATAS (ANNOUNCEMENT BAR) */
@@ -14547,3 +14603,413 @@ body.dark-theme .btn-nav-logout:hover {
   border: 1px solid #E2E8F0 !important;
 }
 
+
+
+/* ==========================================================================
+   UPGRADE POINTS 1-7, 11: MODERN SAPPHIRE SUITE, UNIFIED METRICS & MAINTENANCE
+   ========================================================================== */
+
+/* Button Standardization to Modern Rounded-LG (8px-10px) */
+.btn-primary,
+.btn-secondary,
+.shimmer-btn,
+.btn-hero-classes,
+.btn-hero-catalog,
+.btn-cls-home,
+.btn-cls-logout,
+.btn-cp-save,
+.btn-cp-cancel,
+.btn-checkout-primary,
+.btn-theme-toggle,
+#nav-btn-redeem,
+#nav-btn-member-login,
+.category-btn,
+.tab-btn,
+.modal-btn,
+.filter-btn {
+  border-radius: 9px !important;
+}
+
+/* Primary Action Buttons Sapphire Styling */
+.btn-primary,
+.shimmer-btn,
+.btn-cp-save {
+  background: var(--color-primary) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25) !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover,
+.shimmer-btn:hover,
+.btn-cp-save:hover {
+  background: var(--color-cta-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.38) !important;
+}
+
+/* High Contrast Descriptions */
+p, .hero-desc, .section-desc, .welcome-hero-subtitle, .modal-cp-desc, .metric-sublabel {
+  color: var(--color-text-muted) !important;
+  line-height: 1.6;
+}
+
+/* Headings Letter-Spacing Tightening */
+h1, h2, h3, h4, .hero-title, .section-title, .welcome-hero-title, .brand-name-text {
+  letter-spacing: -0.02em !important;
+  font-family: var(--font-main) !important;
+}
+
+/* Unified Metrics Bar (Upgrade Point 7) */
+.metrics-unified-wrapper {
+  padding: 0 5%;
+  background: var(--wave-pink);
+  padding-bottom: 40px;
+}
+.metrics-unified-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  padding: 16px 20px;
+  margin-top: 10px;
+  gap: 8px;
+}
+.metric-unified-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.metric-unified-item:hover {
+  background: rgba(37, 99, 235, 0.04);
+  transform: translateY(-1px);
+}
+.metric-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.metric-content {
+  display: flex;
+  flex-direction: column;
+}
+.metric-unified-item .metric-number {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--deep-navy);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.metric-unified-item .metric-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--deep-navy);
+  margin-top: 2px;
+}
+.metric-unified-item .metric-sublabel {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.metric-divider {
+  width: 1px;
+  height: 48px;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+}
+
+/* Dark mode for unified bar */
+[data-theme="dark"] .metrics-unified-bar,
+body.dark-theme .metrics-unified-bar {
+  background: #131F37 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+[data-theme="dark"] .metric-unified-item:hover,
+body.dark-theme .metric-unified-item:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+[data-theme="dark"] .metric-unified-item .metric-number,
+body.dark-theme .metric-unified-item .metric-number {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .metric-unified-item .metric-label,
+body.dark-theme .metric-unified-item .metric-label {
+  color: #F1F5F9 !important;
+}
+[data-theme="dark"] .metric-unified-item .metric-sublabel,
+body.dark-theme .metric-unified-item .metric-sublabel {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .metric-divider,
+body.dark-theme .metric-divider {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+[data-theme="dark"] .metric-icon-wrap,
+body.dark-theme .metric-icon-wrap {
+  background: rgba(37, 99, 235, 0.2) !important;
+  color: #60A5FA !important;
+}
+
+/* Mobile responsive for unified metrics bar */
+@media (max-width: 768px) {
+  .metrics-unified-bar {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 14px !important;
+  }
+  .metric-divider {
+    display: none !important;
+  }
+  .metric-unified-item {
+    padding: 6px !important;
+    gap: 10px !important;
+  }
+}
+
+/* ==========================================================================
+   SERVER MAINTENANCE SYSTEM STYLES (Upgrade Point 11)
+   ========================================================================== */
+.maintenance-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.maintenance-card {
+  max-width: 520px;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 36px 32px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.maintenance-icon-badge {
+  width: 68px;
+  height: 68px;
+  border-radius: 14px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+
+.maintenance-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #1D4ED8;
+  padding: 4px 14px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.maintenance-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2563EB;
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6);
+  animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
+.maintenance-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--deep-navy);
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.maintenance-desc {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.maintenance-meta-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+}
+
+.maintenance-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.maintenance-meta-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.maintenance-meta-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--deep-navy);
+}
+
+.maintenance-meta-divider {
+  width: 1px;
+  height: 32px;
+  background: #E2E8F0;
+}
+
+.maintenance-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.maintenance-admin-bypass {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.btn-bypass-link {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.btn-bypass-link:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Floating Admin Maintenance Active Banner */
+.admin-maintenance-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #1E40AF 0%, #2563EB 100%);
+  color: #FFFFFF;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  z-index: 100000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.admin-maintenance-banner button {
+  background: rgba(255,255,255,0.2);
+  color: #FFFFFF;
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-maintenance-banner button:hover {
+  background: #FFFFFF;
+  color: #1E40AF;
+}
+
+/* Dark mode for maintenance card */
+[data-theme="dark"] .maintenance-card,
+body.dark-theme .maintenance-card {
+  background: #0F172A !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+[data-theme="dark"] .maintenance-title,
+body.dark-theme .maintenance-title {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .maintenance-desc,
+body.dark-theme .maintenance-desc {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .maintenance-meta-box,
+body.dark-theme .maintenance-meta-box {
+  background: #1E293B !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .maintenance-meta-label,
+body.dark-theme .maintenance-meta-label {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .maintenance-meta-val,
+body.dark-theme .maintenance-meta-val {
+  color: #FFFFFF !important;
+}
+[data-theme="dark"] .maintenance-meta-divider,
+body.dark-theme .maintenance-meta-divider {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .maintenance-status-pill,
+body.dark-theme .maintenance-status-pill {
+  background: rgba(37, 99, 235, 0.2) !important;
+  border-color: rgba(37, 99, 235, 0.4) !important;
+  color: #93C5FD !important;
+}
+[data-theme="dark"] .maintenance-admin-bypass,
+body.dark-theme .maintenance-admin-bypass {
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .btn-bypass-link,
+body.dark-theme .btn-bypass-link {
+  color: #94A3B8 !important;
+}

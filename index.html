@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261105-06">
+  <link rel="stylesheet" href="css/style.css?v=20261106-01">
 </head>
 <body>
 
@@ -99,39 +99,59 @@
     </a>
     <ul class="nav-links" id="main-nav-links">
       <li><a href="#hero">Beranda</a></li>
+      <li><a href="#produk">Katalog Produk</a></li>
       <li><a href="#bootcamp">Bootcamp</a></li>
-            <li><a href="#produk">Katalog Produk</a></li>
-      <li><a href="#pameran" onclick="openPameranKaryaPortal(); return false;">Hasil Karya Member</a></li>
-      <li><a href="#testimoni">Testimoni</a></li>
-      <li><a href="javascript:void(0)" onclick="openCustomAppPortal('custom'); return false;">Aplikasi Custom</a></li>
-
+      <li class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle">
+          <span>Layanan &amp; Portofolio</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#pameran" onclick="openPameranKaryaPortal(); return false;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Hasil Karya Member
+          </a>
+          <a href="#testimoni">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Testimoni Alumni
+          </a>
+          <a href="javascript:void(0)" onclick="openCustomAppPortal('custom'); return false;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Aplikasi Custom
+          </a>
+        </div>
+      </li>
     </ul>
     <!-- Mobile Right Pill (Hanya Muncul di Layar HP) -->
     <div class="mobile-header-right-wrap" style="display:none;">
-      <button class="shimmer-btn" id="mobile-top-user-pill" onclick="handleBottomNavTab('classroom')" style="padding:6px 12px; font-size:11.5px; border-radius:99px; gap:5px;">
+      <button class="shimmer-btn" id="mobile-top-user-pill" onclick="handleBottomNavTab('classroom')" style="padding:6px 12px; font-size:11.5px; border-radius:9px; gap:5px;">
         <span id="mobile-user-status-dot" style="width:7px; height:7px; border-radius:50%; background:#10B981; display:inline-block;"></span>
         <span id="mobile-top-user-label">Ruang Belajar</span>
       </button>
     </div>
 
     <div class="nav-actions">
-
-
-      <!-- Tombol Redeem Kode Akses (Sesuai Referensi Gambar) -->
       <!-- Theme Toggle (Mode Terang / Gelap Sesuai DESAIN UI/UX) -->
-      <button type="button" class="btn-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme"><span class="theme-toggle-icon">🌙</span></button>
+      <button type="button" class="btn-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme">
+        <svg class="theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+
+      <!-- Tombol Redeem Kode Akses (Outline SVG) -->
       <button class="btn-secondary" id="nav-btn-redeem" onclick="openRedeemModal()" style="padding:9px 15px; font-size:13px; color:var(--deep-navy); font-weight:700;">
-        🔑 Redeem
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5a3.5 3.5 0 1 0-3 3l1.5 1.5-4 4v3h3v-2h2v-2l1.5-1.5"/></svg>
+        Redeem
       </button>
 
-      <!-- Tombol Member Area (Sesuai Referensi Gambar) -->
+      <!-- Tombol Member Area (Outline SVG) -->
       <button class="btn-secondary" id="nav-btn-member-login" onclick="openMemberLoginModal()" style="padding:9px 16px; font-size:13px; font-weight:700; color:var(--deep-navy);">
-        ➔] Member Area
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+        Member Area
       </button>
 
-      <!-- Tombol Admin Portal -->
+      <!-- Tombol Admin Portal (Outline SVG) -->
       <button class="shimmer-btn" onclick="openAdminModal()" style="padding:9px 18px; font-size:13px;">
-        Admin Portal ⚙️
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Admin Portal
       </button>
     </div>
   </nav>
@@ -474,17 +494,21 @@
         Lihat hasil aplikasi kami, ikuti kelas &amp; bootcamp intensif, lalu akses materinya langsung di portal member siswa tanpa hambatan.
       </p>
       <div class="hero-btn-group" id="hero-smart-btn-group" style="display:none;">
-        <a href="#bootcamp" class="shimmer-btn btn-primary cta-pulse-glow" id="hero-btn-bootcamp" style="text-decoration:none; display:none; align-items:center; gap:8px;">
-          <span>🚀 Lihat Bootcamp &amp; Kelas Live</span>
+        <a href="#bootcamp" class="shimmer-btn btn-primary" id="hero-btn-bootcamp" style="text-decoration:none; display:none; align-items:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+          <span>Lihat Bootcamp &amp; Kelas Live</span>
         </a>
         <a href="#produk" class="btn-secondary" id="hero-btn-primary" style="text-decoration:none; display:none; align-items:center; gap:8px; font-weight:700;">
-          <span>🛍️ Katalog Produk</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span>Katalog Produk</span>
         </a>
-        <button class="btn-secondary" id="hero-btn-secondary" onclick="openClassroomDashboardOrLogin()" style="display:none;">
-          Masuk Member Area 🔑
+        <button class="btn-secondary" id="hero-btn-secondary" onclick="openClassroomDashboardOrLogin()" style="display:none; align-items:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+          <span>Masuk Member Area</span>
         </button>
-        <button class="btn-secondary" id="hero-btn-promo" onclick="openAnnouncementVoucherModal()" style="color:#FF2E63; border-color:rgba(255,46,99,0.3); background:#FFF1F4; display:none;">
-          📢 Kode Promo
+        <button class="btn-secondary" id="hero-btn-promo" onclick="openAnnouncementVoucherModal()" style="display:none; align-items:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <span>Kode Promo</span>
         </button>
       </div>
       <div style="font-size:12px; color:var(--text-muted); font-weight:700; display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:14px;">
@@ -527,15 +551,72 @@
     </div>
   </section>
 
-  <!-- Metric Counters Row -->
-  <div style="padding: 0 5%; background: var(--wave-pink); padding-bottom: 50px;">
-    <div class="metrics-row">
-      <div class="metric-card" style="cursor:pointer;" onclick="openClassroomDashboardOrLogin()">
-        <div style="font-size:24px; margin-bottom:4px;">👥</div>
-        <div class="metric-number">861+</div>
-        <div class="metric-label" style="font-weight:800;">Member Aktif</div>
-        <div style="font-size:11px; color:#64748B;">Bergabung di portal</div>
+  <!-- Unified Metric Counters Row (Upgrade Point 7) -->
+  <div class="metrics-unified-wrapper">
+    <div class="metrics-unified-bar">
+      <div class="metric-unified-item" onclick="openClassroomDashboardOrLogin()">
+        <div class="metric-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="metric-content">
+          <div class="metric-number">861+</div>
+          <div class="metric-label">Member Aktif</div>
+          <div class="metric-sublabel">Bergabung di portal</div>
+        </div>
       </div>
+      <div class="metric-divider"></div>
+      <div class="metric-unified-item" onclick="location.href='#produk'">
+        <div class="metric-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/>
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="metric-content">
+          <div class="metric-number">8+</div>
+          <div class="metric-label">Produk Digital</div>
+          <div class="metric-sublabel">Kelas, aplikasi &amp; dokumen</div>
+        </div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric-unified-item" onclick="location.href='#bootcamp'">
+        <div class="metric-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="metric-content">
+          <div class="metric-number">1</div>
+          <div class="metric-label">Program Bootcamp</div>
+          <div class="metric-sublabel">Kelas live terjadwal</div>
+        </div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric-unified-item" onclick="openPameranKaryaPortal()">
+        <div class="metric-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="7"/>
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+          </svg>
+        </div>
+        <div class="metric-content">
+          <div class="metric-number">54+</div>
+          <div class="metric-label">Karya Dipamerkan</div>
+          <div class="metric-sublabel">Hasil nyata para member</div>
+        </div>
+      </div>
+    </div>
+  </div>
       <div class="metric-card" style="cursor:pointer;" onclick="location.href='#produk'">
         <div style="font-size:24px; margin-bottom:4px;">📦</div>
         <div class="metric-number">8+</div>
@@ -2478,6 +2559,12 @@
             <span>⚡ <span class="nav-text">Bootcamp &amp; Kelas Live</span></span>
           </a>
         </li>
+                <li>
+          <a class="admin-nav-item" href="#tab-maintenance" onclick="switchAdminTab('tab-maintenance', this); return false;">
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:6px;"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="nav-text">Server Maintenance</span></span>
+            <span class="admin-nav-badge" style="background:#2563EB;" id="badge-maintenance-status">OFF</span>
+          </a>
+        </li>
         <li>
           <a class="admin-nav-item" href="#tab-settings" onclick="switchAdminTab('tab-settings', this); return false;">
             <span>⚙️ <span class="nav-text">Metode Bayar & Situs</span></span>
@@ -3450,6 +3537,86 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
         </div>
 
         <!-- Tab 9: Metode Bayar & Pengaturan Situs -->
+        
+        <!-- ==================================================================
+             TAB CRM: SERVER MAINTENANCE (Upgrade Point 11)
+             ================================================================== -->
+        <div class="admin-tab-content" id="tab-maintenance">
+          <div class="admin-table-container" style="padding:24px;">
+            <div style="margin-bottom:18px; border-bottom:1px solid #E2E8F0; padding-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h3 style="font-size:17px; font-weight:800; color:var(--deep-navy); margin:0 0 4px; display:flex; align-items:center; gap:8px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  Manajemen Mode Server Maintenance
+                </h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin:0;">
+                  Aktifkan layar pemeliharaan untuk pengunjung saat melakukan update server atau migrasi. Admin tetap dapat mengakses situs lewat bypass.
+                </p>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button type="button" class="btn-secondary" onclick="previewMaintenanceOverlay()" style="padding:8px 14px; font-size:12.5px;">
+                  Lihat Pratinjau Tampilan
+                </button>
+              </div>
+            </div>
+
+            <!-- Maintenance Switch Control Box -->
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:18px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                <div style="font-weight:800; font-size:14px; color:var(--deep-navy); margin-bottom:4px;">
+                  Status Mode Server Maintenance
+                </div>
+                <div style="font-size:12px; color:var(--text-muted);">
+                  Jika diaktifkan (ON), seluruh halaman depan akan tertutup layar pemeliharaan otomatis.
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px;">
+                <span class="crm-toggle-badge inactive" id="badge-crm-maintenance-status">✕ Non-Aktif (OFF)</span>
+                <label class="switch-toggle-wrap">
+                  <input type="checkbox" id="crm-maintenance-active" onchange="handleMaintenanceToggleChange(this)">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Form Pengaturan Pesan Maintenance -->
+            <form id="form-crm-maintenance" onsubmit="handleSaveMaintenanceSettings(event)">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div>
+                  <label class="admin-form-label" style="display:block; font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:6px;">Judul Tampilan Maintenance *</label>
+                  <input type="text" id="crm-maintenance-title" class="admin-input-field" style="width:100%;" required value="Pemeliharaan Server & Pembaruan Sistem">
+                </div>
+                <div>
+                  <label class="admin-form-label" style="display:block; font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:6px;">Perkiraan Waktu Selesai (Estimasi / Jam) *</label>
+                  <input type="text" id="crm-maintenance-eta" class="admin-input-field" style="width:100%;" required value="± 30 Menit">
+                </div>
+              </div>
+
+              <div style="margin-bottom:16px;">
+                <label class="admin-form-label" style="display:block; font-size:12px; font-weight:700; color:var(--deep-navy); margin-bottom:6px;">Pesan Penjelasan kepada Pengunjung *</label>
+                <textarea id="crm-maintenance-desc" class="admin-input-field" rows="3" style="width:100%; font-family:inherit;" required>Kami sedang meningkatkan kapasitas infrastruktur server, keamanan database, dan performa aplikasi demi kenyamanan belajar Anda. Layanan akan segera kembali normal.</textarea>
+              </div>
+
+              <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:14px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-size:12.5px; font-weight:700; color:var(--deep-navy);">Beri Akses Member yang Sudah Login</div>
+                  <div style="font-size:11.5px; color:var(--text-muted);">Izinkan siswa yang sudah login ke Ruang BelajarKu tetap bisa membuka materi saat maintenance berlangsung.</div>
+                </div>
+                <label class="switch-toggle-wrap">
+                  <input type="checkbox" id="crm-maintenance-allow-members">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button type="submit" class="btn-primary" style="padding:10px 22px; font-size:13px;">
+                  Simpan Pengaturan Maintenance
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <div class="admin-tab-content" id="tab-settings">
           <div style="display:grid; grid-template-columns:1fr; gap:24px; max-width:860px;">
             <!-- Panel 1: Konfigurasi Metode Pembayaran Otomatis Server -->
@@ -4595,8 +4762,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261105-06"></script>
-  <script defer src="js/app.js?v=20261105-06"></script>
+  <script defer src="js/config.js?v=20261106-01"></script>
+  <script defer src="js/app.js?v=20261106-01"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
@@ -5085,6 +5252,58 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px solid var(--color-outline); padding-top:14px;">
         <button type="button" class="btn-secondary" onclick="closeCustomAppDetailModal()">Tutup</button>
         <button type="button" class="shimmer-btn" id="cad-btn-wa" onclick="">Hubungi Admin via WA 💬</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================
+       SERVER MAINTENANCE OVERLAY (Upgrade Point 11)
+       Dapat diaktifkan/dinonaktifkan secara otomatis dari Dashboard CRM
+       ======================================================================== -->
+  <div id="server-maintenance-overlay" class="maintenance-overlay" style="display:none;">
+    <div class="maintenance-card">
+      <div class="maintenance-icon-badge">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+      </div>
+      <div class="maintenance-status-pill">
+        <span class="maintenance-pulse-dot"></span>
+        <span id="maintenance-badge-status">Sedang Berlangsung</span>
+      </div>
+      <h1 class="maintenance-title" id="maintenance-display-title">Pemeliharaan Server &amp; Pembaruan Sistem</h1>
+      <p class="maintenance-desc" id="maintenance-display-desc">
+        Kami sedang meningkatkan kapasitas infrastruktur server, keamanan database, dan performa aplikasi demi kenyamanan belajar Anda. Layanan akan segera kembali normal.
+      </p>
+      
+      <div class="maintenance-meta-box">
+        <div class="maintenance-meta-item">
+          <span class="maintenance-meta-label">STATUS SISTEM</span>
+          <span class="maintenance-meta-val" id="maintenance-display-status">Maintenance Aktif</span>
+        </div>
+        <div class="maintenance-meta-divider"></div>
+        <div class="maintenance-meta-item">
+          <span class="maintenance-meta-label">ESTIMASI SELESAI</span>
+          <span class="maintenance-meta-val" id="maintenance-display-eta">± 30 Menit</span>
+        </div>
+      </div>
+
+      <div class="maintenance-actions">
+        <a href="https://wa.me/6287894602627?text=Halo%20Admin%20NexStore%2C%20apakah%20server%20sedang%20maintenance%3F" target="_blank" rel="noopener noreferrer" class="btn-primary" style="text-decoration:none; width:100%; justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          Hubungi Admin via WhatsApp
+        </a>
+        <button type="button" class="btn-secondary" onclick="checkMaintenanceRefresh()" style="width:100%; justify-content:center; margin-top:8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Muat Ulang Halaman
+        </button>
+      </div>
+
+      <div class="maintenance-admin-bypass">
+        <button type="button" class="btn-bypass-link" onclick="openAdminModal()">
+          Masuk sebagai Pengelola / Admin Bypass &rarr;
+        </button>
       </div>
     </div>
   </div>

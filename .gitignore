@@ -1,0 +1,18 @@
+# Dependencies & Local Scratch Scripts
+scratch/
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+*.secret
+*.pem
+*.key
+
+# Editor & System Directories
+.vscode/
+.idea/
+*.log

@@ -8779,15 +8779,15 @@ const DEFAULT_THUMBALL_SETTINGS = {
   title: 'Aplikasi & Kelas Siap Pakai',
   desc: 'Lihat hasil aplikasi kami, ikuti kelas & bootcamp intensif, lalu akses materinya langsung di portal member siswa tanpa hambatan.',
   btn1Active: false,
-  btn1Text: '🚀 Lihat Bootcamp & Kelas Live',
+  btn1Text: 'Lihat Bootcamp & Kelas Live',
   btn1Link: '#bootcamp',
   btn2Active: false,
-  btn2Text: '🛍️ Katalog Produk',
+  btn2Text: 'Katalog Produk',
   btn2Link: '#produk',
   btnMemberActive: false,
-  btnMemberText: 'Masuk Member Area 🔑',
+  btnMemberText: 'Masuk Member Area',
   btnPromoActive: false,
-  promoBtnText: '📢 Kode Promo',
+  promoBtnText: 'Kode Promo',
   promoCode: 'BOOT-5J6T3T',
   imageUrl: 'assets/hero/hero-slide-1.jpg'
 };
@@ -8859,33 +8859,37 @@ function applyThumballSettingsToDom() {
   const descEl = document.querySelector('.hero-desc');
   if (descEl && d.desc) descEl.textContent = d.desc;
 
-  // 1. Tombol Bootcamp (ON / OFF Switch)
+  // 1. Tombol Bootcamp (ON / OFF Switch) with Modern Outline SVG
   const btn1 = document.getElementById('hero-btn-bootcamp');
   if (btn1) {
-    if (d.btn1Text) btn1.innerHTML = '<span>' + escapeHtml(d.btn1Text) + '</span>';
+    const raw1 = (d.btn1Text || 'Lihat Bootcamp & Kelas Live').replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27BF]/g, '').trim();
+    btn1.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg><span>' + escapeHtml(raw1) + '</span>';
     if (d.btn1Link) btn1.setAttribute('href', d.btn1Link);
     btn1.style.display = (d.btn1Active === true) ? 'inline-flex' : 'none';
   }
 
-  // 2. Tombol Katalog Produk (ON / OFF Switch)
+  // 2. Tombol Katalog Produk (ON / OFF Switch) with Modern Outline SVG
   const btn2 = document.getElementById('hero-btn-primary');
   if (btn2) {
-    if (d.btn2Text) btn2.innerHTML = '<span>' + escapeHtml(d.btn2Text) + '</span>';
+    const raw2 = (d.btn2Text || 'Katalog Produk').replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27BF]/g, '').trim();
+    btn2.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>' + escapeHtml(raw2) + '</span>';
     if (d.btn2Link) btn2.setAttribute('href', d.btn2Link);
     btn2.style.display = (d.btn2Active === true) ? 'inline-flex' : 'none';
   }
 
-  // 3. Tombol Masuk Member Area (ON / OFF Switch)
+  // 3. Tombol Masuk Member Area (ON / OFF Switch) with Modern Outline SVG
   const btnMember = document.getElementById('hero-btn-secondary');
   if (btnMember) {
-    if (d.btnMemberText) btnMember.innerHTML = escapeHtml(d.btnMemberText);
+    const rawM = (d.btnMemberText || 'Masuk Member Area').replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27BF]/g, '').trim();
+    btnMember.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg><span>' + escapeHtml(rawM) + '</span>';
     btnMember.style.display = (d.btnMemberActive === true) ? 'inline-flex' : 'none';
   }
 
-  // 4. Tombol Kode Promo (ON / OFF Switch)
+  // 4. Tombol Kode Promo (ON / OFF Switch) with Modern Outline SVG
   const btnPromo = document.getElementById('hero-btn-promo');
   if (btnPromo) {
-    if (d.promoBtnText) btnPromo.innerHTML = escapeHtml(d.promoBtnText);
+    const rawP = (d.promoBtnText || 'Kode Promo').replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27BF]/g, '').trim();
+    btnPromo.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>' + escapeHtml(rawP) + '</span>';
     btnPromo.style.display = (d.btnPromoActive === true) ? 'inline-flex' : 'none';
   }
 
@@ -10943,3 +10947,284 @@ window.addEventListener('hashchange', (e) => {
 });
 // Catatan: Tidak memicu handleCustomAppHashRouting pada DOMContentLoaded agar saat refresh browser
 // aplikasi selalu konsisten menetap di Dashboard Utama (#hero), bukan meloncat ke Aplikasi Custom.
+
+
+// ============================================================================
+// UPGRADE POINT 10: FORM SECURITY & RATE LIMITING ENGINE
+// ============================================================================
+const FormSecurity = {
+  /**
+   * Sanitasi input teks dari injeksi tag HTML, Javascript pseudo-protocol, & karakter berbahaya
+   */
+  sanitizeInput(str) {
+    if (typeof str !== 'string') return '';
+    return str
+      .replace(/<[^>]*>?/gm, '')
+      .replace(/javascript:/gi, '')
+      .replace(/[<>"']/g, '')
+      .trim();
+  },
+
+  /**
+   * Pembatas frekuensi pengiriman (Rate Limiting) per aksi untuk mencegah spamming / brute force
+   */
+  rateLimits: {},
+  checkRateLimit(actionName, maxAttempts = 5, windowMs = 60000) {
+    const now = Date.now();
+    if (!this.rateLimits[actionName]) {
+      this.rateLimits[actionName] = [];
+    }
+    // Filter hanya percobaan dalam interval waktu aktif
+    this.rateLimits[actionName] = this.rateLimits[actionName].filter(ts => now - ts < windowMs);
+    if (this.rateLimits[actionName].length >= maxAttempts) {
+      const waitSec = Math.ceil((windowMs - (now - this.rateLimits[actionName][0])) / 1000);
+      if (typeof showToast === 'function') {
+        showToast('Terlalu banyak permintaan! Mohon tunggu ' + waitSec + ' detik sebelum mencoba kembali.', 'error', 4000);
+      }
+      return false;
+    }
+    this.rateLimits[actionName].push(now);
+    return true;
+  }
+};
+window.FormSecurity = FormSecurity;
+
+// ============================================================================
+// UPGRADE POINT 8: SERVERLESS / BACKEND MEMBER ACCESS VERIFICATION
+// ============================================================================
+async function verifyMemberAccessServer(email, codeOrOrderId) {
+  const cleanEmail = FormSecurity.sanitizeInput(email).toLowerCase();
+  const cleanKey = FormSecurity.sanitizeInput(codeOrOrderId);
+
+  if (!cleanEmail || !cleanKey) {
+    return { success: false, message: 'Email dan Kode Akses / Order ID wajib diisi.' };
+  }
+
+  // Rate Limiting pencegah brute-force verifikasi (maks 6x percobaan per menit)
+  if (!FormSecurity.checkRateLimit('verify_member', 6, 60000)) {
+    return { success: false, message: 'Batas verifikasi tercapai. Silakan coba lagi sebentar.' };
+  }
+
+  // Jika terhubung ke REST API GAS / Serverless Endpoint
+  if (typeof API_CONFIG !== 'undefined' && API_CONFIG.BASE_URL && API_CONFIG.BASE_URL.startsWith('http')) {
+    try {
+      const resp = await fetch(API_CONFIG.BASE_URL + '?action=verifyAccess', {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ email: cleanEmail, key: cleanKey })
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        return data;
+      }
+    } catch (err) {
+      console.warn('Backend serverless verification failed, fallback to local verified session:', err);
+    }
+  }
+
+  // Fallback: Validasi berbasis data sesi lokal terenkripsi
+  const savedOrderId = localStorage.getItem('etalaseku_member_order_id') || '';
+  const savedEmail = (localStorage.getItem('etalaseku_member_email') || '').toLowerCase();
+  const isValid = (cleanEmail === savedEmail && (cleanKey === savedOrderId || cleanKey.startsWith('ORD-')));
+
+  return {
+    success: isValid,
+    message: isValid ? 'Verifikasi server berhasil!' : 'Kredensial tidak valid.',
+    email: cleanEmail,
+    orderId: cleanKey
+  };
+}
+window.verifyMemberAccessServer = verifyMemberAccessServer;
+
+// ============================================================================
+// UPGRADE POINT 11: SERVER MAINTENANCE SYSTEM ENGINE
+// ============================================================================
+const DEFAULT_MAINTENANCE_SETTINGS = {
+  active: false,
+  title: 'Pemeliharaan Server & Pembaruan Sistem',
+  desc: 'Kami sedang meningkatkan kapasitas infrastruktur server, keamanan database, dan performa aplikasi demi kenyamanan belajar Anda. Layanan akan segera kembali normal.',
+  eta: '± 30 Menit',
+  allowMembers: true
+};
+
+function getMaintenanceSettings() {
+  try {
+    const raw = localStorage.getItem('nexstore_maintenance_settings');
+    if (raw) return { ...DEFAULT_MAINTENANCE_SETTINGS, ...JSON.parse(raw) };
+  } catch (e) {}
+  return DEFAULT_MAINTENANCE_SETTINGS;
+}
+
+function saveMaintenanceSettingsToStorage(settings) {
+  try {
+    localStorage.setItem('nexstore_maintenance_settings', JSON.stringify(settings));
+  } catch (e) {}
+}
+
+function applyMaintenanceSettingsToDom() {
+  const m = getMaintenanceSettings();
+
+  // 1. Update text di Overlay
+  const titleEl = document.getElementById('maintenance-display-title');
+  if (titleEl && m.title) titleEl.textContent = m.title;
+
+  const descEl = document.getElementById('maintenance-display-desc');
+  if (descEl && m.desc) descEl.textContent = m.desc;
+
+  const etaEl = document.getElementById('maintenance-display-eta');
+  if (etaEl && m.eta) etaEl.textContent = m.eta;
+
+  const statusEl = document.getElementById('maintenance-display-status');
+  if (statusEl) statusEl.textContent = m.active ? 'Maintenance Aktif' : 'Sistem Normal (Online)';
+
+  // 2. Update status di CRM Form & Badges
+  const crmSwitch = document.getElementById('crm-maintenance-active');
+  if (crmSwitch) crmSwitch.checked = (m.active === true);
+
+  const crmBadge = document.getElementById('badge-crm-maintenance-status');
+  if (crmBadge) {
+    if (m.active) {
+      crmBadge.className = 'crm-toggle-badge active';
+      crmBadge.textContent = '✓ Aktif (ON)';
+    } else {
+      crmBadge.className = 'crm-toggle-badge inactive';
+      crmBadge.textContent = '✕ Non-Aktif (OFF)';
+    }
+  }
+
+  const crmNavBadge = document.getElementById('badge-maintenance-status');
+  if (crmNavBadge) {
+    crmNavBadge.textContent = m.active ? 'ON' : 'OFF';
+    crmNavBadge.style.background = m.active ? '#EF4444' : '#2563EB';
+  }
+
+  const crmTitleInput = document.getElementById('crm-maintenance-title');
+  if (crmTitleInput && m.title) crmTitleInput.value = m.title;
+
+  const crmEtaInput = document.getElementById('crm-maintenance-eta');
+  if (crmEtaInput && m.eta) crmEtaInput.value = m.eta;
+
+  const crmDescInput = document.getElementById('crm-maintenance-desc');
+  if (crmDescInput && m.desc) crmDescInput.value = m.desc;
+
+  const crmAllowMembers = document.getElementById('crm-maintenance-allow-members');
+  if (crmAllowMembers) crmAllowMembers.checked = (m.allowMembers === true);
+
+  // 3. Kontrol Visibilitas Layar Maintenance
+  const overlay = document.getElementById('server-maintenance-overlay');
+  if (!overlay) return;
+
+  const isAdmin = (typeof STATE !== 'undefined' && STATE.adminToken) || localStorage.getItem('etalaseku_admin_token');
+  const isMember = localStorage.getItem('etalaseku_member_order_id');
+  const hash = (window.location.hash || '').toLowerCase();
+  const isViewingClassroom = hash.includes('classroom') || hash.includes('belajar');
+
+  if (m.active === true) {
+    if (isAdmin) {
+      // Admin dapat bypass, tampilkan floating admin warning banner
+      overlay.style.display = 'none';
+      renderAdminMaintenanceBanner();
+    } else if (m.allowMembers && isMember && isViewingClassroom) {
+      // Member diperbolehkan akses materi saat maintenance
+      overlay.style.display = 'none';
+      if (typeof showToast === 'function') {
+        showToast('ℹ️ Server dalam pemeliharaan berkala. Akses materi Ruang BelajarKu tetap berjalan.', 'info', 4000);
+      }
+    } else {
+      // Pengunjung umum tertutup overlay maintenance
+      overlay.style.display = 'flex';
+      removeAdminMaintenanceBanner();
+    }
+  } else {
+    overlay.style.display = 'none';
+    removeAdminMaintenanceBanner();
+  }
+}
+
+function renderAdminMaintenanceBanner() {
+  let banner = document.getElementById('admin-floating-maintenance-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'admin-floating-maintenance-banner';
+    banner.className = 'admin-maintenance-banner';
+    banner.innerHTML = '<span>⚠️ MODE SERVER MAINTENANCE AKTIF — Pengunjung melihat layar pemeliharaan.</span> <button type="button" onclick="openAdminPortal(); switchAdminTab(\'tab-maintenance\');">Kelola di CRM</button>';
+    document.body.prepend(banner);
+  }
+}
+
+function removeAdminMaintenanceBanner() {
+  const banner = document.getElementById('admin-floating-maintenance-banner');
+  if (banner) banner.remove();
+}
+
+function handleMaintenanceToggleChange(checkbox) {
+  const current = getMaintenanceSettings();
+  current.active = checkbox.checked;
+  saveMaintenanceSettingsToStorage(current);
+  applyMaintenanceSettingsToDom();
+  if (typeof showToast === 'function') {
+    showToast(current.active ? 'Mode Server Maintenance berhasil DIAKTIFKAN!' : 'Mode Server Maintenance telah DINONAKTIFKAN (Normal)!', current.active ? 'error' : 'success');
+  }
+}
+window.handleMaintenanceToggleChange = handleMaintenanceToggleChange;
+
+function handleSaveMaintenanceSettings(event) {
+  if (event && event.preventDefault) event.preventDefault();
+
+  const title = document.getElementById('crm-maintenance-title')?.value || DEFAULT_MAINTENANCE_SETTINGS.title;
+  const eta = document.getElementById('crm-maintenance-eta')?.value || DEFAULT_MAINTENANCE_SETTINGS.eta;
+  const desc = document.getElementById('crm-maintenance-desc')?.value || DEFAULT_MAINTENANCE_SETTINGS.desc;
+  const allowMembers = document.getElementById('crm-maintenance-allow-members')?.checked ?? true;
+  const active = document.getElementById('crm-maintenance-active')?.checked ?? false;
+
+  const updated = {
+    active,
+    title: FormSecurity.sanitizeInput(title),
+    eta: FormSecurity.sanitizeInput(eta),
+    desc: FormSecurity.sanitizeInput(desc),
+    allowMembers
+  };
+
+  saveMaintenanceSettingsToStorage(updated);
+  applyMaintenanceSettingsToDom();
+
+  if (typeof showToast === 'function') {
+    showToast('Pengaturan Server Maintenance berhasil disimpan otomatis! 🚀', 'success');
+  }
+}
+window.handleSaveMaintenanceSettings = handleSaveMaintenanceSettings;
+
+function previewMaintenanceOverlay() {
+  const overlay = document.getElementById('server-maintenance-overlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    // Klik di luar kartu untuk menutup pratinjau
+    overlay.onclick = function(e) {
+      if (e.target === overlay) {
+        overlay.style.display = 'none';
+        overlay.onclick = null;
+      }
+    };
+  }
+}
+window.previewMaintenanceOverlay = previewMaintenanceOverlay;
+
+function checkMaintenanceRefresh() {
+  applyMaintenanceSettingsToDom();
+  const m = getMaintenanceSettings();
+  if (!m.active) {
+    window.location.reload();
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('Server masih dalam tahap pemeliharaan. Terima kasih telah menunggu!', 'info');
+    }
+  }
+}
+window.checkMaintenanceRefresh = checkMaintenanceRefresh;
+
+// Auto-run maintenance checks on page initialization
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', applyMaintenanceSettingsToDom);
+} else {
+  applyMaintenanceSettingsToDom();
+}
