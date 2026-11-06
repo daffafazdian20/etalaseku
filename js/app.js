@@ -4992,7 +4992,7 @@ function updateMemberClassroomNavbar(orderId, email) {
     if (navPill) navPill.style.display = 'none';
     if (navLoginBtn) {
       navLoginBtn.style.display = 'inline-flex';
-      navLoginBtn.innerHTML = '➔] Member Area';
+      navLoginBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg> <span>Member Area</span>';
     }
     if (navRedeemBtn) navRedeemBtn.style.display = 'inline-flex';
     
@@ -6733,7 +6733,7 @@ function renderPameranKaryaPortal(filterCat = 'Semua') {
       mySubContainer.innerHTML = `
         <div style="text-align:center; padding:20px; background:#F8FAFC; border-radius:12px; border:1px dashed #CBD5E1;">
           <p style="font-size:12.5px; color:#64748B; margin:0 0 10px;">Anda belum mengajukan karya ke pameran. Tampilkan portofolio terbaik Anda sekarang!</p>
-          <button class="shimmer-btn" onclick="openSubmitShowcaseModal()" style="padding:8px 18px; font-size:12.5px;">+ Ajukan Karya Sekarang</button>
+          <button class="shimmer-btn" onclick="openSubmitShowcaseModal()" style="padding:8px 18px; font-size:12.5px; display:inline-flex; align-items:center; gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Ajukan Karya Sekarang</span></button>
         </div>
       `;
     } else {

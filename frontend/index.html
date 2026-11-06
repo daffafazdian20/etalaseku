@@ -48,7 +48,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261106-04">
+  <link rel="stylesheet" href="css/style.css?v=20261106-05">
 </head>
 <body>
 
@@ -931,12 +931,13 @@
       <!-- Card 1: Redeem Kode Akses (Pastel Pink & Hot Pink #FF2E63 DESAIN UI/UX) -->
       <div class="footer-v2-card footer-v2-card-redeem">
         <div class="footer-v2-card-icon footer-v2-icon-redeem">
-          🔑
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5a3.5 3.5 0 1 0-3 3l1.5 1.5-4 4v3h3v-2h2v-2l1.5-1.5"/></svg>
         </div>
         <h3 class="footer-v2-card-title">Redeem Kode Akses</h3>
         <p class="footer-v2-card-desc">Tukarkan kode dari Lynk.id / QRIS &mdash; akun dibuat otomatis.</p>
-        <button type="button" class="footer-v2-btn footer-v2-btn-gold footer-v2-btn-redeem" onclick="openRedeemModal()">
-          🔑 Redeem Kode
+        <button type="button" class="footer-v2-btn footer-v2-btn-gold footer-v2-btn-redeem" onclick="openRedeemModal()" style="display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5a3.5 3.5 0 1 0-3 3l1.5 1.5-4 4v3h3v-2h2v-2l1.5-1.5"/></svg>
+          <span>Redeem Kode</span>
         </button>
       </div>
 
@@ -1286,7 +1287,7 @@
 
         <!-- Secondary Button: Buka Modal Redeem Kode Akses -->
         <button type="button" class="btn-redeem-outline" onclick="openRedeemModal()" style="border-radius:10px; margin-top:10px; padding:11px 16px; font-size:13px; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
-          <span>🔑</span> Punya Kode Akses? Redeem di sini
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5a3.5 3.5 0 1 0-3 3l1.5 1.5-4 4v3h3v-2h2v-2l1.5-1.5"/></svg> <span>Punya Kode Akses? Redeem di sini</span>
         </button>
 
         <div style="text-align:center; margin-top:14px; font-size:12px; color:#64748B;">
@@ -1452,11 +1453,13 @@
         </div>
 
         <div class="classroom-btn-actions">
-          <button class="btn-secondary btn-redeem-desktop-only" onclick="openRedeemModal()" style="padding:8px 14px; font-size:12px; font-weight:700; color:#2563EB; border-color:rgba(37,99,235,0.35); background:rgba(37,99,235,0.06); display:inline-flex; align-items:center; gap:6px;" title="Redeem Kode Akses Baru">
-            🔑 Redeem Kode
+          <button class="btn-secondary btn-redeem-desktop-only" onclick="openRedeemModal()" title="Redeem Kode Akses Baru">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5a3.5 3.5 0 1 0-3 3l1.5 1.5-4 4v3h3v-2h2v-2l1.5-1.5"/></svg>
+            <span>Redeem Kode</span>
           </button>
           <button class="btn-secondary btn-cls-home" onclick="closeClassroomDashboard()" title="Kembali ke Halaman Beranda Utama">
-            ⬅️ Halaman Utama
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            <span>Halaman Utama</span>
           </button>
           <button type="button" class="btn-nav-logout btn-cls-logout" onclick="handleClassroomLogout()" title="Keluar Sesi Member" aria-label="Keluar Sesi Member">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -2319,10 +2322,12 @@
         <div class="pameran-btn-actions">
           <button type="button" class="btn-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
           <button class="btn-secondary" onclick="closePameranKaryaPortal()" title="Kembali ke Dashboard Utama">
-            ⬅️ Kembali ke Beranda
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            <span>Kembali ke Beranda</span>
           </button>
           <button class="shimmer-btn" onclick="openSubmitShowcaseModal()" style="padding:8px 16px; font-size:13px; gap:6px;">
-            <span>📤</span> Ajukan Karya Saya
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span>Ajukan Karya Saya</span>
           </button>
         </div>
       </div>
@@ -2336,14 +2341,15 @@
           <div style="max-width:680px;">
             <div class="section-eyebrow" style="color:var(--coral-pink, #FF2E63); font-size:11.5px; font-weight:800; letter-spacing:1px; margin-bottom:6px;">SHOWCASE PORTOFOLIO</div>
             <h1 style="font-size:clamp(22px, 3.2vw, 32px); font-weight:800; color:var(--deep-navy); margin:0 0 10px; line-height:1.2;">
-              Hasil Karya Member &amp; Alumni 🌟
+              Hasil Karya Member &amp; Alumni
             </h1>
             <p style="font-size:13.5px; color:#64748B; line-height:1.6; margin:0;">
               Bagikan karya terbaik Anda! Unggah foto profil, gambar aplikasi/karya atau video Aplikasi kalian, dan ceritakan pengalaman Anda. Karya yang disetujui tampil di halaman utama.
             </p>
           </div>
           <button class="shimmer-btn" onclick="openSubmitShowcaseModal()" style="padding:12px 24px; font-size:14px; font-weight:700; border-radius:12px; gap:8px;">
-            <span>📤</span> Ajukan Karya Saya
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span>Ajukan Karya Saya</span>
           </button>
         </div>
       </div>
@@ -2459,7 +2465,7 @@
       </div>
       <div style="display:flex; align-items:center; gap:6px;">
         <button type="button" class="btn-theme-toggle btn-admin-theme-toggle" onclick="toggleAppTheme()" title="Ubah Mode Tampilan (Terang / Gelap)" aria-label="Toggle Theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
-        <button class="btn-secondary" onclick="backToWebsiteFromAdmin()" style="padding:6px 10px; font-size:11px; background:rgba(255,255,255,0.08); color:white; border-color:rgba(255,255,255,0.2);">⬅ Web</button>
+        <button class="btn-secondary" onclick="backToWebsiteFromAdmin()" style="padding:6px 10px; font-size:11px; background:rgba(255,255,255,0.08); color:white; border-color:rgba(255,255,255,0.2); display:inline-flex; align-items:center; gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> <span>Web</span></button>
         <button type="button" class="btn-nav-logout" onclick="adminLogout()" title="Keluar Admin" aria-label="Keluar Admin" style="padding:6px 11px; font-size:11.5px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -4740,8 +4746,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261106-04"></script>
-  <script defer src="js/app.js?v=20261106-04"></script>
+  <script defer src="js/config.js?v=20261106-05"></script>
+  <script defer src="js/app.js?v=20261106-05"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">

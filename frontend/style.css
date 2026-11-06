@@ -1819,7 +1819,8 @@ input:checked + .switch-slider:before {
   flex-shrink: 0;
 }
 
-.btn-cls-home {
+.btn-cls-home,
+.btn-redeem-desktop-only {
   padding: 7px 13px;
   font-size: 12px;
   font-weight: 700;
@@ -1830,10 +1831,20 @@ input:checked + .switch-slider:before {
   color: var(--deep-navy);
   border: 1.5px solid #CBD5E1;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.btn-cls-home:hover {
+.btn-cls-home:hover,
+.btn-redeem-desktop-only:hover {
   border-color: var(--deep-navy);
   background: #F8FAFC;
+}
+.classroom-btn-actions svg,
+.pameran-btn-actions svg {
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .btn-cls-logout {
@@ -10693,14 +10704,18 @@ body.dark-theme .rb-card .rb-card-desc {
 }
 
 [data-theme="dark"] .btn-cls-home,
-body.dark-theme .btn-cls-home {
+body.dark-theme .btn-cls-home,
+[data-theme="dark"] .btn-redeem-desktop-only,
+body.dark-theme .btn-redeem-desktop-only {
   background: #1E293B !important;
   color: #F8FAFC !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 [data-theme="dark"] .btn-cls-home:hover,
-body.dark-theme .btn-cls-home:hover {
+body.dark-theme .btn-cls-home:hover,
+[data-theme="dark"] .btn-redeem-desktop-only:hover,
+body.dark-theme .btn-redeem-desktop-only:hover {
   background: #334155 !important;
   border-color: rgba(255, 255, 255, 0.3) !important;
 }
