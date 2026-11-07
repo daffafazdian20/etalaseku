@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261107-09';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261107-10';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261107-09';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261107-10';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -8933,7 +8933,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261107-09',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261107-10',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9388,7 +9388,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261107-09',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261107-10',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
@@ -10480,7 +10480,8 @@ function applyAppTheme(theme) {
     document.getElementById('classroom-dashboard-portal'),
     document.getElementById('pameran-karya-portal'),
     document.getElementById('main-member-area-dashboard'),
-    document.getElementById('admin-crm-portal')
+    document.getElementById('admin-crm-portal'),
+    document.getElementById('admin-portal-wrapper')
   ];
   portals.forEach(portal => {
     if (portal) {

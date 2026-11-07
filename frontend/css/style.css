@@ -545,16 +545,21 @@ body {
   align-items: center;
 }
 
-.hero-tag {
-  display: inline-block;
-  padding: 6px 16px;
-  background: #FFFFFF;
-  border-radius: 99px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--deep-navy);
+.hero-tag,
+[data-theme="light"] .hero-tag,
+body.light-theme .hero-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 14px !important;
+  background: #EFF6FF !important;
+  border: 1px solid #BFDBFE !important;
+  border-radius: 99px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #2563EB !important;
   margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08) !important;
 }
 
 .hero-title {
@@ -565,10 +570,33 @@ body {
   color: var(--deep-navy);
 }
 
-.hero-title .highlight {
-  color: var(--primary-pink);
+.hero-title .highlight,
+.highlight {
   position: relative;
   display: inline-block;
+  transition: color 0.25s ease;
+}
+
+/* Light Mode: Highlight text is BLUE (#2563EB) - Sesuai Foto 5 Reference */
+.hero-title .highlight,
+.highlight,
+[data-theme="light"] .hero-title .highlight,
+[data-theme="light"] .highlight,
+[data-theme="light"] .section-title .highlight,
+body.light-theme .hero-title .highlight,
+body.light-theme .highlight,
+body.light-theme .section-title .highlight {
+  color: #2563EB !important;
+}
+
+/* Dark Mode: Highlight text is RED (#FF2E63) */
+[data-theme="dark"] .hero-title .highlight,
+[data-theme="dark"] .highlight,
+[data-theme="dark"] .section-title .highlight,
+body.dark-theme .hero-title .highlight,
+body.dark-theme .highlight,
+body.dark-theme .section-title .highlight {
+  color: #FF2E63 !important;
 }
 
 .hero-desc {
@@ -7266,11 +7294,41 @@ input:checked + .switch-slider:before {
   stroke: #64748B;
   transition: all 0.2s ease;
 }
-.mobile-bottom-nav-item.active {
-  color: #FF2E63;
+/* Mobile Bottom Nav in Light Mode (Active Blue Accent #2563EB) */
+.mobile-bottom-nav-item.active,
+[data-theme="light"] .mobile-bottom-nav-item.active,
+body.light-theme .mobile-bottom-nav-item.active {
+  color: #2563EB !important;
 }
-.mobile-bottom-nav-item.active svg {
-  stroke: #FF2E63;
+.mobile-bottom-nav-item.active svg,
+[data-theme="light"] .mobile-bottom-nav-item.active svg,
+body.light-theme .mobile-bottom-nav-item.active svg {
+  stroke: #2563EB !important;
+  transform: translateY(-1px);
+}
+
+/* Mobile Bottom Nav in Dark Mode (Active Red Accent #FF2E63) */
+[data-theme="dark"] .mobile-bottom-nav,
+body.dark-theme .mobile-bottom-nav {
+  background: rgba(11, 19, 43, 0.96) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+[data-theme="dark"] .mobile-bottom-nav-item,
+body.dark-theme .mobile-bottom-nav-item {
+  color: #94A3B8 !important;
+}
+[data-theme="dark"] .mobile-bottom-nav-item svg,
+body.dark-theme .mobile-bottom-nav-item svg {
+  stroke: #94A3B8 !important;
+}
+[data-theme="dark"] .mobile-bottom-nav-item.active,
+body.dark-theme .mobile-bottom-nav-item.active {
+  color: #FF2E63 !important;
+}
+[data-theme="dark"] .mobile-bottom-nav-item.active svg,
+body.dark-theme .mobile-bottom-nav-item.active svg {
+  stroke: #FF2E63 !important;
   transform: translateY(-1px);
 }
 .mobile-bottom-nav-item:active {
@@ -9597,53 +9655,131 @@ footer {
 
 
 /* ==========================================================================
-   DESAIN UI/UX COLOR ALIGNMENT (Warm Pastel Tech / Hot Pink Accent #FF2E63)
+   THEME ALIGNMENT: LIGHT MODE (BLUE #2563EB) & DARK MODE (RED #FF2E63)
+   Foto 5 Reference: Mode Terang = Aksen Biru, Mode Gelap = Aksen Merah
    ========================================================================== */
-#main-member-area-dashboard .tab-pill-btn.active,
-.member-tab-pills .tab-pill-btn.active {
+/* 1. LIGHT MODE: Aksen Biru (#2563EB) */
+[data-theme="light"] #main-member-area-dashboard .tab-pill-btn.active,
+[data-theme="light"] .member-tab-pills .tab-pill-btn.active,
+body.light-theme #main-member-area-dashboard .tab-pill-btn.active,
+body.light-theme .member-tab-pills .tab-pill-btn.active {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+[data-theme="light"] .cls-tab-link.active,
+body.light-theme .cls-tab-link.active {
+  background: #2563EB !important;
+  border-color: #2563EB !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+[data-theme="light"] .btn-hero-classes,
+[data-theme="light"] .btn-announcement-view,
+[data-theme="light"] .mp-btn-primary,
+body.light-theme .btn-hero-classes,
+body.light-theme .btn-announcement-view,
+body.light-theme .mp-btn-primary {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+}
+
+[data-theme="light"] .btn-hero-classes:hover,
+[data-theme="light"] .btn-announcement-view:hover,
+[data-theme="light"] .mp-btn-primary:hover,
+body.light-theme .btn-hero-classes:hover,
+body.light-theme .btn-announcement-view:hover,
+body.light-theme .mp-btn-primary:hover {
+  background: #1E40AF !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .member-announcement-card,
+body.light-theme .member-announcement-card {
+  border-color: rgba(37, 99, 235, 0.3) !important;
+}
+
+[data-theme="light"] .modal-cp-input:focus,
+body.light-theme .modal-cp-input:focus {
+  border-color: #2563EB !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
+}
+
+[data-theme="light"] .btn-cp-save,
+body.light-theme .btn-cp-save {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+[data-theme="light"] .btn-cp-save:hover,
+body.light-theme .btn-cp-save:hover {
+  background: #1E40AF !important;
+}
+
+/* 2. DARK MODE: Aksen Merah (#FF2E63) */
+[data-theme="dark"] #main-member-area-dashboard .tab-pill-btn.active,
+[data-theme="dark"] .member-tab-pills .tab-pill-btn.active,
+body.dark-theme #main-member-area-dashboard .tab-pill-btn.active,
+body.dark-theme .member-tab-pills .tab-pill-btn.active {
   background: #FF2E63 !important;
   color: #FFFFFF !important;
   border-color: #FF2E63 !important;
   box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
 }
 
-.cls-tab-link.active {
+[data-theme="dark"] .cls-tab-link.active,
+body.dark-theme .cls-tab-link.active {
   background: #FF2E63 !important;
   border-color: #FF2E63 !important;
   color: #FFFFFF !important;
 }
 
-.btn-hero-classes,
-.btn-announcement-view,
-.mp-btn-primary {
+[data-theme="dark"] .btn-hero-classes,
+[data-theme="dark"] .btn-announcement-view,
+[data-theme="dark"] .mp-btn-primary,
+body.dark-theme .btn-hero-classes,
+body.dark-theme .btn-announcement-view,
+body.dark-theme .mp-btn-primary {
   background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
   color: #FFFFFF !important;
   box-shadow: 0 4px 14px rgba(255, 46, 99, 0.35) !important;
 }
 
-.btn-hero-classes:hover,
-.btn-announcement-view:hover,
-.mp-btn-primary:hover {
+[data-theme="dark"] .btn-hero-classes:hover,
+[data-theme="dark"] .btn-announcement-view:hover,
+[data-theme="dark"] .mp-btn-primary:hover,
+body.dark-theme .btn-hero-classes:hover,
+body.dark-theme .btn-announcement-view:hover,
+body.dark-theme .mp-btn-primary:hover {
   background: #E11D48 !important;
   transform: translateY(-1px);
 }
 
-.member-announcement-card {
+[data-theme="dark"] .member-announcement-card,
+body.dark-theme .member-announcement-card {
   border-color: rgba(255, 46, 99, 0.35) !important;
 }
 
-.modal-cp-input:focus {
+[data-theme="dark"] .modal-cp-input:focus,
+body.dark-theme .modal-cp-input:focus {
   border-color: #FF2E63 !important;
   box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.25) !important;
 }
 
-.btn-cp-save {
+[data-theme="dark"] .btn-cp-save,
+body.dark-theme .btn-cp-save {
   background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
   color: #FFFFFF !important;
   box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
 }
 
-.btn-cp-save:hover {
+[data-theme="dark"] .btn-cp-save:hover,
+body.dark-theme .btn-cp-save:hover {
   background: #E11D48 !important;
 }
 
@@ -9800,9 +9936,9 @@ body.dark-theme .hero-section {
 
 [data-theme="dark"] .hero-tag,
 body.dark-theme .hero-tag {
-  background: #1E293B !important;
-  color: #FFFFFF !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 46, 99, 0.15) !important;
+  color: #FF2E63 !important;
+  border: 1px solid rgba(255, 46, 99, 0.35) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
 
@@ -10148,7 +10284,7 @@ body.light-theme .main-member-area-dashboard {
 [data-theme="light"] .member-announcement-card,
 body.light-theme .member-announcement-card {
   background: #FFFFFF !important;
-  border: 1.5px solid rgba(255, 46, 99, 0.25) !important;
+  border: 1.5px solid rgba(37, 99, 235, 0.25) !important;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
   color: #0F172A !important;
 }
@@ -10198,8 +10334,8 @@ body.light-theme .member-welcome-hero-card .btn-hero-catalog {
 [data-theme="light"] .member-welcome-hero-card .btn-hero-catalog:hover,
 body.light-theme .member-welcome-hero-card .btn-hero-catalog:hover {
   background: #F8FAFC !important;
-  border-color: #FF2E63 !important;
-  color: #FF2E63 !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
 }
 
 [data-theme="light"] .member-kpi-card,
@@ -10235,18 +10371,17 @@ body.light-theme .tab-pill-btn {
 
 [data-theme="light"] .tab-pill-btn:hover:not(.active),
 body.light-theme .tab-pill-btn:hover:not(.active) {
-  background: #FFF1F4 !important;
-  border-color: #FF2E63 !important;
-  color: #FF2E63 !important;
+  background: #EFF6FF !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
 }
 
-.tab-pill-btn.active,
 [data-theme="light"] .tab-pill-btn.active,
 body.light-theme .tab-pill-btn.active {
-  background: #FF2E63 !important;
-  border-color: #FF2E63 !important;
+  background: #2563EB !important;
+  border-color: #2563EB !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
 }
 
 [data-theme="light"] .tab-pill-count,
@@ -10330,9 +10465,9 @@ body.light-theme .member-profile-widget-card .btn-account-settings {
 
 [data-theme="light"] .member-profile-widget-card .btn-account-settings:hover,
 body.light-theme .member-profile-widget-card .btn-account-settings:hover {
-  background: #FFF1F4 !important;
-  border-color: #FF2E63 !important;
-  color: #FF2E63 !important;
+  background: #EFF6FF !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
 }
 
 /* KARTU AKSES CEPAT MEMBER (FOTO 2) */
@@ -10358,8 +10493,8 @@ body.light-theme .quick-access-item {
 
 [data-theme="light"] .quick-access-item:hover,
 body.light-theme .quick-access-item:hover {
-  background: #FFF1F4 !important;
-  border-color: #FF2E63 !important;
+  background: #EFF6FF !important;
+  border-color: #2563EB !important;
   transform: translateX(3px) !important;
 }
 
@@ -10623,8 +10758,8 @@ body.light-theme .cls-tab-link {
 
 [data-theme="light"] .cls-tab-link:hover:not(.active),
 body.light-theme .cls-tab-link:hover:not(.active) {
-  color: #FF2E63 !important;
-  background: rgba(255, 46, 99, 0.08) !important;
+  color: #2563EB !important;
+  background: rgba(37, 99, 235, 0.08) !important;
 }
 
 [data-theme="light"] .rb-card,
@@ -10672,10 +10807,10 @@ body.light-theme .rb-pill {
 
 [data-theme="light"] .rb-pill.active,
 body.light-theme .rb-pill.active {
-  background: #FF2E63 !important;
-  border-color: #FF2E63 !important;
+  background: #2563EB !important;
+  border-color: #2563EB !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
 }
 
 /* Mode Gelap Ruang BelajarKu (rb-card & perk cards 100% GELAP ELEGAN) */
@@ -10878,9 +11013,10 @@ body.light-theme .pameran-filter-btn {
 
 [data-theme="light"] .pameran-filter-btn.active,
 body.light-theme .pameran-filter-btn.active {
-  background: #FF2E63 !important;
-  border-color: #FF2E63 !important;
+  background: #2563EB !important;
+  border-color: #2563EB !important;
   color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
 }
 
 /* Mode Gelap Pameran Karya */
@@ -11065,7 +11201,7 @@ body.light-theme .modal-cp-input[readonly] {
 [data-theme="light"] .account-verified-order-badge,
 body.light-theme .account-verified-order-badge {
   background: #F8FAFC !important;
-  border: 1.5px solid rgba(255, 46, 99, 0.25) !important;
+  border: 1.5px solid rgba(37, 99, 235, 0.25) !important;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
 }
 
@@ -11090,8 +11226,8 @@ body.light-theme .auth-device-chip {
 
 [data-theme="light"] .auth-device-chip:hover,
 body.light-theme .auth-device-chip:hover {
-  background: #FFF1F4 !important;
-  border-color: #FF2E63 !important;
+  background: #EFF6FF !important;
+  border-color: #2563EB !important;
 }
 
 [data-theme="light"] .btn-redeem-outline,
@@ -11103,15 +11239,15 @@ body.light-theme .btn-redeem-outline {
 
 [data-theme="light"] .btn-redeem-outline:hover,
 body.light-theme .btn-redeem-outline:hover {
-  background: #FFF1F4 !important;
-  border-color: #FF2E63 !important;
-  color: #FF2E63 !important;
+  background: #EFF6FF !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
 }
 
 [data-theme="light"] .modal-bca-code-box,
 body.light-theme .modal-bca-code-box {
   background: #F8FAFC !important;
-  border: 1.5px dashed rgba(255, 46, 99, 0.4) !important;
+  border: 1.5px dashed rgba(37, 99, 235, 0.4) !important;
 }
 
 [data-theme="light"] .modal-bca-code,
@@ -12811,7 +12947,7 @@ body.light-theme .crm-editor-section {
 
 [data-theme="light"] .footer-v2-eyebrow,
 body:not(.dark-theme) .footer-v2-eyebrow {
-  color: #FF2E63 !important;
+  color: #2563EB !important;
 }
 
 [data-theme="dark"] .footer-v2-eyebrow,
@@ -13279,15 +13415,15 @@ body:not(.dark-theme) .channel-pill-btn .channel-sub {
 [data-theme="light"] .channel-pill-btn.active,
 body.light-theme .channel-pill-btn.active,
 body:not(.dark-theme) .channel-pill-btn.active {
-  background: #FFF1F4 !important;
-  border-color: #FF2E63 !important;
-  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.25) !important;
+  background: #EFF6FF !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25) !important;
 }
 
 [data-theme="light"] .channel-pill-btn.active .channel-name,
 body.light-theme .channel-pill-btn.active .channel-name,
 body:not(.dark-theme) .channel-pill-btn.active .channel-name {
-  color: #FF2E63 !important;
+  color: #2563EB !important;
 }
 
 /* Dark Mode */
@@ -13860,10 +13996,12 @@ body.dark-theme #crm-footer-logo-preview-box {
   flex: 1 1 480px;
 }
 
-.custom-hero-pill {
-  background: rgba(255, 46, 99, 0.12);
-  color: #FF2E63;
-  border: 1px solid rgba(255, 46, 99, 0.25);
+.custom-hero-pill,
+[data-theme="light"] .custom-hero-pill,
+body.light-theme .custom-hero-pill {
+  background: #EFF6FF !important;
+  color: #2563EB !important;
+  border: 1px solid #BFDBFE !important;
   font-size: 11.5px;
   font-weight: 800;
   padding: 4px 12px;
@@ -13871,6 +14009,13 @@ body.dark-theme #crm-footer-logo-preview-box {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+[data-theme="dark"] .custom-hero-pill,
+body.dark-theme .custom-hero-pill {
+  background: rgba(255, 46, 99, 0.12) !important;
+  color: #FF2E63 !important;
+  border: 1px solid rgba(255, 46, 99, 0.25) !important;
 }
 
 .custom-hero-title {
@@ -13894,8 +14039,10 @@ body.dark-theme #crm-footer-logo-preview-box {
   flex-shrink: 0;
 }
 
-.custom-btn-new-app {
-  background: #FF2E63 !important;
+.custom-btn-new-app,
+[data-theme="light"] .custom-btn-new-app,
+body.light-theme .custom-btn-new-app {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
   color: #FFFFFF !important;
   border: none !important;
   border-radius: 12px !important;
@@ -13906,13 +14053,27 @@ body.dark-theme #crm-footer-logo-preview-box {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 16px rgba(255, 46, 99, 0.35) !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35) !important;
   transition: all 0.2s ease !important;
 }
 
-.custom-btn-new-app:hover {
-  background: #E11D48 !important;
+.custom-btn-new-app:hover,
+[data-theme="light"] .custom-btn-new-app:hover,
+body.light-theme .custom-btn-new-app:hover {
+  background: #1E40AF !important;
   transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.5) !important;
+}
+
+[data-theme="dark"] .custom-btn-new-app,
+body.dark-theme .custom-btn-new-app {
+  background: #FF2E63 !important;
+  box-shadow: 0 4px 16px rgba(255, 46, 99, 0.35) !important;
+}
+
+[data-theme="dark"] .custom-btn-new-app:hover,
+body.dark-theme .custom-btn-new-app:hover {
+  background: #E11D48 !important;
   box-shadow: 0 8px 22px rgba(255, 46, 99, 0.5) !important;
 }
 
@@ -13931,14 +14092,23 @@ body.dark-theme #crm-footer-logo-preview-box {
   margin: 0;
 }
 
-.custom-count-pill {
+.custom-count-pill,
+[data-theme="light"] .custom-count-pill,
+body.light-theme .custom-count-pill {
   font-size: 11.5px;
   font-weight: 700;
-  color: #FF2E63;
-  background: rgba(255, 46, 99, 0.1);
+  color: #2563EB !important;
+  background: #EFF6FF !important;
   padding: 3px 10px;
   border-radius: 99px;
-  border: 1px solid rgba(255, 46, 99, 0.25);
+  border: 1px solid #BFDBFE !important;
+}
+
+[data-theme="dark"] .custom-count-pill,
+body.dark-theme .custom-count-pill {
+  color: #FF2E63 !important;
+  background: rgba(255, 46, 99, 0.1) !important;
+  border: 1px solid rgba(255, 46, 99, 0.25) !important;
 }
 
 /* Empty State Card (Foto 1) */
