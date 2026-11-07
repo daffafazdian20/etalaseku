@@ -9524,7 +9524,6 @@ footer {
 /* ==========================================================================
    DESAIN UI/UX COLOR ALIGNMENT (Warm Pastel Tech / Hot Pink Accent #FF2E63)
    ========================================================================== */
-.tab-pill-btn.active,
 #main-member-area-dashboard .tab-pill-btn.active,
 .member-tab-pills .tab-pill-btn.active {
   background: #FF2E63 !important;
@@ -9977,8 +9976,6 @@ body,
 .hero-section,
 .section-wrapper,
 .testimonials-section,
-.main-member-area-dashboard,
-.member-welcome-hero-card,
 .main-kpi-card,
 .member-product-card,
 .product-card,
@@ -10073,7 +10070,6 @@ body.light-theme .main-member-area-dashboard {
   border-bottom: 1px solid #E2E8F0 !important;
 }
 
-.member-announcement-card,
 [data-theme="light"] .member-announcement-card,
 body.light-theme .member-announcement-card {
   background: #FFFFFF !important;
@@ -10082,19 +10078,16 @@ body.light-theme .member-announcement-card {
   color: #0F172A !important;
 }
 
-.member-announcement-card .announcement-prefix,
 [data-theme="light"] .member-announcement-card .announcement-prefix,
 body.light-theme .member-announcement-card .announcement-prefix {
   color: #64748B !important;
 }
 
-.member-announcement-card .announcement-headline,
 [data-theme="light"] .member-announcement-card .announcement-headline,
 body.light-theme .member-announcement-card .announcement-headline {
   color: #0F172A !important;
 }
 
-.member-announcement-card .btn-announcement-dismiss,
 [data-theme="light"] .member-announcement-card .btn-announcement-dismiss,
 body.light-theme .member-announcement-card .btn-announcement-dismiss {
   color: #94A3B8 !important;
@@ -10109,19 +10102,16 @@ body.light-theme .member-welcome-hero-card {
   color: #0F172A !important;
 }
 
-.member-welcome-hero-card .welcome-hero-title,
 [data-theme="light"] .member-welcome-hero-card .welcome-hero-title,
 body.light-theme .member-welcome-hero-card .welcome-hero-title {
   color: #0F172A !important;
 }
 
-.member-welcome-hero-card .welcome-hero-subtitle,
 [data-theme="light"] .member-welcome-hero-card .welcome-hero-subtitle,
 body.light-theme .member-welcome-hero-card .welcome-hero-subtitle {
   color: #64748B !important;
 }
 
-.member-welcome-hero-card .btn-hero-catalog,
 [data-theme="light"] .member-welcome-hero-card .btn-hero-catalog,
 body.light-theme .member-welcome-hero-card .btn-hero-catalog {
   background: #FFFFFF !important;
@@ -10130,7 +10120,6 @@ body.light-theme .member-welcome-hero-card .btn-hero-catalog {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
 }
 
-.member-welcome-hero-card .btn-hero-catalog:hover,
 [data-theme="light"] .member-welcome-hero-card .btn-hero-catalog:hover,
 body.light-theme .member-welcome-hero-card .btn-hero-catalog:hover {
   background: #F8FAFC !important;
@@ -10138,7 +10127,6 @@ body.light-theme .member-welcome-hero-card .btn-hero-catalog:hover {
   color: #FF2E63 !important;
 }
 
-.member-kpi-card,
 [data-theme="light"] .member-kpi-card,
 body.light-theme .member-kpi-card {
   background: #FFFFFF !important;
@@ -10147,25 +10135,21 @@ body.light-theme .member-kpi-card {
   color: #0F172A !important;
 }
 
-.member-kpi-card .kpi-label,
 [data-theme="light"] .member-kpi-card .kpi-label,
 body.light-theme .member-kpi-card .kpi-label {
   color: #64748B !important;
 }
 
-.member-kpi-card .kpi-value,
 [data-theme="light"] .member-kpi-card .kpi-value,
 body.light-theme .member-kpi-card .kpi-value {
   color: #0F172A !important;
 }
 
-.member-kpi-card .kpi-subtext,
 [data-theme="light"] .member-kpi-card .kpi-subtext,
 body.light-theme .member-kpi-card .kpi-subtext {
   color: #64748B !important;
 }
 
-.tab-pill-btn,
 [data-theme="light"] .tab-pill-btn,
 body.light-theme .tab-pill-btn {
   background: #FFFFFF !important;
@@ -10174,7 +10158,6 @@ body.light-theme .tab-pill-btn {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
 }
 
-.tab-pill-btn:hover:not(.active),
 [data-theme="light"] .tab-pill-btn:hover:not(.active),
 body.light-theme .tab-pill-btn:hover:not(.active) {
   background: #FFF1F4 !important;
@@ -10191,22 +10174,18 @@ body.light-theme .tab-pill-btn.active {
   box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
 }
 
-.tab-pill-count,
 [data-theme="light"] .tab-pill-count,
 body.light-theme .tab-pill-count {
   background: #F1F5F9 !important;
   color: #64748B !important;
 }
 
-.tab-pill-btn.active .tab-pill-count,
 [data-theme="light"] .tab-pill-btn.active .tab-pill-count,
 body.light-theme .tab-pill-btn.active .tab-pill-count {
   background: rgba(255, 255, 255, 0.25) !important;
   color: #FFFFFF !important;
 }
 
-#main-member-search-input,
-.rb-search-input,
 [data-theme="light"] #main-member-search-input,
 [data-theme="light"] .rb-search-input,
 body.light-theme #main-member-search-input,
@@ -10224,25 +10203,21 @@ body.light-theme .member-product-card {
   color: #0F172A !important;
 }
 
-.member-product-card .mp-card-title,
 [data-theme="light"] .member-product-card .mp-card-title,
 body.light-theme .member-product-card .mp-card-title {
   color: #0F172A !important;
 }
 
-.member-product-card .mp-card-desc,
 [data-theme="light"] .member-product-card .mp-card-desc,
 body.light-theme .member-product-card .mp-card-desc {
   color: #64748B !important;
 }
 
-.member-product-card .mp-card-meta,
 [data-theme="light"] .member-product-card .mp-card-meta,
 body.light-theme .member-product-card .mp-card-meta {
   color: #64748B !important;
 }
 
-.member-profile-widget-card,
 [data-theme="light"] .member-profile-widget-card,
 body.light-theme .member-profile-widget-card {
   background: #FFFFFF !important;
@@ -10251,31 +10226,26 @@ body.light-theme .member-profile-widget-card {
   color: #0F172A !important;
 }
 
-.member-profile-widget-card .widget-profile-name,
 [data-theme="light"] .member-profile-widget-card .widget-profile-name,
 body.light-theme .member-profile-widget-card .widget-profile-name {
   color: #0F172A !important;
 }
 
-.member-profile-widget-card .widget-profile-email,
 [data-theme="light"] .member-profile-widget-card .widget-profile-email,
 body.light-theme .member-profile-widget-card .widget-profile-email {
   color: #64748B !important;
 }
 
-.member-profile-widget-card .detail-label,
 [data-theme="light"] .member-profile-widget-card .detail-label,
 body.light-theme .member-profile-widget-card .detail-label {
   color: #64748B !important;
 }
 
-.member-profile-widget-card .detail-val,
 [data-theme="light"] .member-profile-widget-card .detail-val,
 body.light-theme .member-profile-widget-card .detail-val {
   color: #0F172A !important;
 }
 
-.member-profile-widget-card .btn-account-settings,
 [data-theme="light"] .member-profile-widget-card .btn-account-settings,
 body.light-theme .member-profile-widget-card .btn-account-settings {
   background: #F8FAFC !important;
@@ -10283,7 +10253,6 @@ body.light-theme .member-profile-widget-card .btn-account-settings {
   border: 1.5px solid #CBD5E1 !important;
 }
 
-.member-profile-widget-card .btn-account-settings:hover,
 [data-theme="light"] .member-profile-widget-card .btn-account-settings:hover,
 body.light-theme .member-profile-widget-card .btn-account-settings:hover {
   background: #FFF1F4 !important;
@@ -10292,7 +10261,6 @@ body.light-theme .member-profile-widget-card .btn-account-settings:hover {
 }
 
 /* KARTU AKSES CEPAT MEMBER (FOTO 2) */
-.member-quick-access-card,
 [data-theme="light"] .member-quick-access-card,
 body.light-theme .member-quick-access-card {
   background: #FFFFFF !important;
@@ -10301,13 +10269,11 @@ body.light-theme .member-quick-access-card {
   color: #0F172A !important;
 }
 
-.quick-access-title,
 [data-theme="light"] .quick-access-title,
 body.light-theme .quick-access-title {
   color: #64748B !important;
 }
 
-.quick-access-item,
 [data-theme="light"] .quick-access-item,
 body.light-theme .quick-access-item {
   background: #F8FAFC !important;
@@ -10315,7 +10281,6 @@ body.light-theme .quick-access-item {
   color: #0F172A !important;
 }
 
-.quick-access-item:hover,
 [data-theme="light"] .quick-access-item:hover,
 body.light-theme .quick-access-item:hover {
   background: #FFF1F4 !important;
@@ -10323,19 +10288,16 @@ body.light-theme .quick-access-item:hover {
   transform: translateX(3px) !important;
 }
 
-.qa-item-title,
 [data-theme="light"] .qa-item-title,
 body.light-theme .qa-item-title {
   color: #0F172A !important;
 }
 
-.qa-item-subtitle,
 [data-theme="light"] .qa-item-subtitle,
 body.light-theme .qa-item-subtitle {
   color: #64748B !important;
 }
 
-.qa-chevron,
 [data-theme="light"] .qa-chevron,
 body.light-theme .qa-chevron {
   color: #94A3B8 !important;
@@ -10560,14 +10522,12 @@ body.dark-theme .qa-chevron {
    Mode Gelap: #131F37 Card, #FFFFFF Text (Termasuk rb-card & perk cards!)
    -------------------------------------------------------------------------- */
 /* Mode Terang Ruang BelajarKu */
-.classroom-portal-wrapper,
 [data-theme="light"] .classroom-portal-wrapper,
 body.light-theme .classroom-portal-wrapper {
   background: #F8FAFC !important;
   color: #0F172A !important;
 }
 
-.classroom-portal-nav,
 [data-theme="light"] .classroom-portal-nav,
 body.light-theme .classroom-portal-nav {
   background: rgba(255, 255, 255, 0.96) !important;
@@ -10575,20 +10535,17 @@ body.light-theme .classroom-portal-nav {
   color: #0F172A !important;
 }
 
-.classroom-brand .brand-name-text,
 [data-theme="light"] .classroom-brand .brand-name-text,
 body.light-theme .classroom-brand .brand-name-text {
   color: #0F172A !important;
 }
 
-.cls-tab-link,
 [data-theme="light"] .cls-tab-link,
 body.light-theme .cls-tab-link {
   color: #64748B !important;
   background: transparent !important;
 }
 
-.cls-tab-link:hover:not(.active),
 [data-theme="light"] .cls-tab-link:hover:not(.active),
 body.light-theme .cls-tab-link:hover:not(.active) {
   color: #FF2E63 !important;
@@ -10603,19 +10560,16 @@ body.light-theme .rb-card {
   color: #0F172A !important;
 }
 
-.rb-card .rb-card-title,
 [data-theme="light"] .rb-card .rb-card-title,
 body.light-theme .rb-card .rb-card-title {
   color: #0F172A !important;
 }
 
-.rb-card .rb-card-desc,
 [data-theme="light"] .rb-card .rb-card-desc,
 body.light-theme .rb-card .rb-card-desc {
   color: #64748B !important;
 }
 
-.classroom-perk-card,
 [data-theme="light"] .classroom-perk-card,
 body.light-theme .classroom-perk-card {
   background: #FFFFFF !important;
@@ -10624,19 +10578,16 @@ body.light-theme .classroom-perk-card {
   color: #0F172A !important;
 }
 
-.classroom-perk-card h4,
 [data-theme="light"] .classroom-perk-card h4,
 body.light-theme .classroom-perk-card h4 {
   color: #0F172A !important;
 }
 
-.classroom-perk-card p,
 [data-theme="light"] .classroom-perk-card p,
 body.light-theme .classroom-perk-card p {
   color: #64748B !important;
 }
 
-.rb-pill,
 [data-theme="light"] .rb-pill,
 body.light-theme .rb-pill {
   background: #FFFFFF !important;
@@ -10644,7 +10595,6 @@ body.light-theme .rb-pill {
   color: #64748B !important;
 }
 
-.rb-pill.active,
 [data-theme="light"] .rb-pill.active,
 body.light-theme .rb-pill.active {
   background: #FF2E63 !important;
@@ -10797,14 +10747,12 @@ body.dark-theme .rb-pill.active {
    Mode Terang: #FFFFFF Card, #0F172A Text
    Mode Gelap: #131F37 Card, #FFFFFF Text
    -------------------------------------------------------------------------- */
-.pameran-portal-wrapper,
 [data-theme="light"] .pameran-portal-wrapper,
 body.light-theme .pameran-portal-wrapper {
   background: #FBF9F5 !important;
   color: #0F172A !important;
 }
 
-.pameran-portal-nav,
 [data-theme="light"] .pameran-portal-nav,
 body.light-theme .pameran-portal-nav {
   background: #FFFFFF !important;
@@ -10812,13 +10760,11 @@ body.light-theme .pameran-portal-nav {
   color: #0F172A !important;
 }
 
-.pameran-brand-name-text,
 [data-theme="light"] .pameran-brand-name-text,
 body.light-theme .pameran-brand-name-text {
   color: #0F172A !important;
 }
 
-.pameran-hero-card,
 [data-theme="light"] .pameran-hero-card,
 body.light-theme .pameran-hero-card {
   background: #FFFFFF !important;
@@ -10827,13 +10773,11 @@ body.light-theme .pameran-hero-card {
   color: #0F172A !important;
 }
 
-.pameran-hero-card h1,
 [data-theme="light"] .pameran-hero-card h1,
 body.light-theme .pameran-hero-card h1 {
   color: #0F172A !important;
 }
 
-.pameran-section-block,
 [data-theme="light"] .pameran-section-block,
 body.light-theme .pameran-section-block {
   background: #FFFFFF !important;
@@ -10842,7 +10786,6 @@ body.light-theme .pameran-section-block {
   color: #0F172A !important;
 }
 
-.pameran-card,
 [data-theme="light"] .pameran-card,
 body.light-theme .pameran-card {
   background: #FFFFFF !important;
@@ -10851,7 +10794,6 @@ body.light-theme .pameran-card {
   color: #0F172A !important;
 }
 
-.pameran-filter-btn,
 [data-theme="light"] .pameran-filter-btn,
 body.light-theme .pameran-filter-btn {
   background: #FFFFFF !important;
@@ -10859,7 +10801,6 @@ body.light-theme .pameran-filter-btn {
   color: #64748B !important;
 }
 
-.pameran-filter-btn.active,
 [data-theme="light"] .pameran-filter-btn.active,
 body.light-theme .pameran-filter-btn.active {
   background: #FF2E63 !important;
@@ -10960,10 +10901,6 @@ body.dark-theme .pameran-filter-btn.active {
    Mode Gelap: Permukaan Deep Navy (#131F37), Teks Putih Bersih (#FFFFFF)
    -------------------------------------------------------------------------- */
 /* Mode Terang Modals */
-.modal-card,
-.modal-complete-profile-dialog,
-.modal-bc-announcement-dialog,
-.doc-reader-dialog,
 [data-theme="light"] .modal-card,
 [data-theme="light"] .modal-complete-profile-dialog,
 [data-theme="light"] .modal-bc-announcement-dialog,
@@ -10978,8 +10915,6 @@ body.light-theme .doc-reader-dialog {
   box-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.25) !important;
 }
 
-.modal-card h2,
-.modal-card h3,
 .modal-title,
 .modal-cp-title,
 .modal-bca-title,
@@ -10995,7 +10930,6 @@ body.light-theme #prod-preview-modal-title {
   color: #0F172A !important;
 }
 
-.modal-card p,
 .modal-cp-desc,
 #prod-preview-modal-desc,
 [data-theme="light"] .modal-cp-desc,
@@ -11005,8 +10939,6 @@ body.light-theme #prod-preview-modal-desc {
   color: #64748B !important;
 }
 
-.modal-close-btn,
-.modal-bca-close,
 [data-theme="light"] .modal-close-btn,
 [data-theme="light"] .modal-bca-close,
 body.light-theme .modal-close-btn,
@@ -11021,8 +10953,6 @@ body.light-theme .modal-bca-close {
   color: #FF2E63 !important;
 }
 
-.form-label,
-.modal-cp-label,
 [data-theme="light"] .form-label,
 [data-theme="light"] .modal-cp-label,
 body.light-theme .form-label,
@@ -11030,10 +10960,6 @@ body.light-theme .modal-cp-label {
   color: #0F172A !important;
 }
 
-.form-input,
-.form-select,
-.form-textarea,
-.modal-cp-input,
 [data-theme="light"] .form-input,
 [data-theme="light"] .form-select,
 [data-theme="light"] .form-textarea,
@@ -11053,7 +10979,6 @@ body.light-theme .modal-cp-input {
   box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.18) !important;
 }
 
-.modal-cp-input[readonly],
 [data-theme="light"] .modal-cp-input[readonly],
 body.light-theme .modal-cp-input[readonly] {
   background: #F8FAFC !important;
@@ -11069,20 +10994,17 @@ body.light-theme .account-verified-order-badge {
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
 }
 
-#setting-modal-email,
 [data-theme="light"] #setting-modal-email,
 body.light-theme #setting-modal-email {
   color: #0F172A !important;
 }
 
-.auth-device-history-box,
 [data-theme="light"] .auth-device-history-box,
 body.light-theme .auth-device-history-box {
   background: #F8FAFC !important;
   border: 1px solid #E2E8F0 !important;
 }
 
-.auth-device-chip,
 [data-theme="light"] .auth-device-chip,
 body.light-theme .auth-device-chip {
   background: #FFFFFF !important;
@@ -11091,14 +11013,12 @@ body.light-theme .auth-device-chip {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
 }
 
-.auth-device-chip:hover,
 [data-theme="light"] .auth-device-chip:hover,
 body.light-theme .auth-device-chip:hover {
   background: #FFF1F4 !important;
   border-color: #FF2E63 !important;
 }
 
-.btn-redeem-outline,
 [data-theme="light"] .btn-redeem-outline,
 body.light-theme .btn-redeem-outline {
   background: #F8FAFC !important;
@@ -11106,7 +11026,6 @@ body.light-theme .btn-redeem-outline {
   border: 1.5px solid #CBD5E1 !important;
 }
 
-.btn-redeem-outline:hover,
 [data-theme="light"] .btn-redeem-outline:hover,
 body.light-theme .btn-redeem-outline:hover {
   background: #FFF1F4 !important;
@@ -11114,21 +11033,17 @@ body.light-theme .btn-redeem-outline:hover {
   color: #FF2E63 !important;
 }
 
-.modal-bca-code-box,
 [data-theme="light"] .modal-bca-code-box,
 body.light-theme .modal-bca-code-box {
   background: #F8FAFC !important;
   border: 1.5px dashed rgba(255, 46, 99, 0.4) !important;
 }
 
-.modal-bca-code,
 [data-theme="light"] .modal-bca-code,
 body.light-theme .modal-bca-code {
   color: #0F172A !important;
 }
 
-.btn-cp-cancel,
-.btn-bca-dismiss,
 [data-theme="light"] .btn-cp-cancel,
 [data-theme="light"] .btn-bca-dismiss,
 body.light-theme .btn-cp-cancel,
@@ -11138,8 +11053,6 @@ body.light-theme .btn-bca-dismiss {
   border: 1.5px solid #CBD5E1 !important;
 }
 
-.btn-cp-cancel:hover,
-.btn-bca-dismiss:hover,
 [data-theme="light"] .btn-cp-cancel:hover,
 [data-theme="light"] .btn-bca-dismiss:hover,
 body.light-theme .btn-cp-cancel:hover,
@@ -11148,14 +11061,12 @@ body.light-theme .btn-bca-dismiss:hover {
   color: #0F172A !important;
 }
 
-.doc-reader-meta-bar,
 [data-theme="light"] .doc-reader-meta-bar,
 body.light-theme .doc-reader-meta-bar {
   background: #F8FAFC !important;
   border-bottom: 1px solid #E2E8F0 !important;
 }
 
-.doc-reader-pre,
 [data-theme="light"] .doc-reader-pre,
 body.light-theme .doc-reader-pre {
   background: #FFFFFF !important;
@@ -15139,3 +15050,324 @@ body.dark-theme .member-product-card .mp-card-body {
   background: #131F37 !important;
   color: #FFFFFF !important;
 }
+
+
+/* ==========================================================================
+   UNIFIED 7-SECTION AUTOMATIC DARK & LIGHT MODE SYNCHRONIZATION ENGINE
+   Mencakup 100% otomatis:
+   1. Beranda (Landing Page & Member Dashboard #rb-view-home)
+   2. Ruang BelajarKu (#classroom-dashboard-portal, #rb-view-grid, #rb-view-course, #rb-view-document)
+   3. Jalur Belajar (#tab-link-jalur, #rb-view-grid)
+   4. Bootcamp (#bootcamp, #modal-bootcamp-detail, #modal-bootcamp-announcement)
+   5. Hasil Karya Member (#pameran-karya-portal, .pameran-card, .my-submission-card)
+   6. Panduan (openPanduanModal, #modal-doc-reader, .doc-reader-dialog)
+   7. Aplikasi Custom (#rb-view-custom, #rb-view-custom-new, #modal-custom-app-detail)
+   ========================================================================== */
+
+/* 1. BERANDA (LANDING PAGE & MEMBER BERANDA) */
+[data-theme="dark"] #main-member-area-dashboard,
+body.dark-theme #main-member-area-dashboard,
+#main-member-area-dashboard[data-theme="dark"] {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .member-welcome-hero-card,
+body.dark-theme .member-welcome-hero-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .member-kpi-card,
+body.dark-theme .member-kpi-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .member-profile-widget-card,
+body.dark-theme .member-profile-widget-card,
+[data-theme="dark"] .member-quick-access-card,
+body.dark-theme .member-quick-access-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+/* 2. RUANG BELAJARKU (PORTAL FULLSCREEN, COURSE PLAYER & DOC VIEWER) */
+[data-theme="dark"] #classroom-dashboard-portal,
+body.dark-theme #classroom-dashboard-portal,
+#classroom-dashboard-portal[data-theme="dark"],
+[data-theme="dark"].classroom-portal-wrapper,
+body.dark-theme .classroom-portal-wrapper {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-portal-nav,
+body.dark-theme .classroom-portal-nav {
+  background: rgba(11, 19, 43, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-brand .brand-name-text,
+body.dark-theme .classroom-brand .brand-name-text {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .cls-tab-link,
+body.dark-theme .cls-tab-link {
+  color: #94A3B8 !important;
+  background: transparent !important;
+}
+
+[data-theme="dark"] .cls-tab-link:hover:not(.active),
+body.dark-theme .cls-tab-link:hover:not(.active) {
+  color: #FF2E63 !important;
+  background: rgba(255, 46, 99, 0.12) !important;
+}
+
+[data-theme="dark"] .cls-tab-link.active,
+body.dark-theme .cls-tab-link.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+[data-theme="dark"] .rb-card,
+body.dark-theme .rb-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .rb-card .rb-card-title,
+body.dark-theme .rb-card .rb-card-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rb-card .rb-card-desc,
+body.dark-theme .rb-card .rb-card-desc {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .classroom-perk-card,
+body.dark-theme .classroom-perk-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-perk-card h4,
+body.dark-theme .classroom-perk-card h4 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-perk-card p,
+body.dark-theme .classroom-perk-card p {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .rb-user-pill,
+body.dark-theme .rb-user-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rb-user-pill .rb-user-order,
+body.dark-theme .rb-user-pill .rb-user-order {
+  color: #94A3B8 !important;
+}
+
+/* COURSE & DOCUMENT VIEWER STYLES IN DARK MODE */
+[data-theme="dark"] .rb-detail-topbar,
+body.dark-theme .rb-detail-topbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .rb-detail-breadcrumbs,
+body.dark-theme .rb-detail-breadcrumbs,
+[data-theme="dark"] .rb-detail-breadcrumbs a,
+body.dark-theme .rb-detail-breadcrumbs a {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .rb-detail-breadcrumbs .crumb-current,
+body.dark-theme .rb-detail-breadcrumbs .crumb-current {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .course-player-card,
+body.dark-theme .course-player-card,
+[data-theme="dark"] .course-curriculum-card,
+body.dark-theme .course-curriculum-card,
+[data-theme="dark"] .doc-viewer-card,
+body.dark-theme .doc-viewer-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .episode-item,
+body.dark-theme .episode-item {
+  background: #0B132B !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .episode-item:hover,
+body.dark-theme .episode-item:hover {
+  background: rgba(255, 46, 99, 0.12) !important;
+  border-color: #FF2E63 !important;
+}
+
+/* 3. JALUR BELAJAR */
+[data-theme="dark"] .jalur-step-card,
+body.dark-theme .jalur-step-card,
+[data-theme="dark"] .jalur-card,
+body.dark-theme .jalur-card,
+[data-theme="dark"] .jalur-roadmap-card,
+body.dark-theme .jalur-roadmap-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+/* 4. BOOTCAMP */
+[data-theme="dark"] #modal-bootcamp-detail .modal-bootcamp-detail-dialog,
+body.dark-theme #modal-bootcamp-detail .modal-bootcamp-detail-dialog {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="dark"] .modal-bc-right,
+body.dark-theme .modal-bc-right {
+  background: #131F37 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .modal-bc-title,
+body.dark-theme .modal-bc-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .modal-bc-subtitle,
+body.dark-theme .modal-bc-subtitle {
+  color: #94A3B8 !important;
+}
+
+/* 5. HASIL KARYA MEMBER */
+[data-theme="dark"] #pameran-karya-portal,
+body.dark-theme #pameran-karya-portal,
+#pameran-karya-portal[data-theme="dark"],
+[data-theme="dark"].pameran-portal-wrapper,
+body.dark-theme .pameran-portal-wrapper {
+  background: #0B132B !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-portal-nav,
+body.dark-theme .pameran-portal-nav {
+  background: rgba(11, 19, 43, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-card,
+body.dark-theme .pameran-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-filter-btn,
+body.dark-theme .pameran-filter-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pameran-filter-btn.active,
+body.dark-theme .pameran-filter-btn.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+}
+
+/* 6. PANDUAN (MODAL DOC READER) */
+[data-theme="dark"] #modal-doc-reader .doc-reader-dialog,
+body.dark-theme #modal-doc-reader .doc-reader-dialog {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="dark"] .doc-reader-header,
+body.dark-theme .doc-reader-header {
+  background: #0B132B !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .doc-reader-title,
+body.dark-theme .doc-reader-title {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .doc-reader-meta-bar,
+body.dark-theme .doc-reader-meta-bar {
+  background: #0E1726 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .doc-reader-body,
+body.dark-theme .doc-reader-body,
+[data-theme="dark"] .doc-reader-pre,
+body.dark-theme .doc-reader-pre {
+  background: #080E1E !important;
+  color: #E2E8F0 !important;
+}
+
+/* 7. APLIKASI CUSTOM */
+[data-theme="dark"] #rb-view-custom,
+body.dark-theme #rb-view-custom,
+[data-theme="dark"] #rb-view-custom-new,
+body.dark-theme #rb-view-custom-new {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-app-hero-banner,
+body.dark-theme .custom-app-hero-banner {
+  background: linear-gradient(135deg, #131F37 0%, #0B132B 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .custom-app-card,
+body.dark-theme .custom-app-card,
+[data-theme="dark"] .custom-wizard-card,
+body.dark-theme .custom-wizard-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #modal-custom-app-detail .modal-card,
+body.dark-theme #modal-custom-app-detail .modal-card {
+  background: #131F37 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+

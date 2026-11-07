@@ -16,8 +16,10 @@
         document.documentElement.setAttribute('data-theme', theme);
         if (theme === 'dark') {
           document.documentElement.classList.add('dark-theme');
+          document.documentElement.classList.remove('light-theme');
         } else {
           document.documentElement.classList.remove('dark-theme');
+          document.documentElement.classList.add('light-theme');
         }
       } catch (e) {}
     })();
@@ -48,7 +50,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261106-06">
+  <link rel="stylesheet" href="css/style.css?v=20261107-01">
 </head>
 <body>
   <!-- Immediate Body Theme Application for 100% Zero-Flash System Automation -->
@@ -4762,8 +4764,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261106-06"></script>
-  <script defer src="js/app.js?v=20261106-06"></script>
+  <script defer src="js/config.js?v=20261107-01"></script>
+  <script defer src="js/app.js?v=20261107-01"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
