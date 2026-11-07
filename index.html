@@ -50,7 +50,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261107-01">
+  <link rel="stylesheet" href="css/style.css?v=20261107-02">
 </head>
 <body>
   <!-- Immediate Body Theme Application for 100% Zero-Flash System Automation -->
@@ -2658,7 +2658,7 @@
               </p>
             </div>
 
-            <form onsubmit="saveThumballSettings(event)">
+            <form onsubmit="saveThumballSettings(event); return false;">
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
                 <div>
                   <label class="form-label" style="font-size:11.5px; font-weight:700;">Teks Eyebrow / Tag Hero *</label>
@@ -2791,7 +2791,7 @@
                 </div>
               </div>
 
-              <button type="submit" class="shimmer-btn" style="padding:13px 26px; font-size:14px; font-weight:800;">
+              <button type="button" id="btn-save-thumball" class="shimmer-btn" onclick="saveThumballSettings(event)" style="padding:13px 26px; font-size:14px; font-weight:800; cursor:pointer;">
                 💾 Simpan Perubahan Thumball ke Website
               </button>
             </form>
@@ -4764,8 +4764,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261107-01"></script>
-  <script defer src="js/app.js?v=20261107-01"></script>
+  <script defer src="js/config.js?v=20261107-02"></script>
+  <script defer src="js/app.js?v=20261107-02"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">

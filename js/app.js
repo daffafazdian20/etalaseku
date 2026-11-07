@@ -3955,6 +3955,9 @@ window.adminLogout = adminLogout;
 function backToWebsiteFromAdmin() {
   localStorage.setItem('etalaseku_is_in_crm', 'false');
   closeAdminPortal();
+  if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
+  if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom();
+  if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 window.backToWebsiteFromAdmin = backToWebsiteFromAdmin;
@@ -8848,9 +8851,16 @@ const DEFAULT_BOOTCAMP_DATA = {
 };
 
 function getThumballSettings() {
+  if (window.CURRENT_THUMBALL_SETTINGS) {
+    return { ...DEFAULT_THUMBALL_SETTINGS, ...window.CURRENT_THUMBALL_SETTINGS };
+  }
   try {
     const raw = localStorage.getItem('nexstore_hero_thumball_data');
-    if (raw) return { ...DEFAULT_THUMBALL_SETTINGS, ...JSON.parse(raw) };
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      window.CURRENT_THUMBALL_SETTINGS = parsed;
+      return { ...DEFAULT_THUMBALL_SETTINGS, ...parsed };
+    }
   } catch (e) {}
   return DEFAULT_THUMBALL_SETTINGS;
 }
@@ -8910,10 +8920,25 @@ function applyThumballSettingsToDom() {
     btnGroup.style.display = hasVisibleBtn ? 'flex' : 'none';
   }
 
-  // Update Hero Slide 1 image
+  // Update Hero Slide 1 image & all relevant hero images on Dashboard Utama
   if (d.imageUrl) {
-    const heroImg1 = document.querySelector('.hero-slide.active img') || document.querySelector('.hero-slide img');
-    if (heroImg1) heroImg1.src = formatImageUrl(d.imageUrl);
+    const formattedUrl = formatImageUrl(d.imageUrl);
+    const slides = document.querySelectorAll('.hero-slide');
+    if (slides && slides.length > 0) {
+      const slide1Img = slides[0].querySelector('img');
+      if (slide1Img) {
+        slide1Img.src = formattedUrl;
+        if (slide1Img.dataset.src) slide1Img.dataset.src = formattedUrl;
+      }
+    }
+    const activeHeroImg = document.querySelector('.hero-slide.active img');
+    if (activeHeroImg) {
+      activeHeroImg.src = formattedUrl;
+    }
+    const crmImgPrev = document.getElementById('crm-hero-img-preview');
+    if (crmImgPrev) {
+      crmImgPrev.src = formattedUrl;
+    }
   }
 
   // Populate CRM Thumball Form fields if present
@@ -8977,23 +9002,97 @@ function handleHeroUrlInput(val) {
   if (prev && val) prev.src = formatImageUrl(val);
 }
 
-function handleHeroFileInput(input) {
+function compressDataUrlString(dataUrl, maxWidth = 1000, quality = 0.75) {
+  return new Promise((resolve) => {
+    if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
+      return resolve(dataUrl);
+    }
+    if (dataUrl.length <= 85000) {
+      return resolve(dataUrl);
+    }
+    try {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width || 1280;
+        let height = img.height || 720;
+        if (width > maxWidth || height > maxWidth) {
+          if (width > height) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxWidth) / height);
+            height = maxWidth;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        let compressed = canvas.toDataURL('image/jpeg', quality);
+        if (compressed.length > 85000) {
+          compressed = canvas.toDataURL('image/jpeg', 0.58);
+        }
+        resolve(compressed);
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    } catch (e) {
+      resolve(dataUrl);
+    }
+  });
+}
+window.compressDataUrlString = compressDataUrlString;
+
+async function handleHeroFileInput(input) {
   if (input.files && input.files[0]) {
     const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64 = e.target.result;
+    try {
+      const compressed = typeof compressAndReadImage === 'function'
+        ? await compressAndReadImage(file, 1000, 0.75)
+        : await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
       const urlInput = document.getElementById('crm-hero-img-url');
-      if (urlInput) urlInput.value = base64;
+      if (urlInput) urlInput.value = compressed;
       const prev = document.getElementById('crm-hero-img-preview');
-      if (prev) prev.src = base64;
-    };
-    reader.readAsDataURL(file);
+      if (prev) prev.src = compressed;
+      if (typeof showToast === 'function') {
+        showToast('Foto banner hero siap digunakan! Klik "Simpan Perubahan Thumball" untuk menerapkan. 📸', 'info', 2500);
+      }
+    } catch (err) {
+      console.warn('handleHeroFileInput error:', err);
+    }
   }
 }
+window.handleHeroFileInput = handleHeroFileInput;
 
-function saveThumballSettings(e) {
+async function saveThumballSettings(e) {
   if (e && e.preventDefault) e.preventDefault();
+
+  const btn = document.getElementById('btn-save-thumball') || (e && e.target && (e.target.tagName === 'BUTTON' ? e.target : e.target.querySelector('button[type="submit"], #btn-save-thumball')));
+  const originalBtnHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Menyimpan Perubahan...</span>';
+  }
+
+  let rawImg = document.getElementById('crm-hero-img-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl;
+  // Jika gambar berupa data base64 besar, kompres otomatis agar aman di localStorage
+  if (rawImg && rawImg.startsWith('data:image/') && rawImg.length > 85000) {
+    try {
+      rawImg = await compressDataUrlString(rawImg, 1000, 0.72);
+      const urlInput = document.getElementById('crm-hero-img-url');
+      if (urlInput) urlInput.value = rawImg;
+      const prev = document.getElementById('crm-hero-img-preview');
+      if (prev) prev.src = rawImg;
+    } catch (err) {
+      console.warn('Compress image error:', err);
+    }
+  }
 
   const data = {
     eyebrow: document.getElementById('crm-hero-eyebrow')?.value || DEFAULT_THUMBALL_SETTINGS.eyebrow,
@@ -9010,10 +9109,27 @@ function saveThumballSettings(e) {
     btnPromoActive: document.getElementById('crm-hero-btn-promo-active') ? document.getElementById('crm-hero-btn-promo-active').checked : false,
     promoBtnText: document.getElementById('crm-hero-promo-btn-text')?.value || DEFAULT_THUMBALL_SETTINGS.promoBtnText,
     promoCode: document.getElementById('crm-hero-promo-code')?.value || DEFAULT_THUMBALL_SETTINGS.promoCode,
-    imageUrl: document.getElementById('crm-hero-img-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl
+    imageUrl: rawImg
   };
 
-  localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
+  // Simpan selalu ke in-memory cache agar update instan bebas lag
+  window.CURRENT_THUMBALL_SETTINGS = data;
+
+  // Simpan aman ke localStorage dengan try-catch & proteksi kuota
+  try {
+    localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
+  } catch (err) {
+    console.warn('LocalStorage quota issue when saving thumball settings, attempting cleanup:', err);
+    try {
+      localStorage.removeItem('nexstore_hero_thumball_data');
+      const minimalData = { ...data, imageUrl: data.imageUrl.startsWith('data:') ? data.imageUrl.slice(0, 50000) : data.imageUrl };
+      localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(minimalData));
+    } catch (e2) {
+      console.warn('Could not persist to localStorage, using in-memory settings:', e2);
+    }
+  }
+
+  // Terapkan seketika ke seluruh DOM Dashboard Utama
   applyThumballSettingsToDom();
   applyFooterBrandingSettingsToDom();
   if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
@@ -9027,9 +9143,15 @@ function saveThumballSettings(e) {
     }).catch(err => console.warn('Sync hero buttons ke GAS:', err));
   }
 
-  if (e) {
-    showToast('Perubahan Thumball & Tombol Hero berhasil disimpan! 🎨✨');
+  if (btn) {
+    btn.disabled = false;
+    btn.innerHTML = '<span>✓ Berhasil Disimpan!</span>';
+    setTimeout(() => {
+      btn.innerHTML = originalBtnHtml || '💾 Simpan Perubahan Thumball ke Website';
+    }, 2200);
   }
+
+  showToast('Perubahan Thumball & Konten Hero berhasil disimpan! 🎨✨', 'success');
 }
 window.saveThumballSettings = saveThumballSettings;
 
@@ -9154,18 +9276,28 @@ function handleBootcampUrlInput(val) {
   if (prev && val) prev.src = formatImageUrl(val);
 }
 
-function handleBootcampFileInput(input) {
+async function handleBootcampFileInput(input) {
   if (input.files && input.files[0]) {
     const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64 = e.target.result;
+    try {
+      const compressed = typeof compressAndReadImage === 'function'
+        ? await compressAndReadImage(file, 1000, 0.75)
+        : await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
       const urlInput = document.getElementById('crm-bc-banner-url');
-      if (urlInput) urlInput.value = base64;
+      if (urlInput) urlInput.value = compressed;
       const prev = document.getElementById('crm-bc-banner-preview');
-      if (prev) prev.src = base64;
-    };
-    reader.readAsDataURL(file);
+      if (prev) prev.src = compressed;
+      if (typeof showToast === 'function') {
+        showToast('Foto banner bootcamp siap! Klik Simpan untuk menerapkan. 📸', 'info', 2500);
+      }
+    } catch (err) {
+      console.warn('handleBootcampFileInput error:', err);
+    }
   }
 }
 
@@ -10122,19 +10254,21 @@ window.applyAppTheme = applyAppTheme;
 window.toggleAppTheme = toggleAppTheme;
 
 // Inisialisasi tema otomatis secepat mungkin saat halaman dimuat
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
+function initAllPortalOnReady() {
   initAppTheme();
-  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules(); // On DOM ready
-  if (typeof renderMainMemberShowcases === 'function') renderMainMemberShowcases(); // On DOM ready (Foto 2)
+  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
+  if (typeof renderMainMemberShowcases === 'function') renderMainMemberShowcases();
   if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
   if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
-  applyFooterBrandingSettingsToDom();
+  if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom();
   if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom();
-});
+}
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAllPortalOnReady);
   } else {
-    initAppTheme();
+    initAllPortalOnReady();
   }
 }
 
@@ -10435,19 +10569,28 @@ function handleFooterLogoUrlInput(url) {
   }
 }
 
-function handleFooterLogoFileInput(input) {
+async function handleFooterLogoFileInput(input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const base64 = e.target.result;
+  try {
+    const compressed = typeof compressAndReadImage === 'function'
+      ? await compressAndReadImage(file, 400, 0.8)
+      : await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
     const urlInput = document.getElementById('crm-footer-logo-url');
-    if (urlInput) urlInput.value = base64;
+    if (urlInput) urlInput.value = compressed;
     const preview = document.getElementById('crm-footer-logo-preview');
-    if (preview) preview.src = base64;
-    showToast('Foto avatar footer berhasil dipilih! Klik Simpan untuk menerapkan. 📸');
-  };
-  reader.readAsDataURL(file);
+    if (preview) preview.src = compressed;
+    if (typeof showToast === 'function') {
+      showToast('Foto avatar footer berhasil dipilih! Klik Simpan untuk menerapkan. 📸', 'info', 2500);
+    }
+  } catch (err) {
+    console.warn('handleFooterLogoFileInput error:', err);
+  }
 }
 
 function saveFooterBrandingSettings(e) {
