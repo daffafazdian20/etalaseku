@@ -658,6 +658,13 @@ body {
   border: 4px solid #FFFFFF;
 }
 
+[data-theme="dark"] .hero-slideshow-container,
+body.dark-theme .hero-slideshow-container {
+  background: #0B1120 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+}
+
 .hero-slide {
   position: absolute !important;
   top: 0 !important;
@@ -2494,11 +2501,12 @@ input:checked + .switch-slider:before {
     gap: 14px;
   }
   .floating-wa-btn {
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
+    bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 18px !important;
+    width: 52px !important;
+    height: 52px !important;
     font-size: 26px;
+    z-index: 9998 !important;
   }
 }
 
@@ -12830,8 +12838,17 @@ body.dark-theme .footer-v2-icon-daftar {
     justify-content: center;
   }
   .floating-wa-btn {
-    bottom: 24px !important;
-    right: 20px !important;
+    bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 18px !important;
+    width: 52px !important;
+    height: 52px !important;
+    z-index: 9998 !important;
+  }
+  .wa-popover {
+    bottom: calc(140px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 16px !important;
+    max-width: calc(100vw - 32px) !important;
+    z-index: 9999 !important;
   }
 }
 

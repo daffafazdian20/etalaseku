@@ -307,10 +307,22 @@ function escapeHtml(str) {
 }
 window.escapeHtml = escapeHtml;
 
+function isValidBase64Image(str) {
+  if (!str || typeof str !== 'string') return false;
+  if (!str.startsWith('data:image/')) return false;
+  const commaIdx = str.indexOf(',');
+  if (commaIdx === -1) return false;
+  const b64 = str.slice(commaIdx + 1);
+  if (b64.length < 50) return false;
+  const validSignatures = ['/9j/', 'iVBOR', 'UklGR', 'R0lGOD'];
+  return validSignatures.some(sig => b64.startsWith(sig));
+}
+window.isValidBase64Image = isValidBase64Image;
+
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg';
   let str = url.trim();
-  if (!str) return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+  if (!str) return 'assets/hero/hero-slide-1.jpg';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -320,10 +332,10 @@ function formatImageUrl(url) {
     }
   }
 
-  // Jika Data URL terpotong tanpa payload gambar (misal hanya prefix 'data:image/jpeg;base64' atau payload sangat pendek)
+  // Validasi ketat jika Data URL: harus merupakan signature gambar valid (JPEG / PNG / WebP), bukan dummy/rusak
   if (str.startsWith('data:image/')) {
-    if (!str.includes(',') || str.split(',')[1].length < 30) {
-      return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80';
+    if (!isValidBase64Image(str)) {
+      return 'assets/hero/hero-slide-1.jpg';
     }
     return str;
   }
@@ -332,7 +344,7 @@ function formatImageUrl(url) {
     return str;
   }
   // Bila format raw base64 tanpa prefix
-  if (str.startsWith('/') || str.startsWith('iVBORw') || str.length > 80) {
+  if (str.startsWith('/') || str.startsWith('iVBORw') || (str.length > 80 && !str.includes('/') && !str.includes('.'))) {
     return 'data:image/jpeg;base64,' + str;
   }
   return str;
@@ -1538,9 +1550,23 @@ async function loadPublicData() {
                 fullImg += data.settings[prefix + p];
                 p++;
               }
-              if (fullImg) meta[imgKey] = fullImg;
+              // Validasi ketat: hanya gunakan jika signature gambar base64 asli & valid
+              if (fullImg && isValidBase64Image(fullImg)) {
+                meta[imgKey] = fullImg;
+              }
             }
           });
+
+          // Proteksi fallback: bila imageUrl terisi dummy atau rusak, pulihkan ke aset resmi
+          if (meta.imageUrl && meta.imageUrl.startsWith('data:') && !isValidBase64Image(meta.imageUrl)) {
+            meta.imageUrl = DEFAULT_THUMBALL_SETTINGS.imageUrl;
+          }
+          if (meta.imageUrl2 && meta.imageUrl2.startsWith('data:') && !isValidBase64Image(meta.imageUrl2)) {
+            meta.imageUrl2 = DEFAULT_THUMBALL_SETTINGS.imageUrl2;
+          }
+          if (meta.imageUrl3 && meta.imageUrl3.startsWith('data:') && !isValidBase64Image(meta.imageUrl3)) {
+            meta.imageUrl3 = DEFAULT_THUMBALL_SETTINGS.imageUrl3;
+          }
 
           // Terapkan ke memori & LocalStorage perangkat pengunjung / HP
           window.CURRENT_THUMBALL_SETTINGS = meta;
@@ -8947,12 +8973,20 @@ const DEFAULT_BOOTCAMP_DATA = {
 
 function getThumballSettings() {
   if (window.CURRENT_THUMBALL_SETTINGS) {
+    if (window.CURRENT_THUMBALL_SETTINGS.imageUrl && window.CURRENT_THUMBALL_SETTINGS.imageUrl.startsWith('data:') && !isValidBase64Image(window.CURRENT_THUMBALL_SETTINGS.imageUrl)) {
+      window.CURRENT_THUMBALL_SETTINGS.imageUrl = DEFAULT_THUMBALL_SETTINGS.imageUrl;
+    }
     return { ...DEFAULT_THUMBALL_SETTINGS, ...window.CURRENT_THUMBALL_SETTINGS };
   }
   try {
     const raw = localStorage.getItem('nexstore_hero_thumball_data');
     if (raw) {
       const parsed = JSON.parse(raw);
+      // Bersihkan jika ada imageUrl dummy korup dari localstorage
+      if (parsed.imageUrl && parsed.imageUrl.startsWith('data:') && !isValidBase64Image(parsed.imageUrl)) {
+        parsed.imageUrl = DEFAULT_THUMBALL_SETTINGS.imageUrl;
+        try { localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(parsed)); } catch (e) {}
+      }
       window.CURRENT_THUMBALL_SETTINGS = parsed;
       return { ...DEFAULT_THUMBALL_SETTINGS, ...parsed };
     }
@@ -9019,8 +9053,8 @@ function applyThumballSettingsToDom() {
   const slides = document.querySelectorAll('.hero-slide');
   if (slides && slides.length > 0) {
     // Slide 1
-    if (d.imageUrl && slides[0]) {
-      const formatted1 = formatImageUrl(d.imageUrl);
+    if (slides[0]) {
+      const formatted1 = formatImageUrl(d.imageUrl || 'assets/hero/hero-slide-1.jpg');
       const s1Img = slides[0].querySelector('img');
       if (s1Img) {
         s1Img.src = formatted1;
@@ -9354,26 +9388,38 @@ async function syncThumballSettingsToGas(data) {
       hero_thumball_meta: JSON.stringify(meta)
     };
 
-    if (data.imageUrl && data.imageUrl.startsWith('data:image/')) {
+    if (data.imageUrl && data.imageUrl.startsWith('data:image/') && isValidBase64Image(data.imageUrl)) {
       const chunkSize = 35000;
       const totalParts = Math.ceil(data.imageUrl.length / chunkSize);
       for (let p = 0; p < totalParts && p < 5; p++) {
         payload[`hero_slide1_img_p${p + 1}`] = data.imageUrl.slice(p * chunkSize, (p + 1) * chunkSize);
       }
+    } else {
+      payload.hero_slide1_img_p1 = '';
+      payload.hero_slide1_img_p2 = '';
+      payload.hero_slide1_img_p3 = '';
     }
-    if (data.imageUrl2 && data.imageUrl2.startsWith('data:image/')) {
+    if (data.imageUrl2 && data.imageUrl2.startsWith('data:image/') && isValidBase64Image(data.imageUrl2)) {
       const chunkSize = 35000;
       const totalParts = Math.ceil(data.imageUrl2.length / chunkSize);
       for (let p = 0; p < totalParts && p < 5; p++) {
         payload[`hero_slide2_img_p${p + 1}`] = data.imageUrl2.slice(p * chunkSize, (p + 1) * chunkSize);
       }
+    } else {
+      payload.hero_slide2_img_p1 = '';
+      payload.hero_slide2_img_p2 = '';
+      payload.hero_slide2_img_p3 = '';
     }
-    if (data.imageUrl3 && data.imageUrl3.startsWith('data:image/')) {
+    if (data.imageUrl3 && data.imageUrl3.startsWith('data:image/') && isValidBase64Image(data.imageUrl3)) {
       const chunkSize = 35000;
       const totalParts = Math.ceil(data.imageUrl3.length / chunkSize);
       for (let p = 0; p < totalParts && p < 5; p++) {
         payload[`hero_slide3_img_p${p + 1}`] = data.imageUrl3.slice(p * chunkSize, (p + 1) * chunkSize);
       }
+    } else {
+      payload.hero_slide3_img_p1 = '';
+      payload.hero_slide3_img_p2 = '';
+      payload.hero_slide3_img_p3 = '';
     }
 
     await fetch(APP_CONFIG.GAS_URL, {
