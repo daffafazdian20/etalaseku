@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261107-06';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261107-06';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -335,7 +335,7 @@ function formatImageUrl(url) {
   // Validasi ketat jika Data URL: harus merupakan signature gambar valid (JPEG / PNG / WebP), bukan dummy/rusak
   if (str.startsWith('data:image/')) {
     if (!isValidBase64Image(str)) {
-      return 'assets/hero/hero-slide-1.jpg';
+      return 'assets/hero/hero-slide-1.jpg?v=20261107-06';
     }
     return str;
   }
@@ -8919,7 +8919,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261107-06',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -8982,8 +8982,8 @@ function getThumballSettings() {
     const raw = localStorage.getItem('nexstore_hero_thumball_data');
     if (raw) {
       const parsed = JSON.parse(raw);
-      // Bersihkan jika ada imageUrl dummy korup dari localstorage
-      if (parsed.imageUrl && parsed.imageUrl.startsWith('data:') && !isValidBase64Image(parsed.imageUrl)) {
+      // Bersihkan jika ada imageUrl dummy korup atau aset lawas tanpa query hash
+      if (parsed.imageUrl === 'assets/hero/hero-slide-1.jpg' || (parsed.imageUrl && parsed.imageUrl.startsWith('data:') && !isValidBase64Image(parsed.imageUrl))) {
         parsed.imageUrl = DEFAULT_THUMBALL_SETTINGS.imageUrl;
         try { localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(parsed)); } catch (e) {}
       }
