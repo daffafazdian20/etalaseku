@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261107-06';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261107-09';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261107-06';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261107-09';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -1126,7 +1126,7 @@ class ButterflyCursor {
 // ============================================================================
 class SlideshowManager {
   static heroInterval = null;
-  static activeSlideIndices = [0, 1, 2];
+  static activeSlideIndices = [0];
   static currentHeroIndex = 0;
 
   static initHeroSlideshow() {
@@ -8933,7 +8933,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261107-06',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261107-09',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9388,7 +9388,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261107-09',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
@@ -9402,39 +9402,20 @@ async function syncThumballSettingsToGas(data) {
       hero_thumball_meta: JSON.stringify(meta)
     };
 
-    if (data.imageUrl && data.imageUrl.startsWith('data:image/') && isValidBase64Image(data.imageUrl)) {
-      const chunkSize = 35000;
-      const totalParts = Math.ceil(data.imageUrl.length / chunkSize);
-      for (let p = 0; p < totalParts && p < 5; p++) {
-        payload[`hero_slide1_img_p${p + 1}`] = data.imageUrl.slice(p * chunkSize, (p + 1) * chunkSize);
+    ['hero_slide1_img_p', 'hero_slide2_img_p', 'hero_slide3_img_p'].forEach((prefix, sIdx) => {
+      const urlVal = sIdx === 0 ? data.imageUrl : (sIdx === 1 ? data.imageUrl2 : data.imageUrl3);
+      if (urlVal && urlVal.startsWith('data:image/') && isValidBase64Image(urlVal)) {
+        const chunkSize = 35000;
+        const totalParts = Math.ceil(urlVal.length / chunkSize);
+        for (let p = 0; p < totalParts && p < 8; p++) {
+          payload[`${prefix}${p + 1}`] = urlVal.slice(p * chunkSize, (p + 1) * chunkSize);
+        }
+      } else {
+        for (let p = 1; p <= 8; p++) {
+          payload[`${prefix}${p}`] = '';
+        }
       }
-    } else {
-      payload.hero_slide1_img_p1 = '';
-      payload.hero_slide1_img_p2 = '';
-      payload.hero_slide1_img_p3 = '';
-    }
-    if (data.imageUrl2 && data.imageUrl2.startsWith('data:image/') && isValidBase64Image(data.imageUrl2)) {
-      const chunkSize = 35000;
-      const totalParts = Math.ceil(data.imageUrl2.length / chunkSize);
-      for (let p = 0; p < totalParts && p < 5; p++) {
-        payload[`hero_slide2_img_p${p + 1}`] = data.imageUrl2.slice(p * chunkSize, (p + 1) * chunkSize);
-      }
-    } else {
-      payload.hero_slide2_img_p1 = '';
-      payload.hero_slide2_img_p2 = '';
-      payload.hero_slide2_img_p3 = '';
-    }
-    if (data.imageUrl3 && data.imageUrl3.startsWith('data:image/') && isValidBase64Image(data.imageUrl3)) {
-      const chunkSize = 35000;
-      const totalParts = Math.ceil(data.imageUrl3.length / chunkSize);
-      for (let p = 0; p < totalParts && p < 5; p++) {
-        payload[`hero_slide3_img_p${p + 1}`] = data.imageUrl3.slice(p * chunkSize, (p + 1) * chunkSize);
-      }
-    } else {
-      payload.hero_slide3_img_p1 = '';
-      payload.hero_slide3_img_p2 = '';
-      payload.hero_slide3_img_p3 = '';
-    }
+    });
 
     await fetch(APP_CONFIG.GAS_URL, {
       method: 'POST',

@@ -7391,6 +7391,17 @@ input:checked + .switch-slider:before {
     }
   }
 
+  @media (max-width: 420px) {
+    .brand-motif-pill {
+      display: none !important;
+    }
+  }
+  @media (max-width: 380px) {
+    .brand-byline {
+      display: none !important;
+    }
+  }
+
   /* Nonaktifkan partikel kupu-kupu di HP (UPGRADE 2) */
   #butterfly-container,
   #sparkle-canvas,

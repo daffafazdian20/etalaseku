@@ -50,7 +50,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261107-06">
+  <link rel="stylesheet" href="css/style.css?v=20261107-09">
 </head>
 <body>
   <!-- Immediate Body Theme Application for 100% Zero-Flash System Automation -->
@@ -164,8 +164,8 @@
         Member Area
       </button>
 
-      <!-- Tombol Admin Portal (Outline SVG) -->
-      <button class="shimmer-btn btn-nav-admin-portal" id="nav-btn-admin-portal" onclick="openAdminModal()" style="padding:9px 18px; font-size:13px;" title="Akses Portal Admin">
+      <!-- Tombol Admin Portal (Outline SVG) - Responsif Desktop & Mobile -->
+      <button type="button" class="shimmer-btn btn-nav-admin-portal" id="nav-btn-admin-portal" onclick="openAdminModal()" style="display:inline-flex !important; align-items:center; justify-content:center; gap:6px; padding:7px 14px; font-size:12px; font-weight:700; height:34px; border-radius:8px; cursor:pointer;" title="Akses Portal Admin">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span class="btn-text-portal-full">Admin Portal</span>
         <span class="btn-text-portal-short" style="display:none;">Admin</span>
@@ -538,20 +538,20 @@
     <!-- Right Hero Column (Multi-Slide Showcase) -->
     <div>
       <div class="hero-slideshow-container">
-        <!-- Slide 1 -->
+        <!-- Slide 1 (Utama - Default Aktif) -->
         <div class="hero-slide active" id="hero-slide-item-1">
-          <img id="hero-slide-img-1" src="assets/hero/hero-slide-1.jpg?v=20261107-06" alt="Hero Slide 1" width="1280" height="720" fetchpriority="high" decoding="async" onerror="this.onerror=null; this.src='assets/hero/hero-slide-1.jpg?v=20261107-06';">
+          <img id="hero-slide-img-1" src="assets/hero/hero-slide-1.jpg?v=20261107-09" alt="Hero Slide 1" width="1280" height="720" fetchpriority="high" decoding="async" onerror="this.onerror=null; this.src='assets/hero/hero-slide-1.jpg?v=20261107-09';">
         </div>
-        <!-- Slide 2 -->
-        <div class="hero-slide" id="hero-slide-item-2">
+        <!-- Slide 2 (Default Non-Aktif sampai diaktifkan di CRM) -->
+        <div class="hero-slide" id="hero-slide-item-2" style="display:none;">
           <img id="hero-slide-img-2" data-src="assets/hero/hero-slide-2.jpg" src="assets/hero/hero-slide-2.jpg" alt="Hero Slide 2" width="1280" height="720" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='assets/hero/hero-slide-2.jpg';">
         </div>
-        <!-- Slide 3 -->
-        <div class="hero-slide" id="hero-slide-item-3">
+        <!-- Slide 3 (Default Non-Aktif sampai diaktifkan di CRM) -->
+        <div class="hero-slide" id="hero-slide-item-3" style="display:none;">
           <img id="hero-slide-img-3" data-src="assets/hero/hero-slide-3.jpg" src="assets/hero/hero-slide-3.jpg" alt="Hero Slide 3" width="1280" height="720" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='assets/hero/hero-slide-3.jpg';">
         </div>
         <!-- Navigation Dots -->
-        <div class="slideshow-dots"></div>
+        <div class="slideshow-dots" style="display:none;"></div>
       </div>
     </div>
   </section>
@@ -2810,9 +2810,9 @@
                       <span>🌄 Banner Hero Slide 2 (Kedua)</span>
                     </label>
                     <div style="display:flex; align-items:center; gap:8px;">
-                      <span class="crm-toggle-badge active" id="badge-slide2-status">✓ Aktif (ON)</span>
+                      <span class="crm-toggle-badge inactive" id="badge-slide2-status">✕ Non-Aktif (OFF)</span>
                       <label class="crm-toggle-switch">
-                        <input type="checkbox" id="crm-hero-slide2-active" checked onchange="handleCrmToggleChange(this, 'badge-slide2-status', false)">
+                        <input type="checkbox" id="crm-hero-slide2-active" onchange="handleCrmToggleChange(this, 'badge-slide2-status', false)">
                         <span class="crm-toggle-slider"></span>
                       </label>
                     </div>
@@ -2842,9 +2842,9 @@
                       <span>🌄 Banner Hero Slide 3 (Ketiga)</span>
                     </label>
                     <div style="display:flex; align-items:center; gap:8px;">
-                      <span class="crm-toggle-badge active" id="badge-slide3-status">✓ Aktif (ON)</span>
+                      <span class="crm-toggle-badge inactive" id="badge-slide3-status">✕ Non-Aktif (OFF)</span>
                       <label class="crm-toggle-switch">
-                        <input type="checkbox" id="crm-hero-slide3-active" checked onchange="handleCrmToggleChange(this, 'badge-slide3-status', false)">
+                        <input type="checkbox" id="crm-hero-slide3-active" onchange="handleCrmToggleChange(this, 'badge-slide3-status', false)">
                         <span class="crm-toggle-slider"></span>
                       </label>
                     </div>
@@ -4841,8 +4841,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261107-06"></script>
-  <script defer src="js/app.js?v=20261107-06"></script>
+  <script defer src="js/config.js?v=20261107-09"></script>
+  <script defer src="js/app.js?v=20261107-09"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">
