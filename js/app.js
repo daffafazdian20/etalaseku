@@ -1131,8 +1131,8 @@ class SlideshowManager {
     // Tentukan slide mana saja yang ON (Aktif) dari pengaturan Thumball CRM
     let activeIndices = [];
     if (d.slide1Active !== false) activeIndices.push(0);
-    if (d.slide2Active !== false) activeIndices.push(1);
-    if (d.slide3Active !== false) activeIndices.push(2);
+    if (d.slide2Active === true) activeIndices.push(1);
+    if (d.slide3Active === true) activeIndices.push(2);
 
     // Fallback: Jika seluruh slide di-OFF-kan, tetap aktifkan Slide 1 agar tampilan hero tidak kosong
     if (activeIndices.length === 0) activeIndices = [0];
@@ -1518,6 +1518,42 @@ async function loadPublicData() {
     }
     if (data.paymentChannels && Object.keys(data.paymentChannels).length > 0) {
       STATE.paymentChannels = Object.assign({}, DEFAULT_PAYMENT_CHANNELS, data.paymentChannels);
+    }
+
+    // 3. SINKRONISASI THUMBALL HERO LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
+    if (data.settings && data.settings.hero_thumball_meta) {
+      try {
+        const meta = typeof data.settings.hero_thumball_meta === 'string'
+          ? JSON.parse(data.settings.hero_thumball_meta)
+          : data.settings.hero_thumball_meta;
+
+        if (meta && typeof meta === 'object') {
+          // Rekonstruksi gambar base64 yang di-chunk dari Google Sheets jika ada
+          ['hero_slide1_img_p', 'hero_slide2_img_p', 'hero_slide3_img_p'].forEach((prefix, sIdx) => {
+            const imgKey = sIdx === 0 ? 'imageUrl' : (sIdx === 1 ? 'imageUrl2' : 'imageUrl3');
+            if (data.settings[prefix + '1']) {
+              let p = 1;
+              let fullImg = '';
+              while (data.settings[prefix + p]) {
+                fullImg += data.settings[prefix + p];
+                p++;
+              }
+              if (fullImg) meta[imgKey] = fullImg;
+            }
+          });
+
+          // Terapkan ke memori & LocalStorage perangkat pengunjung / HP
+          window.CURRENT_THUMBALL_SETTINGS = meta;
+          try {
+            localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(meta));
+          } catch (e) {}
+
+          // Update seketika tampilan Hero di HP/Desktop
+          applyThumballSettingsToDom();
+        }
+      } catch (errHero) {
+        console.warn('Gagal parsing hero_thumball_meta dari cloud:', errHero);
+      }
     }
 
     renderAnnouncementBar();
@@ -8858,9 +8894,9 @@ const DEFAULT_THUMBALL_SETTINGS = {
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
   imageUrl: 'assets/hero/hero-slide-1.jpg',
-  slide2Active: true,
+  slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
-  slide3Active: true,
+  slide3Active: false,
   imageUrl3: 'assets/hero/hero-slide-3.jpg'
 };
 
@@ -9081,7 +9117,7 @@ function applyThumballSettingsToDom() {
   // Slot 2
   const crmSlide2Active = document.getElementById('crm-hero-slide2-active');
   if (crmSlide2Active) {
-    crmSlide2Active.checked = (d.slide2Active !== false);
+    crmSlide2Active.checked = (d.slide2Active === true);
     handleCrmToggleChange(crmSlide2Active, 'badge-slide2-status', false);
   }
   const crmImgUrl2 = document.getElementById('crm-hero-img2-url');
@@ -9092,7 +9128,7 @@ function applyThumballSettingsToDom() {
   // Slot 3
   const crmSlide3Active = document.getElementById('crm-hero-slide3-active');
   if (crmSlide3Active) {
-    crmSlide3Active.checked = (d.slide3Active !== false);
+    crmSlide3Active.checked = (d.slide3Active === true);
     handleCrmToggleChange(crmSlide3Active, 'badge-slide3-status', false);
   }
   const crmImgUrl3 = document.getElementById('crm-hero-img3-url');
@@ -9211,9 +9247,9 @@ function saveThumballSettings(e) {
       // 3 Slides Thumbnail settings
       slide1Active: document.getElementById('crm-hero-slide1-active') ? document.getElementById('crm-hero-slide1-active').checked : true,
       imageUrl: rawImg1,
-      slide2Active: document.getElementById('crm-hero-slide2-active') ? document.getElementById('crm-hero-slide2-active').checked : true,
+      slide2Active: document.getElementById('crm-hero-slide2-active') ? document.getElementById('crm-hero-slide2-active').checked : false,
       imageUrl2: rawImg2,
-      slide3Active: document.getElementById('crm-hero-slide3-active') ? document.getElementById('crm-hero-slide3-active').checked : true,
+      slide3Active: document.getElementById('crm-hero-slide3-active') ? document.getElementById('crm-hero-slide3-active').checked : false,
       imageUrl3: rawImg3
     };
 
@@ -9238,14 +9274,8 @@ function saveThumballSettings(e) {
     applyFooterBrandingSettingsToDom();
     if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
 
-    // 4. Background sync non-blocking ke GAS bila tersedia
-    if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
-      fetch(APP_CONFIG.GAS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'saveSiteSettings', token: STATE.adminToken, data: { heroButtons: data } })
-      }).catch(err => console.warn('Sync hero buttons ke GAS:', err));
-    }
+    // 4. Background sync non-blocking ke GAS & Google Sheets Cloud Sync lintas perangkat
+    syncThumballSettingsToGas(data).catch(err => console.warn('Background sync hero ke GAS:', err));
 
     // 5. Beri feedback instan Berhasil Disimpan
     if (btn) {
@@ -9268,6 +9298,94 @@ function saveThumballSettings(e) {
   }
 }
 window.saveThumballSettings = saveThumballSettings;
+
+async function syncThumballSettingsToGas(data) {
+  if (!APP_CONFIG.GAS_URL || APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) return;
+
+  try {
+    let token = STATE.adminToken;
+    if (!token) {
+      try {
+        const loginRes = await fetch(APP_CONFIG.GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'adminLogin', data: { pin: STATE.adminPin || '123456' } })
+        });
+        const loginJson = await loginRes.json();
+        if (loginJson && loginJson.token) {
+          token = loginJson.token;
+          STATE.adminToken = token;
+        }
+      } catch (loginErr) {
+        console.warn('Auto-login for thumball sync error:', loginErr);
+      }
+    }
+    if (!token) return;
+
+    const meta = {
+      eyebrow: data.eyebrow || DEFAULT_THUMBALL_SETTINGS.eyebrow,
+      title: data.title || DEFAULT_THUMBALL_SETTINGS.title,
+      desc: data.desc || DEFAULT_THUMBALL_SETTINGS.desc,
+      btn1Active: Boolean(data.btn1Active),
+      btn1Text: data.btn1Text || DEFAULT_THUMBALL_SETTINGS.btn1Text,
+      btn1Link: data.btn1Link || DEFAULT_THUMBALL_SETTINGS.btn1Link,
+      btn2Active: Boolean(data.btn2Active),
+      btn2Text: data.btn2Text || DEFAULT_THUMBALL_SETTINGS.btn2Text,
+      btn2Link: data.btn2Link || DEFAULT_THUMBALL_SETTINGS.btn2Link,
+      btnMemberActive: Boolean(data.btnMemberActive),
+      btnMemberText: data.btnMemberText || DEFAULT_THUMBALL_SETTINGS.btnMemberText,
+      btnPromoActive: Boolean(data.btnPromoActive),
+      promoBtnText: data.promoBtnText || DEFAULT_THUMBALL_SETTINGS.promoBtnText,
+      promoCode: data.promoCode || DEFAULT_THUMBALL_SETTINGS.promoCode,
+      slide1Active: Boolean(data.slide1Active !== false),
+      slide2Active: Boolean(data.slide2Active === true),
+      slide3Active: Boolean(data.slide3Active === true),
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg',
+      imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
+      imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
+    };
+
+    const currentSiteSettings = STATE.settings || loadStoredSiteSettings() || {};
+    const payload = {
+      announcement_bar_text: currentSiteSettings.announcement_bar_text || DEFAULT_SITE_SETTINGS.announcement_bar_text,
+      wa_cs_number: currentSiteSettings.wa_cs_number || DEFAULT_SITE_SETTINGS.wa_cs_number,
+      link_komunitas_tg: currentSiteSettings.link_komunitas_tg || '',
+      rekening_pembayaran: currentSiteSettings.rekening_pembayaran || '',
+      hero_thumball_meta: JSON.stringify(meta)
+    };
+
+    if (data.imageUrl && data.imageUrl.startsWith('data:image/')) {
+      const chunkSize = 35000;
+      const totalParts = Math.ceil(data.imageUrl.length / chunkSize);
+      for (let p = 0; p < totalParts && p < 5; p++) {
+        payload[`hero_slide1_img_p${p + 1}`] = data.imageUrl.slice(p * chunkSize, (p + 1) * chunkSize);
+      }
+    }
+    if (data.imageUrl2 && data.imageUrl2.startsWith('data:image/')) {
+      const chunkSize = 35000;
+      const totalParts = Math.ceil(data.imageUrl2.length / chunkSize);
+      for (let p = 0; p < totalParts && p < 5; p++) {
+        payload[`hero_slide2_img_p${p + 1}`] = data.imageUrl2.slice(p * chunkSize, (p + 1) * chunkSize);
+      }
+    }
+    if (data.imageUrl3 && data.imageUrl3.startsWith('data:image/')) {
+      const chunkSize = 35000;
+      const totalParts = Math.ceil(data.imageUrl3.length / chunkSize);
+      for (let p = 0; p < totalParts && p < 5; p++) {
+        payload[`hero_slide3_img_p${p + 1}`] = data.imageUrl3.slice(p * chunkSize, (p + 1) * chunkSize);
+      }
+    }
+
+    await fetch(APP_CONFIG.GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'saveSiteSettings', token: token, data: payload })
+    });
+  } catch (err) {
+    console.warn('Sync thumball ke Google Sheets:', err);
+  }
+}
+window.syncThumballSettingsToGas = syncThumballSettingsToGas;
 
 // ----------------------------------------------------------------------------
 // BOOTCAMP SETTINGS & MODAL ENGINE (SESUAI FOTO 1 & 2 REFERENCE)
