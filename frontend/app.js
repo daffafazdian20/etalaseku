@@ -9155,7 +9155,7 @@ async function handleHeroFileInput(input, slideNum = 1) {
     const file = input.files[0];
     try {
       const compressed = typeof compressAndReadImage === 'function'
-        ? await compressAndReadImage(file, 1000, 0.75)
+        ? await compressAndReadImage(file, 800, 0.68)
         : await new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = e => resolve(e.target.result);
@@ -9178,106 +9178,94 @@ async function handleHeroFileInput(input, slideNum = 1) {
 }
 window.handleHeroFileInput = handleHeroFileInput;
 
-async function saveThumballSettings(e) {
+function saveThumballSettings(e) {
   if (e && e.preventDefault) e.preventDefault();
 
   const btn = document.getElementById('btn-save-thumball') || (e && e.target && (e.target.tagName === 'BUTTON' ? e.target : e.target.querySelector('button[type="submit"], #btn-save-thumball')));
-  const originalBtnHtml = btn ? btn.innerHTML : '';
-  if (btn) {
-    btn.disabled = true;
-    btn.innerHTML = '<span>⏳ Menyimpan Perubahan...</span>';
-  }
+  const originalBtnHtml = '💾 Simpan Perubahan Thumball ke Website';
 
-  let rawImg1 = document.getElementById('crm-hero-img-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl;
-  let rawImg2 = document.getElementById('crm-hero-img2-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl2;
-  let rawImg3 = document.getElementById('crm-hero-img3-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl3;
-
-  // Kompresi cerdas jika ada gambar base64 besar agar hemat memori & aman di LocalStorage
-  if (rawImg1 && rawImg1.startsWith('data:image/') && rawImg1.length > 85000) {
-    try {
-      rawImg1 = await compressDataUrlString(rawImg1, 1000, 0.70);
-      const u1 = document.getElementById('crm-hero-img-url');
-      if (u1) u1.value = rawImg1;
-    } catch (e1) {}
-  }
-  if (rawImg2 && rawImg2.startsWith('data:image/') && rawImg2.length > 85000) {
-    try {
-      rawImg2 = await compressDataUrlString(rawImg2, 1000, 0.70);
-      const u2 = document.getElementById('crm-hero-img2-url');
-      if (u2) u2.value = rawImg2;
-    } catch (e2) {}
-  }
-  if (rawImg3 && rawImg3.startsWith('data:image/') && rawImg3.length > 85000) {
-    try {
-      rawImg3 = await compressDataUrlString(rawImg3, 1000, 0.70);
-      const u3 = document.getElementById('crm-hero-img3-url');
-      if (u3) u3.value = rawImg3;
-    } catch (e3) {}
-  }
-
-  const data = {
-    eyebrow: document.getElementById('crm-hero-eyebrow')?.value || DEFAULT_THUMBALL_SETTINGS.eyebrow,
-    title: document.getElementById('crm-hero-title')?.value || DEFAULT_THUMBALL_SETTINGS.title,
-    desc: document.getElementById('crm-hero-desc')?.value || DEFAULT_THUMBALL_SETTINGS.desc,
-    btn1Active: document.getElementById('crm-hero-btn1-active') ? document.getElementById('crm-hero-btn1-active').checked : false,
-    btn1Text: document.getElementById('crm-hero-btn1-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Text,
-    btn1Link: document.getElementById('crm-hero-btn1-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Link,
-    btn2Active: document.getElementById('crm-hero-btn2-active') ? document.getElementById('crm-hero-btn2-active').checked : false,
-    btn2Text: document.getElementById('crm-hero-btn2-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Text,
-    btn2Link: document.getElementById('crm-hero-btn2-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Link,
-    btnMemberActive: document.getElementById('crm-hero-btn-member-active') ? document.getElementById('crm-hero-btn-member-active').checked : false,
-    btnMemberText: document.getElementById('crm-hero-btn-member-text')?.value || DEFAULT_THUMBALL_SETTINGS.btnMemberText,
-    btnPromoActive: document.getElementById('crm-hero-btn-promo-active') ? document.getElementById('crm-hero-btn-promo-active').checked : false,
-    promoBtnText: document.getElementById('crm-hero-promo-btn-text')?.value || DEFAULT_THUMBALL_SETTINGS.promoBtnText,
-    promoCode: document.getElementById('crm-hero-promo-code')?.value || DEFAULT_THUMBALL_SETTINGS.promoCode,
-    // 3 Slides Thumbnail settings
-    slide1Active: document.getElementById('crm-hero-slide1-active') ? document.getElementById('crm-hero-slide1-active').checked : true,
-    imageUrl: rawImg1,
-    slide2Active: document.getElementById('crm-hero-slide2-active') ? document.getElementById('crm-hero-slide2-active').checked : true,
-    imageUrl2: rawImg2,
-    slide3Active: document.getElementById('crm-hero-slide3-active') ? document.getElementById('crm-hero-slide3-active').checked : true,
-    imageUrl3: rawImg3
-  };
-
-  // Simpan selalu ke in-memory cache agar update instan bebas lag
-  window.CURRENT_THUMBALL_SETTINGS = data;
-
-  // Simpan aman ke localStorage dengan try-catch & proteksi kuota
   try {
-    localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
-  } catch (err) {
-    console.warn('LocalStorage quota issue when saving thumball settings, attempting cleanup:', err);
+    if (btn) {
+      btn.innerHTML = '<span>⏳ Menyimpan Perubahan...</span>';
+    }
+
+    const rawImg1 = document.getElementById('crm-hero-img-url')?.value.trim() || DEFAULT_THUMBALL_SETTINGS.imageUrl;
+    const rawImg2 = document.getElementById('crm-hero-img2-url')?.value.trim() || DEFAULT_THUMBALL_SETTINGS.imageUrl2;
+    const rawImg3 = document.getElementById('crm-hero-img3-url')?.value.trim() || DEFAULT_THUMBALL_SETTINGS.imageUrl3;
+
+    const data = {
+      eyebrow: document.getElementById('crm-hero-eyebrow')?.value || DEFAULT_THUMBALL_SETTINGS.eyebrow,
+      title: document.getElementById('crm-hero-title')?.value || DEFAULT_THUMBALL_SETTINGS.title,
+      desc: document.getElementById('crm-hero-desc')?.value || DEFAULT_THUMBALL_SETTINGS.desc,
+      btn1Active: document.getElementById('crm-hero-btn1-active') ? document.getElementById('crm-hero-btn1-active').checked : false,
+      btn1Text: document.getElementById('crm-hero-btn1-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Text,
+      btn1Link: document.getElementById('crm-hero-btn1-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn1Link,
+      btn2Active: document.getElementById('crm-hero-btn2-active') ? document.getElementById('crm-hero-btn2-active').checked : false,
+      btn2Text: document.getElementById('crm-hero-btn2-text')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Text,
+      btn2Link: document.getElementById('crm-hero-btn2-link')?.value || DEFAULT_THUMBALL_SETTINGS.btn2Link,
+      btnMemberActive: document.getElementById('crm-hero-btn-member-active') ? document.getElementById('crm-hero-btn-member-active').checked : false,
+      btnMemberText: document.getElementById('crm-hero-btn-member-text')?.value || DEFAULT_THUMBALL_SETTINGS.btnMemberText,
+      btnPromoActive: document.getElementById('crm-hero-btn-promo-active') ? document.getElementById('crm-hero-btn-promo-active').checked : false,
+      promoBtnText: document.getElementById('crm-hero-promo-btn-text')?.value || DEFAULT_THUMBALL_SETTINGS.promoBtnText,
+      promoCode: document.getElementById('crm-hero-promo-code')?.value || DEFAULT_THUMBALL_SETTINGS.promoCode,
+      // 3 Slides Thumbnail settings
+      slide1Active: document.getElementById('crm-hero-slide1-active') ? document.getElementById('crm-hero-slide1-active').checked : true,
+      imageUrl: rawImg1,
+      slide2Active: document.getElementById('crm-hero-slide2-active') ? document.getElementById('crm-hero-slide2-active').checked : true,
+      imageUrl2: rawImg2,
+      slide3Active: document.getElementById('crm-hero-slide3-active') ? document.getElementById('crm-hero-slide3-active').checked : true,
+      imageUrl3: rawImg3
+    };
+
+    // 1. Simpan selalu ke in-memory cache agar update instan bebas lag
+    window.CURRENT_THUMBALL_SETTINGS = data;
+
+    // 2. Simpan aman ke localStorage dengan try-catch & proteksi kuota
     try {
-      localStorage.removeItem('nexstore_hero_thumball_data');
       localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
-    } catch (e2) {
-      console.warn('Could not persist to localStorage, using in-memory settings:', e2);
+    } catch (err) {
+      console.warn('LocalStorage quota issue when saving thumball settings, attempting cleanup:', err);
+      try {
+        localStorage.removeItem('nexstore_hero_thumball_data');
+        localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
+      } catch (e2) {
+        console.warn('Could not persist to localStorage, using in-memory settings:', e2);
+      }
+    }
+
+    // 3. Terapkan seketika ke seluruh DOM Dashboard Utama tanpa delay
+    applyThumballSettingsToDom();
+    applyFooterBrandingSettingsToDom();
+    if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
+
+    // 4. Background sync non-blocking ke GAS bila tersedia
+    if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
+      fetch(APP_CONFIG.GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'saveSiteSettings', token: STATE.adminToken, data: { heroButtons: data } })
+      }).catch(err => console.warn('Sync hero buttons ke GAS:', err));
+    }
+
+    // 5. Beri feedback instan Berhasil Disimpan
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<span>✓ Berhasil Disimpan!</span>';
+    }
+
+    showToast('Perubahan 3 Thumball Hero & Konten berhasil disimpan! 🎨✨', 'success');
+  } catch (err) {
+    console.error('Error saving thumball settings:', err);
+    showToast('Terjadi kendala saat menyimpan. Pengaturan tetap aktif di memori!', 'info');
+  } finally {
+    // 6. Garansi 100% tombol selalu kembali ke teks asli "Simpan Perubahan" tanpa pernah stuck loading
+    if (btn) {
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalBtnHtml;
+      }, 1000);
     }
   }
-
-  // Terapkan seketika ke seluruh DOM Dashboard Utama tanpa delay
-  applyThumballSettingsToDom();
-  applyFooterBrandingSettingsToDom();
-  if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
-
-  // Background sync non-blocking ke GAS bila tersedia
-  if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
-    fetch(APP_CONFIG.GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'saveSiteSettings', token: STATE.adminToken, data: { heroButtons: data } })
-    }).catch(err => console.warn('Sync hero buttons ke GAS:', err));
-  }
-
-  if (btn) {
-    btn.disabled = false;
-    btn.innerHTML = '<span>✓ Berhasil Disimpan!</span>';
-    setTimeout(() => {
-      btn.innerHTML = originalBtnHtml || '💾 Simpan Perubahan Thumball ke Website';
-    }, 2200);
-  }
-
-  showToast('Perubahan 3 Thumball Hero & Konten berhasil disimpan! 🎨✨', 'success');
 }
 window.saveThumballSettings = saveThumballSettings;
 
