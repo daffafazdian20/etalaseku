@@ -7318,7 +7318,6 @@ input:checked + .switch-slider:before {
     order: 2 !important;
   }
   .navbar .nav-actions #nav-btn-redeem,
-  .navbar .nav-actions .shimmer-btn,
   .navbar .nav-actions .btn-nav-logout {
     display: none !important;
   }
@@ -7327,13 +7326,69 @@ input:checked + .switch-slider:before {
     width: 34px !important;
     height: 34px !important;
     min-width: 34px !important;
+    flex-shrink: 0 !important;
   }
   .navbar .nav-actions #nav-btn-member-login {
     display: inline-flex !important;
-    padding: 7px 13px !important;
+    padding: 7px 12px !important;
     font-size: 12px !important;
     height: 34px !important;
     align-items: center !important;
+    white-space: nowrap !important;
+    gap: 5px !important;
+    flex-shrink: 0 !important;
+  }
+  .navbar .nav-actions #nav-btn-admin-portal,
+  .navbar .nav-actions .btn-nav-admin-portal {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  .navbar .nav-actions #nav-btn-admin-portal .btn-text-portal-full {
+    display: inline !important;
+  }
+  .navbar .nav-actions #nav-btn-admin-portal .btn-text-portal-short {
+    display: none !important;
+  }
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 8px 12px !important;
+    }
+    .navbar .nav-actions {
+      gap: 5px !important;
+    }
+    .navbar .nav-actions .btn-theme-toggle {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+    }
+    .navbar .nav-actions #nav-btn-member-login {
+      padding: 6px 9px !important;
+      font-size: 11px !important;
+      height: 32px !important;
+      gap: 4px !important;
+    }
+    .navbar .nav-actions #nav-btn-admin-portal,
+    .navbar .nav-actions .btn-nav-admin-portal {
+      padding: 6px 10px !important;
+      font-size: 11px !important;
+      height: 32px !important;
+      gap: 4px !important;
+    }
+    .navbar .nav-actions #nav-btn-admin-portal .btn-text-portal-full {
+      display: none !important;
+    }
+    .navbar .nav-actions #nav-btn-admin-portal .btn-text-portal-short {
+      display: inline !important;
+    }
   }
 
   /* Nonaktifkan partikel kupu-kupu di HP (UPGRADE 2) */

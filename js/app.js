@@ -2718,6 +2718,12 @@ function openAdminPortal() {
 function closeAdminPortal() {
   const portal = document.getElementById('admin-portal-wrapper');
   if (portal) portal.classList.remove('active');
+  const bnavAdmin = document.getElementById('bnav-admin');
+  const bnavHome = document.getElementById('bnav-home');
+  if (bnavAdmin && bnavAdmin.classList.contains('active')) {
+    bnavAdmin.classList.remove('active');
+    if (bnavHome) bnavHome.classList.add('active');
+  }
 }
 
 function switchAdminTab(tabId, navEl) {
@@ -6678,6 +6684,12 @@ function closeAllModals() {
     m.classList.remove('active');
     m.style.display = '';
   });
+  const bnavAdmin = document.getElementById('bnav-admin');
+  const bnavHome = document.getElementById('bnav-home');
+  if (bnavAdmin && bnavAdmin.classList.contains('active')) {
+    bnavAdmin.classList.remove('active');
+    if (bnavHome) bnavHome.classList.add('active');
+  }
 }
 
 function readFileAsBase64(file) {
@@ -8648,7 +8660,7 @@ window.updateHeroCtaButtons = updateHeroCtaButtons;
 
 function handleBottomNavTab(tab) {
   // Update active states
-  const tabs = ['home', 'classroom', 'cs'];
+  const tabs = ['home', 'classroom', 'cs', 'admin'];
   tabs.forEach(t => {
     const el = document.getElementById('bnav-' + t);
     if (el) el.classList.remove('active');
@@ -8672,6 +8684,8 @@ function handleBottomNavTab(tab) {
     const wa = getActiveWaCsNumber();
     const url = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Halo Admin EtalaseKu Hub, saya butuh bantuan terkait produk & pembelajaran.');
     window.open(url, '_blank');
+  } else if (tab === 'admin') {
+    openAdminModal();
   }
 }
 window.handleBottomNavTab = handleBottomNavTab;
