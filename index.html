@@ -50,7 +50,7 @@
   </noscript>
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261107-02">
+  <link rel="stylesheet" href="css/style.css?v=20261107-03">
 </head>
 <body>
   <!-- Immediate Body Theme Application for 100% Zero-Flash System Automation -->
@@ -538,28 +538,16 @@
     <div>
       <div class="hero-slideshow-container">
         <!-- Slide 1 -->
-        <div class="hero-slide active">
-          <img src="assets/hero/hero-slide-1.jpg" alt="Masterclass Web App" width="1280" height="720" fetchpriority="high" decoding="async">
-          <div class="hero-slide-caption">
-            <div class="hero-slide-title">GAS Pro Web App Masterclass</div>
-            <p>Membangun web app skala industri bebas biaya hosting dengan Google Apps Script & Sheets.</p>
-          </div>
+        <div class="hero-slide active" id="hero-slide-item-1">
+          <img id="hero-slide-img-1" src="assets/hero/hero-slide-1.jpg" alt="Hero Slide 1" width="1280" height="720" fetchpriority="high" decoding="async">
         </div>
         <!-- Slide 2 -->
-        <div class="hero-slide">
-          <img data-src="assets/hero/hero-slide-2.jpg" alt="Notion OS Agency" width="1280" height="720" loading="lazy" decoding="async">
-          <div class="hero-slide-caption">
-            <div class="hero-slide-title">Digital Agency Notion OS</div>
-            <p>Sistem manajemen bisnis & CRM agency terlengkap dengan pipeline closing otomatis.</p>
-          </div>
+        <div class="hero-slide" id="hero-slide-item-2">
+          <img id="hero-slide-img-2" data-src="assets/hero/hero-slide-2.jpg" src="assets/hero/hero-slide-2.jpg" alt="Hero Slide 2" width="1280" height="720" loading="lazy" decoding="async">
         </div>
         <!-- Slide 3 -->
-        <div class="hero-slide">
-          <img data-src="assets/hero/hero-slide-3.jpg" alt="Mentoring Bootcamp" width="1280" height="720" loading="lazy" decoding="async">
-          <div class="hero-slide-caption">
-            <div class="hero-slide-title">Live Mentoring & Group Support</div>
-            <p>Bimbingan langsung via WhatsApp & private webinar hingga mahir menghasilkan omset.</p>
-          </div>
+        <div class="hero-slide" id="hero-slide-item-3">
+          <img id="hero-slide-img-3" data-src="assets/hero/hero-slide-3.jpg" src="assets/hero/hero-slide-3.jpg" alt="Hero Slide 3" width="1280" height="720" loading="lazy" decoding="async">
         </div>
         <!-- Navigation Dots -->
         <div class="slideshow-dots"></div>
@@ -2768,25 +2756,112 @@
                 </div>
               </div>
 
-              <!-- Upload Banner / Gambar Hero -->
-              <div class="form-group" style="margin-bottom:20px; background:#F8FAFC; border:1.5px dashed #CBD5E1; padding:18px; border-radius:14px;">
-                <label class="form-label" style="font-size:12px; font-weight:800; color:var(--deep-navy); margin-bottom:6px;">
-                  🖼️ Upload Foto Banner Hero (Dukungan File Folder &amp; Link URL)
-                </label>
-                <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
-                  <input type="text" id="crm-hero-img-url" class="form-input" placeholder="Tempel URL Gambar Google Drive / Link URL Foto..." oninput="handleHeroUrlInput(this.value)">
-                  <button type="button" class="shimmer-btn" style="padding:10px 16px; font-size:12px; white-space:nowrap;" onclick="document.getElementById('crm-hero-img-file').click()">
-                    📁 Pilih Foto dari File Folder
-                  </button>
-                  <input type="file" id="crm-hero-img-file" accept="image/*" style="display:none;" onchange="handleHeroFileInput(this)">
-                </div>
-                <!-- Live Preview Hero Image -->
-                <div id="crm-hero-img-preview-box" style="margin-top:10px; display:flex; align-items:center; gap:14px;">
-                  <div style="width:160px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:1.5px solid #CBD5E1; background:#0B1120;">
-                    <img id="crm-hero-img-preview" src="assets/hero/hero-slide-1.jpg" alt="Preview Hero" style="width:100%; height:100%; aspect-ratio:16/9; object-fit:cover;">
+              <!-- Upload 3 Slot Banner / Gambar Hero dengan Tombol ON / OFF (Sesuai Permintaan User) -->
+              <div style="margin-bottom:22px; display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                  <div>
+                    <h4 style="font-size:14px; font-weight:800; color:var(--deep-navy); margin:0 0 3px;">
+                      🖼️ Kelola 3 Thumball Gambar Banner Hero (Slide 1, 2, &amp; 3)
+                    </h4>
+                    <span style="font-size:11.5px; color:var(--text-muted);">
+                      Setiap banner memiliki tombol ON / OFF, input file folder, URL, dan live preview. Gambar akan otomatis diperbarui di Dashboard Utama tanpa delay.
+                    </span>
                   </div>
-                  <div style="font-size:11.5px; color:#64748B;">
-                    <strong>Ukuran Rekomendasi</strong>: Landscape 16:9 (1280x720). Foto akan otomatis tampil di section hero pertama.
+                </div>
+
+                <!-- Slot 1: Hero Banner Slide 1 -->
+                <div class="crm-hero-slot-card">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(0,0,0,0.08); padding-bottom:10px;">
+                    <label style="font-size:13px; font-weight:800; color:var(--deep-navy); display:flex; align-items:center; gap:8px;">
+                      <span>🌄 Banner Hero Slide 1 (Utama)</span>
+                    </label>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="crm-toggle-badge active" id="badge-slide1-status">✓ Aktif (ON)</span>
+                      <label class="crm-toggle-switch">
+                        <input type="checkbox" id="crm-hero-slide1-active" checked onchange="handleCrmToggleChange(this, 'badge-slide1-status', false)">
+                        <span class="crm-toggle-slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                    <input type="text" id="crm-hero-img-url" class="form-input" placeholder="Tempel URL Gambar Hero Slide 1..." oninput="handleHeroUrlInput(this.value, 1)">
+                    <button type="button" class="shimmer-btn" style="padding:10px 16px; font-size:12px; white-space:nowrap;" onclick="document.getElementById('crm-hero-img-file').click()">
+                      📁 Pilih Foto dari File Folder
+                    </button>
+                    <input type="file" id="crm-hero-img-file" accept="image/*" style="display:none;" onchange="handleHeroFileInput(this, 1)">
+                  </div>
+                  <!-- Live Preview Hero Image 1 -->
+                  <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="width:160px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:1.5px solid #CBD5E1; background:#0B1120;">
+                      <img id="crm-hero-img-preview" src="assets/hero/hero-slide-1.jpg" alt="Preview Hero 1" style="width:100%; height:100%; aspect-ratio:16/9; object-fit:cover;">
+                    </div>
+                    <div style="font-size:11.5px; color:#64748B;">
+                      <strong>Slide 1</strong>: Landscape 16:9 (1280x720). Tampil pertama kali di hero utama.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slot 2: Hero Banner Slide 2 -->
+                <div class="crm-hero-slot-card">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(0,0,0,0.08); padding-bottom:10px;">
+                    <label style="font-size:13px; font-weight:800; color:var(--deep-navy); display:flex; align-items:center; gap:8px;">
+                      <span>🌄 Banner Hero Slide 2 (Kedua)</span>
+                    </label>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="crm-toggle-badge active" id="badge-slide2-status">✓ Aktif (ON)</span>
+                      <label class="crm-toggle-switch">
+                        <input type="checkbox" id="crm-hero-slide2-active" checked onchange="handleCrmToggleChange(this, 'badge-slide2-status', false)">
+                        <span class="crm-toggle-slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                    <input type="text" id="crm-hero-img2-url" class="form-input" placeholder="Tempel URL Gambar Hero Slide 2..." oninput="handleHeroUrlInput(this.value, 2)">
+                    <button type="button" class="shimmer-btn" style="padding:10px 16px; font-size:12px; white-space:nowrap;" onclick="document.getElementById('crm-hero-img2-file').click()">
+                      📁 Pilih Foto dari File Folder
+                    </button>
+                    <input type="file" id="crm-hero-img2-file" accept="image/*" style="display:none;" onchange="handleHeroFileInput(this, 2)">
+                  </div>
+                  <!-- Live Preview Hero Image 2 -->
+                  <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="width:160px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:1.5px solid #CBD5E1; background:#0B1120;">
+                      <img id="crm-hero-img2-preview" src="assets/hero/hero-slide-2.jpg" alt="Preview Hero 2" style="width:100%; height:100%; aspect-ratio:16/9; object-fit:cover;">
+                    </div>
+                    <div style="font-size:11.5px; color:#64748B;">
+                      <strong>Slide 2</strong>: Landscape 16:9 (1280x720). Berotasi otomatis saat aktif (ON).
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slot 3: Hero Banner Slide 3 -->
+                <div class="crm-hero-slot-card">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(0,0,0,0.08); padding-bottom:10px;">
+                    <label style="font-size:13px; font-weight:800; color:var(--deep-navy); display:flex; align-items:center; gap:8px;">
+                      <span>🌄 Banner Hero Slide 3 (Ketiga)</span>
+                    </label>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="crm-toggle-badge active" id="badge-slide3-status">✓ Aktif (ON)</span>
+                      <label class="crm-toggle-switch">
+                        <input type="checkbox" id="crm-hero-slide3-active" checked onchange="handleCrmToggleChange(this, 'badge-slide3-status', false)">
+                        <span class="crm-toggle-slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                    <input type="text" id="crm-hero-img3-url" class="form-input" placeholder="Tempel URL Gambar Hero Slide 3..." oninput="handleHeroUrlInput(this.value, 3)">
+                    <button type="button" class="shimmer-btn" style="padding:10px 16px; font-size:12px; white-space:nowrap;" onclick="document.getElementById('crm-hero-img3-file').click()">
+                      📁 Pilih Foto dari File Folder
+                    </button>
+                    <input type="file" id="crm-hero-img3-file" accept="image/*" style="display:none;" onchange="handleHeroFileInput(this, 3)">
+                  </div>
+                  <!-- Live Preview Hero Image 3 -->
+                  <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="width:160px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:1.5px solid #CBD5E1; background:#0B1120;">
+                      <img id="crm-hero-img3-preview" src="assets/hero/hero-slide-3.jpg" alt="Preview Hero 3" style="width:100%; height:100%; aspect-ratio:16/9; object-fit:cover;">
+                    </div>
+                    <div style="font-size:11.5px; color:#64748B;">
+                      <strong>Slide 3</strong>: Landscape 16:9 (1280x720). Berotasi otomatis saat aktif (ON).
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4764,8 +4839,8 @@ Pertemuan 4 | Minggu, 29 Nov 2026 • 19.30 WIB - 22.30 WIB</textarea>
     </div>
   </div>
 
-  <script defer src="js/config.js?v=20261107-02"></script>
-  <script defer src="js/app.js?v=20261107-02"></script>
+  <script defer src="js/config.js?v=20261107-03"></script>
+  <script defer src="js/app.js?v=20261107-03"></script>
 
   <!-- Modal Reader & Salin Dokumen (Bersih untuk Member Siswa, Edit dilakukan di CRM Portal Ruang BelajarKu) -->
   <div class="modal-overlay" id="modal-doc-reader">

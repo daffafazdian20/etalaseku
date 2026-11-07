@@ -1113,34 +1113,80 @@ class ButterflyCursor {
 // 2. HERO & PRODUCT MULTI-IMAGE AUTO SLIDESHOWS
 // ============================================================================
 class SlideshowManager {
+  static heroInterval = null;
+  static activeSlideIndices = [0, 1, 2];
+  static currentHeroIndex = 0;
+
   static initHeroSlideshow() {
-    const slides = document.querySelectorAll('.hero-slide');
-    const dotsContainer = document.querySelector('.slideshow-dots');
-    if (!slides.length || !dotsContainer) return;
-
-    dotsContainer.innerHTML = '';
-    slides.forEach((_, idx) => {
-      const dot = document.createElement('div');
-      dot.className = `dot ${idx === 0 ? 'active' : ''}`;
-      dot.addEventListener('click', () => SlideshowManager.goToHeroSlide(idx));
-      dotsContainer.appendChild(dot);
-    });
-
-    let current = 0;
-    // Delay auto-slideshow rotation by 12s so initial FCP & LCP settle with 0 mutations
-    setTimeout(() => {
-      setInterval(() => {
-        current = (current + 1) % slides.length;
-        SlideshowManager.goToHeroSlide(current);
-      }, 5000);
-    }, 12000);
+    SlideshowManager.setupHeroSlideshow();
   }
 
-  static goToHeroSlide(index) {
-    const slides = document.querySelectorAll('.hero-slide');
+  static setupHeroSlideshow() {
+    const allSlides = document.querySelectorAll('.hero-slide');
+    const dotsContainer = document.querySelector('.slideshow-dots');
+    if (!allSlides.length) return;
+
+    const d = typeof getThumballSettings === 'function' ? getThumballSettings() : DEFAULT_THUMBALL_SETTINGS;
+
+    // Tentukan slide mana saja yang ON (Aktif) dari pengaturan Thumball CRM
+    let activeIndices = [];
+    if (d.slide1Active !== false) activeIndices.push(0);
+    if (d.slide2Active !== false) activeIndices.push(1);
+    if (d.slide3Active !== false) activeIndices.push(2);
+
+    // Fallback: Jika seluruh slide di-OFF-kan, tetap aktifkan Slide 1 agar tampilan hero tidak kosong
+    if (activeIndices.length === 0) activeIndices = [0];
+    SlideshowManager.activeSlideIndices = activeIndices;
+
+    // Tampilkan / sembunyikan slide sesuai saklar ON/OFF
+    allSlides.forEach((s, idx) => {
+      const isEnabled = activeIndices.includes(idx);
+      s.style.display = isEnabled ? '' : 'none';
+      if (!isEnabled) s.classList.remove('active');
+    });
+
+    // Render Navigation Dots secara dinamis sesuai jumlah slide yang aktif
+    if (dotsContainer) {
+      dotsContainer.innerHTML = '';
+      if (activeIndices.length > 1) {
+        dotsContainer.style.display = 'flex';
+        activeIndices.forEach((slideIdx, dotIdx) => {
+          const dot = document.createElement('div');
+          dot.className = `dot ${dotIdx === 0 ? 'active' : ''}`;
+          dot.addEventListener('click', () => SlideshowManager.goToHeroSlide(slideIdx));
+          dotsContainer.appendChild(dot);
+        });
+      } else {
+        dotsContainer.style.display = 'none';
+      }
+    }
+
+    // Tampilkan slide pertama yang aktif
+    SlideshowManager.currentHeroIndex = 0;
+    SlideshowManager.goToHeroSlide(activeIndices[0]);
+
+    // Bersihkan timer lama jika ada agar tidak double interval
+    if (SlideshowManager.heroInterval) {
+      clearInterval(SlideshowManager.heroInterval);
+      SlideshowManager.heroInterval = null;
+    }
+
+    // Jalankan rotasi otomatis hanya jika terdapat lebih dari 1 slide yang aktif
+    if (activeIndices.length > 1) {
+      SlideshowManager.heroInterval = setInterval(() => {
+        if (!SlideshowManager.activeSlideIndices || SlideshowManager.activeSlideIndices.length <= 1) return;
+        const nextPos = (SlideshowManager.currentHeroIndex + 1) % SlideshowManager.activeSlideIndices.length;
+        SlideshowManager.currentHeroIndex = nextPos;
+        SlideshowManager.goToHeroSlide(SlideshowManager.activeSlideIndices[nextPos]);
+      }, 5000);
+    }
+  }
+
+  static goToHeroSlide(slideIndex) {
+    const allSlides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.slideshow-dots .dot');
-    slides.forEach((s, i) => {
-      const isActive = i === index;
+    allSlides.forEach((s, i) => {
+      const isActive = i === slideIndex;
       s.classList.toggle('active', isActive);
       if (isActive) {
         const lazyImg = s.querySelector('img[data-src]');
@@ -1150,7 +1196,14 @@ class SlideshowManager {
         }
       }
     });
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+
+    if (SlideshowManager.activeSlideIndices) {
+      const dotPos = SlideshowManager.activeSlideIndices.indexOf(slideIndex);
+      if (dotPos !== -1) {
+        SlideshowManager.currentHeroIndex = dotPos;
+        dots.forEach((d, i) => d.classList.toggle('active', i === dotPos));
+      }
+    }
   }
 
   static initProductSlideshows() {
@@ -8802,7 +8855,13 @@ const DEFAULT_THUMBALL_SETTINGS = {
   btnPromoActive: false,
   promoBtnText: 'Kode Promo',
   promoCode: 'BOOT-5J6T3T',
-  imageUrl: 'assets/hero/hero-slide-1.jpg'
+  // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
+  slide1Active: true,
+  imageUrl: 'assets/hero/hero-slide-1.jpg',
+  slide2Active: true,
+  imageUrl2: 'assets/hero/hero-slide-2.jpg',
+  slide3Active: true,
+  imageUrl3: 'assets/hero/hero-slide-3.jpg'
 };
 
 function handleCrmToggleChange(checkbox, badgeId, isUserAction = false) {
@@ -8920,25 +8979,41 @@ function applyThumballSettingsToDom() {
     btnGroup.style.display = hasVisibleBtn ? 'flex' : 'none';
   }
 
-  // Update Hero Slide 1 image & all relevant hero images on Dashboard Utama
-  if (d.imageUrl) {
-    const formattedUrl = formatImageUrl(d.imageUrl);
-    const slides = document.querySelectorAll('.hero-slide');
-    if (slides && slides.length > 0) {
-      const slide1Img = slides[0].querySelector('img');
-      if (slide1Img) {
-        slide1Img.src = formattedUrl;
-        if (slide1Img.dataset.src) slide1Img.dataset.src = formattedUrl;
+  // Update seluruh 3 Slide Hero di Dashboard Utama
+  const slides = document.querySelectorAll('.hero-slide');
+  if (slides && slides.length > 0) {
+    // Slide 1
+    if (d.imageUrl && slides[0]) {
+      const formatted1 = formatImageUrl(d.imageUrl);
+      const s1Img = slides[0].querySelector('img');
+      if (s1Img) {
+        s1Img.src = formatted1;
+        if (s1Img.dataset.src) s1Img.dataset.src = formatted1;
       }
     }
-    const activeHeroImg = document.querySelector('.hero-slide.active img');
-    if (activeHeroImg) {
-      activeHeroImg.src = formattedUrl;
+    // Slide 2
+    if (d.imageUrl2 && slides[1]) {
+      const formatted2 = formatImageUrl(d.imageUrl2);
+      const s2Img = slides[1].querySelector('img');
+      if (s2Img) {
+        s2Img.src = formatted2;
+        if (s2Img.dataset.src) s2Img.dataset.src = formatted2;
+      }
     }
-    const crmImgPrev = document.getElementById('crm-hero-img-preview');
-    if (crmImgPrev) {
-      crmImgPrev.src = formattedUrl;
+    // Slide 3
+    if (d.imageUrl3 && slides[2]) {
+      const formatted3 = formatImageUrl(d.imageUrl3);
+      const s3Img = slides[2].querySelector('img');
+      if (s3Img) {
+        s3Img.src = formatted3;
+        if (s3Img.dataset.src) s3Img.dataset.src = formatted3;
+      }
     }
+  }
+
+  // Re-setup Slideshow Manager agar saklar ON/OFF dan rotasi langsung aktif tanpa delay
+  if (typeof SlideshowManager !== 'undefined' && SlideshowManager.setupHeroSlideshow) {
+    SlideshowManager.setupHeroSlideshow();
   }
 
   // Populate CRM Thumball Form fields if present
@@ -8991,16 +9066,47 @@ function applyThumballSettingsToDom() {
   const crmPromoCode = document.getElementById('crm-hero-promo-code');
   if (crmPromoCode) crmPromoCode.value = d.promoCode;
 
-  const crmImgUrl = document.getElementById('crm-hero-img-url');
-  if (crmImgUrl) crmImgUrl.value = d.imageUrl;
-  const crmImgPrev = document.getElementById('crm-hero-img-preview');
-  if (crmImgPrev) crmImgPrev.src = formatImageUrl(d.imageUrl);
+  // 3 Slots Hero Banner di CRM
+  // Slot 1
+  const crmSlide1Active = document.getElementById('crm-hero-slide1-active');
+  if (crmSlide1Active) {
+    crmSlide1Active.checked = (d.slide1Active !== false);
+    handleCrmToggleChange(crmSlide1Active, 'badge-slide1-status', false);
+  }
+  const crmImgUrl1 = document.getElementById('crm-hero-img-url');
+  if (crmImgUrl1) crmImgUrl1.value = d.imageUrl || '';
+  const crmImgPrev1 = document.getElementById('crm-hero-img-preview');
+  if (crmImgPrev1) crmImgPrev1.src = formatImageUrl(d.imageUrl || 'assets/hero/hero-slide-1.jpg');
+
+  // Slot 2
+  const crmSlide2Active = document.getElementById('crm-hero-slide2-active');
+  if (crmSlide2Active) {
+    crmSlide2Active.checked = (d.slide2Active !== false);
+    handleCrmToggleChange(crmSlide2Active, 'badge-slide2-status', false);
+  }
+  const crmImgUrl2 = document.getElementById('crm-hero-img2-url');
+  if (crmImgUrl2) crmImgUrl2.value = d.imageUrl2 || '';
+  const crmImgPrev2 = document.getElementById('crm-hero-img2-preview');
+  if (crmImgPrev2) crmImgPrev2.src = formatImageUrl(d.imageUrl2 || 'assets/hero/hero-slide-2.jpg');
+
+  // Slot 3
+  const crmSlide3Active = document.getElementById('crm-hero-slide3-active');
+  if (crmSlide3Active) {
+    crmSlide3Active.checked = (d.slide3Active !== false);
+    handleCrmToggleChange(crmSlide3Active, 'badge-slide3-status', false);
+  }
+  const crmImgUrl3 = document.getElementById('crm-hero-img3-url');
+  if (crmImgUrl3) crmImgUrl3.value = d.imageUrl3 || '';
+  const crmImgPrev3 = document.getElementById('crm-hero-img3-preview');
+  if (crmImgPrev3) crmImgPrev3.src = formatImageUrl(d.imageUrl3 || 'assets/hero/hero-slide-3.jpg');
 }
 
-function handleHeroUrlInput(val) {
-  const prev = document.getElementById('crm-hero-img-preview');
+function handleHeroUrlInput(val, slideNum = 1) {
+  const prevId = slideNum === 1 ? 'crm-hero-img-preview' : (slideNum === 2 ? 'crm-hero-img2-preview' : 'crm-hero-img3-preview');
+  const prev = document.getElementById(prevId);
   if (prev && val) prev.src = formatImageUrl(val);
 }
+window.handleHeroUrlInput = handleHeroUrlInput;
 
 function compressDataUrlString(dataUrl, maxWidth = 1000, quality = 0.75) {
   return new Promise((resolve) => {
@@ -9044,7 +9150,7 @@ function compressDataUrlString(dataUrl, maxWidth = 1000, quality = 0.75) {
 }
 window.compressDataUrlString = compressDataUrlString;
 
-async function handleHeroFileInput(input) {
+async function handleHeroFileInput(input, slideNum = 1) {
   if (input.files && input.files[0]) {
     const file = input.files[0];
     try {
@@ -9056,12 +9162,14 @@ async function handleHeroFileInput(input) {
             reader.onerror = reject;
             reader.readAsDataURL(file);
           });
-      const urlInput = document.getElementById('crm-hero-img-url');
+      const urlInputId = slideNum === 1 ? 'crm-hero-img-url' : (slideNum === 2 ? 'crm-hero-img2-url' : 'crm-hero-img3-url');
+      const prevId = slideNum === 1 ? 'crm-hero-img-preview' : (slideNum === 2 ? 'crm-hero-img2-preview' : 'crm-hero-img3-preview');
+      const urlInput = document.getElementById(urlInputId);
       if (urlInput) urlInput.value = compressed;
-      const prev = document.getElementById('crm-hero-img-preview');
+      const prev = document.getElementById(prevId);
       if (prev) prev.src = compressed;
       if (typeof showToast === 'function') {
-        showToast('Foto banner hero siap digunakan! Klik "Simpan Perubahan Thumball" untuk menerapkan. 📸', 'info', 2500);
+        showToast(`Foto banner hero slide ${slideNum} siap digunakan! Klik "Simpan Perubahan Thumball" untuk menerapkan. 📸`, 'info', 2500);
       }
     } catch (err) {
       console.warn('handleHeroFileInput error:', err);
@@ -9080,18 +9188,31 @@ async function saveThumballSettings(e) {
     btn.innerHTML = '<span>⏳ Menyimpan Perubahan...</span>';
   }
 
-  let rawImg = document.getElementById('crm-hero-img-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl;
-  // Jika gambar berupa data base64 besar, kompres otomatis agar aman di localStorage
-  if (rawImg && rawImg.startsWith('data:image/') && rawImg.length > 85000) {
+  let rawImg1 = document.getElementById('crm-hero-img-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl;
+  let rawImg2 = document.getElementById('crm-hero-img2-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl2;
+  let rawImg3 = document.getElementById('crm-hero-img3-url')?.value || DEFAULT_THUMBALL_SETTINGS.imageUrl3;
+
+  // Kompresi cerdas jika ada gambar base64 besar agar hemat memori & aman di LocalStorage
+  if (rawImg1 && rawImg1.startsWith('data:image/') && rawImg1.length > 85000) {
     try {
-      rawImg = await compressDataUrlString(rawImg, 1000, 0.72);
-      const urlInput = document.getElementById('crm-hero-img-url');
-      if (urlInput) urlInput.value = rawImg;
-      const prev = document.getElementById('crm-hero-img-preview');
-      if (prev) prev.src = rawImg;
-    } catch (err) {
-      console.warn('Compress image error:', err);
-    }
+      rawImg1 = await compressDataUrlString(rawImg1, 1000, 0.70);
+      const u1 = document.getElementById('crm-hero-img-url');
+      if (u1) u1.value = rawImg1;
+    } catch (e1) {}
+  }
+  if (rawImg2 && rawImg2.startsWith('data:image/') && rawImg2.length > 85000) {
+    try {
+      rawImg2 = await compressDataUrlString(rawImg2, 1000, 0.70);
+      const u2 = document.getElementById('crm-hero-img2-url');
+      if (u2) u2.value = rawImg2;
+    } catch (e2) {}
+  }
+  if (rawImg3 && rawImg3.startsWith('data:image/') && rawImg3.length > 85000) {
+    try {
+      rawImg3 = await compressDataUrlString(rawImg3, 1000, 0.70);
+      const u3 = document.getElementById('crm-hero-img3-url');
+      if (u3) u3.value = rawImg3;
+    } catch (e3) {}
   }
 
   const data = {
@@ -9109,7 +9230,13 @@ async function saveThumballSettings(e) {
     btnPromoActive: document.getElementById('crm-hero-btn-promo-active') ? document.getElementById('crm-hero-btn-promo-active').checked : false,
     promoBtnText: document.getElementById('crm-hero-promo-btn-text')?.value || DEFAULT_THUMBALL_SETTINGS.promoBtnText,
     promoCode: document.getElementById('crm-hero-promo-code')?.value || DEFAULT_THUMBALL_SETTINGS.promoCode,
-    imageUrl: rawImg
+    // 3 Slides Thumbnail settings
+    slide1Active: document.getElementById('crm-hero-slide1-active') ? document.getElementById('crm-hero-slide1-active').checked : true,
+    imageUrl: rawImg1,
+    slide2Active: document.getElementById('crm-hero-slide2-active') ? document.getElementById('crm-hero-slide2-active').checked : true,
+    imageUrl2: rawImg2,
+    slide3Active: document.getElementById('crm-hero-slide3-active') ? document.getElementById('crm-hero-slide3-active').checked : true,
+    imageUrl3: rawImg3
   };
 
   // Simpan selalu ke in-memory cache agar update instan bebas lag
@@ -9122,14 +9249,13 @@ async function saveThumballSettings(e) {
     console.warn('LocalStorage quota issue when saving thumball settings, attempting cleanup:', err);
     try {
       localStorage.removeItem('nexstore_hero_thumball_data');
-      const minimalData = { ...data, imageUrl: data.imageUrl.startsWith('data:') ? data.imageUrl.slice(0, 50000) : data.imageUrl };
-      localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(minimalData));
+      localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(data));
     } catch (e2) {
       console.warn('Could not persist to localStorage, using in-memory settings:', e2);
     }
   }
 
-  // Terapkan seketika ke seluruh DOM Dashboard Utama
+  // Terapkan seketika ke seluruh DOM Dashboard Utama tanpa delay
   applyThumballSettingsToDom();
   applyFooterBrandingSettingsToDom();
   if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
@@ -9151,7 +9277,7 @@ async function saveThumballSettings(e) {
     }, 2200);
   }
 
-  showToast('Perubahan Thumball & Konten Hero berhasil disimpan! 🎨✨', 'success');
+  showToast('Perubahan 3 Thumball Hero & Konten berhasil disimpan! 🎨✨', 'success');
 }
 window.saveThumballSettings = saveThumballSettings;
 

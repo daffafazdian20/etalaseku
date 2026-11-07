@@ -701,6 +701,7 @@ body {
 }
 
 .hero-slide-caption {
+  display: none !important;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -14350,6 +14351,21 @@ body.dark-theme #modal-custom-app-detail .modal-card {
   color: #FFFFFF !important;
 }
 
+/* 3 Slot Banner Hero Editing Cards (Responsive CRM & Dark Mode) */
+.crm-hero-slot-card {
+  background: #F8FAFC;
+  border: 1.5px solid #CBD5E1;
+  padding: 16px 18px;
+  border-radius: 14px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+[data-theme="dark"] .crm-hero-slot-card,
+body.dark-theme .crm-hero-slot-card {
+  background: #0B1120 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
 @media (max-width: 640px) {
   .custom-app-hero-banner {
     padding: 24px 20px;
@@ -15369,5 +15385,20 @@ body.dark-theme #modal-custom-app-detail .modal-card {
   background: #131F37 !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   color: #FFFFFF !important;
+}
+
+/* 3 Slot Banner Hero Editing Cards (Responsive CRM & Dark Mode) */
+.crm-hero-slot-card {
+  background: #F8FAFC;
+  border: 1.5px solid #CBD5E1;
+  padding: 16px 18px;
+  border-radius: 14px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+[data-theme="dark"] .crm-hero-slot-card,
+body.dark-theme .crm-hero-slot-card {
+  background: #0B1120 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
