@@ -16013,3 +16013,40 @@ body.dark-theme .section-eyebrow {
   color: #FF2E63 !important;
 }
 
+/* ==========================================================================
+   CRM: MEMBER AREA EDITOR & LIVE MOCKUP STYLING
+   ========================================================================== */
+.crm-member-mockup-card {
+  transition: all 0.25s ease;
+}
+
+[data-theme="dark"] .crm-member-mockup-card,
+body.dark-theme .crm-member-mockup-card {
+  background: #111D36 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .crm-member-mockup-card h4,
+body.dark-theme .crm-member-mockup-card h4 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .crm-member-mockup-card label,
+body.dark-theme .crm-member-mockup-card label {
+  color: #F1F5F9 !important;
+}
+
+[data-theme="dark"] .crm-member-mockup-card p,
+body.dark-theme .crm-member-mockup-card p {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .crm-member-mockup-card .form-input,
+body.dark-theme .crm-member-mockup-card .form-input {
+  background: #192642 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #E2E8F0 !important;
+}
+
+

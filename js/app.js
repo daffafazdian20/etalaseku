@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-04';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-05';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-04';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-05';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -2598,6 +2598,9 @@ function openMemberLoginModal() {
     showMemberAreaDashboard(savedOrderId, savedEmail);
   } else {
     closeAllModals();
+    if (typeof applyMemberAreaSettingsToDom === 'function') {
+      applyMemberAreaSettingsToDom();
+    }
     const modal = document.getElementById('modal-member-login') || document.getElementById('modal-unified-auth');
     if (modal) {
       modal.classList.add('active');
@@ -2753,6 +2756,7 @@ function switchAdminTab(tabId, navEl) {
     'tab-account': 'Pengaturan Akun & Hak Akses Portal (Super Admin / Admin)',
     'tab-maintenance': 'Manajemen Mode Server Maintenance',
     'tab-thumball': 'Thumball Editing (Konten Hero)',
+    'tab-member-area': 'Manajemen & Editor Member Area (Modal Siswa)',
     'tab-bootcamp-crm': 'Manajemen Bootcamp & Kelas Live'
   };
   const titleEl = document.getElementById('admin-page-title');
@@ -2785,6 +2789,8 @@ function switchAdminTab(tabId, navEl) {
     if (typeof renderAdminDashboardStats === 'function') renderAdminDashboardStats(STATE.stats);
   } else if (tabId === 'tab-maintenance') {
     if (typeof applyMaintenanceSettingsToDom === 'function') applyMaintenanceSettingsToDom();
+  } else if (tabId === 'tab-member-area') {
+    if (typeof populateMemberAreaSettingsCrm === 'function') populateMemberAreaSettingsCrm();
   }
 }
 
@@ -8932,7 +8938,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-04',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-05',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9387,7 +9393,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-04',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-05',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
@@ -9426,6 +9432,281 @@ async function syncThumballSettingsToGas(data) {
   }
 }
 window.syncThumballSettingsToGas = syncThumballSettingsToGas;
+
+// ============================================================================
+// MEMBER AREA SETTINGS & LIVE EDITOR ENGINE (SESUAI FOTO REFERENSI MODAL SISWA)
+// Mendukung Input File Folder untuk Avatar, URL, Edit Manual & Pratinjau Real-Time
+// ============================================================================
+const DEFAULT_MEMBER_AREA_SETTINGS = {
+  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+  title: 'Selamat Datang Member Siswa 🎓',
+  subtitle: 'Masuk untuk mengakses materi belajar & aplikasi Anda.',
+  emailLabel: 'Email Terdaftar',
+  emailPlaceholder: 'nama@email.com',
+  helpText: 'Gunakan email yang Anda pakai saat membeli / redeem kode.',
+  btnLoginText: 'Masuk sebagai Member',
+  btnRedeemText: 'Punya Kode Akses? Redeem di sini',
+  footerPrefix: 'Belum punya akun?',
+  footerLinkText: 'Beli kelas di katalog',
+  backLinkText: '← Kembali ke beranda'
+};
+window.DEFAULT_MEMBER_AREA_SETTINGS = DEFAULT_MEMBER_AREA_SETTINGS;
+
+function getMemberAreaSettings() {
+  if (window.CURRENT_MEMBER_AREA_SETTINGS && typeof window.CURRENT_MEMBER_AREA_SETTINGS === 'object') {
+    return { ...DEFAULT_MEMBER_AREA_SETTINGS, ...window.CURRENT_MEMBER_AREA_SETTINGS };
+  }
+  try {
+    const raw = localStorage.getItem('nexstore_member_area_settings');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      window.CURRENT_MEMBER_AREA_SETTINGS = parsed;
+      return { ...DEFAULT_MEMBER_AREA_SETTINGS, ...parsed };
+    }
+  } catch (e) {}
+  return DEFAULT_MEMBER_AREA_SETTINGS;
+}
+window.getMemberAreaSettings = getMemberAreaSettings;
+
+function applyMemberAreaSettingsToDom() {
+  const s = getMemberAreaSettings();
+  const avatarImg = document.getElementById('member-login-avatar-img');
+  if (avatarImg) {
+    avatarImg.src = formatImageUrl(s.avatarUrl || DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl);
+  }
+  const titleEl = document.getElementById('member-login-title');
+  if (titleEl) titleEl.textContent = s.title || DEFAULT_MEMBER_AREA_SETTINGS.title;
+  const subEl = document.getElementById('member-login-subtitle');
+  if (subEl) subEl.textContent = s.subtitle || DEFAULT_MEMBER_AREA_SETTINGS.subtitle;
+  const labelEl = document.getElementById('member-login-email-label');
+  if (labelEl) labelEl.textContent = s.emailLabel || DEFAULT_MEMBER_AREA_SETTINGS.emailLabel;
+  const inputEl = document.getElementById('member-login-email-input');
+  if (inputEl) inputEl.placeholder = s.emailPlaceholder || DEFAULT_MEMBER_AREA_SETTINGS.emailPlaceholder;
+  const helpEl = document.getElementById('member-login-help-text');
+  if (helpEl) helpEl.textContent = s.helpText || DEFAULT_MEMBER_AREA_SETTINGS.helpText;
+  const btnLoginEl = document.getElementById('btn-login-member-text');
+  if (btnLoginEl) btnLoginEl.innerHTML = '<span>➔]</span> ' + (s.btnLoginText || DEFAULT_MEMBER_AREA_SETTINGS.btnLoginText);
+  const btnRedeemEl = document.getElementById('btn-login-redeem-text');
+  if (btnRedeemEl) btnRedeemEl.textContent = s.btnRedeemText || DEFAULT_MEMBER_AREA_SETTINGS.btnRedeemText;
+  const footPrefixEl = document.getElementById('member-login-footer-prefix');
+  if (footPrefixEl) footPrefixEl.textContent = s.footerPrefix || DEFAULT_MEMBER_AREA_SETTINGS.footerPrefix;
+  const footLinkEl = document.getElementById('member-login-footer-link');
+  if (footLinkEl) footLinkEl.textContent = s.footerLinkText || DEFAULT_MEMBER_AREA_SETTINGS.footerLinkText;
+  const backLinkEl = document.getElementById('member-login-back-link');
+  if (backLinkEl) backLinkEl.innerHTML = s.backLinkText || DEFAULT_MEMBER_AREA_SETTINGS.backLinkText;
+
+  // Shortcut edit untuk admin yang sedang login
+  const adminBar = document.getElementById('member-login-admin-bar');
+  if (adminBar) {
+    adminBar.style.display = (STATE && STATE.adminToken) ? 'block' : 'none';
+  }
+}
+window.applyMemberAreaSettingsToDom = applyMemberAreaSettingsToDom;
+
+function populateMemberAreaSettingsCrm() {
+  const s = getMemberAreaSettings();
+  const crmUrl = document.getElementById('crm-member-avatar-url');
+  if (crmUrl) crmUrl.value = s.avatarUrl || '';
+  const crmPrev = document.getElementById('crm-member-avatar-preview');
+  if (crmPrev) crmPrev.src = formatImageUrl(s.avatarUrl || DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl);
+  const crmTitle = document.getElementById('crm-member-title');
+  if (crmTitle) crmTitle.value = s.title || DEFAULT_MEMBER_AREA_SETTINGS.title;
+  const crmSub = document.getElementById('crm-member-subtitle');
+  if (crmSub) crmSub.value = s.subtitle || DEFAULT_MEMBER_AREA_SETTINGS.subtitle;
+  const crmEmailLabel = document.getElementById('crm-member-email-label');
+  if (crmEmailLabel) crmEmailLabel.value = s.emailLabel || DEFAULT_MEMBER_AREA_SETTINGS.emailLabel;
+  const crmEmailPlaceholder = document.getElementById('crm-member-email-placeholder');
+  if (crmEmailPlaceholder) crmEmailPlaceholder.value = s.emailPlaceholder || DEFAULT_MEMBER_AREA_SETTINGS.emailPlaceholder;
+  const crmHelp = document.getElementById('crm-member-help-text');
+  if (crmHelp) crmHelp.value = s.helpText || DEFAULT_MEMBER_AREA_SETTINGS.helpText;
+  const crmBtnLogin = document.getElementById('crm-member-btn-login-text');
+  if (crmBtnLogin) crmBtnLogin.value = s.btnLoginText || DEFAULT_MEMBER_AREA_SETTINGS.btnLoginText;
+  const crmBtnRedeem = document.getElementById('crm-member-btn-redeem-text');
+  if (crmBtnRedeem) crmBtnRedeem.value = s.btnRedeemText || DEFAULT_MEMBER_AREA_SETTINGS.btnRedeemText;
+  const crmFootPrefix = document.getElementById('crm-member-footer-prefix');
+  if (crmFootPrefix) crmFootPrefix.value = s.footerPrefix || DEFAULT_MEMBER_AREA_SETTINGS.footerPrefix;
+  const crmFootLink = document.getElementById('crm-member-footer-link');
+  if (crmFootLink) crmFootLink.value = s.footerLinkText || DEFAULT_MEMBER_AREA_SETTINGS.footerLinkText;
+  const crmBackLink = document.getElementById('crm-member-back-link');
+  if (crmBackLink) crmBackLink.value = s.backLinkText || DEFAULT_MEMBER_AREA_SETTINGS.backLinkText;
+
+  const mockAvatar = document.getElementById('mockup-member-avatar-img');
+  if (mockAvatar) mockAvatar.src = formatImageUrl(s.avatarUrl || DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl);
+
+  updateMemberAreaLivePreview();
+}
+window.populateMemberAreaSettingsCrm = populateMemberAreaSettingsCrm;
+
+function handleMemberAreaAvatarFile(input) {
+  if (!input || !input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (!file.type.startsWith('image/')) {
+    showToast('Harap pilih file gambar (JPG, PNG, WebP)!', 'error');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    let dataUrl = e.target.result;
+    try {
+      if (typeof compressDataUrlString === 'function') {
+        dataUrl = await compressDataUrlString(dataUrl, 300, 0.85);
+      }
+    } catch (compErr) {
+      console.warn('Compress member avatar error:', compErr);
+    }
+    const urlInput = document.getElementById('crm-member-avatar-url');
+    if (urlInput) urlInput.value = dataUrl;
+    const prev = document.getElementById('crm-member-avatar-preview');
+    if (prev) prev.src = dataUrl;
+    const mockup = document.getElementById('mockup-member-avatar-img');
+    if (mockup) mockup.src = dataUrl;
+    showToast('Foto avatar dari File Folder berhasil dimuat! 📁✨', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+window.handleMemberAreaAvatarFile = handleMemberAreaAvatarFile;
+
+function handleMemberAreaAvatarUrl(url) {
+  const cleanUrl = (url || '').trim();
+  const targetUrl = cleanUrl ? formatImageUrl(cleanUrl) : DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl;
+  const prev = document.getElementById('crm-member-avatar-preview');
+  if (prev) prev.src = targetUrl;
+  const mockup = document.getElementById('mockup-member-avatar-img');
+  if (mockup) mockup.src = targetUrl;
+}
+window.handleMemberAreaAvatarUrl = handleMemberAreaAvatarUrl;
+
+function resetMemberAreaAvatarToDefault() {
+  const urlInput = document.getElementById('crm-member-avatar-url');
+  if (urlInput) urlInput.value = DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl;
+  const fileInput = document.getElementById('crm-member-avatar-file');
+  if (fileInput) fileInput.value = '';
+  const prev = document.getElementById('crm-member-avatar-preview');
+  if (prev) prev.src = DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl;
+  const mockup = document.getElementById('mockup-member-avatar-img');
+  if (mockup) mockup.src = DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl;
+  showToast('Foto avatar dikembalikan ke foto default.', 'info');
+}
+window.resetMemberAreaAvatarToDefault = resetMemberAreaAvatarToDefault;
+
+function updateMemberAreaLivePreview() {
+  const title = document.getElementById('crm-member-title')?.value || DEFAULT_MEMBER_AREA_SETTINGS.title;
+  const subtitle = document.getElementById('crm-member-subtitle')?.value || DEFAULT_MEMBER_AREA_SETTINGS.subtitle;
+  const emailLabel = document.getElementById('crm-member-email-label')?.value || DEFAULT_MEMBER_AREA_SETTINGS.emailLabel;
+  const emailPlaceholder = document.getElementById('crm-member-email-placeholder')?.value || DEFAULT_MEMBER_AREA_SETTINGS.emailPlaceholder;
+  const helpText = document.getElementById('crm-member-help-text')?.value || DEFAULT_MEMBER_AREA_SETTINGS.helpText;
+  const btnLoginText = document.getElementById('crm-member-btn-login-text')?.value || DEFAULT_MEMBER_AREA_SETTINGS.btnLoginText;
+  const btnRedeemText = document.getElementById('crm-member-btn-redeem-text')?.value || DEFAULT_MEMBER_AREA_SETTINGS.btnRedeemText;
+  const footerPrefix = document.getElementById('crm-member-footer-prefix')?.value || DEFAULT_MEMBER_AREA_SETTINGS.footerPrefix;
+  const footerLink = document.getElementById('crm-member-footer-link')?.value || DEFAULT_MEMBER_AREA_SETTINGS.footerLinkText;
+  const backLink = document.getElementById('crm-member-back-link')?.value || DEFAULT_MEMBER_AREA_SETTINGS.backLinkText;
+
+  const mTitle = document.getElementById('mockup-member-title');
+  if (mTitle) mTitle.textContent = title;
+  const mSub = document.getElementById('mockup-member-subtitle');
+  if (mSub) mSub.textContent = subtitle;
+  const mEmailLabel = document.getElementById('mockup-member-email-label');
+  if (mEmailLabel) mEmailLabel.textContent = emailLabel;
+  const mEmailInput = document.getElementById('mockup-member-email-input');
+  if (mEmailInput) mEmailInput.placeholder = emailPlaceholder;
+  const mHelp = document.getElementById('mockup-member-help-text');
+  if (mHelp) mHelp.textContent = helpText;
+  const mBtnLogin = document.getElementById('mockup-member-btn-login-text');
+  if (mBtnLogin) mBtnLogin.innerHTML = '➔] ' + btnLoginText;
+  const mBtnRedeem = document.getElementById('mockup-member-btn-redeem-text');
+  if (mBtnRedeem) mBtnRedeem.textContent = btnRedeemText;
+  const mFootPre = document.getElementById('mockup-member-footer-prefix');
+  if (mFootPre) mFootPre.textContent = footerPrefix;
+  const mFootLink = document.getElementById('mockup-member-footer-link');
+  if (mFootLink) mFootLink.textContent = footerLink;
+  const mBack = document.getElementById('mockup-member-back-link');
+  if (mBack) mBack.textContent = backLink;
+}
+window.updateMemberAreaLivePreview = updateMemberAreaLivePreview;
+
+function saveMemberAreaSettings(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const btn = document.getElementById('btn-save-member-area');
+  const origHtml = '💾 Simpan Pengaturan Member Area';
+  try {
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳ Menyimpan Pengaturan...</span>';
+    }
+    const avatarUrl = document.getElementById('crm-member-avatar-url')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.avatarUrl;
+    const data = {
+      avatarUrl: avatarUrl,
+      title: document.getElementById('crm-member-title')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.title,
+      subtitle: document.getElementById('crm-member-subtitle')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.subtitle,
+      emailLabel: document.getElementById('crm-member-email-label')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.emailLabel,
+      emailPlaceholder: document.getElementById('crm-member-email-placeholder')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.emailPlaceholder,
+      helpText: document.getElementById('crm-member-help-text')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.helpText,
+      btnLoginText: document.getElementById('crm-member-btn-login-text')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.btnLoginText,
+      btnRedeemText: document.getElementById('crm-member-btn-redeem-text')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.btnRedeemText,
+      footerPrefix: document.getElementById('crm-member-footer-prefix')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.footerPrefix,
+      footerLinkText: document.getElementById('crm-member-footer-link')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.footerLinkText,
+      backLinkText: document.getElementById('crm-member-back-link')?.value.trim() || DEFAULT_MEMBER_AREA_SETTINGS.backLinkText
+    };
+
+    window.CURRENT_MEMBER_AREA_SETTINGS = data;
+    try {
+      localStorage.setItem('nexstore_member_area_settings', JSON.stringify(data));
+    } catch (storErr) {
+      console.warn('LocalStorage quota issue for member area settings:', storErr);
+      try {
+        localStorage.removeItem('nexstore_member_area_settings');
+        localStorage.setItem('nexstore_member_area_settings', JSON.stringify(data));
+      } catch (e2) {}
+    }
+
+    applyMemberAreaSettingsToDom();
+    updateMemberAreaLivePreview();
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<span>✓ Berhasil Disimpan!</span>';
+    }
+    showToast('Pengaturan Member Area berhasil disimpan! 👤✨', 'success');
+  } catch (err) {
+    console.error('Error saving member area settings:', err);
+    showToast('Gagal menyimpan pengaturan. Silakan coba lagi.', 'error');
+  } finally {
+    if (btn) {
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }, 1000);
+    }
+  }
+}
+window.saveMemberAreaSettings = saveMemberAreaSettings;
+
+function resetMemberAreaSettings() {
+  window.CURRENT_MEMBER_AREA_SETTINGS = { ...DEFAULT_MEMBER_AREA_SETTINGS };
+  try {
+    localStorage.removeItem('nexstore_member_area_settings');
+  } catch (e) {}
+  populateMemberAreaSettingsCrm();
+  applyMemberAreaSettingsToDom();
+  showToast('Pengaturan Member Area dikembalikan ke default.', 'info');
+}
+window.resetMemberAreaSettings = resetMemberAreaSettings;
+
+function previewMemberAreaModalFromCrm() {
+  const portal = document.getElementById('admin-portal-wrapper');
+  if (portal) portal.classList.remove('active');
+  openMemberLoginModal();
+  showToast('Pratinjau Modal Member Area di website aktif!', 'info');
+}
+window.previewMemberAreaModalFromCrm = previewMemberAreaModalFromCrm;
+
+function openAdminPortalTab(tabId) {
+  openAdminPortal();
+  setTimeout(() => {
+    switchAdminTab(tabId);
+  }, 60);
+}
+window.openAdminPortalTab = openAdminPortalTab;
 
 // ----------------------------------------------------------------------------
 // BOOTCAMP SETTINGS & MODAL ENGINE (SESUAI FOTO 1 & 2 REFERENCE)
@@ -10544,6 +10825,7 @@ function initAllPortalOnReady() {
   try { if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons(); } catch(e) {}
   try { if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom(); } catch(e) {}
   try { if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom(); } catch(e) {}
+  try { if (typeof applyMemberAreaSettingsToDom === 'function') applyMemberAreaSettingsToDom(); } catch(e) {}
 }
 window.initAllPortalOnReady = initAllPortalOnReady;
 
