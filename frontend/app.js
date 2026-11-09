@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-06';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-07';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-06';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-07';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -8938,7 +8938,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-06',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-07',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9393,7 +9393,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-06',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-07',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
@@ -10793,9 +10793,6 @@ function toggleAppTheme() {
   localStorage.setItem('nexstore_theme', next);
   localStorage.setItem('nexstore_theme_manual', 'true');
   applyAppTheme(next);
-  if (typeof showToast === 'function') {
-    showToast(next === 'dark' ? 'Mode Gelap Aktif' : 'Mode Terang Aktif', 'info', 2000);
-  }
 }
 window.initAppTheme = initAppTheme;
 window.applyAppTheme = applyAppTheme;
