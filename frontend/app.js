@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261107-10';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-01';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261107-10';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-01';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -8933,7 +8933,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261107-10',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-01',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9388,7 +9388,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261107-10',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-01',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
@@ -11050,6 +11050,15 @@ function handleCustomTermsToggle(cb) {
 window.handleCustomTermsToggle = handleCustomTermsToggle;
 
 function goToCustomStep(stepNum) {
+  // Determine actual current visible step if desynced
+  for (let i = 1; i <= 4; i++) {
+    const p = document.getElementById('cstep-panel-' + i);
+    if (p && p.style.display !== 'none' && (p.offsetWidth > 0 || p.offsetHeight > 0)) {
+      currentCustomStep = i;
+      break;
+    }
+  }
+
   // Validations when moving forward
   if (stepNum > currentCustomStep) {
     if (currentCustomStep === 1) {
@@ -11058,14 +11067,20 @@ function goToCustomStep(stepNum) {
       const profesi = (document.getElementById('cust-form-profesi') || {}).value || '';
       if (!name.trim()) {
         if (typeof showToast === 'function') showToast('⚠️ Mohon isi Nama Lengkap Anda.', 'warning');
+        const el = document.getElementById('cust-form-name');
+        if (el) el.focus();
         return;
       }
       if (!phone.trim()) {
         if (typeof showToast === 'function') showToast('⚠️ Mohon isi No. WhatsApp Anda.', 'warning');
+        const el = document.getElementById('cust-form-phone');
+        if (el) el.focus();
         return;
       }
       if (!profesi.trim()) {
         if (typeof showToast === 'function') showToast('⚠️ Mohon isi Profesi / Pekerjaan Anda.', 'warning');
+        const el = document.getElementById('cust-form-profesi');
+        if (el) el.focus();
         return;
       }
     } else if (currentCustomStep === 2) {
@@ -11090,6 +11105,8 @@ function goToCustomStep(stepNum) {
       }
     }
   }
+
+  saveCustomDraft();
 
   currentCustomStep = stepNum;
 
@@ -11126,7 +11143,11 @@ function goToCustomStep(stepNum) {
   }
 
   const card = document.querySelector('.custom-wizard-card');
-  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (card) {
+    try {
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch(e) {}
+  }
 }
 window.goToCustomStep = goToCustomStep;
 
