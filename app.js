@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-07';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-08';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-07';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-08';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -466,6 +466,12 @@ const DEFAULT_SHOWCASES_LIST = [
 // ULTRA-MODERN IN-APP TOAST SYSTEM (Zero Browser Alert/Confirm Popups)
 // ============================================================================
 function showToast(message, type = 'info', duration = 2800) {
+  if (!message || typeof message !== 'string') return;
+  const msgLower = message.toLowerCase();
+  if (msgLower.includes('mode gelap') || msgLower.includes('mode terang') || msgLower.includes('beralih ke mode')) {
+    return;
+  }
+
   let toastContainer = document.getElementById('app-toast-container');
   if (!toastContainer) {
     toastContainer = document.createElement('div');
@@ -475,6 +481,7 @@ function showToast(message, type = 'info', duration = 2800) {
 
   const toast = document.createElement('div');
   toast.className = `app-toast toast-${type}`;
+  toast.setAttribute('data-toast-msg', message);
   
   let icon = '✨';
   if (type === 'success') icon = '✅';
@@ -8938,7 +8945,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-07',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-08',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9393,7 +9400,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-07',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-08',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };

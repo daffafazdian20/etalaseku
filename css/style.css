@@ -16049,4 +16049,16 @@ body.dark-theme .crm-member-mockup-card .form-input {
   color: #E2E8F0 !important;
 }
 
+/* Blokir tampilan toast notifikasi mode gelap & mode terang secara permanen */
+.app-toast[data-toast-msg*="Mode Gelap"],
+.app-toast[data-toast-msg*="Mode Terang"],
+.app-toast[data-toast-msg*="mode gelap"],
+.app-toast[data-toast-msg*="mode terang"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
 
