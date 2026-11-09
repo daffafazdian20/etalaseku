@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-09';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-10';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-09';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-10';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -529,7 +529,7 @@ const DEFAULT_PAYMENT_CHANNELS = {
     tipe: 'qris',
     rekening: 'Scan QRIS Dinamis',
     atasNama: 'NexStore / Daffa Fazdian',
-    qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F',
+    qrUrl: 'assets/payments/qris-pembayaran-nexstore.png?v=20261109-10',
     instruksi: 'Scan barcode QRIS di atas via BCA Mobile, Mandiri Livin, BNI Mobile, GoPay, OVO, atau ShopeePay.',
     aktif: true
   },
@@ -539,8 +539,8 @@ const DEFAULT_PAYMENT_CHANNELS = {
     label: 'BCA Virtual Account / Transfer',
     badge: 'Bank',
     tipe: 'bank',
-    rekening: '123-456-7890',
-    atasNama: 'NexStore / Daffa Fazdian',
+    rekening: '8410651817',
+    atasNama: 'Daffa Fazdian',
     instruksi: 'Transfer melalui m-BCA, ATM BCA, atau KlikBCA ke rekening di atas.',
     aktif: true
   },
@@ -1546,8 +1546,37 @@ async function loadPublicData() {
     } else {
       STATE.settings = loadStoredSiteSettings();
     }
-    if (data.paymentChannels && Object.keys(data.paymentChannels).length > 0) {
+    // 2. SINKRONISASI METODE PEMBAYARAN & QRIS LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
+    if (data.settings && data.settings.payment_channels_meta) {
+      try {
+        const parsedCh = typeof data.settings.payment_channels_meta === 'string'
+          ? JSON.parse(data.settings.payment_channels_meta)
+          : data.settings.payment_channels_meta;
+
+        if (parsedCh && typeof parsedCh === 'object') {
+          // Rekonstruksi custom QRIS jika ada chunks
+          if (data.settings.qris_img_p1) {
+            let p = 1;
+            let fullQris = '';
+            while (data.settings['qris_img_p' + p]) {
+              fullQris += data.settings['qris_img_p' + p];
+              p++;
+            }
+            if (fullQris && isValidBase64Image(fullQris)) {
+              if (parsedCh.qris) parsedCh.qris.qrUrl = fullQris;
+            }
+          }
+          STATE.paymentChannels = Object.assign({}, DEFAULT_PAYMENT_CHANNELS, parsedCh);
+          localStorage.setItem('etalaseku_payment_channels', JSON.stringify(STATE.paymentChannels));
+          if (typeof renderCheckoutPaymentChannels === 'function') renderCheckoutPaymentChannels();
+        }
+      } catch(errCh) {
+        console.warn('Gagal parsing payment_channels_meta dari cloud:', errCh);
+      }
+    } else if (data.paymentChannels && Object.keys(data.paymentChannels).length > 0) {
       STATE.paymentChannels = Object.assign({}, DEFAULT_PAYMENT_CHANNELS, data.paymentChannels);
+      localStorage.setItem('etalaseku_payment_channels', JSON.stringify(STATE.paymentChannels));
+      if (typeof renderCheckoutPaymentChannels === 'function') renderCheckoutPaymentChannels();
     }
 
     // 3. SINKRONISASI THUMBALL HERO LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
@@ -2305,7 +2334,7 @@ function selectPaymentChannel(channelKey) {
   if (!c) return;
 
   if (c.tipe === 'qris') {
-    const qrisTargetUrl = c.qrUrl || (STATE.paymentChannels && STATE.paymentChannels.qris && STATE.paymentChannels.qris.qrUrl) || (STATE.settings && STATE.settings.qris_image_url) || 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021126580014ID.LINKAJA.WWW011893600911002234567802150878946026275204581253033605802ID5912ETALASEKUHUB6007JAKARTA61051234062070703A0163041D3F';
+    const qrisTargetUrl = c.qrUrl || (STATE.paymentChannels && STATE.paymentChannels.qris && STATE.paymentChannels.qris.qrUrl) || (STATE.settings && STATE.settings.qris_image_url) || 'assets/payments/qris-pembayaran-nexstore.png?v=20261109-10';
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
@@ -2955,8 +2984,37 @@ async function loadAdminPortalData() {
       STATE.adminRole = data.adminProfile.role || STATE.adminRole;
       STATE.adminEmail = data.adminProfile.email || STATE.adminEmail;
     }
-    if (data.paymentChannels && Object.keys(data.paymentChannels).length > 0) {
+    // 2. SINKRONISASI METODE PEMBAYARAN & QRIS LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
+    if (data.settings && data.settings.payment_channels_meta) {
+      try {
+        const parsedCh = typeof data.settings.payment_channels_meta === 'string'
+          ? JSON.parse(data.settings.payment_channels_meta)
+          : data.settings.payment_channels_meta;
+
+        if (parsedCh && typeof parsedCh === 'object') {
+          // Rekonstruksi custom QRIS jika ada chunks
+          if (data.settings.qris_img_p1) {
+            let p = 1;
+            let fullQris = '';
+            while (data.settings['qris_img_p' + p]) {
+              fullQris += data.settings['qris_img_p' + p];
+              p++;
+            }
+            if (fullQris && isValidBase64Image(fullQris)) {
+              if (parsedCh.qris) parsedCh.qris.qrUrl = fullQris;
+            }
+          }
+          STATE.paymentChannels = Object.assign({}, DEFAULT_PAYMENT_CHANNELS, parsedCh);
+          localStorage.setItem('etalaseku_payment_channels', JSON.stringify(STATE.paymentChannels));
+          if (typeof renderCheckoutPaymentChannels === 'function') renderCheckoutPaymentChannels();
+        }
+      } catch(errCh) {
+        console.warn('Gagal parsing payment_channels_meta dari cloud:', errCh);
+      }
+    } else if (data.paymentChannels && Object.keys(data.paymentChannels).length > 0) {
       STATE.paymentChannels = Object.assign({}, DEFAULT_PAYMENT_CHANNELS, data.paymentChannels);
+      localStorage.setItem('etalaseku_payment_channels', JSON.stringify(STATE.paymentChannels));
+      if (typeof renderCheckoutPaymentChannels === 'function') renderCheckoutPaymentChannels();
     }
     if (data.bills) {
       STATE.bills = data.bills;
@@ -4295,10 +4353,7 @@ async function handleQrisFileUpload(event) {
   if (!file) return;
 
   try {
-    const base64 = await readFileAsBase64(file);
-    const mimeType = file.type || 'image/png';
-    const dataUrl = `data:${mimeType};base64,${base64}`;
-    
+    const dataUrl = await compressAndReadImage(file, 800, 0.82);
     const qrInput = document.getElementById('cfg-ch-qr-qris');
     if (qrInput) qrInput.value = dataUrl;
     
@@ -4347,6 +4402,11 @@ async function savePaymentChannelsForm(e) {
   localStorage.setItem('etalaseku_payment_channels', JSON.stringify(newConfig));
   renderCheckoutPaymentChannels();
 
+  // SINKRONISASI OTOMATIS KE CLOUD (GOOGLE SHEETS) VIA syncAllCrmMetaToGas AGAR OTOMATIS KE HP
+  if (typeof syncAllCrmMetaToGas === 'function') {
+    syncAllCrmMetaToGas().catch(err => console.warn('Sync payment channels ke cloud:', err));
+  }
+
   let gasSynced = false;
   if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
     try {
@@ -4367,11 +4427,7 @@ async function savePaymentChannelsForm(e) {
     btn.disabled = false;
   }
   
-  if (gasSynced) {
-    showToast('Metode pembayaran otomatis berhasil disimpan ke Google Sheets & aktif di Checkout!', 'info');
-  } else {
-    showToast('Metode pembayaran berhasil disimpan dan langsung aktif di halaman Checkout website!', 'info');
-  }
+  showToast('Metode pembayaran & QRIS berhasil disimpan ke Desktop & Mobile HP! ✨📱', 'success');
 }
 
 // ============================================================================
@@ -9107,7 +9163,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-09',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-10',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9586,6 +9642,22 @@ async function syncAllCrmMetaToGas(extraData = {}) {
       } catch(e) { return {}; }
     })();
 
+    const channels = STATE.paymentChannels || (function() {
+      try {
+        const st = localStorage.getItem('etalaseku_payment_channels');
+        return st ? JSON.parse(st) : DEFAULT_PAYMENT_CHANNELS;
+      } catch(e) { return DEFAULT_PAYMENT_CHANNELS; }
+    })();
+
+    let qrisImgData = '';
+    const cleanChannels = JSON.parse(JSON.stringify(channels));
+    if (cleanChannels.qris && cleanChannels.qris.qrUrl) {
+      if (cleanChannels.qris.qrUrl.startsWith('data:image/')) {
+        qrisImgData = cleanChannels.qris.qrUrl;
+        cleanChannels.qris.qrUrl = 'qris_custom_cloud';
+      }
+    }
+
     const payload = Object.assign({
       announcement_bar_text: currentSiteSettings.announcement_bar_text || DEFAULT_SITE_SETTINGS.announcement_bar_text,
       wa_cs_number: currentSiteSettings.wa_cs_number || DEFAULT_SITE_SETTINGS.wa_cs_number,
@@ -9595,8 +9667,17 @@ async function syncAllCrmMetaToGas(extraData = {}) {
       member_area_meta: JSON.stringify(memberAreaMeta),
       bootcamp_meta: JSON.stringify(bootcampMeta),
       footer_branding_meta: JSON.stringify(footerBrandingMeta),
-      maintenance_meta: JSON.stringify(maintenanceMeta)
+      maintenance_meta: JSON.stringify(maintenanceMeta),
+      payment_channels_meta: JSON.stringify(cleanChannels)
     }, extraData);
+
+    if (qrisImgData && isValidBase64Image(qrisImgData)) {
+      const chunkSize = 35000;
+      const totalParts = Math.ceil(qrisImgData.length / chunkSize);
+      for (let p = 0; p < totalParts && p < 8; p++) {
+        payload[`qris_img_p${p + 1}`] = qrisImgData.slice(p * chunkSize, (p + 1) * chunkSize);
+      }
+    }
 
     await fetch(APP_CONFIG.GAS_URL, {
       method: 'POST',
@@ -9650,7 +9731,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-09',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-10',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };

@@ -992,22 +992,27 @@ function updateAdminCredentials_(data) {
 }
 
 function savePaymentChannels_(data) {
-  const jsonStr = JSON.stringify(data);
-  setProp_('PAYMENT_CHANNELS_CONFIG', jsonStr);
+  try {
+    const jsonStr = JSON.stringify(data);
+    if (jsonStr.length < 8000) {
+      setProp_('PAYMENT_CHANNELS_CONFIG', jsonStr);
+    }
+  } catch (e) {}
 
   try {
     const sh = getSheet_(CONFIG.SHEETS.PENGATURAN);
     const rows = sh.getDataRange().getValues();
     let found = false;
+    const jsonStr = JSON.stringify(data);
     for (let i = 1; i < rows.length; i++) {
-      if (String(rows[i][0]) === 'payment_channels') {
+      if (String(rows[i][0]) === 'payment_channels_meta') {
         sh.getRange(i + 1, 2).setValue(jsonStr);
         found = true;
         break;
       }
     }
     if (!found) {
-      sh.appendRow(['payment_channels', jsonStr]);
+      sh.appendRow(['payment_channels_meta', jsonStr]);
     }
   } catch (e) {}
 
@@ -1016,17 +1021,28 @@ function savePaymentChannels_(data) {
 }
 
 function getPaymentChannels_() {
+  try {
+    const sh = getSheet_(CONFIG.SHEETS.PENGATURAN);
+    const rows = sh.getDataRange().getValues();
+    for (let i = 1; i < rows.length; i++) {
+      if (String(rows[i][0]) === 'payment_channels_meta') {
+        const parsed = JSON.parse(rows[i][1]);
+        if (parsed) return parsed;
+      }
+    }
+  } catch (e) {}
+
   const stored = prop_('PAYMENT_CHANNELS_CONFIG');
   if (stored) {
     try { return JSON.parse(stored); } catch (e) {}
   }
   return {
-    qris: { aktif: true, label: 'QRIS Instant (Semua Bank / e-Wallet)', rekening: 'Scan QRIS Dinamis', atasNama: 'EtalaseKu Hub', qrUrl: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=300&q=80', instruksi: 'Scan QRIS di atas via BCA, Mandiri, BNI, GoPay, OVO, atau ShopeePay.' },
-    gopay: { aktif: true, label: 'GoPay', rekening: '0878-9460-2627', atasNama: 'EtalaseKu Hub', instruksi: 'Transfer saldo GoPay ke nomor ini.' },
-    ovo: { aktif: true, label: 'OVO', rekening: '0878-9460-2627', atasNama: 'EtalaseKu Hub', instruksi: 'Transfer saldo OVO ke nomor ini.' },
-    bca: { aktif: true, label: 'BCA Transfer', rekening: '123-456-7890', atasNama: 'EtalaseKu Hub', instruksi: 'Transfer via BCA Mobile / ATM / KlikBCA.' },
-    mandiri: { aktif: true, label: 'Mandiri Transfer', rekening: '987-654-3210', atasNama: 'EtalaseKu Hub', instruksi: 'Transfer via Livin by Mandiri / ATM.' },
-    bni: { aktif: true, label: 'BNI Transfer', rekening: '112-233-4455', atasNama: 'EtalaseKu Hub', instruksi: 'Transfer via BNI Mobile Banking / ATM.' }
+    qris: { aktif: true, label: 'QRIS Instant (Semua Bank / e-Wallet)', rekening: 'Scan QRIS Dinamis', atasNama: 'NexStore / Daffa Fazdian', qrUrl: 'assets/payments/qris-pembayaran-nexstore.png?v=20261109-09', instruksi: 'Scan QRIS di atas via BCA, Mandiri, BNI, GoPay, OVO, atau ShopeePay.' },
+    bca: { aktif: true, label: 'BCA Transfer', rekening: '8410651817', atasNama: 'Daffa Fazdian', instruksi: 'Transfer via BCA Mobile / ATM / KlikBCA.' },
+    gopay: { aktif: true, label: 'GoPay', rekening: '0878-9460-2627', atasNama: 'Daffa Fazdian', instruksi: 'Transfer saldo GoPay ke nomor ini.' },
+    ovo: { aktif: true, label: 'OVO', rekening: '0878-9460-2627', atasNama: 'Daffa Fazdian', instruksi: 'Transfer saldo OVO ke nomor ini.' },
+    mandiri: { aktif: true, label: 'Mandiri Transfer', rekening: '987-654-3210', atasNama: 'NexStore / Daffa Fazdian', instruksi: 'Transfer via Livin by Mandiri / ATM.' },
+    bni: { aktif: true, label: 'BNI Transfer', rekening: '112-233-4455', atasNama: 'NexStore / Daffa Fazdian', instruksi: 'Transfer via BNI Mobile Banking / ATM.' }
   };
 }
 
