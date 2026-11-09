@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-02';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-03';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-02';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-03';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -4069,7 +4069,6 @@ function adminLogout() {
   localStorage.removeItem('etalaseku_is_in_crm');
   localStorage.removeItem('etalaseku_admin_active_tab');
   closeAdminPortal();
-  showToast('Anda telah keluar dari Portal Admin 🔒', 'logout');
 }
 window.adminLogout = adminLogout;
 
@@ -4855,15 +4854,20 @@ function openClassroomLoginModal() {
   openUnifiedAuthModal('member');
 }
 
-function openClassroomDashboardOrLogin() {
+function openClassroomDashboardOrLogin(targetView = 'grid') {
   const savedOrderId = localStorage.getItem('etalaseku_member_order_id');
   const savedEmail = localStorage.getItem('etalaseku_member_email');
   if (savedOrderId || savedEmail) {
-    showMemberAreaDashboard(savedOrderId, savedEmail);
+    if (targetView === 'home') {
+      showMemberAreaDashboard(savedOrderId, savedEmail);
+    } else {
+      openClassroomDashboard(savedOrderId, savedEmail, targetView || 'grid');
+    }
   } else {
     openUnifiedAuthModal('member');
   }
 }
+window.openClassroomDashboardOrLogin = openClassroomDashboardOrLogin;
 
 function switchAuthTab(type) {
   const btnMember = document.getElementById('tab-btn-auth-member');
@@ -4946,7 +4950,6 @@ function handleMemberEmailLogin(e) {
   if (prodName) localStorage.setItem('etalaseku_member_enrolled_product_name', prodName);
 
   closeAllModals();
-  showToast('🎉 Selamat Datang! Akses Ruang BelajarKu Lunas.', 'success', 3000);
   updateMemberClassroomNavbar(orderId, email);
   openClassroomDashboard(orderId, email);
 }
@@ -4991,8 +4994,7 @@ function openClassroomPortalDemo() {
   openClassroomDashboard(demoOrderId, demoEmail);
 }
 
-function openClassroomDashboard(orderId, email) {
-  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
+function openClassroomDashboard(orderId, email, targetView = 'home') {
   if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
   if (typeof closeClassroomDetailView === 'function') closeClassroomDetailView();
   closeAllModals();
@@ -5038,9 +5040,9 @@ function openClassroomDashboard(orderId, email) {
   if (typeof renderMainMemberShowcases === 'function') renderMainMemberShowcases();
   if (typeof applyAppTheme === 'function') applyAppTheme(getEffectiveTheme());
 
-  // Buka Beranda Member Area (Foto 3) sebagai tampilan default
+  // Buka tampilan target (default 'home', atau 'grid' jika diarahkan ke dashboard Ruang BelajarKu)
   if (typeof switchMemberPortalView === 'function') {
-    switchMemberPortalView('home');
+    switchMemberPortalView(targetView || 'home');
   }
 
   // Tampilkan Halaman Dashboard Khusus Member Classroom
@@ -5095,8 +5097,6 @@ function handleClassroomLogout() {
 
   // 5. Scroll ke atas
   window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  showToast('Anda telah keluar dari sesi member 👋', 'logout');
 }
 
 function updateMemberClassroomNavbar(orderId, email) {
@@ -8933,7 +8933,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-02',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-03',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9388,7 +9388,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-02',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-03',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
