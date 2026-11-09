@@ -3988,26 +3988,31 @@ input:checked + .switch-slider:before {
   text-decoration: none;
   cursor: pointer;
   border: none;
-  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: #FFFFFF;
   transition: all 0.22s ease;
-  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.3);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
   box-sizing: border-box;
 }
 
 .rb-btn-action:hover {
-  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(225, 29, 72, 0.45);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
   color: #FFFFFF;
 }
 
 .rb-btn-action.rb-btn-doc {
-  background: #FF2E63 !important;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
   color: #FFFFFF !important;
-  border: 1px solid rgba(255, 46, 99, 0.4) !important;
-  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.35) !important;
+  border: 1px solid rgba(37, 99, 235, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
   transition: all 0.25s ease !important;
+}
+
+.rb-btn-action.rb-btn-doc:hover {
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45) !important;
 }
 
 /* Mobile responsive rules for Ruang BelajarKu */
@@ -5409,20 +5414,20 @@ input:checked + .switch-slider:before {
 }
 
 .rb-nav-ep-btn:hover {
-  border-color: #FECDD3;
-  color: #E11D48;
-  background: #FFF1F2;
+  border-color: #BFDBFE;
+  color: #2563EB;
+  background: #EFF6FF;
 }
 
 .rb-nav-ep-btn.primary {
-  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: #FFFFFF;
   border: none;
 }
 
 .rb-nav-ep-btn.primary:hover {
-  background: linear-gradient(135deg, #E11D48 0%, #BE185D 100%);
-  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.45);
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
   transform: translateY(-1px);
 }
 
@@ -5466,20 +5471,20 @@ input:checked + .switch-slider:before {
 }
 
 .rb-tab-btn:hover {
-  color: #E11D48;
+  color: #2563EB;
 }
 
 .rb-tab-btn.active {
-  color: #E11D48;
-  border-bottom-color: #E11D48;
+  color: #2563EB;
+  border-bottom-color: #2563EB;
   background: #FFFFFF;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
 
 .rb-tab-btn .badge-count {
-  background: #FDEEF1;
-  color: #E11D48;
+  background: #EFF6FF;
+  color: #2563EB;
   font-size: 11px;
   padding: 2px 7px;
   border-radius: 9999px;
@@ -9137,17 +9142,17 @@ footer {
 }
 
 .mp-btn-doc {
-  background: #FF2E63 !important;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
   border: none !important;
   cursor: pointer !important;
   transition: all 0.25s ease !important;
 }
 
 .mp-btn-doc:hover {
-  background: #E11D48 !important;
-  box-shadow: 0 6px 20px rgba(255, 46, 99, 0.45) !important;
+  background: #1D4ED8 !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45) !important;
   transform: translateY(-1px) !important;
 }
 
@@ -10938,18 +10943,67 @@ body.dark-theme .rb-pill.active {
   box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
 }
 
-/* Active Tab Link (Selalu Putih #FFFFFF di Atas Hot Pink #FF2E63) */
+/* Active Tab Link - Dark Mode: Hot Pink #FF2E63 */
+[data-theme="dark"] .classroom-top-links a.active,
+[data-theme="dark"] .classroom-top-links li a.active,
+[data-theme="dark"] .cls-tab-link.active,
+[data-theme="dark"] #tab-link-home.active,
+[data-theme="dark"] #tab-link-kelas.active,
+[data-theme="dark"] #tab-link-jalur.active,
+[data-theme="dark"] #tab-link-bootcamp.active,
+[data-theme="dark"] #tab-link-pameran.active,
+[data-theme="dark"] #tab-link-panduan.active,
+[data-theme="dark"] #tab-link-custom.active,
+body.dark-theme .classroom-top-links a.active,
+body.dark-theme .classroom-top-links li a.active,
+body.dark-theme .cls-tab-link.active,
+body.dark-theme #tab-link-home.active,
+body.dark-theme #tab-link-kelas.active,
+body.dark-theme #tab-link-jalur.active,
+body.dark-theme #tab-link-bootcamp.active,
+body.dark-theme #tab-link-pameran.active,
+body.dark-theme #tab-link-panduan.active,
+body.dark-theme #tab-link-custom.active {
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+/* Active Tab Link - Light Mode: Aksen Biru #2563EB */
+[data-theme="light"] .classroom-top-links a.active,
+[data-theme="light"] .classroom-top-links li a.active,
+[data-theme="light"] .cls-tab-link.active,
+[data-theme="light"] #tab-link-home.active,
+[data-theme="light"] #tab-link-kelas.active,
+[data-theme="light"] #tab-link-jalur.active,
+[data-theme="light"] #tab-link-bootcamp.active,
+[data-theme="light"] #tab-link-pameran.active,
+[data-theme="light"] #tab-link-panduan.active,
+[data-theme="light"] #tab-link-custom.active,
+body.light-theme .classroom-top-links a.active,
+body.light-theme .classroom-top-links li a.active,
+body.light-theme .cls-tab-link.active,
+body.light-theme #tab-link-home.active,
+body.light-theme #tab-link-kelas.active,
+body.light-theme #tab-link-jalur.active,
+body.light-theme #tab-link-bootcamp.active,
+body.light-theme #tab-link-pameran.active,
+body.light-theme #tab-link-panduan.active,
+body.light-theme #tab-link-custom.active,
 .classroom-top-links a.active,
 .classroom-top-links li a.active,
 .cls-tab-link.active,
 #tab-link-home.active,
 #tab-link-kelas.active {
-  background: #FF2E63 !important;
-  border-color: #FF2E63 !important;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  border-color: #2563EB !important;
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
   font-weight: 700 !important;
-  box-shadow: 0 4px 12px rgba(255, 46, 99, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
 }
 
 
@@ -15674,5 +15728,288 @@ body.dark-theme #modal-custom-app-detail .modal-card {
 body.dark-theme .crm-hero-slot-card {
   background: #0B1120 !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ==========================================================================
+   EXPLICIT LIGHT & DARK MODE ACCENT ALIGNMENT: RUANG BELAJARKU & MEMBER PORTAL
+   Foto Reference: Mode Terang = Aksen Biru (#2563EB), Mode Gelap = Aksen Merah (#FF2E63)
+   ========================================================================== */
+
+/* 1. LIGHT MODE: Aksen Biru (#2563EB) di Seluruh Dashboard Ruang BelajarKu */
+[data-theme="light"] .classroom-portal-nav .brand-name-text .brand-accent,
+body.light-theme .classroom-portal-nav .brand-name-text .brand-accent,
+[data-theme="light"] .brand-accent,
+body.light-theme .brand-accent {
+  color: #2563EB !important;
+}
+
+[data-theme="light"] .classroom-portal-nav .brand-motif-pill,
+body.light-theme .classroom-portal-nav .brand-motif-pill,
+[data-theme="light"] .brand-motif-pill,
+body.light-theme .brand-motif-pill {
+  color: #2563EB !important;
+  background: #EFF6FF !important;
+  border-color: rgba(37, 99, 235, 0.25) !important;
+}
+
+[data-theme="light"] .classroom-portal-nav .member-avatar-initial,
+body.light-theme .classroom-portal-nav .member-avatar-initial,
+[data-theme="light"] .member-avatar-initial,
+body.light-theme .member-avatar-initial {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] .classroom-portal-nav .brand-app-icon,
+body.light-theme .classroom-portal-nav .brand-app-icon {
+  border-color: rgba(37, 99, 235, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2) !important;
+}
+
+[data-theme="light"] .cls-tab-link.active,
+[data-theme="light"] #cls-portal-tabs-nav .cls-tab-link.active,
+[data-theme="light"] #tab-link-home.active,
+[data-theme="light"] #tab-link-kelas.active,
+[data-theme="light"] #tab-link-jalur.active,
+[data-theme="light"] #tab-link-bootcamp.active,
+[data-theme="light"] #tab-link-pameran.active,
+[data-theme="light"] #tab-link-panduan.active,
+[data-theme="light"] #tab-link-custom.active,
+body.light-theme .cls-tab-link.active,
+body.light-theme #cls-portal-tabs-nav .cls-tab-link.active,
+body.light-theme #tab-link-home.active,
+body.light-theme #tab-link-kelas.active,
+body.light-theme #tab-link-jalur.active,
+body.light-theme #tab-link-bootcamp.active,
+body.light-theme #tab-link-pameran.active,
+body.light-theme #tab-link-panduan.active,
+body.light-theme #tab-link-custom.active {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  border-color: #2563EB !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+[data-theme="light"] .rb-btn-action,
+[data-theme="light"] .rb-btn-action.rb-btn-doc,
+[data-theme="light"] .mp-card-action-btn,
+[data-theme="light"] .mp-card-action-btn.mp-btn-primary,
+[data-theme="light"] .mp-card-action-btn.mp-btn-doc,
+[data-theme="light"] .mp-btn-doc,
+[data-theme="light"] .mp-btn-primary,
+[data-theme="light"] .btn-hero-classes,
+body.light-theme .rb-btn-action,
+body.light-theme .rb-btn-action.rb-btn-doc,
+body.light-theme .mp-card-action-btn,
+body.light-theme .mp-card-action-btn.mp-btn-primary,
+body.light-theme .mp-card-action-btn.mp-btn-doc,
+body.light-theme .mp-btn-doc,
+body.light-theme .mp-btn-primary,
+body.light-theme .btn-hero-classes {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  border: 1px solid rgba(37, 99, 235, 0.4) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+[data-theme="light"] .rb-btn-action:hover,
+[data-theme="light"] .rb-btn-action.rb-btn-doc:hover,
+[data-theme="light"] .mp-card-action-btn:hover,
+[data-theme="light"] .mp-card-action-btn.mp-btn-doc:hover,
+[data-theme="light"] .mp-btn-doc:hover,
+[data-theme="light"] .btn-hero-classes:hover,
+body.light-theme .rb-btn-action:hover,
+body.light-theme .rb-btn-action.rb-btn-doc:hover,
+body.light-theme .mp-card-action-btn:hover,
+body.light-theme .mp-card-action-btn.mp-btn-doc:hover,
+body.light-theme .mp-btn-doc:hover,
+body.light-theme .btn-hero-classes:hover {
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45) !important;
+  transform: translateY(-2px) !important;
+}
+
+[data-theme="light"] .rb-pill.active,
+body.light-theme .rb-pill.active {
+  background: #2563EB !important;
+  border-color: #2563EB !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+[data-theme="light"] .rb-nav-ep-btn.primary,
+body.light-theme .rb-nav-ep-btn.primary {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+[data-theme="light"] .rb-nav-ep-btn.primary:hover,
+body.light-theme .rb-nav-ep-btn.primary:hover {
+  background: #1D4ED8 !important;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45) !important;
+}
+
+[data-theme="light"] .rb-tab-btn.active,
+body.light-theme .rb-tab-btn.active {
+  color: #2563EB !important;
+  border-bottom-color: #2563EB !important;
+}
+
+[data-theme="light"] .rb-tab-btn .badge-count,
+body.light-theme .rb-tab-btn .badge-count {
+  background: #EFF6FF !important;
+  color: #2563EB !important;
+}
+
+[data-theme="light"] .rb-doc-banner-overlay-btn,
+body.light-theme .rb-doc-banner-overlay-btn {
+  background: #2563EB !important;
+}
+
+[data-theme="light"] .section-eyebrow,
+body.light-theme .section-eyebrow {
+  color: #2563EB !important;
+}
+
+/* 2. DARK MODE: Aksen Merah (#FF2E63) di Seluruh Dashboard Ruang BelajarKu */
+[data-theme="dark"] .classroom-portal-nav .brand-name-text .brand-accent,
+body.dark-theme .classroom-portal-nav .brand-name-text .brand-accent,
+[data-theme="dark"] .brand-accent,
+body.dark-theme .brand-accent {
+  color: #FF2E63 !important;
+}
+
+[data-theme="dark"] .classroom-portal-nav .brand-motif-pill,
+body.dark-theme .classroom-portal-nav .brand-motif-pill,
+[data-theme="dark"] .brand-motif-pill,
+body.dark-theme .brand-motif-pill {
+  color: #FF2E63 !important;
+  background: rgba(255, 46, 99, 0.12) !important;
+  border-color: rgba(255, 46, 99, 0.3) !important;
+}
+
+[data-theme="dark"] .classroom-portal-nav .member-avatar-initial,
+body.dark-theme .classroom-portal-nav .member-avatar-initial,
+[data-theme="dark"] .member-avatar-initial,
+body.dark-theme .member-avatar-initial {
+  background: #FF2E63 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .classroom-portal-nav .brand-app-icon,
+body.dark-theme .classroom-portal-nav .brand-app-icon {
+  border-color: rgba(255, 46, 99, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.25) !important;
+}
+
+[data-theme="dark"] .cls-tab-link.active,
+[data-theme="dark"] #cls-portal-tabs-nav .cls-tab-link.active,
+[data-theme="dark"] #tab-link-home.active,
+[data-theme="dark"] #tab-link-kelas.active,
+[data-theme="dark"] #tab-link-jalur.active,
+[data-theme="dark"] #tab-link-bootcamp.active,
+[data-theme="dark"] #tab-link-pameran.active,
+[data-theme="dark"] #tab-link-panduan.active,
+[data-theme="dark"] #tab-link-custom.active,
+body.dark-theme .cls-tab-link.active,
+body.dark-theme #cls-portal-tabs-nav .cls-tab-link.active,
+body.dark-theme #tab-link-home.active,
+body.dark-theme #tab-link-kelas.active,
+body.dark-theme #tab-link-jalur.active,
+body.dark-theme #tab-link-bootcamp.active,
+body.dark-theme #tab-link-pameran.active,
+body.dark-theme #tab-link-panduan.active,
+body.dark-theme #tab-link-custom.active {
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+[data-theme="dark"] .rb-btn-action,
+[data-theme="dark"] .rb-btn-action.rb-btn-doc,
+[data-theme="dark"] .mp-card-action-btn,
+[data-theme="dark"] .mp-card-action-btn.mp-btn-primary,
+[data-theme="dark"] .mp-card-action-btn.mp-btn-doc,
+[data-theme="dark"] .mp-btn-doc,
+[data-theme="dark"] .mp-btn-primary,
+[data-theme="dark"] .btn-hero-classes,
+body.dark-theme .rb-btn-action,
+body.dark-theme .rb-btn-action.rb-btn-doc,
+body.dark-theme .mp-card-action-btn,
+body.dark-theme .mp-card-action-btn.mp-btn-primary,
+body.dark-theme .mp-card-action-btn.mp-btn-doc,
+body.dark-theme .mp-btn-doc,
+body.dark-theme .mp-btn-primary,
+body.dark-theme .btn-hero-classes {
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  border: 1px solid rgba(255, 46, 99, 0.4) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.35) !important;
+}
+
+[data-theme="dark"] .rb-btn-action:hover,
+[data-theme="dark"] .rb-btn-action.rb-btn-doc:hover,
+[data-theme="dark"] .mp-card-action-btn:hover,
+[data-theme="dark"] .mp-card-action-btn.mp-btn-doc:hover,
+[data-theme="dark"] .mp-btn-doc:hover,
+[data-theme="dark"] .btn-hero-classes:hover,
+body.dark-theme .rb-btn-action:hover,
+body.dark-theme .rb-btn-action.rb-btn-doc:hover,
+body.dark-theme .mp-card-action-btn:hover,
+body.dark-theme .mp-card-action-btn.mp-btn-doc:hover,
+body.dark-theme .mp-btn-doc:hover,
+body.dark-theme .btn-hero-classes:hover {
+  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important;
+  box-shadow: 0 6px 20px rgba(255, 46, 99, 0.45) !important;
+  transform: translateY(-2px) !important;
+}
+
+[data-theme="dark"] .rb-pill.active,
+body.dark-theme .rb-pill.active {
+  background: #FF2E63 !important;
+  border-color: #FF2E63 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+[data-theme="dark"] .rb-nav-ep-btn.primary,
+body.dark-theme .rb-nav-ep-btn.primary {
+  background: linear-gradient(135deg, #FF2E63 0%, #E11D48 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(255, 46, 99, 0.4) !important;
+}
+
+[data-theme="dark"] .rb-nav-ep-btn.primary:hover,
+body.dark-theme .rb-nav-ep-btn.primary:hover {
+  background: #E11D48 !important;
+  box-shadow: 0 6px 18px rgba(255, 46, 99, 0.45) !important;
+}
+
+[data-theme="dark"] .rb-tab-btn.active,
+body.dark-theme .rb-tab-btn.active {
+  color: #FF2E63 !important;
+  border-bottom-color: #FF2E63 !important;
+}
+
+[data-theme="dark"] .rb-tab-btn .badge-count,
+body.dark-theme .rb-tab-btn .badge-count {
+  background: rgba(255, 46, 99, 0.15) !important;
+  color: #FF2E63 !important;
+}
+
+[data-theme="dark"] .rb-doc-banner-overlay-btn,
+body.dark-theme .rb-doc-banner-overlay-btn {
+  background: #FF2E63 !important;
+}
+
+[data-theme="dark"] .section-eyebrow,
+body.dark-theme .section-eyebrow {
+  color: #FF2E63 !important;
 }
 
