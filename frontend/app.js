@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-08';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-09';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-08';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-09';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -1500,38 +1500,49 @@ async function loadPublicData() {
     }
     STATE.testimonials = (data.testimonials && data.testimonials.length > 0) ? data.testimonials : fallback.testimonials;
     
-    // PERSISTENSI HASIL KARYA MEMBER: Jangan buang data karya yang sudah diupload!
+    // PERSISTENSI HASIL KARYA MEMBER: Sinkronkan data karya server & lokal tanpa kehilangan data
     try {
-      const storedShowcases = localStorage.getItem('etalaseku_showcases_data');
-      if (storedShowcases) {
-        const parsed = JSON.parse(storedShowcases);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          STATE.showcases = parsed;
-        } else {
-          STATE.showcases = (data.showcases && data.showcases.length > 0) ? data.showcases : fallback.showcases;
-          localStorage.setItem('etalaseku_showcases_data', JSON.stringify(STATE.showcases));
+      const serverShowcases = (data && Array.isArray(data.showcases) && data.showcases.length > 0) ? data.showcases : null;
+      let localShowcases = [];
+      try {
+        const storedShowcases = localStorage.getItem('etalaseku_showcases_data');
+        if (storedShowcases) localShowcases = JSON.parse(storedShowcases);
+      } catch(e) {}
+
+      if (serverShowcases && serverShowcases.length > 0) {
+        const showcaseMap = new Map();
+        serverShowcases.forEach(s => showcaseMap.set(s.ID_Showcase || s.ID_Portofolio, s));
+        if (Array.isArray(localShowcases)) {
+          localShowcases.forEach(ls => {
+            const key = ls.ID_Showcase || ls.ID_Portofolio;
+            if (key && !showcaseMap.has(key)) showcaseMap.set(key, ls);
+          });
         }
+        STATE.showcases = Array.from(showcaseMap.values());
+      } else if (Array.isArray(localShowcases) && localShowcases.length > 0) {
+        STATE.showcases = localShowcases;
       } else {
-        STATE.showcases = (data.showcases && data.showcases.length > 0) ? data.showcases : fallback.showcases;
-        localStorage.setItem('etalaseku_showcases_data', JSON.stringify(STATE.showcases));
+        STATE.showcases = fallback.showcases || [];
       }
+      localStorage.setItem('etalaseku_showcases_data', JSON.stringify(STATE.showcases));
     } catch(e) {
       STATE.showcases = (data.showcases && data.showcases.length > 0) ? data.showcases : fallback.showcases;
     }
-    const hasLocalSiteSettings = localStorage.getItem('etalaseku_site_settings') !== null;
-    if (hasLocalSiteSettings) {
-      STATE.settings = loadStoredSiteSettings();
-    } else if (data.settings && Object.keys(data.settings).length > 0) {
-      STATE.settings = {
+
+    // SINKRONISASI PENGATURAN SITUS LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
+    if (data.settings && Object.keys(data.settings).length > 0) {
+      const serverSettings = {
         announcement_bar_text: typeof data.settings.announcement_bar_text === 'string' && data.settings.announcement_bar_text.trim()
           ? data.settings.announcement_bar_text.trim()
-          : DEFAULT_SITE_SETTINGS.announcement_bar_text,
+          : (STATE.settings && STATE.settings.announcement_bar_text ? STATE.settings.announcement_bar_text : DEFAULT_SITE_SETTINGS.announcement_bar_text),
         wa_cs_number: data.settings.wa_cs_number
           ? normalizeWaCsNumber(data.settings.wa_cs_number)
-          : DEFAULT_SITE_SETTINGS.wa_cs_number,
+          : (STATE.settings && STATE.settings.wa_cs_number ? STATE.settings.wa_cs_number : DEFAULT_SITE_SETTINGS.wa_cs_number),
         link_komunitas_tg: normalizeCommunityLinkUrl(data.settings.link_komunitas_tg || ''),
-        rekening_pembayaran: data.settings.rekening_pembayaran || ''
+        rekening_pembayaran: data.settings.rekening_pembayaran || (STATE.settings && STATE.settings.rekening_pembayaran ? STATE.settings.rekening_pembayaran : '')
       };
+      STATE.settings = Object.assign({}, loadStoredSiteSettings(), serverSettings);
+      persistSiteSettings(STATE.settings);
     } else {
       STATE.settings = loadStoredSiteSettings();
     }
@@ -1587,6 +1598,75 @@ async function loadPublicData() {
       } catch (errHero) {
         console.warn('Gagal parsing hero_thumball_meta dari cloud:', errHero);
       }
+    }
+
+    // 4. SINKRONISASI MEMBER AREA LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
+    if (data.settings && data.settings.member_area_meta) {
+      try {
+        const memMeta = typeof data.settings.member_area_meta === 'string'
+          ? JSON.parse(data.settings.member_area_meta)
+          : data.settings.member_area_meta;
+        if (memMeta && typeof memMeta === 'object') {
+          window.CURRENT_MEMBER_AREA_SETTINGS = Object.assign({}, DEFAULT_MEMBER_AREA_SETTINGS, memMeta);
+          try {
+            localStorage.setItem('nexstore_member_area_settings', JSON.stringify(window.CURRENT_MEMBER_AREA_SETTINGS));
+          } catch(e) {}
+          if (typeof applyMemberAreaSettingsToDom === 'function') applyMemberAreaSettingsToDom();
+          if (typeof updateMemberAreaLivePreview === 'function') updateMemberAreaLivePreview();
+        }
+      } catch (errMem) {
+        console.warn('Gagal parsing member_area_meta dari cloud:', errMem);
+      }
+    }
+
+    // 5. SINKRONISASI BOOTCAMP & KELAS LIVE LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
+    if (data.settings && data.settings.bootcamp_meta) {
+      try {
+        const bcMeta = typeof data.settings.bootcamp_meta === 'string'
+          ? JSON.parse(data.settings.bootcamp_meta)
+          : data.settings.bootcamp_meta;
+        if (bcMeta && typeof bcMeta === 'object') {
+          try {
+            localStorage.setItem('nexstore_bootcamp_data', JSON.stringify(bcMeta));
+          } catch(e) {}
+          if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom();
+          if (typeof populateBootcampSettingsCrm === 'function') populateBootcampSettingsCrm();
+        }
+      } catch (errBc) {
+        console.warn('Gagal parsing bootcamp_meta dari cloud:', errBc);
+      }
+    }
+
+    // 6. SINKRONISASI FOOTER BRANDING LINTAS PERANGKAT (DESKTOP <-> MOBILE VIA GOOGLE SHEETS)
+    if (data.settings && data.settings.footer_branding_meta) {
+      try {
+        const footMeta = typeof data.settings.footer_branding_meta === 'string'
+          ? JSON.parse(data.settings.footer_branding_meta)
+          : data.settings.footer_branding_meta;
+        if (footMeta && typeof footMeta === 'object') {
+          try {
+            localStorage.setItem('nexstore_footer_branding_data', JSON.stringify(footMeta));
+          } catch(e) {}
+          if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom();
+        }
+      } catch (errFoot) {
+        console.warn('Gagal parsing footer_branding_meta dari cloud:', errFoot);
+      }
+    }
+
+    // 7. SINKRONISASI SERVER MAINTENANCE LINTAS PERANGKAT
+    if (data.settings && data.settings.maintenance_meta) {
+      try {
+        const mntMeta = typeof data.settings.maintenance_meta === 'string'
+          ? JSON.parse(data.settings.maintenance_meta)
+          : data.settings.maintenance_meta;
+        if (mntMeta && typeof mntMeta === 'object') {
+          try {
+            localStorage.setItem('nexstore_maintenance_settings', JSON.stringify(mntMeta));
+          } catch(e) {}
+          if (typeof applyMaintenanceSettingsToDom === 'function') applyMaintenanceSettingsToDom();
+        }
+      } catch (errMnt) {}
     }
 
     renderAnnouncementBar();
@@ -2720,6 +2800,10 @@ function openAdminPortal() {
   renderAdminShowcaseTable(STATE.showcases);
   if (typeof updateLicensesBadge === 'function') updateLicensesBadge();
   if (typeof renderMemberLicensesTable === 'function') renderMemberLicensesTable();
+  if (typeof populateMemberAreaSettingsCrm === 'function') populateMemberAreaSettingsCrm();
+  if (typeof populateThumballSettingsCrm === 'function') populateThumballSettingsCrm();
+  if (typeof populateBootcampSettingsCrm === 'function') populateBootcampSettingsCrm();
+  if (typeof populateFooterBrandingSettingsCrm === 'function') populateFooterBrandingSettingsCrm();
 
   loadAdminPortalData();
 }
@@ -2798,6 +2882,11 @@ function switchAdminTab(tabId, navEl) {
     if (typeof applyMaintenanceSettingsToDom === 'function') applyMaintenanceSettingsToDom();
   } else if (tabId === 'tab-member-area') {
     if (typeof populateMemberAreaSettingsCrm === 'function') populateMemberAreaSettingsCrm();
+    if (typeof updateMemberAreaLivePreview === 'function') updateMemberAreaLivePreview();
+  } else if (tabId === 'tab-thumball') {
+    if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
+  } else if (tabId === 'tab-bootcamp-crm') {
+    if (typeof populateBootcampSettingsCrm === 'function') populateBootcampSettingsCrm();
   }
 }
 
@@ -3031,6 +3120,69 @@ function renderAdminPortalViews(data) {
 
   // 12. Classroom Modules in Tab Classroom
   renderClassroomModulesAdmin();
+
+  // 13. Sinkronkan tab-tab dinamis (Member Area, Bootcamp, Thumball, Footer) dari data settings server
+  if (data && data.settings) {
+    if (data.settings.member_area_meta) {
+      try {
+        const mem = typeof data.settings.member_area_meta === 'string' ? JSON.parse(data.settings.member_area_meta) : data.settings.member_area_meta;
+        if (mem && typeof mem === 'object') {
+          window.CURRENT_MEMBER_AREA_SETTINGS = Object.assign({}, DEFAULT_MEMBER_AREA_SETTINGS, mem);
+          try {
+            localStorage.setItem('nexstore_member_area_settings', JSON.stringify(window.CURRENT_MEMBER_AREA_SETTINGS));
+          } catch(e) {}
+          if (typeof applyMemberAreaSettingsToDom === 'function') applyMemberAreaSettingsToDom();
+          if (typeof populateMemberAreaSettingsCrm === 'function') populateMemberAreaSettingsCrm();
+        }
+      } catch(e) {}
+    }
+    if (data.settings.bootcamp_meta) {
+      try {
+        const bc = typeof data.settings.bootcamp_meta === 'string' ? JSON.parse(data.settings.bootcamp_meta) : data.settings.bootcamp_meta;
+        if (bc && typeof bc === 'object') {
+          try {
+            localStorage.setItem('nexstore_bootcamp_data', JSON.stringify(bc));
+          } catch(e) {}
+          if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom();
+          if (typeof populateBootcampSettingsCrm === 'function') populateBootcampSettingsCrm();
+        }
+      } catch(e) {}
+    }
+    if (data.settings.hero_thumball_meta) {
+      try {
+        const th = typeof data.settings.hero_thumball_meta === 'string' ? JSON.parse(data.settings.hero_thumball_meta) : data.settings.hero_thumball_meta;
+        if (th && typeof th === 'object') {
+          window.CURRENT_THUMBALL_SETTINGS = th;
+          try {
+            localStorage.setItem('nexstore_hero_thumball_data', JSON.stringify(th));
+          } catch(e) {}
+          if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
+        }
+      } catch(e) {}
+    }
+    if (data.settings.footer_branding_meta) {
+      try {
+        const ft = typeof data.settings.footer_branding_meta === 'string' ? JSON.parse(data.settings.footer_branding_meta) : data.settings.footer_branding_meta;
+        if (ft && typeof ft === 'object') {
+          try {
+            localStorage.setItem('nexstore_footer_branding_data', JSON.stringify(ft));
+          } catch(e) {}
+          if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom();
+        }
+      } catch(e) {}
+    }
+    if (data.settings.maintenance_meta) {
+      try {
+        const mnt = typeof data.settings.maintenance_meta === 'string' ? JSON.parse(data.settings.maintenance_meta) : data.settings.maintenance_meta;
+        if (mnt && typeof mnt === 'object') {
+          try {
+            localStorage.setItem('nexstore_maintenance_settings', JSON.stringify(mnt));
+          } catch(e) {}
+          if (typeof applyMaintenanceSettingsToDom === 'function') applyMaintenanceSettingsToDom();
+        }
+      } catch(e) {}
+    }
+  }
 }
 
 function renderFullOrdersTable(orders) {
@@ -3691,6 +3843,16 @@ async function saveShowcaseForm(e) {
     renderShowcases();
     renderPameranKaryaPortal();
     closeAllModals();
+
+    // SINKRONISASI KE GOOGLE APPS SCRIPT / SHEETS CLOUD
+    if (APP_CONFIG.GAS_URL && !APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) {
+      fetch(APP_CONFIG.GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'saveShowcase', token: STATE.adminToken || 'AUTH_TOKEN_' + Date.now(), data: item || payload })
+      }).catch(err => console.warn('Sync showcase ke GAS:', err));
+    }
+
     showToast('Hasil karya member berhasil disimpan ke galeri pameran!', 'success', 3500);
   } catch (err) {
     showToast('Gagal menyimpan hasil karya: ' + err.message, 'error');
@@ -8945,7 +9107,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-08',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-09',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9196,6 +9358,12 @@ function applyThumballSettingsToDom() {
   const crmImgPrev3 = document.getElementById('crm-hero-img3-preview');
   if (crmImgPrev3) crmImgPrev3.src = formatImageUrl(d.imageUrl3 || 'assets/hero/hero-slide-3.jpg');
 }
+window.applyThumballSettingsToDom = applyThumballSettingsToDom;
+
+function populateThumballSettingsCrm(force = true) {
+  if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
+}
+window.populateThumballSettingsCrm = populateThumballSettingsCrm;
 
 function handleHeroUrlInput(val, slideNum = 1) {
   const prevId = slideNum === 1 ? 'crm-hero-img-preview' : (slideNum === 2 ? 'crm-hero-img2-preview' : 'crm-hero-img3-preview');
@@ -9359,6 +9527,88 @@ function saveThumballSettings(e) {
 }
 window.saveThumballSettings = saveThumballSettings;
 
+async function syncAllCrmMetaToGas(extraData = {}) {
+  if (!APP_CONFIG.GAS_URL || APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) return;
+
+  try {
+    let token = STATE.adminToken;
+    if (!token) {
+      try {
+        const loginRes = await fetch(APP_CONFIG.GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'adminLogin', data: { pin: STATE.adminPin || '123456' } })
+        });
+        const loginJson = await loginRes.json();
+        if (loginJson && loginJson.token) {
+          token = loginJson.token;
+          STATE.adminToken = token;
+        }
+      } catch (loginErr) {
+        console.warn('Auto-login for crm sync error:', loginErr);
+      }
+    }
+    if (!token) return;
+
+    const currentSiteSettings = STATE.settings || loadStoredSiteSettings() || {};
+    const thumballMeta = window.CURRENT_THUMBALL_SETTINGS || (function() {
+      try {
+        const st = localStorage.getItem('nexstore_hero_thumball_data');
+        return st ? JSON.parse(st) : DEFAULT_THUMBALL_SETTINGS;
+      } catch(e) { return typeof DEFAULT_THUMBALL_SETTINGS !== 'undefined' ? DEFAULT_THUMBALL_SETTINGS : {}; }
+    })();
+
+    const memberAreaMeta = window.CURRENT_MEMBER_AREA_SETTINGS || (function() {
+      try {
+        const st = localStorage.getItem('nexstore_member_area_settings');
+        return st ? JSON.parse(st) : (typeof DEFAULT_MEMBER_AREA_SETTINGS !== 'undefined' ? DEFAULT_MEMBER_AREA_SETTINGS : {});
+      } catch(e) { return typeof DEFAULT_MEMBER_AREA_SETTINGS !== 'undefined' ? DEFAULT_MEMBER_AREA_SETTINGS : {}; }
+    })();
+
+    const bootcampMeta = (function() {
+      try {
+        const st = localStorage.getItem('nexstore_bootcamp_data');
+        return st ? JSON.parse(st) : (typeof DEFAULT_BOOTCAMP_DATA !== 'undefined' ? DEFAULT_BOOTCAMP_DATA : {});
+      } catch(e) { return {}; }
+    })();
+
+    const footerBrandingMeta = (function() {
+      try {
+        const st = localStorage.getItem('nexstore_footer_branding_data');
+        return st ? JSON.parse(st) : (typeof DEFAULT_FOOTER_BRANDING !== 'undefined' ? DEFAULT_FOOTER_BRANDING : {});
+      } catch(e) { return {}; }
+    })();
+
+    const maintenanceMeta = (function() {
+      try {
+        const st = localStorage.getItem('nexstore_maintenance_settings');
+        return st ? JSON.parse(st) : {};
+      } catch(e) { return {}; }
+    })();
+
+    const payload = Object.assign({
+      announcement_bar_text: currentSiteSettings.announcement_bar_text || DEFAULT_SITE_SETTINGS.announcement_bar_text,
+      wa_cs_number: currentSiteSettings.wa_cs_number || DEFAULT_SITE_SETTINGS.wa_cs_number,
+      link_komunitas_tg: currentSiteSettings.link_komunitas_tg || '',
+      rekening_pembayaran: currentSiteSettings.rekening_pembayaran || '',
+      hero_thumball_meta: JSON.stringify(thumballMeta),
+      member_area_meta: JSON.stringify(memberAreaMeta),
+      bootcamp_meta: JSON.stringify(bootcampMeta),
+      footer_branding_meta: JSON.stringify(footerBrandingMeta),
+      maintenance_meta: JSON.stringify(maintenanceMeta)
+    }, extraData);
+
+    await fetch(APP_CONFIG.GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'saveSiteSettings', token: token, data: payload })
+    });
+  } catch (err) {
+    console.warn('Sync all CRM meta ke Google Sheets:', err);
+  }
+}
+window.syncAllCrmMetaToGas = syncAllCrmMetaToGas;
+
 async function syncThumballSettingsToGas(data) {
   if (!APP_CONFIG.GAS_URL || APP_CONFIG.GAS_URL.includes('AKfycbw6H8jQ7iR5wUu9tJ8eEtalaseKu_Demo')) return;
 
@@ -9400,18 +9650,26 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-08',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-09',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
 
     const currentSiteSettings = STATE.settings || loadStoredSiteSettings() || {};
+    const memberAreaMeta = window.CURRENT_MEMBER_AREA_SETTINGS || (function() {
+      try {
+        const st = localStorage.getItem('nexstore_member_area_settings');
+        return st ? JSON.parse(st) : (typeof DEFAULT_MEMBER_AREA_SETTINGS !== 'undefined' ? DEFAULT_MEMBER_AREA_SETTINGS : {});
+      } catch(e) { return typeof DEFAULT_MEMBER_AREA_SETTINGS !== 'undefined' ? DEFAULT_MEMBER_AREA_SETTINGS : {}; }
+    })();
+
     const payload = {
       announcement_bar_text: currentSiteSettings.announcement_bar_text || DEFAULT_SITE_SETTINGS.announcement_bar_text,
       wa_cs_number: currentSiteSettings.wa_cs_number || DEFAULT_SITE_SETTINGS.wa_cs_number,
       link_komunitas_tg: currentSiteSettings.link_komunitas_tg || '',
       rekening_pembayaran: currentSiteSettings.rekening_pembayaran || '',
-      hero_thumball_meta: JSON.stringify(meta)
+      hero_thumball_meta: JSON.stringify(meta),
+      member_area_meta: JSON.stringify(memberAreaMeta)
     };
 
     ['hero_slide1_img_p', 'hero_slide2_img_p', 'hero_slide3_img_p'].forEach((prefix, sIdx) => {
@@ -9663,11 +9921,16 @@ function saveMemberAreaSettings(e) {
     applyMemberAreaSettingsToDom();
     updateMemberAreaLivePreview();
 
+    // SINKRONISASI OTOMATIS KE CLOUD (GOOGLE APPS SCRIPT / SHEETS) AGAR OTOMATIS DI MOBILE (HP)
+    if (typeof syncAllCrmMetaToGas === 'function') {
+      syncAllCrmMetaToGas({ member_area_meta: JSON.stringify(data) }).catch(err => console.warn('Sync member area ke cloud:', err));
+    }
+
     if (btn) {
       btn.disabled = false;
-      btn.innerHTML = '<span>✓ Berhasil Disimpan!</span>';
+      btn.innerHTML = '<span>✓ Berhasil Disimpan ke Desktop & Mobile!</span>';
     }
-    showToast('Pengaturan Member Area berhasil disimpan! 👤✨', 'success');
+    showToast('Pengaturan Member Area tersimpan otomatis ke Desktop & HP! 👤✨', 'success');
   } catch (err) {
     console.error('Error saving member area settings:', err);
     showToast('Gagal menyimpan pengaturan. Silakan coba lagi.', 'error');
@@ -9795,35 +10058,43 @@ function applyBootcampDataToDom() {
   }
 
   // Populate CRM Bootcamp Form if present
+  populateBootcampSettingsCrm(false);
+}
+
+function populateBootcampSettingsCrm(force = true) {
+  const bc = getBootcampData();
   const crmBadge = document.getElementById('crm-bc-badge');
-  if (crmBadge && !crmBadge.value) crmBadge.value = bc.badge || DEFAULT_BOOTCAMP_DATA.badge;
+  if (crmBadge && (force || !crmBadge.value)) crmBadge.value = bc.badge || DEFAULT_BOOTCAMP_DATA.badge;
   const crmTitle = document.getElementById('crm-bc-title');
-  if (crmTitle && !crmTitle.value) crmTitle.value = bc.title || DEFAULT_BOOTCAMP_DATA.title;
+  if (crmTitle && (force || !crmTitle.value)) crmTitle.value = bc.title || DEFAULT_BOOTCAMP_DATA.title;
   const crmPricePromo = document.getElementById('crm-bc-price-promo');
-  if (crmPricePromo && !crmPricePromo.value) crmPricePromo.value = bc.pricePromo || DEFAULT_BOOTCAMP_DATA.pricePromo;
+  if (crmPricePromo && (force || !crmPricePromo.value)) crmPricePromo.value = bc.pricePromo || DEFAULT_BOOTCAMP_DATA.pricePromo;
   const crmPriceNormal = document.getElementById('crm-bc-price-normal');
-  if (crmPriceNormal && !crmPriceNormal.value) crmPriceNormal.value = bc.priceNormal || DEFAULT_BOOTCAMP_DATA.priceNormal;
+  if (crmPriceNormal && (force || !crmPriceNormal.value)) crmPriceNormal.value = bc.priceNormal || DEFAULT_BOOTCAMP_DATA.priceNormal;
   const crmQuota = document.getElementById('crm-bc-quota');
-  if (crmQuota && !crmQuota.value) crmQuota.value = bc.quota || DEFAULT_BOOTCAMP_DATA.quota;
+  if (crmQuota && (force || !crmQuota.value)) crmQuota.value = bc.quota || DEFAULT_BOOTCAMP_DATA.quota;
   const crmMeetings = document.getElementById('crm-bc-meetings');
-  if (crmMeetings && !crmMeetings.value) crmMeetings.value = bc.meetings || DEFAULT_BOOTCAMP_DATA.meetings;
+  if (crmMeetings && (force || !crmMeetings.value)) crmMeetings.value = bc.meetings || DEFAULT_BOOTCAMP_DATA.meetings;
   const crmSchedule = document.getElementById('crm-bc-schedule');
-  if (crmSchedule && !crmSchedule.value) crmSchedule.value = bc.schedule || DEFAULT_BOOTCAMP_DATA.schedule;
+  if (crmSchedule && (force || !crmSchedule.value)) crmSchedule.value = bc.schedule || DEFAULT_BOOTCAMP_DATA.schedule;
   const crmBuyUrl = document.getElementById('crm-bc-buy-url');
-  if (crmBuyUrl && !crmBuyUrl.value) crmBuyUrl.value = bc.buyUrl || DEFAULT_BOOTCAMP_DATA.buyUrl;
+  if (crmBuyUrl && (force || !crmBuyUrl.value)) crmBuyUrl.value = bc.buyUrl || DEFAULT_BOOTCAMP_DATA.buyUrl;
   const crmBannerUrl = document.getElementById('crm-bc-banner-url');
-  if (crmBannerUrl && !crmBannerUrl.value) crmBannerUrl.value = bc.bannerUrl || DEFAULT_BOOTCAMP_DATA.bannerUrl;
+  if (crmBannerUrl && (force || !crmBannerUrl.value)) crmBannerUrl.value = bc.bannerUrl || DEFAULT_BOOTCAMP_DATA.bannerUrl;
   const crmBannerPrev = document.getElementById('crm-bc-banner-preview');
-  if (crmBannerPrev) crmBannerPrev.src = formatImageUrl(bc.bannerUrl || DEFAULT_BOOTCAMP_DATA.bannerUrl);
+  if (crmBannerPrev && bc.bannerUrl) crmBannerPrev.src = formatImageUrl(bc.bannerUrl);
 
+  const classItems = (Array.isArray(bc.classes) && bc.classes.length > 0) ? bc.classes : DEFAULT_BOOTCAMP_DATA.classes;
   const crmClasses = document.getElementById('crm-bc-classes');
-  if (crmClasses && !crmClasses.value) crmClasses.value = classItems.join('\n');
+  if (crmClasses && (force || !crmClasses.value) && Array.isArray(classItems)) crmClasses.value = classItems.join('\n');
 
+  const curriculumItems = (Array.isArray(bc.curriculum) && bc.curriculum.length > 0) ? bc.curriculum : DEFAULT_BOOTCAMP_DATA.curriculum;
   const crmCurriculum = document.getElementById('crm-bc-curriculum');
-  if (crmCurriculum && !crmCurriculum.value) {
+  if (crmCurriculum && (force || !crmCurriculum.value) && Array.isArray(curriculumItems)) {
     crmCurriculum.value = curriculumItems.map(c => `${c.title} | ${c.time}`).join('\n');
   }
 }
+window.populateBootcampSettingsCrm = populateBootcampSettingsCrm;
 
 function handleBootcampUrlInput(val) {
   const prev = document.getElementById('crm-bc-banner-preview');
@@ -9888,7 +10159,13 @@ function saveBootcampSettings(e) {
 
   localStorage.setItem('nexstore_bootcamp_data', JSON.stringify(data));
   applyBootcampDataToDom();
-  showToast('Data Bootcamp & Kelas Live berhasil disimpan ke website! 🚀');
+
+  // SINKRONISASI OTOMATIS KE CLOUD (GOOGLE APPS SCRIPT / SHEETS) AGAR OTOMATIS DI MOBILE (HP)
+  if (typeof syncAllCrmMetaToGas === 'function') {
+    syncAllCrmMetaToGas({ bootcamp_meta: JSON.stringify(data) }).catch(err => console.warn('Sync bootcamp ke cloud:', err));
+  }
+
+  showToast('Data Bootcamp & Kelas Live berhasil disimpan ke website & mobile! 🚀');
 }
 
 function openBootcampDetailModal() {
@@ -11105,6 +11382,12 @@ function applyFooterBrandingSettingsToDom() {
   const prevTxt = document.getElementById('crm-footer-brand-preview-txt');
   if (prevTxt && d.brandName) prevTxt.textContent = d.brandName;
 }
+window.applyFooterBrandingSettingsToDom = applyFooterBrandingSettingsToDom;
+
+function populateFooterBrandingSettingsCrm(force = true) {
+  if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom();
+}
+window.populateFooterBrandingSettingsCrm = populateFooterBrandingSettingsCrm;
 
 function handleFooterBrandNameInput(val) {
   const prevTxt = document.getElementById('crm-footer-brand-preview-txt');
@@ -11151,7 +11434,13 @@ function saveFooterBrandingSettings(e) {
   const data = { brandName, copyright, logoUrl };
   localStorage.setItem('nexstore_footer_branding_data', JSON.stringify(data));
   applyFooterBrandingSettingsToDom();
-  showToast('Logo & tulisan Produk Digital berhasil disimpan! 🎨✨');
+
+  // SINKRONISASI OTOMATIS KE CLOUD (GOOGLE APPS SCRIPT / SHEETS) AGAR OTOMATIS DI MOBILE (HP)
+  if (typeof syncAllCrmMetaToGas === 'function') {
+    syncAllCrmMetaToGas({ footer_branding_meta: JSON.stringify(data) }).catch(err => console.warn('Sync footer branding ke cloud:', err));
+  }
+
+  showToast('Logo & tulisan Produk Digital berhasil disimpan ke Desktop & Mobile! 🎨✨');
 }
 
 
@@ -11958,8 +12247,13 @@ function handleSaveMaintenanceSettings(event) {
   saveMaintenanceSettingsToStorage(updated);
   applyMaintenanceSettingsToDom();
 
+  // SINKRONISASI OTOMATIS KE CLOUD (GOOGLE APPS SCRIPT / SHEETS) AGAR OTOMATIS DI MOBILE (HP)
+  if (typeof syncAllCrmMetaToGas === 'function') {
+    syncAllCrmMetaToGas({ maintenance_meta: JSON.stringify(updated) }).catch(err => console.warn('Sync maintenance ke cloud:', err));
+  }
+
   if (typeof showToast === 'function') {
-    showToast('Pengaturan Server Maintenance berhasil disimpan otomatis! 🚀', 'success');
+    showToast('Pengaturan Server Maintenance berhasil disimpan otomatis ke Desktop & Mobile! 🚀', 'success');
   }
 }
 window.handleSaveMaintenanceSettings = handleSaveMaintenanceSettings;
@@ -12004,4 +12298,39 @@ if (typeof document !== 'undefined') {
   } else {
     bootstrapAllModulesOnReady();
   }
+}
+
+// SINKRONISASI REAL-TIME LINTAS TAB, WINDOW, & EMULATOR MOBILE (STORAGE EVENT)
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (!e || !e.key) return;
+    try {
+      if (e.key === 'nexstore_member_area_settings') {
+        if (typeof applyMemberAreaSettingsToDom === 'function') applyMemberAreaSettingsToDom();
+        if (typeof populateMemberAreaSettingsCrm === 'function') populateMemberAreaSettingsCrm();
+      } else if (e.key === 'nexstore_hero_thumball_data') {
+        if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
+        if (typeof populateThumballSettingsCrm === 'function') populateThumballSettingsCrm();
+      } else if (e.key === 'nexstore_bootcamp_data') {
+        if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom();
+        if (typeof renderBootcampSection === 'function') renderBootcampSection();
+        if (typeof populateBootcampSettingsCrm === 'function') populateBootcampSettingsCrm();
+      } else if (e.key === 'nexstore_footer_branding_data') {
+        if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom();
+        if (typeof populateFooterBrandingSettingsCrm === 'function') populateFooterBrandingSettingsCrm();
+      } else if (e.key === 'nexstore_maintenance_settings') {
+        if (typeof applyMaintenanceSettingsToDom === 'function') applyMaintenanceSettingsToDom();
+      } else if (e.key === 'etalaseku_site_settings') {
+        if (typeof renderAnnouncementBar === 'function') renderAnnouncementBar();
+      } else if (e.key === 'etalaseku_products_data') {
+        if (typeof renderProducts === 'function') renderProducts();
+        if (typeof renderAdminProductsTable === 'function') renderAdminProductsTable(STATE.products);
+      } else if (e.key === 'etalaseku_showcases_data') {
+        if (typeof renderShowcases === 'function') renderShowcases();
+        if (typeof renderAdminShowcaseTable === 'function') renderAdminShowcaseTable(STATE.showcases);
+      }
+    } catch (err) {
+      console.warn('Storage sync event error:', err);
+    }
+  });
 }

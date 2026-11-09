@@ -1288,15 +1288,23 @@ function verifyTransaction_(data) {
 }
 
 function saveSiteSettings_(data) {
-  const rows = [];
+  const sh = getSheet_(CONFIG.SHEETS.PENGATURAN);
+  const rows = sh.getDataRange().getValues();
+  const map = {};
+  for (let i = 1; i < rows.length; i++) {
+    const k = rows[i][0];
+    const v = rows[i][1];
+    if (k) map[k] = v;
+  }
   Object.keys(data).forEach(k => {
-    rows.push({ Key_Setting: k, Value_Setting: String(data[k]) });
+    map[k] = String(data[k]);
   });
 
-  const sh = getSheet_(CONFIG.SHEETS.PENGATURAN);
   sh.clearContents();
   sh.appendRow(['Key_Setting', 'Value_Setting']);
-  rows.forEach(r => sh.appendRow([r.Key_Setting, r.Value_Setting]));
+  Object.keys(map).forEach(k => {
+    sh.appendRow([k, map[k]]);
+  });
 
   invalidatePublicCache_();
   return { success: true, message: 'Pengaturan situs berhasil diperbarui di Google Sheets!' };
