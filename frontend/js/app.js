@@ -320,9 +320,9 @@ function isValidBase64Image(str) {
 window.isValidBase64Image = isValidBase64Image;
 
 function formatImageUrl(url) {
-  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-01';
+  if (!url || typeof url !== 'string') return 'assets/hero/hero-slide-1.jpg?v=20261109-02';
   let str = url.trim();
-  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-01';
+  if (!str) return 'assets/hero/hero-slide-1.jpg?v=20261109-02';
 
   // Deteksi & konversi otomatis link Google Drive ke direct viewable CDN
   if (str.includes('drive.google.com')) {
@@ -8933,7 +8933,7 @@ const DEFAULT_THUMBALL_SETTINGS = {
   promoCode: 'BOOT-5J6T3T',
   // 3 Hero Banner Slots (Sesuai Permintaan Upgrade User)
   slide1Active: true,
-  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-01',
+  imageUrl: 'assets/hero/hero-slide-1.jpg?v=20261109-02',
   slide2Active: false,
   imageUrl2: 'assets/hero/hero-slide-2.jpg',
   slide3Active: false,
@@ -9388,7 +9388,7 @@ async function syncThumballSettingsToGas(data) {
       slide1Active: Boolean(data.slide1Active !== false),
       slide2Active: Boolean(data.slide2Active === true),
       slide3Active: Boolean(data.slide3Active === true),
-      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-01',
+      imageUrl: (data.imageUrl && !data.imageUrl.startsWith('data:')) ? data.imageUrl : 'assets/hero/hero-slide-1.jpg?v=20261109-02',
       imageUrl2: (data.imageUrl2 && !data.imageUrl2.startsWith('data:')) ? data.imageUrl2 : 'assets/hero/hero-slide-2.jpg',
       imageUrl3: (data.imageUrl3 && !data.imageUrl3.startsWith('data:')) ? data.imageUrl3 : 'assets/hero/hero-slide-3.jpg'
     };
@@ -10527,24 +10527,26 @@ window.initAppTheme = initAppTheme;
 window.applyAppTheme = applyAppTheme;
 window.toggleAppTheme = toggleAppTheme;
 
-// Inisialisasi tema otomatis secepat mungkin saat halaman dimuat
-function initAllPortalOnReady() {
-  initAppTheme();
-  if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules();
-  if (typeof renderMainMemberShowcases === 'function') renderMainMemberShowcases();
-  if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom();
-  if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons();
-  if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom();
-  if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom();
-}
+/* ==========================================================================
+   TURN 34: FOOTER BRANDING & LOGO EDITING MANAGEMENT (Produk Digital - by @daffafazdian.id)
+   ========================================================================== */
+const DEFAULT_FOOTER_BRANDING = {
+  brandName: 'Produk Digital - by @daffafazdian.id',
+  copyright: '© 2026 Produk Digital - by @daffafazdian.id. Seluruh hak cipta dilindungi.',
+  logoUrl: 'assets/hero/hero-slide-3.jpg'
+};
 
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAllPortalOnReady);
-  } else {
-    initAllPortalOnReady();
-  }
+// Inisialisasi tema & komponen otomatis secepat mungkin saat halaman dimuat
+function initAllPortalOnReady() {
+  try { if (typeof initAppTheme === 'function') initAppTheme(); } catch(e) {}
+  try { if (typeof renderMainMemberDashboardModules === 'function') renderMainMemberDashboardModules(); } catch(e) {}
+  try { if (typeof renderMainMemberShowcases === 'function') renderMainMemberShowcases(); } catch(e) {}
+  try { if (typeof applyThumballSettingsToDom === 'function') applyThumballSettingsToDom(); } catch(e) {}
+  try { if (typeof updateHeroCtaButtons === 'function') updateHeroCtaButtons(); } catch(e) {}
+  try { if (typeof applyFooterBrandingSettingsToDom === 'function') applyFooterBrandingSettingsToDom(); } catch(e) {}
+  try { if (typeof applyBootcampDataToDom === 'function') applyBootcampDataToDom(); } catch(e) {}
 }
+window.initAllPortalOnReady = initAllPortalOnReady;
 
 
 // ============================================================================
@@ -10785,14 +10787,8 @@ if (typeof window !== 'undefined' && window.matchMedia) {
 
 
 /* ==========================================================================
-   TURN 34: FOOTER BRANDING & LOGO EDITING MANAGEMENT (Produk Digital - by @daffafazdian.id)
+   TURN 34: FOOTER BRANDING & LOGO EDITING GETTER & DOM APPLIER
    ========================================================================== */
-const DEFAULT_FOOTER_BRANDING = {
-  brandName: 'Produk Digital - by @daffafazdian.id',
-  copyright: '© 2026 Produk Digital - by @daffafazdian.id. Seluruh hak cipta dilindungi.',
-  logoUrl: 'assets/hero/hero-slide-3.jpg'
-};
-
 function getFooterBrandingSettings() {
   try {
     const raw = localStorage.getItem('nexstore_footer_branding_data');
@@ -10976,10 +10972,12 @@ function renderCustomAppSubmissions() {
 }
 window.renderCustomAppSubmissions = renderCustomAppSubmissions;
 
-let currentCustomStep = 1;
+var currentCustomStep = 1;
+window.currentCustomStep = 1;
 
 function initCustomAppWizard() {
   currentCustomStep = 1;
+  window.currentCustomStep = 1;
   goToCustomStep(1);
 
   // Load draft if available
@@ -11055,13 +11053,16 @@ function goToCustomStep(stepNum) {
     const p = document.getElementById('cstep-panel-' + i);
     if (p && p.style.display !== 'none' && (p.offsetWidth > 0 || p.offsetHeight > 0)) {
       currentCustomStep = i;
+      window.currentCustomStep = i;
       break;
     }
   }
 
+  const activeStep = (typeof currentCustomStep !== 'undefined' ? currentCustomStep : window.currentCustomStep) || 1;
+
   // Validations when moving forward
-  if (stepNum > currentCustomStep) {
-    if (currentCustomStep === 1) {
+  if (stepNum > activeStep) {
+    if (activeStep === 1) {
       const name = (document.getElementById('cust-form-name') || {}).value || '';
       const phone = (document.getElementById('cust-form-phone') || {}).value || '';
       const profesi = (document.getElementById('cust-form-profesi') || {}).value || '';
@@ -11083,13 +11084,13 @@ function goToCustomStep(stepNum) {
         if (el) el.focus();
         return;
       }
-    } else if (currentCustomStep === 2) {
+    } else if (activeStep === 2) {
       const agree = document.getElementById('cust-terms-agree');
       if (!agree || !agree.checked) {
         if (typeof showToast === 'function') showToast('⚠️ Harap centang persetujuan ketentuan sebelum lanjut.', 'warning');
         return;
       }
-    } else if (currentCustomStep === 3) {
+    } else if (activeStep === 3) {
       const q1 = (document.getElementById('cust-q1-title') || {}).value || '';
       const q2 = (document.getElementById('cust-q2-problem') || {}).value || '';
       const q3 = (document.getElementById('cust-q3-users') || {}).value || '';
@@ -11109,6 +11110,7 @@ function goToCustomStep(stepNum) {
   saveCustomDraft();
 
   currentCustomStep = stepNum;
+  window.currentCustomStep = stepNum;
 
   // Update panels
   for (let i = 1; i <= 4; i++) {
@@ -11711,9 +11713,16 @@ function checkMaintenanceRefresh() {
 }
 window.checkMaintenanceRefresh = checkMaintenanceRefresh;
 
-// Auto-run maintenance checks on page initialization
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', applyMaintenanceSettingsToDom);
-} else {
-  applyMaintenanceSettingsToDom();
+// Auto-run maintenance checks & portal initialization after entire app script is parsed
+function bootstrapAllModulesOnReady() {
+  try { if (typeof initAllPortalOnReady === 'function') initAllPortalOnReady(); } catch(e) { console.error('Error in initAllPortalOnReady:', e); }
+  try { if (typeof applyMaintenanceSettingsToDom === 'function') applyMaintenanceSettingsToDom(); } catch(e) { console.error('Error in applyMaintenanceSettingsToDom:', e); }
+}
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapAllModulesOnReady);
+  } else {
+    bootstrapAllModulesOnReady();
+  }
 }
